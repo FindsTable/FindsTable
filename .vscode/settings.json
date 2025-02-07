@@ -1,0 +1,28 @@
+{
+  "tailwindCSS.experimental.configFile": "tailwind.config.ts",
+
+  "files.associations": {
+    "*.css": "css"
+},
+
+    "editor.quickSuggestions": {
+        "strings": true
+    },
+
+    // for tailwind intellisense in objects: const ui = /*ui*/ { object}
+    "tailwindCSS.experimental.classRegex": [
+        ["ui:\\s*{([^)]*)\\s*}", "[\"'`]([^\"'`]*).*?[\"'`]"],
+        ["/\\*ui\\*/\\s*{([^;]*)}", ":\\s*[\"'`]([^\"'`]*).*?[\"'`]"]
+    ],
+
+    // for tailwind in the ui prop of nuxt ui components
+    "tailwindCSS.classAttributes": [
+        "class",
+        "className",
+        "ngClass",
+        "ui"
+    ],
+    "search.useIgnoreFiles": true,
+    "CodeGPT.apiKey": "CodeGPT Plus Beta",
+    "editor.lineHeight": 0
+}

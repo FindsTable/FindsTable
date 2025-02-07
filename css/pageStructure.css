@@ -1,0 +1,12 @@
+.privatePage-header {
+    padding-bottom: 50px;
+}
+
+.sectionTitle {
+    /* padding-left: 3px; */
+    padding-bottom: 3px;
+}
+
+.sectionTitle.bottomBorder {
+    border-bottom: 1px solid var(--sectionTitle-border-bottom-color);
+}

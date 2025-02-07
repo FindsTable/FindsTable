@@ -1,0 +1,93 @@
+#app.dark {
+
+    /* text colors */
+    --titleColor-main: var(--tone-zinc-30);
+    --h1Color-main: var(--tone-zinc-20);
+    --h2Color-main: var(--tone-zinc-20);
+    --h3Color-main: var(--tone-zinc-20);
+
+    --textColor-main: var(--tone-zinc-10);
+    --textColor-negative: var(--tone-zinc-90);
+
+    --titleColor-main: var(--tone-zinc-30);
+    --textColor-main: var(--tone-zinc-10);
+    --textColor-negative: var(--tone-zinc-90);
+
+    /* Background af app */
+    --backdropColor: var(--tone-zinc-90);
+
+    /* Surfaces stacked on the app backdrop */
+    --surface1-bgColor: var(--tone-zinc-80);
+    --surface1-bgColor-hover: var(--tone-zinc-70);
+    --surface1-bgColor-active: var(--tone-zinc-60);
+
+    /* Surfaces stacked surface color 1 */
+    --surface2-bgColor: var(--tone-zinc-70);
+    --surface2-bgColor-hover: var(--tone-zinc-60);
+    --surface2-bgColor-active: var(--tone-zinc-50);
+
+    /* Buttons */
+
+    --filledButton-bgColor: var(--color-ft);
+    --filledButton-hover-bgColor: var(--color-ft-dark);
+    --filledButton-active-bgColor: var(--color-ft-light);
+    --filledButton-disabled-bgColor: var(--tone-grayscale-60);
+
+    --filledButton-textColor: white;
+    --filledButton-disabled-textColor: var(--tone-grayscale-50);
+
+    /* tone button for secondary actions */
+    --toneButton-bgColor: var(--color-ft-light);
+    --toneButton-hover-bgColor: var(--color-ft);
+    --toneButton-active-bgColor: var(--color-ft-lighter);
+    --toneButton-disabled-bgColor: var(--color-ft-lighter);
+
+    --toneButton-textColor: var(--tone-grayscale-95);
+    --toneButton-disabled-textColor: var(--tone-grayscale-40);
+
+    --outlinedButton-bgColor: transparent;
+    --outlinedButton-borderColor: var(--tone-grayscale-50);
+    --outlinedButton-hover-bgColor: var(--tone-grayscale-10);
+    --outlinedButton-active-bgColor: var(--tone-grayscale-20);
+    --outlinedButton-textColor: var(--tone-grayscale-95);
+
+    --textButton-bgColor: transparent;
+    --textButton-hover-bgColor: var(--tone-grayscale-80);
+    --textButton-onPanel-hover-bgColor: var(--tone-grayscale-70);
+    --textButton-active-bgColor: var(--tone-grayscale-70);
+    --textButton-onPanel-active-bgColor: var(--tone-grayscale-60);
+    --textButton-textColor: var(--text-color-main);
+    --textButton-selected-bgColor: var(--tone-grayscale-70);
+    --textButton-onPanel-selected-bgColor: var(--tone-grayscale-60);
+
+    --textButton-onPanel-disbled-textColor: var(--tone-grayscale-70);
+
+    --fab-bgColor: var(--color-ft);
+    --fab-hover-bgColor: var(--color-ft-dark);
+    --fab-active-bgColor: var(--color-ft-light);
+    --fab-disabled-bgColor: var(--color-ft-lighter);
+    --fab-textColor: white;
+    --fab-disabled-textColor: var(--tone-grayscale-40);
+
+    /* login-signup form */
+
+    --loginSignup-input-bgColor: transparent;
+    --loginSignup-input-borderColor: var(--tone-grayscale-40);
+    --loginSignup-input-placeholderColor: var(--tone-grayscale-40);
+    --loginSignup-input-labelColor: var(--tone-grayscale-50);
+
+    /* Sidebar*/
+    --sidebar-accountCard-bgColor: var(--tone-croco-50);
+
+    /* Ui widgets - switch, checkbox, radio box, etc*/
+    --ui-color-main: var(--tone-zinc-20);
+    --ui-color-dimmed: var(--tone-zinc-50);
+    --ui-color-on: var(--tone-kaki-40);
+    --ui-color-off: var(--tone-zinc-50);
+    --ui-color-disabled: var(--tone-zinc-70);
+}
+
+/* pageStructure.css */
+#app.dark {
+    --sectionTitle-border-bottom-color: var(--tone-zinc-70)
+}

@@ -1,0 +1,42 @@
+/*
+.comp-button .
+*/
+
+
+.comp-button.-text {
+    background-color: transparent;
+    color: var(--textButton-textColor);
+}
+
+
+.comp-button.-text:hover {
+    background-color: var(--textButton-hover-bgColor);
+}
+
+
+
+.panel .comp-button.-text:hover,
+
+.-surface1 .comp-button.-text:hover {
+    background-color: var(--textButton-onPanel-hover-bgColor);
+}
+
+
+.comp-button.-text:active {
+    background-color: var(--textButton-active-bgColor);
+}
+
+
+.panel .comp-button.-text:active {
+    background-color: var(--textButton-onPanel-active-bgColor);
+}
+
+.panel .comp-button.-text.selected {
+    background-color: var(--textButton-onPanel-selected-bgColor);
+}
+
+.panel .comp-button.-text:disabled {
+    pointer-events: none;
+    opacity: 0.3;
+    /* color: var(--textButton-onPanel-disbled-textColor); */
+}

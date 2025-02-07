@@ -1,0 +1,39 @@
+{
+    "global": {
+        "close": "Fermer",
+        "open": "Ouvrir"
+    },
+    "colorMode": {
+        "modes": {
+            "light": "clair",
+            "dark": "foncé",
+            "auto": "auto",
+            "coffee": "café",
+            "forest": "forêt"
+        }
+    },
+    "languages": {
+        "en": {
+            "name": "anglais",
+            "short": "en"
+        },
+        "fr": {
+            "name": "français",
+            "short": "fr"
+        }
+    },
+    "user": {
+        "username": "Pseudonime",
+        "email": "courriel"
+    },
+    "components": {
+        "button": {
+            "close": "close",
+            "open": "open"
+        }
+    },
+    "auth": {
+        "login": "Connexion",
+        "signup": "Inscription"
+    }
+}

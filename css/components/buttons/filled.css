@@ -1,0 +1,41 @@
+/* global */
+
+
+
+/* theming */
+
+.comp-button-filled,
+.comp-button.-filled {
+    background-color: var(--filledButton-bgColor);
+    color: var(--filledButton-textColor);
+    border: none;
+}
+
+.comp-button-filled:disabled,
+.comp-button.-filled.disabled {
+    background-color: var(--filledButton-disabled-bgColor);
+    color: var(--filledButton-disabled-textColor);
+}
+
+.comp-button.-filled:hover {
+    background-color: var(--filledButton-hover-bgColor);
+}
+
+.comp-button.-filled:active {
+    background-color: var(--filledButton-active-bgColor);
+}
+
+.comp-button.-filled svg {
+    fill: var(--filledButton-textColor);
+}
+
+.comp-button.-filled.-confirm {
+    background-color: var(--color-success);
+    color: var(--filledButton-textColor);
+    border: none;
+}
+.comp-button.-filled.-cancel {
+    background-color: var(--color-warning);
+    color: var(--filledButton-textColor);
+    border: none;
+}

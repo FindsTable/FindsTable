@@ -1,0 +1,13 @@
+:root {
+    --tone-mango-5: hsl(39, 89%, 98%);
+    --tone-mango-10: hsl(39, 89%, 95%);
+    --tone-mango-20: hsl(39, 89%, 85%);
+    --tone-mango-30: hsl(39, 89%, 75%);
+    --tone-mango-40: hsl(39, 89%, 65%);
+    --tone-mango-50: hsl(39, 89%, 55%);
+    --tone-mango-60: hsl(39, 89%, 45%);
+    --tone-mango-70: hsl(39, 89%, 35%);
+    --tone-mango-80: hsl(39, 89%, 25%);
+    --tone-mango-90: hsl(39, 89%, 15%);
+    --tone-mango-95: hsl(39, 89%, 10%);
+}

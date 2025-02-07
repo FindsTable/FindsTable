@@ -1,0 +1,24 @@
+{
+    "success": {
+        "status": "success",
+        "code": 200,
+        "data": {
+            "id": 1,
+            "name": "Example Item",
+            "description": "This is a sample item from the Directus collection."
+        },
+        "meta": {
+            "timestamp": "2024-11-15T12:34:56Z"
+        }
+    },
+    "fail": {
+        "status": "error",
+        "code": 400,
+        "message": "Invalid request parameters.",
+        "details": {
+            "field": "email",
+            "issue": "Email is already registered."
+        }
+    }
+    
+}

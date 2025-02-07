@@ -1,0 +1,39 @@
+{
+    "global": {
+        "close": "Fermer",
+        "open": "Ouvrir"
+    },
+    "colorMode": {
+        "modes": {
+            "light": "light",
+            "dark": "dark",
+            "auto": "auto",
+            "coffee": "coffee",
+            "forest": "forest"
+        }
+    },
+    "languages": {
+        "en": {
+            "name": "English",
+            "short": "en"
+        },
+        "fr": {
+            "name": "French",
+            "short": "fr"
+        }
+    },
+    "user": {
+        "username": "Username",
+        "email": "Email"
+    },
+    "components": {
+        "button": {
+            "close": "close",
+            "open": "open" 
+        }
+    },
+    "auth": {
+        "login": "Connexion",
+        "signup": "Inscription"
+    }
+}

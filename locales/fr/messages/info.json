@@ -1,0 +1,10 @@
+{
+    "global": {
+        "accoutUpdated": "Account updated"
+    },
+    "user": {
+        "created": "User created",
+        "deleted": "User deleted",
+        "updated": "User updated"
+    }
+}

@@ -1,0 +1,15 @@
+/* tone kaki 30 81785A tone kaki 40 665F47 tone kaki 50 57513D tone kaki 60 4E4837 tone kaki 70 464131 */
+
+:root {
+    --tone-kaki-5: hsl(46, 18%, 98%);
+    --tone-kaki-10: hsl(46, 18%, 96%);
+    --tone-kaki-20: hsl(46, 18%, 90%);
+    --tone-kaki-30: hsl(46, 18%, 43%);
+    --tone-kaki-40: hsl(46, 18%, 34%);
+    --tone-kaki-50: hsl(46, 18%, 29%);
+    --tone-kaki-60: hsl(44, 17%, 26%);
+    --tone-kaki-70: hsl(46, 18%, 23%);
+    --tone-kaki-80: hsl(46, 18%, 20%);
+    --tone-kaki-90: hsl(46, 18%, 17%);
+    --tone-kaki-95: hsl(46, 18%, 15%);
+}

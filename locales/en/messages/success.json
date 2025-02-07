@@ -1,0 +1,34 @@
+{
+    "success": {
+        "auth": {
+            "helloUser": "Hello, ",
+            "welcomeBack": {
+                "1": "Welcome back !",
+                "2": "It's nice to see you again !",
+                "3": "Did you make any new finds ?",
+                "4": "Did you find some gold ? :-)"
+            },
+            "userCreated": "Your account has been created !"
+        },
+        "colorMode": {
+            "changedTo": "Color mode set to"
+        },
+        "language": {
+            "changedTo": "Language set to"
+        },
+        "patreon": {
+            "account": {
+                "linked": "Your Patreon account was successfuly linked."
+            }
+        },
+        "avatar": {
+            "updated": "Your avatar has been updated."
+        },
+        "activity": {
+            "follow": {
+                "start": "You are now following ",
+                "stop": "You are no longer following "
+            }
+        }
+    }
+}

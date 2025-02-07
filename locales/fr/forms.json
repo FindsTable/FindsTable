@@ -1,0 +1,86 @@
+{
+    "forms": {
+        "inputs": {
+            "file": {
+                "image": {
+                    "icon": "addImage",
+                    "label": "Sélectionner"
+                },
+                "camera": {
+                    "icon": "camera",
+                    "label": "Caméra"
+                }
+            }
+        },
+        "buttons": {
+            "login": "Me connecter",
+            "signup": "Créer un compte",
+            "submit": "Envoyer",
+            "confirm": "Confirmer"
+        },
+        "userAccount": {
+            "invitationCode": {
+                "label": "Code d'invitation",
+                "placeholder": "Votre code",
+                "messages": {
+                    "required": "Un code d'invitation est requis.",
+                    "unavailable": "Code invalide."
+                },
+                "validation": {
+                    "required": "Un code d'invitation est requis.",
+                    "unavailable": "Code invalide."
+                }
+            },
+            "username": {
+                "label": "Pseudonyme",
+                "placeholder": "Choisissez un pseudonyme",
+                "messages": {
+                    "required": "Vous devez choisir un pseudo",
+                    "unavailable": "Quelqu'un utilise déjà ce pseudo"
+                },
+                "validation": {
+                    "required": "Vous devez choisir un pseudo",
+                    "unavailable": "Quelqu'un utilise déjà ce pseudo"
+                }
+            },
+            "email": {
+                "label": "Email",
+                "placeholder": "Adresse courriel",
+                "messages": {
+                    "required": "Une courriel est requis",
+                    "invalid": "L'adresse courrielle est invalide",
+                    "unavailable": "Ce courriel est déjà utilisé"
+                },
+                "validation": {
+                    "required": "Une courriel est requis",
+                    "invalid": "L'adresse courrielle est invalide",
+                    "unavailable": "Ce courriel est déjà utilisé"
+                }
+            },
+            "password": {
+                "label": "Mot de passe",
+                "placeholder": "Mot de passe",
+                "messages": {
+                    "required": "Un mot de passe est requis",
+                    "invalid": "Mot de passe invalide"
+                },
+                "validation": {
+                    "required": "Un mot de passe est requis",
+                    "invalid": "Mot de passe invalide"
+                }
+            },
+            "passwordConfirmation": {
+                "label": "Confirmer le mot de passe",
+                "placeholder": "Confirmer le mot de passe",
+                "messages": {
+                    "required": "Un mot de passe est requis",
+                    "invalid": "Mot de passe invalide"
+                },
+                "validation": {
+                    "required": "Un mot de passe est requis",
+                    "invalid": "Mot de passe invalide"
+                }
+            }
+        }        
+    }
+}

@@ -1,0 +1,137 @@
+currency
+    coins
+    sceal
+
+Art
+    jewelry
+    trinckets
+
+domestic
+    buttons
+    buckles
+    toys
+    ustensils
+    house tools
+    packaging
+    furniture
+
+military
+    bullets
+    weapons
+    gear
+    clothing/armor
+
+Mechanics
+    machinery
+    bolts/pieces
+
+
+craft
+    nails
+    tools
+    blacksmithing
+
+non metalic
+
+--------------------
+dating
+
+marked?
+
+time day month year
+
+rang of two decades
+
+21th
+20th
+19th
+18th 
+    decade
+
+before 1872 ?
+    declared ?
+
+--------------------
+
+Composition
+
+metalic
+    list of metals (add up to 5 ish ??)
+
+non metalic
+    clay
+    plastic
+    stone
+    bone
+    animal
+    vegetal
+    wood
+    other
+
+
+--------------------
+
+description
+
+--------------------
+
+depth
+
+inch or cs (all converted to cm)
+
+--------------------
+
+horded with
+
+    add other finds
+
+--------------------
+
+location
+
+    share ?
+
+    Country
+    Region
+    gps coordinates
+
+    textarea
+
+--------------------
+
+found with 
+    link to other members
+
+--------------------
+
+lanlord/permission (private)
+
+textarea
+
+--------------------
+
+personal notes ( private)
+
+
+--------------------
+
+Pro members
+
+video reference
+
+    input url
+
+text reference
+
+    m2a => articles
+
+    input outside url
+
+    information reference (ex: wikipedia)
+
+    input outside url
+
+extra images
+
+    3 more high res images
+

@@ -1,0 +1,150 @@
+{
+    "page": {
+        "account": {
+            "title": "My account"            
+        },
+        "home": {
+            "tabs": {
+                "thoughts": {
+                    "tab": "Thoughts",
+                    "title": "User thoughts"
+                },
+                "finds": {
+                    "tab": "Finds",
+                    "title": "Latest finds"
+                },
+                "huntReports": {
+                    "tab": "Hunt reports",
+                    "title": "Hunt reports"
+                },
+                "articles": {
+                    "tab": "Articles",
+                    "title": "Articles"
+                }
+            }
+        },
+        "settings": {
+            "title": "Settings",
+            "tabs": {
+                "app": {
+                    "tab": "Application",
+                    "Title": "Application",
+                    "sections": {
+                        "colorMode": {
+                            "title": "Color mode"
+                        },
+                        "language": {
+                            "title": "Language used by the application"
+                        }
+                    }
+                },
+                "account": {
+                    "tab": "Account",
+                    "sections": {
+                        "credentials": {
+                            "title": "Personal information",
+                            "username": "Account handler",
+                            "displayName": "Pseudonym",
+                            "email": "Email",
+                            "firstName": "First name",
+                            "lastName": "Last name",
+                            "personalDataIntroText": "Configure the informations the other users can see.",
+                            "basicInfoIntroText": "Basic account informations seen by all users."
+                        },
+                        "avatar": {
+                            "title": "Avatar",
+                            "sections": {
+                                "current": {
+                                    "button": "Current Avatar"
+                                },
+                                "myAvatars": {
+                                    "button": "My avatars"
+                                },
+                                "uploadNew": {
+                                    "button": "upload new",
+                                    "selectAFile": "Select an image on your device",
+                                    "cropThisImage": "Crop this image",
+                                    "saveButton": "Save"
+                                }
+                            }
+                        },
+                        "badges": {
+                            "title": "Badges",
+                            "introText": "Select badges to show what type of detectorist you are !"
+                        },
+                        "privacy": {
+                            "title": "Privacy"
+                        }
+                    }
+                },
+                "patreon": {
+                    "tab": "Patreon",
+                    "Title": "Patreon",
+                    "sections": {
+                        "visityourAccount": {
+                            "button": "Visit your Patreon account"
+                        },
+                        "linkYourAccount": {
+                            "title": "Link your account"
+                        },
+                        "linkedAccount": {
+                            "title": "Your Patreon acount"
+                        },
+                        "unlink": {
+                            "button": "Unlink your account"
+                        }
+                    }
+                }
+            }
+        },
+        "landing": {
+            "welcomeText": "Welcome to the Finds Table, a place where detectorists can share and show their finds.",
+            "loginButton": "Log in your account",
+            "patreonLink": "Finds Table is still under development. To learn more and support the project, visit our Patreon. ",
+            "loginSignupInvitation": "Log in with you email and password or signup to create an account."
+        },
+        "legalNotice": {
+            "title": "Legal notice"
+        },
+        "privacy": {
+            "title": "Privacy policy"
+        },
+        "redirection": {
+            "emailVerification": {
+                "title": "Verification of your email address",
+                "verifying": "We are verifying your email address...",
+                "verified": "Your email address was successfully verified.",
+                "notVerified": "Your email address could not be verified.",
+                "toLogin": "Go to login page"
+            },
+            "newAccountCreated": {
+                "title": "Welcome to the Finds Table",
+                "success": "Your account was successfully created.",
+                "checkYourEmails": "Please check your emails to verify your email address.",
+                "toIndex": "Go to the home page"
+            }
+        },
+        "finds": {
+            "title": "New find",
+            "pageLead": "Post your lastest find to the Finds Table.",
+            "newFindForm": {
+                "fields": {
+                    "title": {
+                        "label": "Title",
+                        "placeholder": "Silver coin"
+                    },
+                    "category": {
+                        "lable" : "Category"
+                    },
+                    "type": {
+                        "label": "Type of object"
+                    }
+                }
+            }
+        },
+        "badges": {
+            "title": "Success Badges",
+            "pageLead": "Here are the badges you have earned by using the Finds Table.  Keep up the good work!"
+        }
+    }
+}

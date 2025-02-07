@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap');
+
+:root {
+    --typeface-findsTable: "Fraunces", serif;
+    --typeface-main: system-ui, sans-serif;
+}
+
+.typeface-fraunces {
+    font-family: "Fraunces", serif;
+}
+.typeFace-main {
+    font-family: var(--typeface-main);
+}
+
+/* the finds table title on the welcome page */
+.font-findsTable-display {
+    font-family: var(--typeface-findsTable);
+    font-size: 2.8rem;
+    font-weight: 400;
+    letter-spacing: -0.04em;
+    line-height: 1.1em;
+}
+
+.font-findsTable-display.font-mod-small {
+    font-size: 1.5rem;
+}
+
+.font-h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.font-h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+.font-h3 {
+    font-size: 1rem;
+    font-weight: 500;
+}
+/* short text announcing the purpose of the page */
+.font-pageLead {
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 1.1em;
+}
+
+.font-text {
+    font-size: 1rem;
+    font-weight: 400;
+}
+.font-input-text,
+.font-textarea {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+.-tiny {
+    font-size: 0.65rem;
+    font-weight: 400;
+}
+.-small {
+    font-size: 0.875rem;
+    font-weight: 400;
+}
+.-big {
+    font-size: 1.2rem;
+    font-weight: 600;
+    font-weight: 500;
+}
+.-bigger {
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+
+.-thin {
+    font-weight: 300;
+}
+.-medium {
+    font-weight: 500;
+}
+.-lessBold {
+    font-weight: 600;
+    font-weight: 500;
+}
+.-bold {
+    font-weight: 700;
+}
+
+
+
+
+/* button text */
+.font-button-large {
+    font-size: 1.125rem;
+    font-weight: 500;
+    letter-spacing: 0.1rem;
+}
+
+.font-button-main {
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.05rem;
+}
+.font-button-small {
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.1rem;
+}

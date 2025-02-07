@@ -1,0 +1,6 @@
+:root {
+    --color-success: hsl(120, 33%, 40%);
+    --color-error: rgb(176, 55, 55);
+    --color-warning: rgb(141, 107, 44);
+    --color-info: purple;
+}

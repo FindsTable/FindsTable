@@ -1,0 +1,17 @@
+.comp-button.-pageTab {
+    font-size: clamp(0.8em, 1.5vw, 1.1em);
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.539);
+    padding: 0.5em 1em 0.4em 1em;
+}
+
+.comp-button.-pageTab.-selected {
+    color: var(--theme-textColor-main);
+    background-color: var(--textButton-selected-bgColor);
+}
+
+@media (max-width: 859px) {
+    .comp-button.-pageTab:has(.icon) span.text {
+        display: none;
+    }
+}

@@ -1,0 +1,8 @@
+.comp-panel {
+    background-color: var(--surface1-bgColor);
+    border-radius: 5px;
+}
+
+.-surface1 {
+    background-color: var(--surface1-bgColor);
+}

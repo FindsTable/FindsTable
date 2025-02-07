@@ -1,0 +1,15 @@
+input[type="text"],
+input[type="number"],
+input[type="password"],
+input[type="email"] {
+    border: none;
+}
+
+textarea {
+    padding: 15px;
+}
+
+.standardLabel {
+    padding-left: 3px;
+    margin-bottom: 4px;
+}

@@ -1,0 +1,142 @@
+{
+    "page": {
+        "account": {
+            "title": "Mon compte"
+        },
+        "home": {
+            "tabs": {
+                "thoughts": {
+                    "tab": "Pensées",
+                    "title": "User thoughts"
+                },
+                "finds": {
+                    "tab": "Trouvailles",
+                    "title": "Latest finds"
+                },
+                "huntReports": {
+                    "tab": "Excursions",
+                    "title": "Hunt reports"
+                },
+                "articles": {
+                    "tab": "Articles",
+                    "title": "Articles"
+                }
+            }
+        },
+        "settings": {
+            "title": "Paramètres",
+            "tabs": {
+                "app": {
+                    "tab": "Application",
+                    "Title": "Application",
+                    "sections": {
+                        "colorMode": {
+                            "title": "Mode couleur"
+                        },
+                        "language": {
+                            "title": "Langue utilisée"
+                        }
+                    }
+                },
+                "account": {
+                    "tab": "Compte",
+                    "sections": {
+                        "credentials": {
+                            "title": "Informations personnelles",
+                            "username": "Nom du compte",
+                            "displayName": "Pseudonyme",
+                            "email": "Courriel",
+                            "firstName": "Prénom",
+                            "lastName": "Nom",
+                            "personalDataIntroText": "Configurez les infos que les autres utilisateurs peuvent voir.",
+                            "basicInfoIntroText": "Information de base de votre compte, visible de tous."
+                        },
+                        "avatar": {
+                            "title": "Avatar",
+                            "sections": {
+                                "current": {
+                                    "button": "Avatar actuel"
+                                },
+                                "myAvatars": {
+                                    "button": "Mes avatars"
+                                },
+                                "uploadNew": {
+                                    "button": "Télécharger un nouveau",
+                                    "selectAFile": "Sélectionnez une image sur votre appareil",
+                                    "cropThisImage": "Recadrer cette image",
+                                    "saveButton": "Enregistrer"
+                                }
+                            }
+                        },
+                        "badges": {
+                            "title": "Badges",
+                            "introText": "Selectionnez de badges qui vous représentent !"
+                        },
+                        "privacy": {
+                            "title": "Confidentialité"
+                        }
+                    }
+                },
+                "patreon": {
+                    "tab": "Patreon",
+                    "Title": "Patreon",
+                    "sections": {
+                        "visityourAccount": {
+                            "button": "Visitez votre compte Patreon"
+                        },
+                        "linkYourAccount": {
+                            "title": "Link your account"
+                        },
+                        "linkedAccount": {
+                            "title": "Your Patreon acount"
+                        },
+                        "unlink": {
+                            "button": "Délier votre compte"
+                        }
+                    }
+                }
+            }
+        },
+        "landing": {
+            "welcomeText": "Bienvenue à la tables destrouvailles ! Finds Table est un endroit où les détectoristes peuvent partager leurs trouvailles.",
+            "loginButton": "Connectez-vous !",
+            "patreonLink": "Finds Table est en cours de développement. Pour découvrir et supporter le projet, visitez notre page Patreon. ",
+            "loginSignupInvitation": "Connectez-vous avec votre courriel et mot de passe ou inscrivez-vous pour creer un compte."
+        },
+        "legalNotice": {
+            "title": "Mentions légales"
+        },
+        "privacy": {
+            "title": "Confidentialité"
+        },
+        "redirection": {
+            "emailVerification": {
+                "title": "Vérification de votre adresse courriel",
+                "verifying": "Nous vérifions votre adresse courriel...",
+                "verified": "Votre adresse courriel a été vérifiée avec succès.",
+                "notVerified": "Votre adresse courriel n'a pas pu être vérifiée.",
+                "toLogin": "Aller à la page de connexion"
+            },
+            "newAccountCreated": {
+                "title": "Welcome to the Finds Table",
+                "success": "Your account was successfully created.",
+                "checkYourEmails": "Please check your emails to verify your email address.",
+                "toIndex": "Go to the home page"
+            }
+        },
+        "finds": {
+            "newFindForm": {
+                "fields": {
+                    "title": {
+                        "lable": "Titre",
+                        "placeholder": "Pièce en argent"
+                    }
+                }
+            }
+        },
+        "badges": {
+            "title": "Badges",
+            "pageLead": "Les badges sont des récompenses que vous pouvez gagner en utilisant Finds Table. Ils sont affichés sur votre profil et vous permettent de montrer vos accomplissements à la communauté."
+        }
+    }
+}

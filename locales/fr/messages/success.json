@@ -1,0 +1,34 @@
+{
+    "success": {
+        "auth": {
+            "welcome": "Bienvenue à la tables destrouvailles !",
+            "welcomeBack": {
+                "1": "Bienvenue de nouveau, ",
+                "2": "C'est super de vous revoir !",
+                "3": "Bonjour ! Avez-vous fait une nouvelle trouvaille ?",
+                "4": "Heureux de vous revoir !"
+            },
+            "userCreated": "Votre compte a été créé !"
+        },
+        "colorMode": {
+            "changedTo": "Mode couleur réglé sur"
+        },
+        "language": {
+            "changedTo": "Langue réglée sur"
+        },
+        "patreon": {
+            "account": {
+                "linked": "Your Patreon account was successfuly linked."
+            }
+        },
+        "avatar": {
+            "updated": "Nouvel avatar en place."
+        },
+        "activity": {
+            "follow": {
+                "start": "Vous suivez désormais ",
+                "stop": "Vous ne suivez plus "
+            }
+        }
+    }
+}

@@ -1,0 +1,11 @@
+#app.coffee {
+    --main-background-color: var(--coffee-3);
+    --main-text-color: var(--coffee-1);
+    --main-dimmed: var(--coffee-4);
+    --theme-color: var(--coffee-3);
+}
+
+#app.coffee {
+    --panel-border: var(--coffee-5);
+    --panel-shadow: 1px 2px 5px 3px var(--coffee-5);
+}

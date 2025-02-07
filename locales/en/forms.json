@@ -1,0 +1,86 @@
+{
+    "forms": {
+        "inputs": {
+            "file": {
+                "image": {
+                    "icon": "addImage",
+                    "label": "Select an image"
+                },
+                "camera": {
+                    "icon": "camera",
+                    "label": "Use camera"
+                }
+            }
+        },
+        "buttons": {
+            "login": "Login",
+            "signup": "Signup",
+            "submit": "Submit",
+            "confirm": "Confirm"
+        },
+        "userAccount": {
+            "invitationCode": {
+                "label": "Invitation code",
+                "placeholder": "your invitation code",
+                "messages": {
+                    "required": "An invitation code is required",
+                    "unavailable": "Invitation code is invalid"
+                },
+                "validation": {
+                    "required": "An invitation code is required",
+                    "unavailable": "Invitation code is invalid"
+                }
+            },
+            "username": {
+                "label": "Username",
+                "placeholder": "Enter a username",
+                "messages": {
+                    "required": "Username is required",
+                    "unavailable": "Username is unavailable"
+                },
+                "validation": {
+                    "required": "Username is required",
+                    "unavailable": "Username is unavailable"
+                }
+            },
+            "email": {
+                "label": "Email",
+                "placeholder": "Enter your email",
+                "messages": {
+                    "required": "Email is required",
+                    "invalid": "Email is invalid",
+                    "unavailable": "Email is already registered"
+                },
+                "validation": {
+                    "required": "Email is required",
+                    "invalid": "Email is invalid",
+                    "unavailable": "Email is already registered"
+                }
+            },
+            "password": {
+                "label": "Password",
+                "placeholder": "Enter a password",
+                "messages": {
+                    "required": "Password is required",
+                    "invalid": "Password is invalid"
+                },
+                "validation": {
+                    "required": "Password is required",
+                    "invalid": "Password is invalid"
+                }
+            },
+            "passwordConfirmation": {
+                "label": "Confirm your password",
+                "placeholder": "Confirma your password",
+                "messages": {
+                    "required": "Password is required",
+                    "invalid": "Password is invalid"
+                },
+                "validation": {
+                    "required": "Password is required",
+                    "invalid": "Password is invalid"
+                }
+            }
+        }
+    }
+}

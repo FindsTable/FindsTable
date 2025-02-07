@@ -1,0 +1,23 @@
+:root {
+    --trans-white-10: hsl(0 0% 100% / 10%);
+    --trans-white-20: hsl(0 0% 100% / 20%);
+    --trans-white-30: hsl(0 0% 100% / 30%);
+    --trans-white-40: hsl(0 0% 100% / 40%);
+    --trans-white-50: hsl(0 0% 100% / 50%);
+    --trans-white-60: hsl(0 0% 100% / 60%);
+    --trans-white-70: hsl(0 0% 100% / 70%);
+    --trans-white-80: hsl(0 0% 100% / 80%);
+    --trans-white-90: hsl(0 0%100% / 90%);
+}
+
+:root {
+    --trans-black-10: hsl(0 0% 0% / 10%);
+    --trans-black-20: hsl(0 0% 0% / 20%);
+    --trans-black-30: hsl(0 0% 0% / 30%);
+    --trans-black-40: hsl(0 0% 0% / 40%);
+    --trans-black-50: hsl(0 0% 0% / 50%);
+    --trans-black-60: hsl(0 0% 0% / 60%);
+    --trans-black-70: hsl(0 0% 0% / 70%);
+    --trans-black-80: hsl(0 0% 0% / 80%);
+    --trans-black-90: hsl(0 0% 0% / 90%);
+}

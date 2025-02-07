@@ -1,0 +1,15 @@
+{
+    "activity": {
+        "social": {
+            "follow": {
+                "start": "Suivre",
+                "stop": "Ne plus suivre",
+                "following": "Suivi",
+                "followed": "Vous suis",
+                "preferences": {
+                    "title": "Configurer vos préférences de suivi"
+                }
+            }
+        }
+    }
+}

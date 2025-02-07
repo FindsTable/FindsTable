@@ -1,0 +1,83 @@
+:root {
+
+    --main-light: #f4f4f4;
+    --main-dark: hsl(0, 0%, 11%);
+
+    --coffee-1: #fdefd7;
+    --coffee-2: #FFDBB5;
+    --coffee-3: #9b8169;
+    --coffee-4: #6C4E31;
+    --coffee-5: #3b2d225b;
+
+    --loading-light: rgb(80, 95, 80);
+    --loading-dark: #121212;
+    --loading-theme: #41593f;
+
+    --theme-color: #5b7d59;
+    /* --theme-color-1: #5b7d59;
+    --theme-color-2: #5b7d59;
+    --theme-color-3: #5b7d59;
+    --theme-color-4: #5b7d59;
+    --theme-color-5: #5b7d59; */
+    
+
+    --theme-color-contrast-on-light: #799c77;
+    --theme-color-contrast-on-dark: #445d42;
+    --theme-color-contrast-on-panel: #445d42;
+
+    --success-color: #61935e;
+}
+
+html {
+    background-color: black;
+}
+
+    #app.light {
+        --main-background-color: var(--main-light);
+        --main-text-color: var(--main-dark);
+        --main-dimmed: #dddddd;
+    }
+
+    #app.light {
+        --panel-border: #00000017;
+        --panel-shadow: 1px 2px 5px 3px #0000001c;
+    }
+
+    #app.dark {
+        --main-background-color: var(--main-dark);
+        --main-text-color: var(--main-light);
+        --main-dimmed: #484848;
+    }
+
+    #app.dark {
+        --panel-border: #ffffff3c;
+        --panel-shadow: 1px 2px 5px 3px #000000d6;
+    }
+
+    #app.coffee {
+        --main-background-color: var(--coffee-3);
+        --main-text-color: var(--coffee-1);
+        --main-dimmed: var(--coffee-4);
+        --theme-color: var(--coffee-3);
+    }
+
+    #app.coffee {
+        --panel-border: var(--coffee-5);
+        --panel-shadow: 1px 2px 5px 3px var(--coffee-5);
+    }
+
+/* .mainBGC {
+    background-color: var(--main-background-color);
+    transition: 1000ms ease;
+} */
+
+.panelColorMode {
+    /* background-color: var(--main-dimmed); */
+    border-radius: var(--border-radius-l);
+    /* border: 2px solid var(--panel-border); */
+    /* box-shadow: var(--panel-shadow); */
+    padding: 16px;
+    transition: 300ms ease;
+}
+
+
