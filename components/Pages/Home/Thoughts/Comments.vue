@@ -64,7 +64,7 @@ function newContentSaveed(newComment) {
             <Icon name="close" size="24px" class="pointer" @click="emit('closeComments')" />
         </p>
 
-        <div class="commentsBox">
+        <div class="commentsBox overflowScroll -scrollY">
             <div 
                 v-for="comment in comments" :key="comment.id"
                 class="flex alignStart marTop20"    
@@ -156,7 +156,6 @@ function newContentSaveed(newComment) {
     left: 0;
 }
 .commentsBox {
-    overflow: scroll;
     max-height: 30vh;
 }
 .content {

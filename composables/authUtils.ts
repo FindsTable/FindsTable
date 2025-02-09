@@ -45,7 +45,7 @@ async function useLoginFlow(
     }
     
     
-    const userData = await useNuxtApp().$auth.GetUserDataWithAccessToken(res.data.access_token.value)
+    const userData = await useNuxtApp().$auth.getUserDataWithAccessToken(res.data.access_token.value)
     
     if(!userData.ok || !userData.data) {
         return false
@@ -102,7 +102,7 @@ async function useHandleSignup(p: {
         p.password,
         p.passwordConfirmation
     );
-    
+    console.log(res)
     return res
 }
 

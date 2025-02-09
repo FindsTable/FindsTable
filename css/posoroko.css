@@ -90,7 +90,7 @@
 .absoluteFull {position: absolute; top: 0; left: 0; right: 0; bottom: 0;}
 
 .overflowHidden {overflow: hidden;}
-.overflowScroll {overflow: scroll;}
+/* .overflowScroll {overflow: auto;} */
 .objectFitCover { width: 100%; height: 100%; object-fit: cover;}
 .objectFitContained {width: 100%; height: 100%; object-fit: contain;}
 .objectFitContain {width: 100%;height: 100%;object-fit: contain;}

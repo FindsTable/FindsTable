@@ -43,3 +43,30 @@
 .safeArea.-left {
     padding-left: var(--safe-inset-left);
 }
+
+
+/*
+Scroll bars
+*/
+
+.overflowScroll {
+    padding-right: 10px;
+}
+.overflowScroll.-scrollX {
+    overflow-x: auto;
+}
+.overflowScroll.-scrollY {
+    overflow-y: auto;
+}
+.overflowScroll::-webkit-scrollbar {
+    width: 3px;
+}
+
+.overflowScroll::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.3);
+}
+
+.overflowScroll::-webkit-scrollbar-thumb {
+    background-color: rgba(169, 169, 169, 0.267);
+    outline: 1px solid rgb(144, 131, 112);
+}

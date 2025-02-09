@@ -1,6 +1,6 @@
 <script setup>
 const props = defineProps({
-    badgeRecord: Array
+    badgeRecord: Object
 })
 
 const slots = computed(() => {
@@ -14,7 +14,7 @@ const slots = computed(() => {
 </script>
 
 <template>
-    <div class="box flex gap20" v-if="slots.length">
+    <div class="box flex gap20" v-if="badgeRecord && slots.length">
         <div class="frame" v-for="badge in slots">
             <img 
                 v-if="badge" 

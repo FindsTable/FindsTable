@@ -73,6 +73,7 @@ function updateNewCommentsCount(increment) {
 
 <style>
 .thoughtPanel {
-    padding: 20px;
+    padding: 16px;
+    border-radius: 10px;
 }
 </style>

@@ -67,6 +67,7 @@ async function directusAPI (
         })
 
     } catch (error: any) {
+        console.error('server/directus/main => ', error)
         return newResponse({
             ok: false,
             status: error.response?.status || 500,

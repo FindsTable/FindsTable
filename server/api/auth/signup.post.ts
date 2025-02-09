@@ -134,7 +134,7 @@ async function codeIsValid(
     })  
 
     if(!res.ok) {
-        console.error(`Problem fetching a valid invitation code`, res)
+        console.error(`/signup => Problem fetching a valid invitation code`, res)
     }
     
     return res.ok

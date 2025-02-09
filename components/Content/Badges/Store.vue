@@ -2,7 +2,7 @@
 const { locale } = useI18n()
 
 const $items = useNuxtApp().$items
-const { data : badges, refresh } = await useAsyncData(
+const { data : badges } = useAsyncData(
     'badgeStore',
     async () => {
         const res = await $items.getByQuery({

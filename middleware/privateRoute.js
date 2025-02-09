@@ -1,6 +1,8 @@
 export default defineNuxtRouteMiddleware(async (to, from) => {
+
     const user = useUserState()
-    if (user.isLoggedIn) {
+    
+    if (user.value.isLoggedIn) {
         return
     }
     const logingSuccess = await useLoginFlow('refreshTokenCookie')

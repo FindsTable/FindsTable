@@ -30,9 +30,13 @@ const textareaId = useId()
             :id="textareaId"
             class="
                 theme-surface-2 font-text -semibold
-                grow    
+                grow
             "
-            :class="[ textContent ? 'active' : '']"
+            :class="[ 
+                textContent ? 'active' : '',
+                textContent ? 'overflowScroll -scrollY' : 'overflowHidden'
+
+            ]"
             :placeholder="placeholder"
         >
 

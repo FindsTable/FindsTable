@@ -10,7 +10,7 @@ const props = defineProps({
 const $items = useNuxtApp().$items
 
 
-const { data : badges, refresh } = await useAsyncData<UserBadgeObject[] | null>(
+const { data : badges, refresh } = useAsyncData<any[] | null>(
     `badges-${props.userId}`,
     async (): Promise<UserBadgeObject[] | null> => {
         if( 

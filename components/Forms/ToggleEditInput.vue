@@ -14,7 +14,8 @@ const props = defineProps({
     originalValue: {
         type: String,
         default: '',
-    }
+    },
+    prefix: String
 })
 
 const emit = defineEmits(['saveNewFieldValue']);
@@ -30,7 +31,6 @@ function editStart() {
     }, 100)
 }
 async function handleSaveChanges() {
-    console.log('saving')
     emit('saveNewFieldValue', fieldValue.value)
 }
 function cancelEdit() {
@@ -40,48 +40,30 @@ function cancelEdit() {
 </script>
 
 <template>
-    <div 
-        class="fieldBox flex gap10 alignCenter justifyBetween"
-        :class="{ 'active': editing }"
-    >
-        <input 
-            ref="fieldRef"
-            :id="id"
-            class="font-text -big theme-textColor-main" 
-            :class="{ 'active': editing }"
-            :type="type"
-            v-model="fieldValue"
-            :readonly="!editing"
-            :disabled="!editing"
-        >
+    <div class="fieldBox flex alignCenter" :class="{ 'active': editing }">
+        <p class="
+                font-text -big theme-textColor-main
+                noSelection
+            ">
+            {{ prefix }}
+        </p>
+
+        <input ref="fieldRef" :id="id" class="font-text -big theme-textColor-main" :class="{ 'active': editing }"
+            :type="type" v-model="fieldValue" :readonly="!editing" :disabled="!editing">
 
         <div class="iconBox flex gap10">
-            <Icon
-                v-if="!editing"
-                @click="editStart"
-                name="edit"
-                class="icon edit pointer"
-            />
+            <Icon v-if="!editing" @click="editStart" name="edit" class="icon edit pointer" />
 
-            <Icon
-                v-if="editing"
-                @click="cancelEdit" 
-                name="close"
-                class="icon close pointer"
-            />
+            <Icon v-if="editing" @click="cancelEdit" name="close" class="icon close pointer" />
 
-            <Icon
-                v-if="editing"
-                @click="handleSaveChanges" 
-                name="checkCircle"
-                class="icon check pointer"
-            />
+            <Icon v-if="editing" @click="handleSaveChanges" name="checkCircle" class="icon check pointer" />
         </div>
     </div>
 </template>
 
 <style scoped>
 .fieldBox{
+    padding: 6px 3px 6px 12px;
     border: 1px solid var( --main-dimmed);
     border-radius: 8px;
 }

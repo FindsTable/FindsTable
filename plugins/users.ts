@@ -74,7 +74,7 @@ async function getByQuery<
             query
         }
     )
-    
+
     return useParseApiResponse<ExpectedUserObject[]>(res)
 }
 

@@ -1,6 +1,6 @@
 <script setup>
 const $users = useNuxtApp().$users
-const { data : users, refresh } = await useAsyncData(
+const { data : users, refresh } = useAsyncData(
     'users',
     async () => {
         const res = await $users.getByQuery({
@@ -17,7 +17,9 @@ const { data : users, refresh } = await useAsyncData(
                 }
             }
         })
-        return res.data 
+        if(res?.data) {
+            return res.data 
+        }
     }
 )
 definePageMeta({
@@ -49,5 +51,4 @@ definePageMeta({
             </div>
         </template>
     </NuxtLayout>
-    
 </template>

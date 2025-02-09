@@ -32,7 +32,7 @@ export default defineEventHandler(async (
         })
     }
 
-    const userSuccesfullyUpdated = await updateUserEmailVerifiedAndUserRole(user.id)
+    const userSuccesfullyUpdated = await updateUser(user.id)
 
     if(!userSuccesfullyUpdated) {
         return newResponse({
@@ -108,15 +108,26 @@ function tokensAreValid(
 }
 
 type UpdatedUser = {
-    // based on the query in the updateUserEmailVerifiedAndUserRole function
+    // based on the query in the updateUser function
     id: string;
     email: string;
     email_verified: boolean;
     role: string;
+    badgeRecord: {
+        firstBeliever: string;
+        betaTester: string;
+        user: string;
+    };
+    activityRecord: {
+        user: string;
+    };
+    personalDataRecord: {
+        user: string;
+    }
 } | undefined;
 
 
-async function updateUserEmailVerifiedAndUserRole(
+async function updateUser(
     userId: string
 ): Promise<'success' | undefined> {
 
@@ -126,6 +137,19 @@ async function updateUserEmailVerifiedAndUserRole(
         body: {
             email_verified: true,
             role: useRuntimeConfig().USER_ROLE_ID,
+            badgeRecord: {
+                firstBeliever:  "level1",
+                betaTester: "level1",
+                user: userId
+            },
+            activityRecord: {
+                user: userId
+            },
+            personalDataRecord: [
+                {
+                    user: userId
+                }
+            ]
         },
         query: {
             fields: 'id,email,email_verified,role',
@@ -143,6 +167,6 @@ async function updateUserEmailVerifiedAndUserRole(
     ) {
         return 'success'
     }
-    console.log('Failed to update user in /auth/verify-email.post.ts', res);
+    console.error('Failed to update user in /auth/verify-email.post.ts', res);
     return
 }

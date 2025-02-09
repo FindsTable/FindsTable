@@ -6,7 +6,7 @@ export default defineNuxtPlugin(() => {
             auth: {
                 createNewUser,
                 loginWithEmailAndPassword,
-                GetUserDataWithAccessToken,
+                getUserDataWithAccessToken,
                 refreshTokens,
                 ativateAccessTokenAutoRefresh,
                 logout,
@@ -82,7 +82,7 @@ async function loginWithEmailAndPassword(
     return useParseApiResponse(res)
 }
 
-async function GetUserDataWithAccessToken(token: string)
+async function getUserDataWithAccessToken(token: string)
 :Promise<ParsedApiResponse<ParsedAccessToken>> {
     const res = await use$Fetch<{
         id: string,
@@ -111,9 +111,6 @@ async function GetUserDataWithAccessToken(token: string)
     }
     if(res.data.patreon_account) {
         res.data.patreon_account = res.data.patreon_account[0] //extract patreon account from array. O2M field
-    }
-    if (res.data.personalDataRecord) {
-        res.data.personalDataRecord = res.data.personalDataRecord[0]
     }
 
     return useParseApiResponse(res)

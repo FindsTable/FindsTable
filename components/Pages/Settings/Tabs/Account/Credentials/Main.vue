@@ -25,8 +25,9 @@ const me = useUserState()
                 <BasicInfoField 
                     :fieldData="{
                         key: 'username',
-                        value: me.username
+                        value: me.username.slice(1)
                     }"
+                    prefix="@"
                 />
 
                 <BasicInfoField 

@@ -27,7 +27,7 @@ const appState = useAppState()
                         </slot>
                     </nav>
 
-                    <main class="overflowScroll flex column h100 marTop20">
+                    <main class="overflowScroll -scrollY flex column h100 marTop20">
                         <TH1>
                             <slot name="title">
 
@@ -65,6 +65,7 @@ const appState = useAppState()
 .scrollContentMinHeight {
     height: max(50vh, auto);
 }
+
 .contentWidth {
     width: min(780px, 100%);
     margin: auto;

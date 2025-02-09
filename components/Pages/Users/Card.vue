@@ -20,7 +20,7 @@ function parseAvatarSrc(avatarObj) {
 </script>
 
 <template>
-    <div class="container flex">
+    <div class="container flex" v-if="user">
         <NuxtLink :to="`/users/${user.id}`" class="card flex column alignStart gap20 pointer">
             <div class="flex gap20">
                 <div>
@@ -49,7 +49,7 @@ function parseAvatarSrc(avatarObj) {
                 </div>
             </div>
 
-            <div class="badges">
+            <div class="badges" v-if="user.badgeRecord">
                 <PagesUsersBadges :badgeRecord="user.badgeRecord" />
             </div>
 

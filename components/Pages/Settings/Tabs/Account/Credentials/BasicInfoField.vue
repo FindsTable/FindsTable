@@ -11,7 +11,8 @@ const props = defineProps({
     fieldData: {
         key: String,
         value: String
-    }
+    },
+    prefix: String
 })
 
 const fieldId = computed( () => {
@@ -25,12 +26,9 @@ const fieldType = computed(() => {
 const fieldRef = useTemplateRef('field') // to toggle the editing state
 
 async function saveChanges(newValue) {
-    console.log({
-        [props.fieldData.key]: newValue
-    })
     const res = await useNuxtApp().$users.updateMe({
         body: {
-            [props.fieldData.key]: newValue
+            [props.fieldData.key]: props.prefix ? `${props.prefix}${newValue}` : newValue
         },
         query: {
             fields: `${props.fieldData.key}`
@@ -60,6 +58,7 @@ async function saveChanges(newValue) {
             :type="fieldType"
             :originalValue="fieldData.value"
             :id="fieldId"
+            :prefix="prefix"
             @saveNewFieldValue="saveChanges"
         />
     </div>

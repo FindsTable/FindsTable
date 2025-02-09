@@ -50,7 +50,10 @@ async function handleNewComment() {
                     theme-surface-2 font-text -semibold
                     grow    
                 "
-                :class="[newThought ? 'active' : '']"
+                :class="[
+                    newThought ? 'active' : '',
+                    newThought ? 'overflowScroll -scrollY' : 'overflowHidden'
+                ]"
                 placeholder="What's going on ?"
             >
 

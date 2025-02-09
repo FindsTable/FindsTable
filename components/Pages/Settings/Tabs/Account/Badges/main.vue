@@ -12,7 +12,7 @@ const userContent = useUserContent()
 
 const selectingBadge = ref('')
 
-const { data : allOwnedBadges } = await useAsyncData(
+const { data : allOwnedBadges } = useAsyncData(
     'allBadges',
     async () => {
         const res = await useNuxtApp().$items.getByQuery({
@@ -23,7 +23,7 @@ const { data : allOwnedBadges } = await useAsyncData(
         })
 
         const ownedBadges = res.data.filter((badge) => userContent.value.badgeRecord[badge.key])
-
+        
         return ownedBadges
     }
 )

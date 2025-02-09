@@ -57,16 +57,18 @@ const formIsValid = computed(() => {
             passwordsAreIdentical.value
     }
 })
+const isPending = ref(false)
 
 async function handleSubmit() {
-    appState.value.pending = true
+    if(isPending.value) return
+
+    isPending.value = true
     await submitMethods[formType.value]()
-    appState.value.pending = false
+    isPending.value = false
 }
 
 const submitMethods = {
     login: async () => {
-
         const loginSuccess = await useLoginFlow(
             'emailAndPassword',
             {
@@ -85,11 +87,9 @@ const submitMethods = {
             })
             // navigateTo('/home/thoughts')
             navigateTo(useAppConfig().welcomeUrl)
-
         }
     },
     signup:  async () => {
-        
         const res = await useHandleSignup({
             invitationCode: invitationCode.value,
             username: username.value.input, 
@@ -97,7 +97,7 @@ const submitMethods = {
             password: password.value,
             passwordConfirmation: passwordConfirmation.value
         })
-        console.log('submitting', res)
+
         if(res.feedback) {
             console.log(res.feedback)
         }
@@ -188,8 +188,8 @@ const submitMethods = {
                 comp-button 
                 comp-button -filled
             "
-            :class="[ appState.pending ?  'pending' : '']"
-            :disabled="!formIsValid" 
+            :class="[ isPending ?  'pending' : '']"
+            :disabled="!formIsValid || isPending" 
         >
             {{ t('forms.buttons.submit') }}
             <UiButtonPendingOverlay />

@@ -21,7 +21,7 @@ const { data : user } = await useAsyncData(
                 }
             }
         })
-        res.data.personalDataRecord = res.data.personalDataRecord[0]
+
         return res.data
     }
 )
