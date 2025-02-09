@@ -48,8 +48,6 @@ const appState = useAppState()
 
                             </slot>
                         </div>
-
-                        <ArchitectureFooter class="marTop50" />
                     </main>
                 </div>
             </div>
@@ -68,7 +66,6 @@ const appState = useAppState()
 
 .contentWidth {
     width: min(780px, 100%);
-    margin: auto;
 }
 .sideBarBox {
     width: 200px;

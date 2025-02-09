@@ -4,7 +4,7 @@ const { t } = useI18n();
 const user = useUserState().value
 
 definePageMeta({
-    title: 'Legal notice',
+    title: 'Cookies',
     middleware: 'public-route',
 })
 
@@ -13,7 +13,7 @@ definePageMeta({
 <template>
     <NuxtLayout :name="layout">
         <TH1>
-            {{ t('page.legalNotice.title') }}
+            Cookie policy
         </TH1>
     </NuxtLayout>
 </template>

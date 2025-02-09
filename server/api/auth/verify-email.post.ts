@@ -32,7 +32,7 @@ export default defineEventHandler(async (
         })
     }
 
-    const userSuccesfullyUpdated = await updateUser(user.id)
+    const userSuccesfullyUpdated = await updateUser(user)
 
     if(!userSuccesfullyUpdated) {
         return newResponse({
@@ -41,10 +41,6 @@ export default defineEventHandler(async (
             statusText: 'user not updated'
         })
     }
-
-    const newRecord = await setNewBadgeRecord(user.id)
-
-    console.log("new badge record created :", newRecord)
 
     return newResponse({
         ok: true,
@@ -128,11 +124,11 @@ type UpdatedUser = {
 
 
 async function updateUser(
-    userId: string
+    user: any
 ): Promise<'success' | undefined> {
 
     const res = await updateUserById<any>({
-        id: userId,
+        id: user.id,
         auth: 'app',
         body: {
             email_verified: true,
@@ -140,16 +136,20 @@ async function updateUser(
             badgeRecord: {
                 firstBeliever:  "level1",
                 betaTester: "level1",
-                user: userId
+                user: user.id
             },
             activityRecord: {
-                user: userId
+                user: user.id
             },
-            personalDataRecord: [
-                {
-                    user: userId
+            personalDataRecord: {
+                user: user.id,
+                email: {
+                    key: "email",
+                    value: user.email,
+                    user: user.id,
+                    public: false
                 }
-            ]
+            }
         },
         query: {
             fields: 'id,email,email_verified,role',

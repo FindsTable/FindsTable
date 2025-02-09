@@ -1,21 +1,18 @@
 <script setup>
-import { WidgetsFullScreenMain as FullScreen } from '#components';
+import { ArchitectureSideBarLegalLinks, WidgetsFullScreenMain as FullScreen } from '#components';
 
 </script>
 
 <template>
 
     <div class="sideBar theme-surface-1 full flex column justifyBetween">
-        <NuxtLink 
-            :to="useAppConfig().welcomeUrl"
-            class="
+        <NuxtLink :to="useAppConfig().welcomeUrl" class="
                 font-findsTable-display
                 font-mod-small
                 theme-titleColor-main
                 pointer
                 flex alignCenter gap10
-            "
-        >
+            ">
 
             <Icon name="home" size="22px" />
 
@@ -27,8 +24,6 @@ import { WidgetsFullScreenMain as FullScreen } from '#components';
         <ArchitectureSideBarLinksMain />
 
         <div class="flex column">
-            <ArchitectureSideBarAccountCard />
-
             <div class="optionBar flex alignCenter">
                 <WidgetsLogout />
 
@@ -38,6 +33,10 @@ import { WidgetsFullScreenMain as FullScreen } from '#components';
 
                 <FullScreen />
             </div>
+
+            <ArchitectureSideBarAccountCard />
+
+            <ArchitectureSideBarLegalLinks />
         </div>
     </div>
 </template>
