@@ -75,6 +75,17 @@
                         },
                         "privacy": {
                             "title": "Confidentialité"
+                        },
+                        "dangerZone": {
+                            "title": "Zone de danger",
+                            "sections": {
+                                "unsubscribe": {
+                                    "title": "Supprimer votre compte",
+                                    "warning": "SI vous supprimez votre compte, toutes vos données seront supprimées.",
+                                    "instructions": "Taper le texte suivant : ",
+                                    "devNote": "Pour l'instant, en supprimant un compte, toutes les données sont supprimées. Plus tard, le compte sera d'abord mis en pause, psui supprimé au bout d'un mois. "
+                                }
+                            }
                         }
                     }
                 },

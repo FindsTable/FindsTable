@@ -75,6 +75,17 @@
                         },
                         "privacy": {
                             "title": "Privacy"
+                        },
+                        "dangerZone": {
+                            "title": "Danger zone",
+                            "sections": {
+                                "unsubscribe": {
+                                    "title": "Delete your account",
+                                    "warning": "If you delete your account, all your content and informations will be permanently deleted.",
+                                    "instructions": "Type the following text : ",
+                                    "devNote": "For now, when deleting an account, all data is immediately removed. Later, the account will first be suspended and then deleted after one month."
+                                }
+                            }
                         }
                     }
                 },

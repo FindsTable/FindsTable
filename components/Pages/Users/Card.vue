@@ -12,7 +12,6 @@ const props = defineProps({
 
 function parseAvatarSrc(avatarObj) {
     if (avatarObj) {
-        console.log(avatarObj)
         return `/api/assets/${avatarObj.image}`
     }
     return undefined

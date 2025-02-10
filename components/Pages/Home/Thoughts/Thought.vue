@@ -76,4 +76,8 @@ function updateNewCommentsCount(increment) {
     padding: 16px;
     border-radius: 10px;
 }
+.content {
+  white-space: pre-wrap;
+}
+
 </style>

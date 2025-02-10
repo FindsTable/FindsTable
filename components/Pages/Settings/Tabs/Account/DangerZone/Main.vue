@@ -30,7 +30,7 @@ async function unsubscribe() {
             <div class="flex alignCenter gap10">
                 <Icon name="warning" />
                 <span>
-                    Danger zone
+                    {{ t('page.settings.tabs.account.sections.dangerZone.title') }}
                 </span>
                 </div>
 
@@ -39,16 +39,16 @@ async function unsubscribe() {
         <template #content>
             <form>
                 <p class="font-pageLead marTop20">
-                    Delete your account
+                    {{ t('page.settings.tabs.account.sections.dangerZone.sections.unsubscribe.title') }}
                 </p>
 
                 <div class="flex column gap30 marTop10">
-                    If you delete your account, all your content and informations will be permanently deleted.
+                    {{ t('page.settings.tabs.account.sections.dangerZone.sections.unsubscribe.warning') }}
                 </div>
 
                 <p class="font-text -main marTop20">
                     <span>
-                        Type the following text :
+                        {{ t('page.settings.tabs.account.sections.dangerZone.sections.unsubscribe.instructions') }}
                     </span>
 
                     <span class="-bold">
@@ -68,8 +68,7 @@ async function unsubscribe() {
                 />
 
                 <WidgetsDevToolsNoteToBetaUsers>
-                    Pour l'instant, en supprimant un compte, toutes les données sont supprimées.
-                    Plus tard, le compte sera d'abord mis en pause, psui supprimé au bout d'un mois.
+                    {{ t('page.settings.tabs.account.sections.dangerZone.sections.unsubscribe.devNote') }}
                 </WidgetsDevToolsNoteToBetaUsers>
 
                 <button class="
