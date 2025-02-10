@@ -14,7 +14,8 @@ const { data :  thoughts, refresh } = await useAsyncData(
                             _limit: 1
                         }
                     }
-                }
+                },
+                sort: "-date_created"
             }
         })
         if(res?.data) {
