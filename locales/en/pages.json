@@ -48,6 +48,7 @@
                             "email": "Email",
                             "firstName": "First name",
                             "lastName": "Last name",
+                            "country": "Country",
                             "personalDataIntroText": "Configure the informations the other users can see.",
                             "basicInfoIntroText": "Basic account informations seen by all users."
                         },

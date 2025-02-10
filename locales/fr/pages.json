@@ -48,6 +48,7 @@
                             "email": "Courriel",
                             "firstName": "Prénom",
                             "lastName": "Nom",
+                            "country": "Pays",
                             "personalDataIntroText": "Configurez les infos que les autres utilisateurs peuvent voir.",
                             "basicInfoIntroText": "Information de base de votre compte, visible de tous."
                         },

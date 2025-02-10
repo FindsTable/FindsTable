@@ -36,7 +36,7 @@ onMounted(() => {
 })
 
 const followers = computed(() => {
-    if(!follows.value) return null
+    if(!follows?.value) return 0
 
     const f = follows.value.filter(f => f.followed === props.userId)
 
@@ -44,7 +44,7 @@ const followers = computed(() => {
 })
 
 const followings = computed(() => {
-    if (!follows.value) return null
+    if (!follows?.value ) return 0
 
     const f = follows.value.filter(f => f.follower === props.userId)
 
@@ -54,7 +54,7 @@ const followings = computed(() => {
 
 <template>
     <div class="flex gap20">
-        <div class="" v-if="followers">
+        <div class="flex gap5" >
             <p>
                 {{ followers }}
             </p>
@@ -64,7 +64,7 @@ const followings = computed(() => {
             </p>
         </div>
 
-        <div class="" v-if="followings">
+        <div class="flex gap5" >
             <p>
                 {{ followings }}
             </p>

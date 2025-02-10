@@ -46,5 +46,10 @@ type personalDataRecord = {
         id: string,
         value: string,
         public: boolean
+    },
+    country: null | {
+        id: string,
+        value: string,
+        public: boolean
     }
 }

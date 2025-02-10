@@ -53,15 +53,15 @@ const id = ref("3f574675-2c38-4a86-a96e-67218695bbb3")
                     <PagesUsersBadges :badgeRecord="user.badgeRecord" />
                 </div>
 
-                <p v-if="user.personalDataRecord.email.public">
+                <p v-if="user.personalDataRecord.email?.public">
                     {{ user.personalDataRecord.email.value }}
                 </p>
 
-                <p v-if="user.personalDataRecord.firstName.public">
+                <p v-if="user.personalDataRecord.firstName?.public">
                     {{ user.personalDataRecord.firstName.value }}
                 </p>
 
-                <p v-if="user.personalDataRecord.lastName.public">
+                <p v-if="user.personalDataRecord.lastName?.public">
                     {{ user.personalDataRecord.lastName.value }}
                 </p>
             </div>

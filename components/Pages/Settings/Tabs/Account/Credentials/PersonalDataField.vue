@@ -32,7 +32,7 @@ const fieldRef = useTemplateRef('field') // to toggle the editing state
 const isPublic = ref(props.fieldData?.public)
 
 watch(isPublic, async (newValue) => {
-    console.log(isPublic.value)
+
     const res = await useNuxtApp().$items.update({
         collection: 'Personal_data_values',
         id: props.fieldData.id,

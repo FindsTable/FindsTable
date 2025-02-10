@@ -12,6 +12,7 @@ const props = defineProps({
 
 function parseAvatarSrc(avatarObj) {
     if (avatarObj) {
+        console.log(avatarObj)
         return `/api/assets/${avatarObj.image}`
     }
     return undefined
@@ -23,17 +24,10 @@ function parseAvatarSrc(avatarObj) {
     <div class="container flex" v-if="user">
         <NuxtLink :to="`/users/${user.id}`" class="card flex column alignStart gap20 pointer">
             <div class="flex gap20">
-                <div>
-                    <PatreonFrame 
-                        :patreonAccount="user.patreon_account[0]"
-                    >
-                        <template #avatar>
-                            <AvFrame :fileUrl="parseAvatarSrc(user.avatars[0])" />
-                        </template>
-                    </PatreonFrame>
-
+                <div class="">
+                    <AvFrame :fileUrl="`https://admin.findstable.net/assets/${user.avatars[0].image}`" />
                 </div>
-
+                
                 <div class="flex column justifyEnd">
                     <div class="card-header">
                         <h3>{{ user.username }}</h3>

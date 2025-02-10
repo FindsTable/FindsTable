@@ -148,6 +148,24 @@ async function updateUser(
                     value: user.email,
                     user: user.id,
                     public: false
+                },
+                firstName: {
+                    key: "firstName",
+                    value: "",
+                    user: user.id,
+                    public: false
+                },
+                lastNAme: {
+                    key: "lastNAme",
+                    value: "",
+                    user: user.id,
+                    public: false
+                },
+                country: {
+                    key: "country",
+                    value: "",
+                    user: user.id,
+                    public: false
                 }
             }
         },

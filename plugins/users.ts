@@ -7,7 +7,8 @@ export default defineNuxtPlugin(() => {
                 getMe,
                 updateMe,
                 getByQuery,
-                getById
+                getById,
+                deleteById
             }
         },
     }
@@ -98,4 +99,27 @@ async function getById<
     )
 
     return useParseApiResponse<ExpectedUserObject>(res)
+}
+
+async function deleteById(p: {
+    id: String
+    username: String
+    confirmation: String
+}) {
+
+    const res = await use$Fetch<null>(
+        `/api/users/${p.id}`,
+        {
+            method: 'DELETE',
+            headers: {
+                authorization: `Bearer ${useUserState().value.accessToken.value}`
+            },
+            body: {
+                username: p.username,
+                confirmation: p.confirmation
+            }
+        }
+    )
+    
+    return res
 }

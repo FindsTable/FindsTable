@@ -17,7 +17,8 @@ export const useUserState = () => {
             personalDataRecord: {
                 email: null,
                 firstName: null,
-                lastName: null
+                lastName: null,
+                country: null
             },
             patreon_account: {
                 id: '',
@@ -69,6 +70,12 @@ export function useClearUserState() {
             value: '',
             expires_at: 0
         },
+        personalDataRecord: {
+            email: null,
+            firstName: null,
+            lastName: null,
+            country: null
+        },
         patreon_account: {
             id: '',
             first_name: '',
@@ -90,3 +97,9 @@ export function useClearUserState() {
 }
 
 
+const personalDataObject = {
+    value: "",
+    key: "",
+    user: "",
+    id: ""
+}

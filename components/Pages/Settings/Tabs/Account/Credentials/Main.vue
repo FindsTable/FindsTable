@@ -8,6 +8,7 @@ import {
 const  { t } = useI18n()
 const me = useUserState()
 
+
 </script>
 
 <template>
@@ -52,15 +53,19 @@ const me = useUserState()
 
             <div class="flex column gap30 marTop20">
                 <PersonalDataField 
-                    :fieldData="me.personalDataRecord.email || ''"
+                    :fieldData="me.personalDataRecord.email"
                 />
 
                 <PersonalDataField 
-                    :fieldData="me.personalDataRecord.firstName || ''"
+                    :fieldData="me.personalDataRecord.firstName"
                 />
 
                 <PersonalDataField 
-                    :fieldData="me.personalDataRecord.lastName || ''"
+                    :fieldData="me.personalDataRecord.lastName"
+                />
+
+                <PersonalDataField 
+                    :fieldData="me.personalDataRecord.country"
                 />
             </div>
         </template>

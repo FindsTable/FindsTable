@@ -84,6 +84,19 @@ async function loginWithEmailAndPassword(
 
 async function getUserDataWithAccessToken(token: string)
 :Promise<ParsedApiResponse<ParsedAccessToken>> {
+    const fields = [
+        "id",
+        "username",
+        "displayName",
+        "patreon_account",
+        "patreon_account.*",
+        "personalDataRecord.id",
+        "personalDataRecord.email.*",
+        "personalDataRecord.firstName.*",
+        "personalDataRecord.lastName.*",
+        "personalDataRecord.country.*"
+    ]
+
     const res = await use$Fetch<{
         id: string,
         username: string,
@@ -97,7 +110,7 @@ async function getUserDataWithAccessToken(token: string)
                 'authorization': 'Bearer ' + token,
             },
             query: {
-                fields: 'id,username,displayName,patreon_account,patreon_account.*,personalDataRecord.id,personalDataRecord.email.*,personalDataRecord.firstName.*,personalDataRecord.lastName.*',
+                fields: fields.join(',')
             }
         }
     )
@@ -194,4 +207,20 @@ async function destroyCookie(name: string) {
             statusText: 'Server error'
         })
     }
+}
+
+const getUserDataFields = () => {
+
+    const fields = [
+        "id", 
+        "username", 
+        "displayName", 
+        "patreon_account", 
+        "patreon_account.*", 
+        "personalDataRecord.id", 
+        "personalDataRecord.email.*", 
+        "personalDataRecord.firstName.*", 
+        "personalDataRecord.lastName.*",
+        "personalDataRecord.country.*"
+    ]
 }
