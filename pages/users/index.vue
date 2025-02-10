@@ -4,7 +4,7 @@ const { data : users, refresh } = useAsyncData(
     'users',
     async () => {
         const res = await $users.getByQuery({
-            fields: 'id,username,avatars,avatars.*,badgeRecord.*,badgeRecord.slot1.*,badgeRecord.slot2.*,badgeRecord.slot3.*,patreon_account.tier.*,patreon_account.tier.translations.*,personalDataRecord.*,personalDataRecord.email.*,personalDataRecord.firstName.*,personalDataRecord.lastName.*',
+            fields: 'id,username,displayName,avatars,avatars.*,badgeRecord.*,badgeRecord.slot1.*,badgeRecord.slot2.*,badgeRecord.slot3.*,patreon_account.tier.*,patreon_account.tier.translations.*,personalDataRecord.*,personalDataRecord.email.*,personalDataRecord.firstName.*,personalDataRecord.lastName.*',
             filter: {
                 id: {
                     _neq: useUserState().value.id

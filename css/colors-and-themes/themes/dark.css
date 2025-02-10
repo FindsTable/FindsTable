@@ -6,12 +6,11 @@
     --h2Color-main: var(--tone-zinc-20);
     --h3Color-main: var(--tone-zinc-20);
 
-    --textColor-main: var(--tone-zinc-10);
-    --textColor-negative: var(--tone-zinc-90);
-
     --titleColor-main: var(--tone-zinc-30);
     --textColor-main: var(--tone-zinc-10);
     --textColor-negative: var(--tone-zinc-90);
+
+    --textColor-dimmed: var(--tone-zinc-40);
 
     /* Background af app */
     --backdropColor: var(--tone-zinc-90);

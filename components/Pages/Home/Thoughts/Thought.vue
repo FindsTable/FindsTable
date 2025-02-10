@@ -37,7 +37,7 @@ function updateNewCommentsCount(increment) {
             <ArchitectureCardsUserMini 
                 :userId="thought.user_created.id"
                 :avatarId="thought.user_created.avatars[0]?.image"
-                :username="thought.user_created.displayName"
+                :username="thought.user_created.displayName || thought.user_created.username"
                 :date="useParseDate(thought.date_created)"
             />
 

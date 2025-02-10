@@ -10,6 +10,31 @@
                     "title": "Set up your follow preferences"
                 }
             }
+        },
+        "content": {
+            "thoughts": {
+                "thought": {
+                    "singular": "Thought",
+                    "plural": "Thoughts"
+                },
+                "newThought": {
+                    "placeHolder": "What's up ? ",
+                    "publishButton": "Publish"
+                }
+            }
+        },
+        "comments": {
+            "comment": {
+                "singular": "Comment",
+                "plural": "Comments"
+            },
+            "placeHolder": "Tell us what you think ..."
+        },
+        "likes": {
+            "like": {
+                "singular": "Like",
+                "plural": "Likes"
+            }
         }
     }
 }

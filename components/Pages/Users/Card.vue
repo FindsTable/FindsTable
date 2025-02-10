@@ -26,10 +26,15 @@ function parseAvatarSrc(avatarObj) {
                 <div class="">
                     <AvFrame :fileUrl="`https://admin.findstable.net/assets/${user.avatars[0].image}`" />
                 </div>
-                
+
                 <div class="flex column justifyEnd">
                     <div class="card-header">
-                        <h3>{{ user.username }}</h3>
+                        <h3>{{ user.displayName }}</h3>
+                        <h3 class="
+                                font-text -small
+                                theme-textColor-dimmed">
+                            {{ user.username }}
+                        </h3>
                     </div>
 
                     <div class="flex marTop20">

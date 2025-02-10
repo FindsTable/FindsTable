@@ -1,4 +1,5 @@
 <script setup>
+const { t } = useI18n()
 const me = useUserState()
 const props = defineProps({
     itemId: String,
@@ -34,7 +35,7 @@ async function deleteLike() {
         collection: `${props.collection}_likes`,
         id: myLike.value
     })
-    console.log(res)
+
     if (res?.ok) {
         refresh()
     }
@@ -84,14 +85,14 @@ const myLike = computed(() => {
 
         <div class="flex gap20">
             <p v-if="likes">
-                {{ likes.length }} likes
+                {{ likes.length }} {{ t(`activity.likes.like.${likes.length > 1 ? 'plural' : 'singular'}`) }}
             </p>
 
             <button 
                 @click="commentCount ? emit('showComments') : undefined"
                 class="comp-button -text"
             >
-                {{ `${commentCount} comment${commentCount > 1 ? 's' : ''}` }}
+                {{commentCount }} {{ t(`activity.comments.comment.${commentCount > 1 ? 'plural' : 'singular'}`) }}
             </button>
         </div>
     </div>

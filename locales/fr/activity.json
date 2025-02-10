@@ -10,6 +10,31 @@
                     "title": "Configurer vos préférences de suivi"
                 }
             }
+        },
+        "content": {
+            "thoughts": {
+                "thought": {
+                    "singular": "Pensée",
+                    "plural": "Pensées"
+                },
+                "newThought": {
+                    "placeHolder": "Quoi de neuf ? ",
+                    "publishButton": "Publier"
+                }
+            }
+        },
+        "comments": {
+            "comment": {
+                "singular": "Commentaire",
+                "plural": "Commentaires"
+            },
+            "placeHolder": "Qu'en pensez-vous ?"
+        },
+        "likes": {
+            "like": {
+                "singular": "approbations",
+                "plural": "approbations"
+            }
         }
     }
 }

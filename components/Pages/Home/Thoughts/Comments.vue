@@ -16,7 +16,7 @@ const { data: comments, refresh } = useAsyncData(
                         _eq: props.thought.id
                     }
                 },
-                fields: '*,user_created.id,user_created.displayName,user_created.avatars.image',
+                fields: '*,user_created.id,user_created.username,user_created.displayName,user_created.avatars.image',
                 deep: {
                     user_created: {
                         avatars: {
@@ -25,7 +25,7 @@ const { data: comments, refresh } = useAsyncData(
                         }
                     }
                 },
-                sort: '-date_created'
+                sort: 'date_created'
             }
         })
 
@@ -94,7 +94,7 @@ function newContentSaveed(newComment) {
                             :to="`/users/${comment.user_created.id}`"
                             class="pointer font-text -small -bold"
                         >
-                            {{ comment.user_created.displayName }}
+                            {{ comment.user_created.displayName || comment.user_created.username }}
                         </NuxtLink>
 
                         <button 
