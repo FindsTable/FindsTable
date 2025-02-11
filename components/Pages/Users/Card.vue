@@ -41,7 +41,7 @@ function parseAvatarSrc(avatarObj) {
                         <WidgetsFollowButton :user="{
                                 id: user.id,
                                 username: user.username,
-                                avatarUrl: parseAvatarSrc(user.avatar)
+                                avatarUrl: `/api/assets/${user.avatar}`
                             }" />
                     </div>
                 </div>
