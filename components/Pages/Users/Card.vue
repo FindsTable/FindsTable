@@ -24,7 +24,7 @@ function parseAvatarSrc(avatarObj) {
         <NuxtLink :to="`/users/${user.id}`" class="card flex column alignStart gap20 pointer">
             <div class="flex gap20">
                 <div class="">
-                    <AvFrame :fileUrl="`https://admin.findstable.net/assets/${user.avatars[0].image}`" />
+                    <AvFrame :fileId="user.avatar" />
                 </div>
 
                 <div class="flex column justifyEnd">

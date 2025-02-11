@@ -6,13 +6,31 @@ import {
 const $users = useNuxtApp().$users
 const route = useRoute()
 
+const fields = [
+  'id',
+  'username',
+  'displayName',
+  'avatar',
+  'currentAvatar.*',
+  'badgeRecord.*',
+  'badgeRecord.slot1.*',
+  'badgeRecord.slot2.*',
+  'badgeRecord.slot3.*',
+  'patreon_account.tier.*',
+  'patreon_account.tier.translations.*',
+  'personalDataRecord.*',
+  'personalDataRecord.email.*',
+  'personalDataRecord.firstName.*',
+  'personalDataRecord.lastName.*'
+];
+
 const { data : user } = await useAsyncData(
     `user-${route.params.id}`,
     async () => {
         const res = await $users.getById({
             id: route.params.id,
             query: {
-                fields: '*,avatars.*,badgeRecord.*,badgeRecord.slot1.*,badgeRecord.slot2.*,badgeRecord.slot3.*,personalDataRecord.*,personalDataRecord.email.*,personalDataRecord.firstName.*,personalDataRecord.lastName.*',
+                fields: fields.join(','),
                 deep: {
                     avatars: {
                         _sort: "-currentAt",
@@ -47,7 +65,7 @@ const id = ref("3f574675-2c38-4a86-a96e-67218695bbb3")
 
         <template #scrollMain>
             <div class="flex column marTop50">
-                <ArchitectureFramesAvatar v-if="user.avatars.length" :fileUrl="`/api/assets/${user.avatars[0].image}`" />
+                <ArchitectureFramesAvatar v-if="user.avatars.length" :fileId="user.avatar" />
 
                 <div class="flex marTop20">
                     <PagesUsersBadges :badgeRecord="user.badgeRecord" />
