@@ -5,12 +5,21 @@ const requestLimit = ref(5)
 const thoughts = ref([])
 const newThoughts = ref([])
 
+const fields = [
+    '*',
+    'user_created.avatar',
+    'user_created.id',
+    'user_created.displayName',
+    'user_created.username',
+    'date_created'
+]
+
 async function getThoughts() {
 
     const res = await useNuxtApp().$items.getByQuery({
         collection: 'Thoughts',
         query: {
-            fields: '*,user_created.avatars.*,user_created.id,user_created.displayName,user_created.username,date_created',
+            fields: fields.join(','),
             deep: {
                 user_created: {
                     avatars: {

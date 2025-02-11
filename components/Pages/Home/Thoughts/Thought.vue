@@ -36,7 +36,7 @@ function updateNewCommentsCount(increment) {
         <div class="flex justifyBetween">
             <ArchitectureCardsUserMini 
                 :userId="thought.user_created.id"
-                :avatarId="thought.user_created.avatars[0]?.image"
+                :avatarId="thought.user_created.avatar"
                 :username="thought.user_created.displayName || thought.user_created.username"
                 :date="useParseDate(thought.date_created)"
             />

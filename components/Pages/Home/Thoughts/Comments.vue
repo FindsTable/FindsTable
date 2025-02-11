@@ -5,6 +5,16 @@ const props = defineProps({
 })
 const emit = defineEmits(['closeComments', 'updateNewCommentsCount'])
 
+const fields = [
+    'id',
+    'content',
+    'date_created',
+    'user_created.id',
+    'user_created.username',
+    'user_created.displayName',
+    'user_created.avatar'
+]
+
 const { data: comments, refresh } = useAsyncData(
     `${props.thought.id}-comments`,
     async () => {
@@ -16,7 +26,7 @@ const { data: comments, refresh } = useAsyncData(
                         _eq: props.thought.id
                     }
                 },
-                fields: '*,user_created.id,user_created.username,user_created.displayName,user_created.avatars.image',
+                fields: fields.join(','),
                 deep: {
                     user_created: {
                         avatars: {
@@ -76,7 +86,7 @@ function newContentSaveed(newComment) {
                             class="pointer"    
                         >
                             <ArchitectureFramesAvatar 
-                                :fileId="comment.user_created.avatars[0].image"
+                                :fileId="comment.user_created.avatar"
                                 width="24px"
                                 round
                             />
