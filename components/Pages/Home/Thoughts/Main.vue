@@ -74,7 +74,7 @@ onMounted(() => {
         </div>
     </div>
 
-    <div v-if="thoughts">
+    <div v-if="thoughts" class="arch_scrollBottonPadding">
         <div
             v-for="thought in thoughts" :key="thought.id" 
         >

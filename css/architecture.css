@@ -70,3 +70,8 @@ Scroll bars
     background-color: rgba(169, 169, 169, 0.267);
     outline: 1px solid rgb(144, 131, 112);
 }
+
+
+.arch_scrollBottonPadding {
+    padding-bottom: 30vh;
+} 

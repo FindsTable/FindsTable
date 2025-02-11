@@ -6,12 +6,13 @@ const props = defineProps({
     date: String
 })
 </script>
+
 <template>
     <NuxtLink :to="`/users/${userId}`" class="flex alignEnd gap20 pointer">
         <ArchitectureFramesAvatar :fileId="avatarId" round width="40px" />
 
         <p class="flex column">
-            <span class="font-text -big -lessBold">
+            <span class="font-text -main -bold">
                 {{ username }}
             </span>
 
