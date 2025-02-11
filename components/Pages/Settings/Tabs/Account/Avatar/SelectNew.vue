@@ -60,6 +60,7 @@ async function saveChanges() {
         if(!croppedFile.value) return
     }
 
+    // this could probably updte the user object directly ?
     const res = await $itemsWithFile.create<NewFileObject>({
         collection: 'Avatars',
         item: {
@@ -71,27 +72,22 @@ async function saveChanges() {
                 fields: 'id,user,currentAt,image'
             }
         },
+        user: user.value.id,
         file: croppedFile.value,
-        user: user.value.id
     })
 
     if(res.data?.image) {
-        await $items.update<{
-            currentAt: number
-            image: string
-        }>({
-            collection: 'Avatars',
-            id: res.data.id,
-            body: {
-                currentAt: Date.now()
-            },
-            query: {
-                fields: 'currentAt,image'
-            }
-        })
-
         user.value.avatar = res.data.image;
         emit('refreshAvatarCollection')
+
+        const meRes = await useNuxtApp().$users.updateMe({
+            body: {
+                avatar: res.data.image
+            },
+            query: {
+                fields: 'avatar,currentAvatar'
+            }
+        })
     }
 }
 

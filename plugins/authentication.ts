@@ -88,6 +88,7 @@ async function getUserDataWithAccessToken(token: string)
         "id",
         "username",
         "displayName",
+        "avatar",
         "patreon_account",
         "patreon_account.*",
         "personalDataRecord.id",

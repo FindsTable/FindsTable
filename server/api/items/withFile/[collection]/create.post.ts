@@ -37,7 +37,7 @@ export default defineEventHandler(async <
 
     const itemRes = await createItem<ExpectedItemObject>({
         collection: collection,
-        auth: 'app',
+        auth: bearerToken,
         body: {
             ...item!.body,
             image: fileRes.data.id

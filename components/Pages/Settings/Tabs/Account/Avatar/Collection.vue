@@ -27,21 +27,24 @@ async function deleteSelectedAvatar() {
 }
 
 async function setAsCurrentAvatar() {
-    if(!selectedAvatar.value) return
-
-    const res = await $items.update({
-        collection: 'Avatars',
-        id: selectedAvatar.value.id,
+    if(!selectedAvatar.value) return    
+    
+    const meRes = await useNuxtApp().$users.updateMe({
         body: {
-            currentAt: Date.now()
+            avatar: selectedAvatar.value.image,
+            currentAvatar: {
+                id: selectedAvatar.value.id,
+                currentAt: Date.now()
+            }
         },
         query: {
-            fields: 'currentAt,image'
+            fields: 'avatar,currentAvatar.*'
         }
     })
-
-    if(res.ok && res.data) {
-        user.value.avatar = res.data.image
+    console.log(meRes)
+    if (meRes.ok && meRes.data) {
+        console.log(meRes.data.currentAvatar)
+        user.value.avatar = meRes.data.currentAvatar.image
 
         emit('refreshAvatarCollection')
         useToaster('show', {
@@ -82,7 +85,7 @@ function handleSelectAvatar(av) {
     <div class="flex marTop20" v-if="avatars">
         <button 
             @click="setAsCurrentAvatar"
-            :disabled="!selectedAvatar"
+            :disabled="!selectedAvatar || selectedAvatar.id === avatars[0].id"
             class="comp-button -text font-text-main"
             :class="[]"
             
@@ -104,10 +107,13 @@ function handleSelectAvatar(av) {
 .overlay {
     background-color: #000000b3;
 }
-.selected {
-    outline: 2px solid var(--tone-mango-50);
-}
+
 .avatarFrame:first-child {
     outline: 4px solid rgb(55, 119, 55);
+}
+
+.avatarFrame:first-child.selected,
+.selected {
+    outline: 2px solid var(--tone-mango-50);
 }
 </style>

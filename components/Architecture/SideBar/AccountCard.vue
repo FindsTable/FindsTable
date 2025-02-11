@@ -17,7 +17,7 @@ const currentAvatar = computed(() => {
                 card block pointer relative">
             <ArchitectureTexturePaper file="/textures/paper-150x100.jpg">
                 <div class="content centered">
-                    <ArchitectureFramesAvatar :fileId="currentAvatar" round width="50px" />
+                    <ArchitectureFramesAvatar :fileId="useUserState().value.avatar" round width="50px" />
 
                     <p class="centered font-text -big">
                         {{ user.username }}

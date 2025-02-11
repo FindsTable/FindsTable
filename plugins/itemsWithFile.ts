@@ -19,7 +19,6 @@ async function create<
         },
         file: File,
         user: string,
-        owner: string,
         query?: any
     }
 ) : 
@@ -27,8 +26,7 @@ async function create<
 {
     const formData = new FormData();
     formData.append('item', JSON.stringify(p.item));
-    formData.append('user', p.user.toString()); // deprecated, rep^laces by owner O2M field
-    formData.append('owner', p.user.toString());
+    formData.append('user', p.user.toString());
     formData.append('file', p.file);
 
     const res = await $fetch<any>(
