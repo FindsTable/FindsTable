@@ -15,6 +15,10 @@ const $items = useNuxtApp().$items
 const user = useUserState()
 
 const route = useRoute()
+watch(() => route.query.content, (newVal) => {
+    console.log('watching')
+    selectedTab.value = newVal
+})
 
 const selectedTab = ref(route.query.content)
 
@@ -45,7 +49,9 @@ const pageTabs = [
         icon: "article"
     }
 ]
-
+onMounted(() => {
+    selectedTab.value = route.query.content
+})
 </script>
 
 <template>

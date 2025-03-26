@@ -3,7 +3,7 @@ import iconModuleConfig from '@/config/modules/icon.config.js'
 type ColorMode = string | undefined | null;
 
 export default defineAppConfig({
-    welcomeUrl: '/home?content=thoughts',
+    welcomeUrl: '/home?content=finds',
     device: {
         hasCamera: false, //set in lazyAppConfig plugin
     },

@@ -6,7 +6,7 @@ const finds = ref([])
 
 const fields = [
     '*',
-    'user_created.avatar',
+    'user_created.avatars.*',
     'user_created.id',
     'user_created.displayName',
     'user_created.username',
@@ -33,6 +33,7 @@ async function getFinds() {
             limit: requestLimit.value
         }
     })
+    console.log(res.data)
 
     if (res?.data) {
         finds.value = [
@@ -58,13 +59,14 @@ function navigateToItemPage(find) {
     
 }
 
-onMounted(() => {
+onMounted(async () => {
 
     if(cache.value.finds) {
         finds.value = cache.value.finds
         return
     }
-    getFinds()
+    console.log('getting all the finds')
+    await getFinds()
 })
 
 </script>

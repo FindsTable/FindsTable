@@ -1,5 +1,6 @@
 <script setup>
 const $users = useNuxtApp().$users
+const content = useContent()
 
 const fields = [
   'id',
@@ -19,28 +20,40 @@ const fields = [
   'personalDataRecord.lastName.*'
 ];
 
-const { data : users, refresh } = useAsyncData(
-    'users',
-    async () => {
-        const res = await $users.getByQuery({
-            fields: fields.join(','),
-            filter: {
-                id: {
-                    _neq: useUserState().value.id
-                }
-            },
-            deep: {
-                avatars: {
+const users = ref(null)
+
+async function getUsers() {
+    const res = await $users.getByQuery({
+        fields: fields.join(','),
+        filter: {
+            id: {
+                _neq: useUserState().value.id
+            }
+        },
+        deep: {
+            avatars: {
                 _sort: "-currentAt",
                 _limit: 1
-                }
             }
-        })
-        if(res?.data) {
-            return res.data 
         }
+    })
+    
+    if (res?.data) {
+        return res.data
     }
-)
+}
+
+onMounted(async () => {
+    if (content.value.users.length) {
+        users.value = content.value.users
+        return
+    }
+    
+    users.value = await getUsers()
+    content.value.users = users.value
+})
+
+
 definePageMeta({
     title: 'Users',
     description: 'Search for users in our community.',

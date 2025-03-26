@@ -4,7 +4,8 @@ import { ArchitectureSideBarLinksButton as Button } from '#components'
 const links = [
     { textPath: 'Users', to: '/users', icon: null },
     { textPath: 'New find', to: '/finds/new', icon: null},
-    { textPath: 'All finds', to: '/finds', icon: null },
+    { textPath: 'All finds', to: '/home?content=finds', icon: null },
+    { textPath: 'Thoughts', to: '/home?content=thoughts', icon: null },
     { textPath: 'Badges', to: '/success-badges', icon: null }
 ]
 </script>
