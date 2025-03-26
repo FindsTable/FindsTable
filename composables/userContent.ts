@@ -5,6 +5,7 @@ export const useUserContent = () => {
         finds: any[]
         badges: any[]
         badgeRecord: undefined | BadgeRecord
+        notifications: any[]
         fetched: {
             avatars: boolean
             finds: boolean
@@ -19,6 +20,7 @@ export const useUserContent = () => {
             finds: [],
             badges: [],
             badgeRecord: undefined,
+            notifications: [],
             fetched: {
                 avatars: false,
                 finds: false,

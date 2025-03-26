@@ -10,13 +10,6 @@ const props = defineProps({
     }
 })
 
-function parseAvatarSrc(avatarObj) {
-    if (avatarObj) {
-        return `/api/assets/${avatarObj.image}`
-    }
-    return undefined
-}
-
 </script>
 
 <template>

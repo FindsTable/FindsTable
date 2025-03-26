@@ -60,7 +60,13 @@ const pageTabs = [
 
         <template #scrollMain>
             <div class="tabContent">
-                <PagesHomeThoughtsMain v-if="selectedTab === 'thoughts'" />
+                <KeepAlive>
+                    <PagesHomeThoughtsMain v-if="selectedTab === 'thoughts'" />
+                </KeepAlive>
+
+                <KeepAlive>
+                    <PagesHomeFindsMain v-if="selectedTab === 'finds'" />
+                </KeepAlive>
             </div>
         </template>
     </NuxtLayout>

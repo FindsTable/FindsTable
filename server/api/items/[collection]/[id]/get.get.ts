@@ -8,7 +8,6 @@ type ItemObject = {
 
 export default defineEventHandler(async (event): Promise<ApiResponse<ItemObject>> => {
     const {
-
         query,
         bearerToken,
         collection,

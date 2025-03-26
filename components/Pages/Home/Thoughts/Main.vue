@@ -1,4 +1,6 @@
 <script setup>
+const content = useContent()
+
 const requestOffset = ref(0)
 const requestLimit = ref(5)
 
@@ -16,6 +18,7 @@ const fields = [
 
 async function getThoughts() {
 
+    console.log('getting thoughts')
     const res = await useNuxtApp().$items.getByQuery({
         collection: 'Thoughts',
         query: {
@@ -39,6 +42,8 @@ async function getThoughts() {
             ...thoughts.value,
             ...res.data
         ]
+
+        content.value.thoughts = thoughts.value
     }
 
 }
@@ -48,6 +53,8 @@ function newThoughtPosted(newThought) {
         ...newThoughts.value,
         newThought
     ]
+
+    content.value.toughts[0].unshift(newThought)
 }
 
 function getNextPage() {
@@ -56,6 +63,10 @@ function getNextPage() {
 }
 
 onMounted(() => {
+    if (content.value.thoughts.length ) {
+        thoughts.value = content.value.thoughts
+        return
+    }
     getThoughts()
 })
 
