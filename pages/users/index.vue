@@ -1,6 +1,6 @@
 <script setup>
 const $users = useNuxtApp().$users
-const content = useContent()
+const cache = useCache()
 
 const fields = [
   'id',
@@ -44,15 +44,14 @@ async function getUsers() {
 }
 
 onMounted(async () => {
-    if (content.value.users.length) {
-        users.value = content.value.users
+    if (useIsCacheDataValid('users')) {
+        users.value = cache.value.users.data
         return
     }
     
     users.value = await getUsers()
-    content.value.users = users.value
+    useSetCacheData('users', users.value)
 })
-
 
 definePageMeta({
     title: 'Users',

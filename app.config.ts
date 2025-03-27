@@ -3,6 +3,8 @@ import iconModuleConfig from '@/config/modules/icon.config.js'
 type ColorMode = string | undefined | null;
 
 export default defineAppConfig({
+    version: "1.0.0",
+    permanentCacheKeys: ['badges'],
     welcomeUrl: '/home?content=finds',
     device: {
         hasCamera: false, //set in lazyAppConfig plugin

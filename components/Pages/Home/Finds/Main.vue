@@ -15,7 +15,6 @@ const fields = [
 ]
 
 async function getFinds() {
-    console.log('getting finds')
     const res = await useNuxtApp().$items.getByQuery({
         collection: 'Finds',
         query: {
@@ -33,40 +32,43 @@ async function getFinds() {
             limit: requestLimit.value
         }
     })
-    console.log(res.data)
 
     if (res?.data) {
-        finds.value = [
-            ...finds.value,
-            ...res.data
-        ]
-
-        cache.value.finds = finds.value
+        return res.data
     }
 }
 
-function getNextPage() {
+async function getNextPage() {
     requestOffset.value += requestLimit.value
-    getFinds()
+    const res = await getFinds()
+
+    finds.value = [
+        ...finds.value,
+        ...res.data
+    ]
+    useSetCacheData('finds', finds.value)
 }
 
 function navigateToItemPage(find) {
     cache.value.itemCache = find
-
-    console.log(cache.value)
 
     navigateTo(`/finds/${find.id}`)
     
 }
 
 onMounted(async () => {
-
-    if(cache.value.finds) {
-        finds.value = cache.value.finds
+    if (useIsCacheDataValid('finds') ) {
+        finds.value = useGetCachedData('finds')
         return
     }
-    console.log('getting all the finds')
-    await getFinds()
+
+    const res = await getFinds()
+
+    finds.value = [
+        ...finds.value,
+        ...res
+    ]
+    useSetCacheData('finds', finds.value)
 })
 
 </script>

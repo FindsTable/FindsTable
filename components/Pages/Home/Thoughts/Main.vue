@@ -1,5 +1,5 @@
 <script setup>
-const content = useContent()
+const cache = useCache()
 
 const requestOffset = ref(0)
 const requestLimit = ref(5)
@@ -17,8 +17,6 @@ const fields = [
 ]
 
 async function getThoughts() {
-
-    console.log('getting thoughts')
     const res = await useNuxtApp().$items.getByQuery({
         collection: 'Thoughts',
         query: {
@@ -38,15 +36,11 @@ async function getThoughts() {
     })
 
     if (res?.data) {
-        thoughts.value = [
-            ...thoughts.value,
-            ...res.data
-        ]
-
-        content.value.thoughts = thoughts.value
+        return res.data
     }
 
 }
+
 function newThoughtPosted(newThought) {
 
     newThoughts.value = [
@@ -54,20 +48,31 @@ function newThoughtPosted(newThought) {
         newThought
     ]
 
-    content.value.toughts[0].unshift(newThought)
+    useSetCacheData('thoughts', thoughts.value)
 }
 
-function getNextPage() {
+async function getNextPage() {
     requestOffset.value+= requestLimit.value
-    getThoughts()
+    const res = await getThoughts()
+    thoughts.value = [
+        ...thoughts.value,
+        ...res
+    ]
+    useSetCacheData('thoughts', thoughts.value)
 }
 
-onMounted(() => {
-    if (content.value.thoughts.length ) {
-        thoughts.value = content.value.thoughts
+onMounted(async () => {
+    if (useIsCacheDataValid('thoughts')) {
+        useGetCachedData('thoughts', thoughts.value)
         return
     }
-    getThoughts()
+
+    const res = await getThoughts()
+    thoughts.value = [
+        ...thoughts.value,
+        ...res
+    ]
+    useSetCacheData('thoughts', thoughts.value)
 })
 
 </script>

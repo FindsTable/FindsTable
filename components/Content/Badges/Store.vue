@@ -1,37 +1,48 @@
 <script setup>
-const { locale } = useI18n()
-
+const cache = useCache()
 const $items = useNuxtApp().$items
-const { data : badges } = useAsyncData(
-    'badgeStore',
-    async () => {
-        const res = await $items.getByQuery({
-            collection: 'Badges',
-            query: {
-                fields: '*,translations.*,translations.Languages_id.code',
-                deep: {
-                    translations: {
-                        _filter: {
-                            Languages_id: {
-                                code: {
-                                    _eq: 'en'
-                                }
+
+const badges = ref(null)
+
+async function getBadges() {
+    const res = await $items.getByQuery({
+        collection: 'Badges',
+        query: {
+            fields: '*,translations.*,translations.Languages_id.code',
+            deep: {
+                translations: {
+                    _filter: {
+                        Languages_id: {
+                            code: {
+                                _eq: 'en'
                             }
                         }
                     }
                 }
             }
-        })
+        }
+    })
 
+    if(res?.data) {
         return res.data
     }
-)
+}
 
 const selectedBadge = ref('')
 
 function handleEmit(badgeKey) {
     selectedBadge.value = badgeKey
 }
+
+onMounted(async () => {
+    if (useIsCacheDataValid('badges')) {
+        badges.value = useGetCachedData('badges')
+        return 
+    }
+        
+    badges.value = await getBadges()
+    useSetCacheData('badges', badges.value)
+})
 
 </script>
 
