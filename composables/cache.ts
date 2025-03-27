@@ -82,17 +82,17 @@ function useSetCacheInLocalStorage(cacheKey: CacheKey, data: any) {
   const ttl = cacheTTL[cacheKey]
   const now = Date.now()
 
-  try {
-    const existing = localStorage.getItem(cacheKey)
-    if (existing) {
-      const parsed: CacheEntry = JSON.parse(existing)
-      const isExpired = now - parsed.timestamp > parsed.ttl
-      if (!isExpired) return
-    }
-  } catch (e) {
-    console.warn(`[useSetCacheInLocalStorage] Corrupted cache for "${cacheKey}"`, e)
-    localStorage.removeItem(cacheKey)
-  }
+//   try {
+//     const existing = localStorage.getItem(cacheKey)
+//     if (existing) {
+//       const parsed: CacheEntry = JSON.parse(existing)
+//       const isExpired = now - parsed.timestamp > parsed.ttl
+//       if (!isExpired) return
+//     }
+//   } catch (e) {
+//     console.warn(`[useSetCacheInLocalStorage] Corrupted cache for "${cacheKey}"`, e)
+//     localStorage.removeItem(cacheKey)
+//   }
 
   const newEntry: CacheEntry = {
     data,
@@ -107,35 +107,34 @@ function useGetCachedData(cacheKey: CacheKey): any | undefined {
   const ttl = cacheTTL[cacheKey]
   const now = Date.now()
 
-  // Try localStorage first
+  const memoryEntry = useCache().value[cacheKey]
+  const memoryIsFresh = now - memoryEntry.timestamp < memoryEntry.ttl
+  const memoryHasData =
+    memoryEntry.data !== undefined &&
+    memoryEntry.data !== null &&
+    (!Array.isArray(memoryEntry.data) || memoryEntry.data.length > 0)
+
+  if (memoryIsFresh && memoryHasData) {
+    return memoryEntry.data
+  }
+
   const raw = localStorage.getItem(cacheKey)
   if (raw) {
     try {
-      const entry: CacheEntry = JSON.parse(raw)
-      const isFresh = now - entry.timestamp < entry.ttl
-      const hasData =
-        entry.data !== undefined &&
-        entry.data !== null &&
-        (!Array.isArray(entry.data) || entry.data.length > 0)
+      const localEntry: CacheEntry = JSON.parse(raw)
+      const localIsFresh = now - localEntry.timestamp < localEntry.ttl
+      const localHasData =
+        localEntry.data !== undefined &&
+        localEntry.data !== null &&
+        (!Array.isArray(localEntry.data) || localEntry.data.length > 0)
 
-      if (isFresh && hasData) {
-        return entry.data
+      if (localIsFresh && localHasData) {
+        useCache().value[cacheKey] = localEntry
+        return localEntry.data
       }
     } catch (e) {
       console.warn(`[useGetCachedData] Failed to parse localStorage for "${cacheKey}"`, e)
     }
-  }
-
-  // Fallback to memory
-  const entry = useCache().value[cacheKey]
-  const isFresh = now - entry.timestamp < ttl
-  const hasData =
-    entry.data !== undefined &&
-    entry.data !== null &&
-    (!Array.isArray(entry.data) || entry.data.length > 0)
-
-  if (isFresh && hasData) {
-    return entry.data
   }
 
   return undefined

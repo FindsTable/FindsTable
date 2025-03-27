@@ -57,8 +57,10 @@ function navigateToItemPage(find) {
 }
 
 onMounted(async () => {
-    if (useIsCacheDataValid('finds') ) {
-        finds.value = useGetCachedData('finds')
+    const cacheData = useGetCachedData('finds')
+
+    if (cacheData) {
+        finds.value = cacheData
         return
     }
 

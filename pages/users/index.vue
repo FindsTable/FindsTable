@@ -44,8 +44,9 @@ async function getUsers() {
 }
 
 onMounted(async () => {
-    if (useIsCacheDataValid('users')) {
-        users.value = cache.value.users.data
+    const cacheData = useGetCachedData('users')
+    if (cacheData) {
+        users.value = cacheData
         return
     }
     

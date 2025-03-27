@@ -35,9 +35,9 @@ function handleEmit(badgeKey) {
 }
 
 onMounted(async () => {
-    if (useIsCacheDataValid('badges')) {
-        badges.value = useGetCachedData('badges')
-        return 
+    const cacheData = useGetCachedData('badges')
+    if(cacheData) {
+        badges.value = cacheData
     }
         
     badges.value = await getBadges()

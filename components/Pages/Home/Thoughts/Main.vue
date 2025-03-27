@@ -17,6 +17,7 @@ const fields = [
 ]
 
 async function getThoughts() {
+    console.log('getting thoughts')
     const res = await useNuxtApp().$items.getByQuery({
         collection: 'Thoughts',
         query: {
@@ -62,8 +63,10 @@ async function getNextPage() {
 }
 
 onMounted(async () => {
-    if (useIsCacheDataValid('thoughts')) {
-        useGetCachedData('thoughts', thoughts.value)
+    const cacheData = useGetCachedData('thoughts', thoughts.value)
+
+    if (cacheData) {
+        thoughts.value = cacheData
         return
     }
 
