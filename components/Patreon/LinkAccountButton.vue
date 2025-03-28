@@ -26,9 +26,9 @@ async function newStateToken() {
 }
 
 function setRedirectionUrl() {
-    if (process.env.NODE_ENV === 'development') return "http://localhost:3000/redirection/patreon/link-account"
+    if (process.env.NODE_ENV === 'development') return "http://dev.findstable.net:3000/redirection/patreon/link-account"
 
-    return "https://findstable.netlify.app/redirection/patreon/link-account"
+    return "https://findstable.net/redirection/patreon/link-account"
 }
 
 async function handleClick() {

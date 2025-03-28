@@ -34,7 +34,7 @@ const props = defineProps({
                         <WidgetsFollowButton :user="{
                                 id: user.id,
                                 username: user.username,
-                                avatarUrl: `/api/assets/${user.avatar}`
+                                avatarUrl: `${useAppConfig().directusUrl}/assets/${user.avatar}`
                             }" />
                     </div>
                 </div>

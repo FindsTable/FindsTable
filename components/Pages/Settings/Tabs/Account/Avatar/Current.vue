@@ -11,7 +11,7 @@ const user = useUserState()
                 name="account"
             />
 
-            <Frame :imageUrl="`/api/assets/${user.avatar}`" v-else />
+            <Frame :imageUrl="`${useAppConfig().directusUrl}/assets/${user.avatar}`" v-else />
         </div>
     </div>
 </template>

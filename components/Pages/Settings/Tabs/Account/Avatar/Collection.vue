@@ -76,7 +76,7 @@ function handleSelectAvatar(av) {
                 class="avatarFrame"
                 v-for="av in avatars" :key="av.id"
                 @click="handleSelectAvatar(av)"
-                :imageUrl="`/api/assets/${av.image}`"
+                :imageUrl="`${useAppConfig().directusUrl}/assets/${av.image}`"
                 :class="[selectedAvatar?.id === av.id ? 'selected' : '']"
         />
         </div>

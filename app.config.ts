@@ -6,6 +6,7 @@ export default defineAppConfig({
     version: "1.0.0",
     permanentCacheKeys: ['badges'],
     welcomeUrl: '/home?content=finds',
+    directusUrl: "https://admin.findstable.net",
     device: {
         hasCamera: false, //set in lazyAppConfig plugin
     },

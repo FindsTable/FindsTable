@@ -41,13 +41,19 @@ export default defineEventHandler(async (
             secure: true
         }
     )
-    setCookie(event, 'directus_session_token', res.data.access_token, {
-        httpOnly: true,
-        secure: true,
-        sameSite: 'strict',
-        path: '/api/assets',
-        maxAge: 3600,
-    });
+    setCookie(
+        event, 
+        'directus_session_token', 
+        res.data.access_token, 
+        {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'lax',
+            path: '/',
+            maxAge: 3600,
+            domain: '.findstable.net'
+        }
+    )
 
     // return an object to match the expected type of userState.accessToken
 

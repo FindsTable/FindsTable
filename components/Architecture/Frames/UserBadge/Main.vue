@@ -25,7 +25,7 @@ const fileId = computed(() => {
             active ? 'active' : 'inactive'
         ]"
     >
-        <img :src="`/api/assets/${fileId}`" alt="">
+        <img :src="`${useAppConfig().directusUrl}/assets/${fileId}`" alt="">
 
         <ArchitectureFramesUserBadgeOverlay 
             v-if="badge.isDynamic"

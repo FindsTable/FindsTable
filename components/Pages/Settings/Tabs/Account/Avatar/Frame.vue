@@ -17,7 +17,7 @@ const props = defineProps({
 
 const src = computed(() => {
     if( props.imageId ) {
-        return `/api/assets/${props.imageId}`
+        return `${useAppConfig().directusUrl}/assets/${props.imageId}`
     }
     if (props.imageUrl) {
         return props.imageUrl

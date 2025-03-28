@@ -53,10 +53,10 @@ async function patreon_getTokensWithCode(
 function setRedirectUrl(): string {
     let url = ''
     if (process.env.NODE_ENV === 'development') {
-        url = 'http://localhost:3000/redirection/patreon/link-account'
+        url = 'http://dev.findstable.net:3000/redirection/patreon/link-account'
     }
     if (process.env.NODE_ENV === 'production') {
-        url = 'https://findstable.netlify.app/redirection/patreon/link-account'
+        url = 'https://findstable.net/redirection/patreon/link-account'
     }
     return url
 }
