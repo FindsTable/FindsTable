@@ -39,6 +39,8 @@ export default defineEventHandler(async (
         return res
     }
     
+    
+    
     setCookie(
         event,
         'directus_refresh_token',
@@ -52,12 +54,38 @@ export default defineEventHandler(async (
         }
     )
 
+    // setCookie(
+    //     event,
+    //     'directus_refresh_token',
+    //     res.data.refresh_token,
+    //     {
+    //         httpOnly: true,
+    //         domain: '.findstable.net',
+    //         path: '/',
+    //         maxAge: 604800, // 7 days, this value is set in Directus config : REFRESH_TOKEN_TTL
+    //         sameSite: 'lax',
+    //         secure: true
+    //     }
+    // )
+
+    // setCookie(event, 'directus_session_token', res.data.access_token, {
+    //     httpOnly: true,
+    //     secure: true,
+    //     sameSite: 'strict',
+    //     path: '/api/assets',
+    //     maxAge: 3600,
+    // })
+    const isProduction = process.env.NODE_ENV === 'production';
+    
     setCookie(event, 'directus_session_token', res.data.access_token, {
         httpOnly: true,
         secure: true,
-        sameSite: 'strict',
-        path: '/api/assets',
+        sameSite: 'lax',
+        path: '/',
         maxAge: 3600,
+        ...(isProduction
+            ? { domain: '.findstable.net' } // Production domain
+            : {}) // No domain in dev
     })
 
     return newResponse({
