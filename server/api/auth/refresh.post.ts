@@ -41,6 +41,7 @@ export default defineEventHandler(async (
             secure: true
         }
     )
+
     setCookie(
         event, 
         'directus_session_token', 
@@ -54,7 +55,6 @@ export default defineEventHandler(async (
             domain: '.findstable.net'
         }
     )
-
     // return an object to match the expected type of userState.accessToken
 
     return newResponse({

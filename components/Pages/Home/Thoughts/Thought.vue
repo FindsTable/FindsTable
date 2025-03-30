@@ -3,13 +3,13 @@ const me = useUserState()
 const props = defineProps({
     thought: Object
 })
+const localThought = ref({...props.thought})
+
 const thoughtDeleted = ref(false)
 const emit = defineEmits(['thoughtDeleted'])
 
-const commentsComponent = useTemplateRef('comments')
-
 const showComments = ref(false)
-const showCommentInput = ref(false)
+
 
 async function deleteThought() {
     const res = await useNuxtApp().$items.deleteById({
@@ -25,24 +25,34 @@ async function deleteThought() {
 
 const newCommentsCount = ref(0)
 
-function updateNewCommentsCount(increment) {
+function emit_updateNewCommentsCount(increment) {
     newCommentsCount.value += increment
 }
 
+const myComputedLikeId = computed(() => {
+    const myLike = localThought.value.likes.find(like => like.owner === me.value.id)
+    return myLike ? myLike.id : undefined
+})
+function emit_deleteLike(myLikeId) {
+    localThought.value.likes = localThought.value.likes.filter( like => like.id !== myLikeId)
+}
+function emit_addNewLike(newLike) {
+    localThought.value.likes.push(newLike)
+}
 </script>
 
 <template>
     <div v-if="!thoughtDeleted" class="thoughtPanel -surface1 marTop20">
         <div class="flex justifyBetween">
             <ArchitectureCardsUserMini 
-                :userId="thought.user_created.id"
-                :avatarId="thought.user_created.avatar"
-                :username="thought.user_created.displayName || thought.user_created.username"
+                :userId="thought.owner.id"
+                :avatarId="thought.owner.avatar"
+                :username="thought.owner.displayName || thought.owner.username"
                 :date="useParseDate(thought.date_created)"
             />
 
             <button 
-                v-if="thought.user_created.id === me.id"
+                v-if="thought.owner.id === me.id"
                 @click="deleteThought"
                 class="theme-textColor-main pointer"
             >
@@ -55,19 +65,24 @@ function updateNewCommentsCount(increment) {
         </p>
 
         <WidgetsReactionBoxMain
-            :itemId="thought.id"
+            :itemId="localThought.id"
             collection="Thoughts"
-            :commentCount="thought.comments.length + newCommentsCount"
-            @comment="showComments = true"
-            @showComments="showComments = true"
+            :commentCount="localThought.comments.length + newCommentsCount"
+            :likeCount="localThought.likes.length"
+            :myLikeId="myComputedLikeId"
+            @toggleComments="showComments = !showComments"
+            @deletedLike="emit_deleteLike"
+            @createdLike="emit_addNewLike"
         />        
 
-        <PagesHomeThoughtsComments 
-            v-if="showComments"
-            :thought="thought"
-            @closeComments="showComments = false"
-            @updateNewCommentsCount="updateNewCommentsCount"
-        />
+        <KeepAlive>
+            <PagesHomeThoughtsComments 
+                v-if="showComments"
+                :thought="thought"
+                @closeComments="showComments = false"
+                @updateNewCommentsCount="emit_updateNewCommentsCount"
+            />
+        </KeepAlive>
     </div>
 </template>
 

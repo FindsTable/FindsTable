@@ -5,15 +5,16 @@ const requestOffset = ref(0)
 const requestLimit = ref(5)
 
 const thoughts = ref([])
-const newThoughts = ref([])
+
 
 const fields = [
     '*',
-    'user_created.avatar',
-    'user_created.id',
-    'user_created.displayName',
-    'user_created.username',
-    'date_created'
+    'owner.avatar',
+    'owner.id',
+    'owner.displayName',
+    'owner.username',
+    'date_created',
+    'likes.*'
 ]
 
 async function getThoughts() {
@@ -23,7 +24,7 @@ async function getThoughts() {
         query: {
             fields: fields.join(','),
             deep: {
-                user_created: {
+                owner: {
                     avatars: {
                         _sort: "-currentAt",
                         _limit: 1
@@ -41,9 +42,15 @@ async function getThoughts() {
     }
 
 }
-
+/*
+*   new thoughts are stored in newThoughts to prevent a 
+*   full rendering 
+*   of the already rendered thoughts
+*/
+const newThoughts = ref([])
 function newThoughtPosted(newThought) {
 
+    
     newThoughts.value = [
         ...newThoughts.value,
         newThought
@@ -59,16 +66,16 @@ async function getNextPage() {
         ...thoughts.value,
         ...res
     ]
-    useSetCacheData('thoughts', thoughts.value)
+    // useSetCacheData('thoughts', thoughts.value)
 }
 
 onMounted(async () => {
-    const cacheData = useGetCachedData('thoughts', thoughts.value)
+    // const cacheData = useGetCachedData('thoughts', thoughts.value)
 
-    if (cacheData) {
-        thoughts.value = cacheData
-        return
-    }
+    // if (cacheData) {
+    //     thoughts.value = cacheData
+    //     return
+    // }
 
     const res = await getThoughts()
     thoughts.value = [

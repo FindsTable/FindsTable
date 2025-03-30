@@ -44,7 +44,14 @@ export default defineEventHandler(async (
                 expires: new Date(0)
             }
         )
-
+        setCookie(
+            event, 
+            'directus_session_token', 
+            '', 
+            {
+                expires: new Date(0)
+            }
+        )
         return newResponse({
             ok: true,
             status: 200,

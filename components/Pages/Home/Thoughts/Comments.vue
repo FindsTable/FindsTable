@@ -9,10 +9,10 @@ const fields = [
     'id',
     'content',
     'date_created',
-    'user_created.id',
-    'user_created.username',
-    'user_created.displayName',
-    'user_created.avatar'
+    'owner.id',
+    'owner.username',
+    'owner.displayName',
+    'owner.avatar'
 ]
 
 const { data: comments, refresh } = useAsyncData(
@@ -28,7 +28,7 @@ const { data: comments, refresh } = useAsyncData(
                 },
                 fields: fields.join(','),
                 deep: {
-                    user_created: {
+                    owner: {
                         avatars: {
                             _sort: "-currentAt",
                             _limit: 1
@@ -82,14 +82,16 @@ function newContentSaveed(newComment) {
                 <div class="flex column alignEnd">
                     <div class="avatarBg theme-surface-2">
                         <NuxtLink 
-                            :to="`/users/${comment.user_created.id}`"
+                            :to="`/users/${comment.owner.id}`"
                             class="pointer"    
                         >
-                            <ArchitectureFramesAvatar 
-                                :fileId="comment.user_created.avatar"
-                                width="24px"
-                                round
-                            />
+                            <KeepAlive>
+                                <ArchitectureFramesAvatar 
+                                    :fileId="comment.owner.avatar"
+                                    width="24px"
+                                    round
+                                />
+                            </KeepAlive>
                         </NuxtLink>
                     </div>
 
@@ -101,14 +103,14 @@ function newContentSaveed(newComment) {
                 <div class="content theme-surface-2 grow">
                     <div class="flex justifyBetween">
                         <NuxtLink 
-                            :to="`/users/${comment.user_created.id}`"
+                            :to="`/users/${comment.owner.id}`"
                             class="pointer font-text -small -bold"
                         >
-                            {{ comment.user_created.displayName || comment.user_created.username }}
+                            {{ comment.owner.displayName || comment.owner.username }}
                         </NuxtLink>
 
                         <button 
-                            v-if="comment.user_created.id === me.id"
+                            v-if="comment.owner.id === me.id"
                             @click="deleteComment(comment.id)"
                             class="theme-textColor-main pointer"
                         >

@@ -25,7 +25,7 @@ const src = computed(() => {
         return props.fileUrl
     }
     if(props.fileId) {
-        return `${useAppConfig().directusUrl}/assets/${props.fileId}`
+        return `${useAppConfig().directusUrl}/assets/${props.fileId}?key=avatar-tiny-jpg`
     }
     return undefined
 })

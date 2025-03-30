@@ -51,6 +51,7 @@ export default {
         'tip': 'material-symbols:tips-and-updates-outline-rounded',
         'unchecked': 'mdi:checkbox-blank-outline',
         'checked': 'mdi:checkbox-marked-outline',
+        'check': 'material-symbols:check-rounded',
         'visible': 'material-symbols:visibility-outline-rounded',
         'warning': 'bx:error',
         'zoomIn': 'material-symbols:zoom-in',

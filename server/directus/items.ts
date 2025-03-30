@@ -34,7 +34,7 @@ async function createItem<
 
     
     const res = await directusAPI(params)
-    return res
+    // return res
     if(!res.data) {
         return handleNoDataError('No data returned in /items => createItem()')
     }

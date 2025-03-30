@@ -7,14 +7,18 @@ const myContent = useUserContent()
 
 const newThought = ref('')
 
-async function handleNewComment() {
+const fields = [
+    '*'
+]
+
+async function saveNewThought() {
     const res = await useNuxtApp().$items.create({
-        collection: 'Thoughts',
+        collection: 'Finds',
         body: {
             content: newThought.value
         },
         query: {
-            fields: '*,user_created.avatars.*,user_created.id,user_created.displayName,user_created.username,date_created'
+            fields: fields.join(',')
         }
     })
 
@@ -65,7 +69,7 @@ async function handleNewComment() {
             class="flex justifyEnd marTop20"
         >
             <button
-                @click="handleNewComment"
+                @click="saveNewThought"
                 class="comp-button -filled"
             >
                 publish

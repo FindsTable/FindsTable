@@ -4,40 +4,35 @@ const me = useUserState()
 const props = defineProps({
     itemId: String,
     collection: String,
-    commentCount: Number
+    commentCount: Number,
+    likeCount: Number,
+    myLikeId: String | undefined
 })
-
-const emit = defineEmits(['showComments', 'like', 'comment'])
-
-const { data : likes, refresh } = useAsyncData(
-    `${props.itemId}-likes`,
-    async () => {
-        const res = await useNuxtApp().$items.getById({
-            collection: props.collection,
-            id: props.itemId,
-            query: {
-                fields: 'id,likes.id,likes.user_created'
-            }
-        })
-
-        if (res?.data) {
-            return res.data.likes
-        }
-    }
-)
+const isPending = ref(false)
+const emit = defineEmits(['toggleComments', 'deletedLike', 'createdLike'])
 
 async function handleLikeClick() {
-    myLike.value ? deleteLike() : createLike()
+    if (isPending.value) return
+
+    isPending.value = true
+    if(props.myLikeId) {
+        await deleteLike(props.myLikeId)
+        emit('deletedLike', props.myLikeId)
+    } else {
+        const newLike = await createLike()
+        emit('createdLike', newLike)
+    }
+    isPending.value = false
 }
 
-async function deleteLike() {
+async function deleteLike(id) {
     const res = await useNuxtApp().$items.deleteById({
         collection: `${props.collection}_likes`,
-        id: myLike.value
+        id: id
     })
 
     if (res?.ok) {
-        refresh()
+        return res.data
     }
 }
 async function createLike() {
@@ -51,17 +46,8 @@ async function createLike() {
         }
     })
 
-    if (res?.ok) {
-        refresh()
-    }
+    return res?.ok ? res.data : undefined
 }
-
-const myLike = computed(() => {
-    if (!likes.value || !me?.value.id) return false
-
-    const like = likes.value.find(like => like.user_created === me.value.id)
-    return like ? like.id : null
-})
 
 </script>
 
@@ -69,14 +55,14 @@ const myLike = computed(() => {
     <div class="box marTop20 flex alignCenter justifyBetween">
         <div>
             <button
-                @click="handleLikeClick"
+                @click="handleLikeClick(itemId)"
                 class="comp-button -text"
             >
-                <Icon :name="myLike ? 'heartFull' : 'heartEmpty'" size="20px" />
+                <Icon :name="myLikeId ? 'heartFull' : 'heartEmpty'" size="20px" />
             </button>
 
             <button
-                @click="emit('comment')"
+                @click="emit('toggleComments')"
                 class="comp-button -text"
             >
                 <Icon name="chat" size="20px" />
@@ -84,12 +70,13 @@ const myLike = computed(() => {
         </div>
 
         <div class="flex gap20">
-            <p v-if="likes">
-                {{ likes.length }} {{ t(`activity.likes.like.${likes.length > 1 ? 'plural' : 'singular'}`) }}
+            <p v-if="likeCount">
+                {{ likeCount }} {{ t(`activity.likes.like.${likeCount > 1 ? 'plural' : 'singular'}`) }}
             </p>
 
             <button 
-                @click="commentCount ? emit('showComments') : undefined"
+                v-if="commentCount"
+                @click="commentCount ? emit('toggleComments') : undefined"
                 class="comp-button -text"
             >
                 {{commentCount }} {{ t(`activity.comments.comment.${commentCount > 1 ? 'plural' : 'singular'}`) }}

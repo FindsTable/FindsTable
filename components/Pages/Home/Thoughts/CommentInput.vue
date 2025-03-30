@@ -7,8 +7,6 @@ const emit = defineEmits(['newCommentPosted'])
 const comment = ref("")
 
 async function handleClick() {
-
-
     const res = await useNuxtApp().$items.create({
         collection: 'Thoughts_comments',
         body: {

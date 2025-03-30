@@ -62,28 +62,28 @@ function getTimeOutResponse(): ApiResponse {
 
 
 async function useSet$FetchTimeoutDuration() {
-    console.log('Testing network...')
-    const fetchTimeout = useAppConfig().fetchTimeout
+    // console.log('Testing network...')
+    // const fetchTimeout = useAppConfig().fetchTimeout
 
-    const testDuration = await useTestNetwork()
+    // const testDuration = await useTestNetwork()
 
-    if(testDuration < 0) {
-        console.log('timeoutDuration.adapted could not be set')
-        return
-    }
+    // if(testDuration < 0) {
+    //     console.log('timeoutDuration.adapted could not be set')
+    //     return
+    // }
 
-    const adapted = testDuration * fetchTimeout.multiplyfactor
+    // const adapted = testDuration * fetchTimeout.multiplyfactor
 
-    if(adapted < fetchTimeout.min) {
-        fetchTimeout.adapted = fetchTimeout.min
-    } else if(adapted > fetchTimeout.max) {
-        fetchTimeout.adapted = fetchTimeout.max
-    } else {
-        fetchTimeout.adapted = adapted
-    }
+    // if(adapted < fetchTimeout.min) {
+    //     fetchTimeout.adapted = fetchTimeout.min
+    // } else if(adapted > fetchTimeout.max) {
+    //     fetchTimeout.adapted = fetchTimeout.max
+    // } else {
+    //     fetchTimeout.adapted = adapted
+    // }
     //temporary solution set at 1500. Timeout is reached on netlify...
 
-    console.log('fetchTimeout.adapted', fetchTimeout.adapted)
+    // console.log('fetchTimeout.adapted', fetchTimeout.adapted)
 }
 
 async function useTestNetwork() {
