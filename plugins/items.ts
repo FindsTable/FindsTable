@@ -4,6 +4,7 @@ export default defineNuxtPlugin(() => {
     return {
         provide: {
             items: {
+                directGetByQuery,
                 create,
                 update,
                 getByQuery,
@@ -13,6 +14,57 @@ export default defineNuxtPlugin(() => {
         }
     }
 })
+
+async function directGetByQuery<
+    Data extends ItemObject
+>(
+    p: {
+        collection: string,
+        query: any
+    }
+):
+    Promise<ParsedApiResponse<Data[] | null>>
+{
+    try {
+        const res = await $fetch<ApiResponse<any>>(
+            `https://admin.findstable.net/items/${p.collection}`,
+            {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${useUserState().value.accessToken.value}`
+                },
+                query: p.query
+            }
+        )
+
+        if(res?.data) {
+            return {
+                ok: true,
+                data: res.data,
+                toaster: null
+            }
+        }
+        
+    } catch(e) {
+        return {
+            ok: false,
+            data: null,
+            error: e,
+            toaster: {
+                id: "fetchError",
+                message: "We could not fetch your data",
+                type: "error",
+                autoClose: true,
+                position: "bottom"
+            }
+        }
+    }
+    return {
+        ok: false,
+        data: null,
+        toaster: null
+    }
+}
 
 async function create<
     Data extends ItemObject

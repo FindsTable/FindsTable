@@ -1,8 +1,10 @@
 <script setup>
 const state = defineModel()
+const emit = defineEmits(['click'])
 
 function handleClick() {
     state.value = !state.value
+    emit('click', state.value)
 }
 
 onMounted(() => {
@@ -20,7 +22,7 @@ onMounted(() => {
     >
         <div class="dot"></div>
 
-        <input type="checkbox" v-model="state" />
+        <input type="checkbox" v-model="state" @click="handleClick" />
     </label>
 </template>
 

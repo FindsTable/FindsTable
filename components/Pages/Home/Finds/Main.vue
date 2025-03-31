@@ -6,21 +6,21 @@ const finds = ref([])
 
 const fields = [
     '*',
-    'user_created.avatars.*',
-    'user_created.id',
-    'user_created.displayName',
-    'user_created.username',
+    'owner.avatars.*',
+    'owner.id',
+    'owner.displayName',
+    'owner.username',
     'date_created',
     'images.*'
 ]
 
 async function getFinds() {
-    const res = await useNuxtApp().$items.getByQuery({
+    const res = await useNuxtApp().$items.directGetByQuery({
         collection: 'Finds',
         query: {
             fields: fields.join(','),
             deep: {
-                user_created: {
+                owner: {
                     avatars: {
                         _sort: "-currentAt",
                         _limit: 1
@@ -32,6 +32,10 @@ async function getFinds() {
             limit: requestLimit.value
         }
     })
+
+    if(res?.toaster) {
+        useToaster("show", res.toaster)
+    }
 
     if (res?.data) {
         return res.data
@@ -57,12 +61,12 @@ function navigateToItemPage(find) {
 }
 
 onMounted(async () => {
-    const cacheData = useGetCachedData('finds')
+    // const cacheData = useGetCachedData('finds')
 
-    if (cacheData) {
-        finds.value = cacheData
-        return
-    }
+    // if (cacheData) {
+    //     finds.value = cacheData
+    //     return
+    // }
 
     const res = await getFinds()
 
@@ -70,7 +74,7 @@ onMounted(async () => {
         ...finds.value,
         ...res
     ]
-    useSetCacheData('finds', finds.value)
+    // useSetCacheData('finds', finds.value)
 })
 
 </script>
@@ -78,7 +82,7 @@ onMounted(async () => {
 <template>
     <div 
         v-if="finds"
-        class="flex gap20"
+        class="flex gap20 wrap"
     >
         <PagesHomeFindsCard 
             v-for="find in finds" :key="find.id"

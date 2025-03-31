@@ -7,7 +7,13 @@ export const useModalState = () => {
         content?: {
             title: string
             message: string
-        }
+        },
+        options?: {
+            croppingSize?: {
+                width: number,
+                height: number
+            }
+        },
         resolveFn: any
         rejectFn: any
     }>(
@@ -21,6 +27,7 @@ export const useModalState = () => {
                 title: '',
                 message: ''
             },
+            options: undefined,
             resolveFn: undefined,
             rejectFn: undefined
         })
@@ -37,7 +44,13 @@ export function useModal() {
         content?: {
             title: string
             message: string
-        }
+        },
+        options?: {
+            croppingSize?: {
+                width: number,
+                height: number
+            }
+        } 
     }) => {
         if(modalState.value.visible) {
             return
@@ -49,6 +62,9 @@ export function useModal() {
         }
         if (p.data) {
             modalState.value.data = p.data
+        }
+        if(p.options) {
+            modalState.value.options = p.options
         }
 
         modalState.value.visible = true

@@ -5,14 +5,22 @@ const props = defineProps({
 
 const activeImageIndex = ref(0)
 
-
 </script>
 
 <template>
     <article v-if="find" class="card flex column gap10 pointer">
         <div class="imageBox w100 h100 overflowHidden">
-            <img class="image w100 objectFitCover"
-                :src="`https://admin.findstable.net/assets/${find.images[activeImageIndex].directus_files_id}?key=find-small-jpg&v=${Date.now()}`" alt="">
+            <img
+                v-if="find.images.length" 
+                :src="`https://admin.findstable.net/assets/${find.images[activeImageIndex].directus_files_id}?key=find-small-jpg&v=${Date.now()}`" alt=""
+                class="image w100 objectFitCover"
+            >
+            <img
+                v-else
+                :src="`/images/find-no-image.png`" alt=""
+                class="image w100 objectFitCover"
+            >
+                
         </div>
 
         <header class="header row justifyBetween alignStart">
@@ -24,7 +32,7 @@ const activeImageIndex = ref(0)
             </h2>
 
             <div class="username fS14 w100 ellipsis">
-                {{ find.user_created.username }}
+                {{ find.owner.displayName }}
             </div>
 
             <time class="date fS12 weight3" datetime="2025-03-26">
@@ -35,7 +43,9 @@ const activeImageIndex = ref(0)
         </header>
 
         <footer class="w100 flex alignCenter gap5">
-            <img :src="`https://admin.findstable.net/assets/${find.user_created.avatars[0].image}?key=avatar-tiny-jpg&v=${Date.now()}`"
+            <img
+                v-if="find.owner.avatars"
+                :src="`https://admin.findstable.net/assets/${find.owner.avatars[0].image}?key=avatar-tiny-jpg&v=${Date.now()}`"
                 alt="metalhunter avatar" class="avatar"
             />
 
@@ -68,7 +78,8 @@ const activeImageIndex = ref(0)
 <style scoped>
 
 .card {
-    width: 250px;
+    flex-shrink: 0;
+    width: 200px;
     font-family: sans-serif;
     background-color: #3f3f3f;
     padding: 12px;
