@@ -1,0 +1,90 @@
+{
+    "cookiePolicy": {
+      "title": "Politique de cookies",
+      "pageLead": "Découvrez comment nous utilisons les témoins (cookies).",
+      "lastUpdated": "Dernière mise à jour",
+      "sections": {
+        "whatAreCookies": {
+          "title": "Qu'est-ce que les cookies ?",
+          "text": "Les cookies sont de petits fichiers texte stockés sur votre appareil lorsque vous visitez un site web. Ils aident les sites à fonctionner plus efficacement, améliorent l'expérience utilisateur et fournissent parfois des informations aux propriétaires du site. De nombreux sites utilisent des cookies à des fins de marketing, d'analyse et de personnalisation. Pour plus d'informations, consultez la ressource : All About Cookies."
+        },
+        "howWeUseCookies": {
+          "title": "Comment nous utilisons les cookies",
+          "text": "Chez Findstable, nous utilisons les cookies uniquement à des fins fonctionnelles indispensables au bon fonctionnement de notre application. Cela inclut la conservation des paramètres tels que la langue, le mode couleur et d'autres options de configuration, ainsi que la gestion de votre session de connexion. Nous n'utilisons pas les cookies pour le marketing, la collecte de données ou le suivi au-delà de ce qui est nécessaire pour le fonctionnement de l'application."
+        },
+        "ourCommitment": {
+          "title": "Notre engagement",
+          "text": "Nous croyons que votre vie privée est un droit fondamental. En limitant notre utilisation des cookies uniquement aux fonctionnalités essentielles, nous nous opposons aux pratiques intrusives de marketing par cookies et de contrôle de contenu. Nous nous engageons à la transparence et à vous donner le contrôle sur vos données."
+        },
+        "manageCookies": {
+          "title": "Comment gérer les cookies",
+          "text": "La plupart des navigateurs vous permettent de gérer vos préférences en matière de cookies. Vous pouvez supprimer, bloquer ou contrôler les cookies via les paramètres de votre navigateur. Veuillez noter que la désactivation des cookies peut affecter le fonctionnement de notre application.",
+          "links": {
+            "chrome": "https://support.google.com/chrome/answer/95647?hl=en",
+            "firefox": "https://support.mozilla.org/en-US/kb/enable-and-disable-cookies-website-preferences",
+            "safari": "https://support.apple.com/guide/safari/manage-cookies-and-website-data-sfri11471/mac",
+            "edge": "https://support.microsoft.com/en-us/microsoft-edge/delete-cookies-in-microsoft-edge-63947406-40ac-c3b8-57b9-2a946a29ae09",
+            "opera": "https://help.opera.com/en/latest/web-preferences/#cookies"
+          }
+        },
+        "furtherInformation": {
+          "title": "Informations complémentaires",
+          "text": "Pour plus de détails sur les cookies et leur utilisation, veuillez consulter des ressources externes ou l'aide de votre navigateur. Nous vous encourageons à consulter régulièrement cette politique pour être informé des mises à jour. Si vous avez des questions ou des préoccupations concernant notre utilisation des cookies, veuillez nous contacter à [Insérer les coordonnées]."
+        }
+      }
+    },
+    "legalNotice": {
+        "title": "Mentions Légales et Conditions d'Utilisation",
+        "lastUpdated": "Dernière mise à jour",
+        "sections": {
+            "generalDisclaimer": {
+                "title": "Avertissement Général",
+                "text": "Findstable est fourni en tant que plateforme sociale où les utilisateurs sont responsables du contenu qu'ils publient. Nous nous efforçons de créer un environnement sûr, respectueux et agréable ; toutefois, Findstable ne saurait être tenu responsable des conséquences négatives résultant des interactions entre utilisateurs ou de la publication de contenu généré par les utilisateurs. En utilisant la plateforme, les utilisateurs acceptent d'assumer l'entière responsabilité de tout contenu qu'ils soumettent."
+            },
+            "userSubmittedContent": {
+                "title": "Contenu Soumis par les Utilisateurs et Déclarations",
+                "text": "Tout contenu soumis par les utilisateurs, y compris, mais sans s'y limiter, les textes, images et autres médias, est de la seule responsabilité de l'utilisateur. Dans les juridictions où certaines trouvailles doivent être déclarées (par exemple, en France, les trouvailles datant d'avant 1875 doivent être officiellement déclarées), il incombe à l'utilisateur de s'assurer qu'il se conforme à ces obligations légales. En publiant tout contenu, vous confirmez avoir effectué toutes les déclarations nécessaires et respecté toutes les lois applicables. Findstable n'est pas responsable de tout manquement à ces obligations."
+            },
+            "licenseToUse": {
+                "title": "Licence d'Utilisation du Contenu Soumis",
+                "text": "En soumettant du contenu à Findstable, vous nous accordez une licence large, non exclusive et sans redevance pour utiliser, afficher, reproduire et distribuer votre contenu au sein de l'application et dans le cadre d'activités connexes telles que la publicité, les promotions et les publications (y compris sur des plateformes tierces comme Facebook). Cette licence se limite à l'utilisation nécessaire pour soutenir le fonctionnement et la promotion de Findstable. Vous conservez la propriété de votre contenu, mais reconnaissez qu'en le publiant, vous consentez à son utilisation comme décrit ci-dessus."
+            },
+            "codeOfConduct": {
+                "title": "Code de Conduite",
+                "text": "Pour maintenir un environnement respectueux et sûr, tous les utilisateurs doivent respecter les règles suivantes :\n\n- Respect et Courtoisie : Les utilisateurs doivent interagir avec respect. Les attaques personnelles, le harcèlement et les discours de haine ne sont pas tolérés.\n- Non-discrimination : Toute langue ou comportement discriminatoire basé sur la race, l'origine ethnique, le genre, l'orientation sexuelle, la religion ou tout autre statut est strictement interdit. En particulier, le harcèlement ou l'abus envers les femmes ou tout autre groupe ne seront pas tolérés.\n- Environnement Sûr : Tous les utilisateurs ont droit à une plateforme sûre et inclusive. Tout comportement compromettant cette sécurité fera l'objet d'une modération et pourra entraîner une exclusion de la plateforme.\n- Responsabilité : Bien que nous nous efforçons de surveiller les interactions et de favoriser une communauté positive, Findstable n'est pas responsable des différends ou des rencontres négatives entre utilisateurs. En utilisant la plateforme, vous acceptez de résoudre tout problème à l'amiable et reconnaissez que Findstable ne pourra être tenu responsable de tout dommage résultant des interactions entre utilisateurs."
+            },
+            "additionalProvisions": {
+                "title": "Dispositions Complémentaires",
+                "text": "Liens tiers et contenu externe : La plateforme peut inclure des liens ou des références à des ressources externes. Findstable n'est pas responsable du contenu ou des pratiques des sites externes.\n\nModifications : Ces mentions légales peuvent être mises à jour de temps à autre. L'utilisation continue de la plateforme après de telles modifications constitue une acceptation des nouvelles conditions.\n\nLoi applicable : L'interprétation et l'application de ces mentions seront régies par les lois applicables dans la juridiction où vous résidez, et tout litige sera résolu en conséquence."
+            },
+            "severabilityAndLiability": {
+                "title": "Divisibilité et Limitation de Responsabilité",
+                "text": "Si une disposition des présentes mentions légales s'avère invalide ou inapplicable, les dispositions restantes demeureront en vigueur. En aucun cas Findstable ne pourra être tenu responsable de dommages indirects, accessoires ou consécutifs résultant de l'utilisation de la plateforme."
+            }
+        },
+        "consent": "En utilisant Findstable, vous reconnaissez avoir lu, compris et accepté ces conditions. Ces mentions légales ne sont pas exhaustives et ne remplacent pas un conseil juridique professionnel. Il est recommandé aux utilisateurs de consulter leurs conseillers juridiques en cas de doute ou pour toute question relative aux exigences légales locales."
+    },
+    "privacy": {
+        "title": "Politique de Confidentialité",
+        "lastUpdated": "[Insérer la Date]",
+        "sections": {
+          "intro": {
+            "title": "Introduction",
+            "text": "Chez Findstable, nous accordons une grande importance à votre vie privée et nous nous engageons à adopter des pratiques de gestion des données transparentes et éthiques. Nous n'utilisons pas de publicités ni de cookies pour suivre les utilisateurs, et nous ne partagerons ni ne vendrons jamais vos données personnelles."
+          },
+          "dataCollection": {
+            "title": "Collecte des Données",
+            "text": "La seule donnée personnelle que nous demandons d'utiliser est votre nom d'utilisateur (username). Nous ne demandons ni ne collectons aucune information personnelle supplémentaire."
+          },
+          "dataStorage": {
+            "title": "Stockage des Données et Hébergement",
+            "text": "Actuellement, notre application est hébergée sur Netlify et notre base de données est hébergée sur IONOS. Nous nous efforçons d'être transparents quant à nos pratiques de stockage des données. Cependant, nous n'avons pas un contrôle total sur, ni des informations détaillées sur, l'emplacement physique de nos serveurs. Bien qu'il soit possible que les données soient stockées aux États-Unis, en France ou dans d'autres juridictions, nous nous engageons à traiter vos données de manière éthique et responsable."
+          },
+          "recommendation": {
+            "title": "Recommandations sur les Données",
+            "text": "Nous vous recommandons de ne pas stocker de données sensibles ou critiques sur notre plateforme. Nos services sont conçus pour l'interaction sociale et le partage de trouvailles, et nous vous encourageons à faire preuve de prudence quant aux informations que vous partagez."
+          }
+        },
+        "consent": "En utilisant Findstable, vous reconnaissez avoir lu et compris cette Politique de Confidentialité. Nous nous engageons à protéger votre vie privée et à traiter vos données avec soin."
+    }
+}

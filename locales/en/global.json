@@ -29,7 +29,8 @@
     "components": {
         "button": {
             "close": "close",
-            "open": "open" 
+            "open": "open",
+            "submit": "Submit"
         }
     },
     "auth": {

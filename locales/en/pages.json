@@ -178,6 +178,17 @@
                             },
                             "rangeTo": {
                                 "label": "To"
+                            },
+                            "period": {
+                                "label": "Pediod"
+                            }
+                        }
+                    },
+                    "images": {
+                        "title": "Images",
+                        "fields": {
+                            "images": {
+                                "label": "Add images"
                             }
                         }
                     }

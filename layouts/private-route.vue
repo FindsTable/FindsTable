@@ -7,7 +7,7 @@ const appState = useAppState()
 
 <template>
     <div class="full flex column justifyEnd">
-        <div class="grow flex w100 relative">
+        <div class="grow flex w100 relative ">
             <nav class="sideBarBox relative" :class="{ 
                     'active' : appState.showSideBar
                 }">
@@ -27,7 +27,7 @@ const appState = useAppState()
                         </slot>
                     </nav>
 
-                    <main class="overflowScroll -scrollY flex column h100">
+                    <main class="overflowScroll -scrollY flex column h100 contentBottomSpace">
                         <TH1>
                             <slot name="title">
 

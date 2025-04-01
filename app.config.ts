@@ -4,6 +4,8 @@ type ColorMode = string | undefined | null;
 
 export default defineAppConfig({
     version: "1.0.0",
+    cookiePolicyLastUpdate: '01/04/2025',
+    legalNoticeLastUpdate: '01/04/2025',
     permanentCacheKeys: ['badges'],
     welcomeUrl: '/home?content=finds',
     directusUrl: "https://admin.findstable.net",

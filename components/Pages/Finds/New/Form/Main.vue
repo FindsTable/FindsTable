@@ -128,15 +128,17 @@ async function saveNewFind() {
                 />
             </div>
 
-            <template class="centered">
-                <button 
-                    @click.prevent="saveNewFind"
-                    class="comp-button -filled"
-                >
-                    Submit
-                </button>
-            </template>
+            
         </ArchitecturePanelMain>
+
+        <template class="centered">
+            <button 
+                @click.prevent="saveNewFind"
+                class="font-h2 comp-button -filled marTop50"
+            >
+                {{ t('components.button.submit') }}
+            </button>
+        </template>
     </form>
 </template>
 
@@ -149,8 +151,5 @@ async function saveNewFind() {
 .section {
     margin-left: 5px;
 }
-.fieldSetTitle {
-    font-size: 18px;
-    font-weight: 700;
-}
+
 </style>

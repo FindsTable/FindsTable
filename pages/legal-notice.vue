@@ -1,7 +1,6 @@
 <script setup>
 const { t } = useI18n();
-
-const user = useUserState().value
+const me = useUserState()
 
 definePageMeta({
     title: 'Legal notice',
@@ -11,9 +10,33 @@ definePageMeta({
 </script>
 
 <template>
-    <NuxtLayout :name="layout">
-        <TH1>
-            {{ t('page.legalNotice.title') }}
-        </TH1>
+    <NuxtLayout 
+        name="private-route"
+        v-if="me.isLoggedIn"
+    >
+        <template #title>
+
+        </template>
+
+        <template #header>
+
+        </template>
+
+        <template #noScrollMain>
+
+        </template>
+
+        <template #scrollMain>
+            <PagesLegalNotice />
+        </template>
+    </NuxtLayout>
+
+    <NuxtLayout 
+        name="public-route"
+        v-else
+    >
+        <main>
+            <PagesLegalNotice />
+        </main>
     </NuxtLayout>
 </template>

@@ -153,18 +153,6 @@
                             },
                             "metals": {
                                 "label" : "Composition"
-                            },
-                            "dating": {
-                                "preciseYear": {
-                                    "label": "Year",
-                                    "placeholder": 1898
-                                },
-                                "rangeFrom": {
-                                    "label": "From"
-                                },
-                                "rangeTo": {
-                                    "label": "To"
-                                }
                             }
                         }
                     },
@@ -190,6 +178,20 @@
                             },
                             "rangeTo": {
                                 "label": "Et"
+                            },
+                            "images": {
+                                "label": "Add images"
+                            },
+                            "period": {
+                                "label": "Pédiode"
+                            }
+                        }
+                    },
+                    "images": {
+                        "title": "Images",
+                        "fields": {
+                            "images": {
+                                "label": "Ajoutez des images"
                             }
                         }
                     }

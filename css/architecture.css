@@ -43,7 +43,9 @@
 .safeArea.-left {
     padding-left: var(--safe-inset-left);
 }
-
+.contentBottomSpace {
+    padding-bottom: 50px;
+}
 
 /*
 Scroll bars

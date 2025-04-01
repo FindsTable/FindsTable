@@ -70,10 +70,10 @@ const triggerFileInput = (index) => {
 <template>
   <fieldset>
     <legend class="standardLabel">
-        Add images
+        {{ t('page.finds.newFind.sections.images.fields.images.label') }}
     </legend>
 
-    <div class="flex gap10">
+    <div class="flex gap10 marTop10">
       <div
         v-for="(file, index) in localFiles"
         :key="index"

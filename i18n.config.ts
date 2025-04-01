@@ -1,6 +1,7 @@
 // generate array of translation files
 function translationFiles(locale: string) {
     const files = [
+        'legal.json',
         'forms.json',
         'global.json',
         'pages.json',
