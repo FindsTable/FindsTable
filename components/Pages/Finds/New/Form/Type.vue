@@ -1,16 +1,34 @@
 <script setup>
 const { t, locale } = useI18n();
-const selectedMetals = defineModel()
-const metals = ref(null)
+const selectedType = defineModel()
+const types = ref(null)
 
-async function getMetals() {
+const queryFields = [
+    'id', 'value', "translations.*", "translations.Languages_id.*"
+]
+
+async function getTypes() {
     try {
         const res = await $fetch(
-        'https://admin.findstable.net/items/Metals',
+        'https://admin.findstable.net/items/Find_types',
         {
             method: 'GET',
             headers: {
                 authorization: `Bearer ${useUserState().value.accessToken.value}`
+            },
+            query: {
+                fields: queryFields.join(','),
+                deep: {
+                    translations: {
+                        _filter: {
+                            Languages_id: {
+                                code: {
+                                    _eq: locale.value
+                                }
+                            }
+                        }
+                    }
+                }
             }
         })
         return res?.data ? res.data : null
@@ -20,36 +38,38 @@ async function getMetals() {
 }
 
 onMounted(async () => {
-    metals.value = await getMetals()
+    types.value = await getTypes()
 })
 </script>
 
 <template>
-    <fieldset class="marTop20">
+    <fieldset class="marTop20" v-if="types">
             <legend class="standardLabel">
-                {{ t('page.finds.newFind.sections.description.fields.metals.label') }}
+                {{ t('page.finds.newFind.sections.description.fields.type.label') }}
             </legend>
 
             <div class="flex wrap gap20 marTop20">
+
                 <label
-                    v-for="metal in metals"
-                    :key="metal.id"
-                    :for="`metalCheckbox-${metal.id}`"
+                    v-for="type in types"
+                    :key="type.id"
+                    :for="`metalCheckbox-${type.id}`"
                     class="metalTouchArea flex alignCenter gap10 pointer"
-                    :class="{ 'selected': selectedMetals.includes(metal.id) }"
+                    :class="{ 'selected': selectedType === type.id }"
                 >
                     <span class="customCheckBox">
-                        <Icon class="checkIcon" name="check" :style="{ opacity: selectedMetals.includes(metal.id) ? 1 : 0 }" />
+                        <Icon class="checkIcon" name="check" :style="{ opacity: selectedType === type.id ? 1 : 0 }" />
                     </span>
 
-                    <span>{{ metal.name || metal.id }}</span>
+                    <span>{{ type.translations[0].name || type.value }}</span>
 
                     <input
-                        type="checkbox"
+                        type="radio"
                         class="inputCheckBox"
-                        :id="`metalCheckbox-${metal.id}`"
-                        :value="metal.id"
-                        v-model="selectedMetals"
+                        name="typeInput"
+                        :id="`metalCheckbox-${type.id}`"
+                        :value="type.id"
+                        v-model="selectedType"
                     />
                 </label>
 

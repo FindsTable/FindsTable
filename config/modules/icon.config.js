@@ -21,6 +21,8 @@ export default {
         'content': 'material-symbols:deployed-code-outline-sharp',
         'cookieSettings': 'mdi:cookie-cog-outline',
         'crop': 'material-symbols:frame-person-outline-rounded',
+        'datePrecise': 'material-symbols:event',
+        'dateRange': 'material-symbols:calendar-month',
         'delete': 'material-symbols:delete-outline-rounded',
         'device': 'material-symbols:devices-outline',
         'edit': 'material-symbols:edit',

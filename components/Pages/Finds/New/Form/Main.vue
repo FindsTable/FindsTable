@@ -1,8 +1,10 @@
 <script setup>
+const { t } = useI18n()
 const title = ref('')
 const selectedMetals = ref([])
 const selectedImages = ref()
 const selectedPeriod = ref()
+const selectedType = ref()
 
 const dating = ref({
     markedYear: null,
@@ -27,13 +29,12 @@ const parsedMetals = computed(() => {
 function stringifiedFindItem() {
     return JSON.stringify({
         title: title.value,
+        type: selectedType.value,
         dating_range_from: dating.value.range.from,
         dating_range_to: dating.value.range.to,
         metals: parsedMetals.value,
         dating_period: selectedPeriod.value,
-        dating_year_marked: dating.value.markedYear,
-        // dating_year_from: dating.value.range.from,
-        // dating_year_to: dating.value.range.to
+        dating_year_marked: dating.value.markedYear
     });
 }
 
@@ -81,37 +82,51 @@ async function saveNewFind() {
 </script>
 
 <template>
-    <ArchitecturePanelMain>
-        <TH2>
-            Tell us about your find
-        </TH2>
+    <form class="flex column gap20 marTop20">
+        <ArchitecturePanelMain>
+            <TH2 class="sectionTitle">
+                {{ t('page.finds.newFind.sections.description.title') }}
+            </TH2>
 
-        <p>
-            {{ {
-                title, selectedMetals,selectedImages,selectedPeriod
-            } }}
-        </p>
-        
-        <form class="flex column gap20 marTop20">
-            <PagesFindsNewFormTitle
-                v-model="title"
-            />
+            <div class="section">
+                <PagesFindsNewFormTitle
+                    v-model="title"
+                />
+                <PagesFindsNewFormType
+                    v-model="selectedType"
+                />
+                <PagesFindsNewFormMetals
+                    v-model="selectedMetals"
+                />
+            </div>
+        </ArchitecturePanelMain>
+            
+        <ArchitecturePanelMain>
+            <TH2 class="sectionTitle">
+                {{ t('page.finds.newFind.sections.dating.title') }}
+            </TH2>
 
-            <PagesFindsNewFormImages
+            <div class="section">
+                <PagesFindsNewFormDating
+                    v-model="dating"
+                />
+
+                <PagesFindsNewFormPeriod
+                    v-model="selectedPeriod"
+                />
+            </div>
+        </ArchitecturePanelMain>
+
+        <ArchitecturePanelMain>
+            <TH2 class="sectionTitle">
+                Images
+            </TH2>
+
+            <div class="section">
+                <PagesFindsNewFormImages
                 v-model="selectedImages"
-            />
-
-            <PagesFindsNewFormDating
-                v-model="dating"
-            />
-
-            <PagesFindsNewFormPeriod
-                v-model="selectedPeriod"
-            />
-
-            <PagesFindsNewFormMetals
-                v-model="selectedMetals"
-            />
+                />
+            </div>
 
             <template class="centered">
                 <button 
@@ -121,11 +136,19 @@ async function saveNewFind() {
                     Submit
                 </button>
             </template>
-        </form>
-    </ArchitecturePanelMain>
+        </ArchitecturePanelMain>
+    </form>
 </template>
 
 <style scoped>
+.sectionTitle {
+    padding-bottom: 5px;
+    border-bottom: 1px solid gray;
+    margin-bottom: 10px;
+}
+.section {
+    margin-left: 5px;
+}
 .fieldSetTitle {
     font-size: 18px;
     font-weight: 700;

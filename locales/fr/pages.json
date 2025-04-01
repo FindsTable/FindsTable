@@ -137,13 +137,64 @@
             }
         },
         "finds": {
-            "newFindForm": {
-                "fields": {
-                    "title": {
-                        "lable": "Titre",
-                        "placeholder": "Pièce en argent"
+            "newFind": {
+                "title": "Nouvelle trouvaille",
+                "pageLead": "Ajoutez vos dernières pièces à la table des trouvailles.",
+                "sections": {
+                    "description": {
+                        "title": "Description",
+                        "fields": {
+                            "title": {
+                                "label": "Titre",
+                                "placeholder": "Pièce en argent"
+                            },
+                            "type": {
+                                "label" : "Type"
+                            },
+                            "metals": {
+                                "label" : "Composition"
+                            },
+                            "dating": {
+                                "preciseYear": {
+                                    "label": "Year",
+                                    "placeholder": 1898
+                                },
+                                "rangeFrom": {
+                                    "label": "From"
+                                },
+                                "rangeTo": {
+                                    "label": "To"
+                                }
+                            }
+                        }
+                    },
+                    "dating": {
+                        "title": "Age",
+                        "tabs": {
+                            "preciseYear": {
+                                "tabText": "Précis",
+                                "description": "Date précise"
+                            },
+                            "rangeOfYears": {
+                                "tabText": "Fourchette",
+                                "description": "Date approximative"
+                            }
+                        },
+                        "fields": {
+                            "preciseYear": {
+                                "label": "Année",
+                                "placeholder": 1898
+                            },
+                            "rangeFrom": {
+                                "label": "Entre"
+                            },
+                            "rangeTo": {
+                                "label": "Et"
+                            }
+                        }
                     }
                 }
+                
             }
         },
         "badges": {

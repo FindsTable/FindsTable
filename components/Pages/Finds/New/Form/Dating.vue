@@ -1,5 +1,6 @@
 <script setup>
-const hasMarkedDate = ref(false)
+const { t, locale } = useI18n();
+
 const dating = defineModel({ 
     type: Object, 
     default: () => ({
@@ -22,21 +23,44 @@ function handleClick() {
         dating.value.range.to = null
     }
 }
+
+const selectedTabModel = ref()
+const pageTabs = [
+    {
+        value: "year",
+        displayText: "Year",
+        textPath: "page.finds.newFind.sections.dating.tabs.preciseYear.tabText",
+        icon: "datePrecise"
+    },
+    {
+        value: "range",
+        displayText: "Range",
+        textPath: "page.finds.newFind.sections.dating.tabs.rangeOfYears.tabText",
+        icon: "dateRange"
+    }
+]
+onMounted(() => {
+    selectedTabModel.value = pageTabs[0].value
+})
 </script>
 
 <template>
-    <div class="flex alignCenter gap20">
+    <ArchitecturePageTabsMain
+        :tabs="pageTabs"
+        v-model="selectedTabModel"
+        class="marTop10"
+    />
+
+    <fieldset  
+        v-if="selectedTabModel === 'year'"
+    >
         <p class="fieldSetTitle">
-            Marked year on the find
+            {{ t('page.finds.newFind.sections.dating.tabs.preciseYear.description') }}
         </p>
 
-        <FormsSwitch @click="handleClick" />
-    </div>
-
-    <fieldset  v-if="hasMarkedDate">
-        <FormsLabel>
+        <FormsLabel class="marTop10">
             <template #label>
-                Year
+                {{ t('page.finds.newFind.sections.dating.fields.preciseYear.label') }}
             </template>
 
             <template #input>
@@ -51,16 +75,24 @@ function handleClick() {
         </FormsLabel>
     </fieldset>
 
-    <fieldset v-else class="marTop20">
-        <p class="fieldSetTitle">Define a range of years</p>
+    <fieldset
+        v-if="selectedTabModel === 'range'" 
+        class="marTop20"
+    >
+        <p class="fieldSetTitle">
+            {{ t('page.finds.newFind.sections.dating.tabs.rangeOfYears.description') }}
+        </p>
 
-        <div class="marTop20 flex gap20">
-            <FormsLabel>
-                <template #label>from</template>
+        <div class="flex gap20">
+            <FormsLabel class="marTop10">
+                <template #label>
+                    {{ t('page.finds.newFind.sections.dating.fields.rangeFrom.label') }}
+                </template>
+
                 <template #input>
                     <FormsInput
                         type="number"
-                        :placeholder="1890"
+                        :placeholder="1899"
                         :min="0"
                         :max="2025"
                         v-model="dating.range.from"
@@ -68,12 +100,15 @@ function handleClick() {
                 </template>
             </FormsLabel>
 
-            <FormsLabel>
-                <template #label>to</template>
+            <FormsLabel class="marTop10">
+                <template #label>
+                    {{ t('page.finds.newFind.sections.dating.fields.rangeTo.label') }}
+                </template>
+
                 <template #input>
                     <FormsInput
                         type="number"
-                        :placeholder="1890"
+                        :placeholder="1905"
                         :min="0"
                         :max="2025"
                         v-model="dating.range.to"
@@ -81,5 +116,6 @@ function handleClick() {
                 </template>
             </FormsLabel>
         </div>
+
     </fieldset>
 </template>

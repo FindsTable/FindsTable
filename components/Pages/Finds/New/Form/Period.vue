@@ -1,4 +1,5 @@
 <script setup>
+const { t, locale } = useI18n();
 const datingPeriods = ref(null)
 const selectedPeriod = defineModel()
 
@@ -26,7 +27,10 @@ onMounted(async () => {
 <template>
     <fieldset class="marTop20">
         <FormsLabel>
-            <template #label>Period</template>
+            <template #label>
+                Period
+            </template>
+            
             <template #input>
                 <select 
                     v-if="datingPeriods"

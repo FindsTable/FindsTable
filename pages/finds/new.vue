@@ -1,23 +1,5 @@
 <script setup>
-
-async function saveNewFind() {
-
-    const res = await useNuxtApp().$items.create({
-        collection: 'Finds',
-        body: {
-            title: "This is a test 2.",
-            metals: [
-                { Metals_id: "iron" }
-            ]
-        },
-        query: {
-            fields: 'id,owner,metals.*'
-        }
-    })
-
-    console.log(res.data)
-}
-
+const { t } = useI18n()
 
 definePageMeta({
     title: 'New Find',
@@ -29,11 +11,11 @@ definePageMeta({
 <template>
     <NuxtLayout name="private-route">
         <template #title>
-            Add a new find
+            {{ t('page.finds.newFind.title') }}
         </template>
 
         <template #header>
-
+            {{ t('page.finds.newFind.pageLead') }}
         </template>
 
         <template #noScrollMain>
@@ -41,9 +23,6 @@ definePageMeta({
         </template>
 
         <template #scrollMain>
-            <button class="comp-button -filled pointer" @click="saveNewFind">
-                SUBMIT
-            </button>
             <LazyPagesFindsNewFormMain />
         </template>
     </NuxtLayout>

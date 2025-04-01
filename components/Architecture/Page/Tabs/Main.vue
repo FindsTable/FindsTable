@@ -4,6 +4,10 @@ const props = defineProps({
     tabs: {
         type: [{
                 value: String,
+                displayText: {
+                    type: String,
+                    required: false
+                },
                 textPath: String,
                 icon: String
             }
@@ -12,12 +16,14 @@ const props = defineProps({
     },
     selectedTab: {
         type: String,
-        required: true
+        required: false
     }
 })
 const emit = defineEmits(['changeTab'])
+const selectedTabModel = defineModel()
 
 function handleClick(tabValue) {
+    selectedTabModel.value = tabValue
     emit('changeTab', tabValue)
 }
 </script>
@@ -26,9 +32,11 @@ function handleClick(tabValue) {
     <div class="flex gap20">
         <button 
             v-for="tab in tabs" :key="tab.value"
-            @click="handleClick(tab.value)"
+            @click.prevent="handleClick(tab.value)"
             class="comp-button -pageTab"
-            :class="{ '-selected': selectedTab === tab.value }"
+            :class="{ 
+                '-selected': selectedTabModel === tab.value
+            }"
         >
             <span class=" flex gap10 alignCenter">
                 <Icon 

@@ -6,13 +6,13 @@ const title = defineModel()
 <template>
     <FormsLabel>
         <template #label>
-            {{ t('page.finds.newFindForm.fields.title.label') }}
+            {{ t('page.finds.newFind.sections.description.fields.title.label') }}
         </template>
             
         <template #input>
             <FormsInput
                 type="text"
-                :placeholder="t('page.finds.newFindForm.fields.title.placeholder')"
+                :placeholder="t('page.finds.newFind.sections.description.fields.title.placeholder')"
                 :minlength="3"
                 :maxlength="50"
                 spellcheck

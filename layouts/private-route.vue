@@ -27,22 +27,24 @@ const appState = useAppState()
                         </slot>
                     </nav>
 
-                    <main class="overflowScroll -scrollY flex column h100 marTop20">
+                    <main class="overflowScroll -scrollY flex column h100">
                         <TH1>
                             <slot name="title">
 
                             </slot>
                         </TH1>
 
-                        <slot name="header">
+                        <div class="marTop10">
+                            <slot name="header" >
 
-                        </slot>
-
+                            </slot>
+                        </div>
+                        
                         <slot name="noScrollMain">
 
                         </slot>
 
-                        <div class="scrollContentMinHeight marTop20">
+                        <div class="scrollContentMinHeight">
                             <slot name="scrollMain">
 
 

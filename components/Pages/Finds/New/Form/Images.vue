@@ -1,4 +1,5 @@
 <script setup>
+const { t, locale } = useI18n();
 const selectedImages = defineModel()
 const localFiles = ref([null, null])
 
@@ -68,7 +69,9 @@ const triggerFileInput = (index) => {
 
 <template>
   <fieldset>
-    <legend>Add images</legend>
+    <legend class="standardLabel">
+        Add images
+    </legend>
 
     <div class="flex gap10">
       <div
