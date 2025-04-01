@@ -55,8 +55,10 @@ function stringifiedMetaData() {
 
     return JSON.stringify(meta);
 }
-
+const isPending = ref()
 async function saveNewFind() {
+    if(isPending.value === true) return
+    isPending.value = true
     const fD = new FormData();
     fD.append('meta', stringifiedMetaData());
     fD.append('item', stringifiedFindItem());
@@ -66,7 +68,6 @@ async function saveNewFind() {
         }
     }
     
-
     const res = await $fetch(
         '/api/items/finds/create',
         {
@@ -77,12 +78,35 @@ async function saveNewFind() {
             body: fD
         }
     )
-    console.log(res)
+
+    if(res.ok) {
+        useToaster("show", {
+            id: "newFind",
+            type: "success",
+            autoClose: true,
+            message: 'Votre trouvaille a été ajoutée avec succes !',
+            position: "bottom"
+        })
+        console.log(res.data)
+        isPending.value = false
+        // navigateTo(`/finds/${res.data.id}`)
+    } else {
+        useToaster("show", {
+            id: "newFind",
+            type: "error",
+            autoClose: true,
+            message: res.statusText ?? 'An error has occured',
+            position: "bottom"
+        })
+        isPending.value = false
+    }
 }
+const formRef = ref()
+
 </script>
 
 <template>
-    <form class="flex column gap20 marTop20">
+    <form class="flex column gap20 marTop20" ref="formRef">
         <ArchitecturePanelMain>
             <TH2 class="sectionTitle">
                 {{ t('page.finds.newFind.sections.description.title') }}

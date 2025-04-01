@@ -1,34 +1,11 @@
 import { readEvent } from '@/server/apiUtils/readEvent'
 import { createItem } from '@/server/directus/items'
 import { uploadFile } from '@/server/directus/files'
-import { getItemById } from '@/server/directus/items'
+import { getItemById, getItemsByQuery } from '@/server/directus/items'
 import { getMe } from '@/server/directus/users'
 import { ItemObject } from '~/shared/types/dataObjects'
 import { H3Event } from 'h3'
 
-interface MetaImage {
-key: string;
-collection: string;
-role?: string;
-}
-
-interface MetaData {
-collection: string;
-images?: MetaImage[];
-}
-
-interface Cache {
-[key: string]: any;
-meta?: MetaData;
-item?: any;
-itemId?: string;
-}
-
-interface SimpleResponse {
-ok: boolean;
-statusText: string;
-data?: any;
-}
 const findsImagesFolderId = 'b95762e0-8e06-4c21-878c-7ad6213ef2cf'
 
 export default defineEventHandler(async <ExpectedItemObject extends ItemObject>(
@@ -38,22 +15,51 @@ event: H3Event
     const { bearerToken, error: tokenError } = await readEvent(event, ['bearerToken'])
     if (tokenError) return tokenError
 
-    const userId = await getUserId(bearerToken!)
     
+    const activityRecord = await getUserRecord(bearerToken!)
+
+    if (!activityRecord) {
+        return {
+            ok: false,
+            statusText: 'User is not logged in.',
+            data: null
+        }
+    }
+
+    const userId = activityRecord.id
+
     if (!userId) {
         return {
-        ok: false,
-        statusText: 'User is not logged in.',
-        data: null
+            ok: false,
+            statusText: 'User is not logged in.',
+            data: null
+        }
+    }
+    
+    const numOfFinds = await getNumberOfFinds(bearerToken!)
+
+    if(numOfFinds === undefined || numOfFinds === null) {
+        return {
+            ok: false,
+            data: null,
+            statusText: 'YAn error has occured'
+        }
+    }
+
+    if(numOfFinds > 5) {
+        return {
+            ok: false,
+            data: null,
+            statusText: 'You have reached the maximum numner of finds !'
         }
     }
 
     const fd = await readMultipartFormData(event)
     if (!fd) {
         return {
-        ok: false,
-        data: null,
-        statusText: 'No formdata'
+            ok: false,
+            data: null,
+            statusText: 'No formdata'
         }
     }
 
@@ -158,7 +164,10 @@ event: H3Event
     if (itemRes.ok && itemRes.data) {
     return {
         ok: true,
-        data: itemRes.data,
+        data: {
+            item: itemRes.data,
+            record: activityRecord
+        },
         statusText: 'Success'
     }
 
@@ -171,6 +180,28 @@ event: H3Event
     }
   
 })
+async function getNumberOfFinds(bearerToken: string) {
+    const res = await getMe({
+        bearerToken: bearerToken,
+        query: {
+            fields: 'finds'
+        }
+    })
+    if(res.data?.finds) {
+        return res.data.finds.length
+    }
+    return undefined
+}
+async function getUserRecord(bearerToken: string): Promise<any> {
+    const { data } = await getMe({
+        bearerToken: bearerToken,
+        query: {
+            fields: 'id,activityRecord.*'
+        }
+    })
+    console.log(data)
+    return data
+}
 
 // Helper to get user id
 async function getUserId(bearerToken: string): Promise<string | undefined> {
@@ -182,6 +213,7 @@ async function getUserId(bearerToken: string): Promise<string | undefined> {
     })
     return data ? data.id : undefined
 }
+
 
 // Helper to create an item and return its ID.
 async function createItemGetId(collection: string, item: any): Promise<SimpleResponse> {
@@ -214,4 +246,28 @@ function addOwnerId(item : any, id : string) {
         ...item,
         owner: id
     }
+}
+
+interface MetaImage {
+    key: string;
+    collection: string;
+    role?: string;
+}
+
+interface MetaData {
+    collection: string;
+    images?: MetaImage[];
+}
+
+interface Cache {
+    [key: string]: any;
+    meta?: MetaData;
+    item?: any;
+    itemId?: string;
+}
+
+interface SimpleResponse {
+    ok: boolean;
+    statusText: string;
+    data?: any;
 }
