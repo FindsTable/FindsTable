@@ -20,10 +20,7 @@ const props = defineProps({
     }
 })
 const emit = defineEmits(['changeTab'])
-const selectedTabModel = defineModel()
-
 function handleClick(tabValue) {
-    selectedTabModel.value = tabValue
     emit('changeTab', tabValue)
 }
 </script>
@@ -35,7 +32,7 @@ function handleClick(tabValue) {
             @click.prevent="handleClick(tab.value)"
             class="comp-button -pageTab"
             :class="{ 
-                '-selected': selectedTabModel === tab.value
+                '-selected': selectedTab === tab.value
             }"
         >
             <span class=" flex gap10 alignCenter">

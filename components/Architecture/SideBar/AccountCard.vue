@@ -12,7 +12,7 @@ const currentAvatar = computed(() => {
 
 <template>
     <div class="box ">
-        <NuxtLink to="/account" id="sidebarAccountCard" class="
+        <NuxtLink :to="`/users/${user.id}`" id="sidebarAccountCard" class="
                 -bgColor
                 card block pointer relative">
             <ArchitectureTexturePaper file="/textures/paper-150x100.jpg">

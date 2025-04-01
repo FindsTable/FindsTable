@@ -1,4 +1,10 @@
 <script setup>
+const props = defineProps({
+    query: {
+        type: Object
+    }
+})
+
 const requestOffset = ref(0)
 const requestLimit = ref(5)
 const cache = useCache()

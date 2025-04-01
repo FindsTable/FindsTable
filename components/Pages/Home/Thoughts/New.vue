@@ -13,7 +13,7 @@ const fields = [
 
 async function saveNewThought() {
     const res = await useNuxtApp().$items.create({
-        collection: 'Finds',
+        collection: 'Thoughts',
         body: {
             content: newThought.value
         },

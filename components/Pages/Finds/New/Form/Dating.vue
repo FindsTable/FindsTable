@@ -24,7 +24,7 @@ function handleClick() {
     }
 }
 
-const selectedTabModel = ref()
+
 const pageTabs = [
     {
         value: "year",
@@ -39,20 +39,23 @@ const pageTabs = [
         icon: "dateRange"
     }
 ]
-onMounted(() => {
-    selectedTabModel.value = pageTabs[0].value
-})
+const selectedTab = ref(pageTabs[0].value)
+function changeTab(newTab) {
+    selectedTab.value = newTab
+}
 </script>
 
 <template>
     <ArchitecturePageTabsMain
         :tabs="pageTabs"
-        v-model="selectedTabModel"
+        :selectedTab="selectedTab"
+        @changeTab="changeTab"
         class="marTop10"
     />
 
     <fieldset  
-        v-if="selectedTabModel === 'year'"
+        v-if="selectedTab === 'year'"
+        class="marTop20"
     >
         <p class="fieldSetTitle">
             {{ t('page.finds.newFind.sections.dating.tabs.preciseYear.description') }}
@@ -76,7 +79,7 @@ onMounted(() => {
     </fieldset>
 
     <fieldset
-        v-if="selectedTabModel === 'range'" 
+        v-if="selectedTab === 'range'" 
         class="marTop20"
     >
         <p class="fieldSetTitle">
