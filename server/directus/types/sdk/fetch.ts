@@ -23,7 +23,8 @@ type BearerToken = `Bearer ${string}` | string | undefined
 type Query = {
     "fields"?: string,
     "filter"?: object,
-    "aggregate"?: object
+    "aggregate"?: object,
+    "deep"?: object
 }
 type Body = { [key: string]: string | number | boolean | object } | FormData
 

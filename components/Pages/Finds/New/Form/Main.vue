@@ -55,10 +55,13 @@ function stringifiedMetaData() {
 
     return JSON.stringify(meta);
 }
+
 const isPending = ref()
+
 async function saveNewFind() {
-    if(isPending.value === true) return
-    isPending.value = true
+
+    // if(isPending.value === true) return
+    // isPending.value = true
     const fD = new FormData();
     fD.append('meta', stringifiedMetaData());
     fD.append('item', stringifiedFindItem());
@@ -69,7 +72,7 @@ async function saveNewFind() {
     }
     
     const res = await $fetch(
-        '/api/items/finds/create',
+        '/api/content/finds/create',
         {
             method: 'POST',
             headers: {
@@ -88,7 +91,7 @@ async function saveNewFind() {
             position: "bottom"
         })
         console.log(res.data)
-        isPending.value = false
+        // isPending.value = false
         // navigateTo(`/finds/${res.data.id}`)
     } else {
         useToaster("show", {
@@ -98,8 +101,9 @@ async function saveNewFind() {
             message: res.statusText ?? 'An error has occured',
             position: "bottom"
         })
-        isPending.value = false
+        // isPending.value = false
     }
+    // isPending.value = false
 }
 const formRef = ref()
 

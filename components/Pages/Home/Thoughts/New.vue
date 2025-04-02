@@ -8,19 +8,35 @@ const myContent = useUserContent()
 const newThought = ref('')
 
 const fields = [
-    '*'
+    '*', "avatars.image"
 ]
 
 async function saveNewThought() {
-    const res = await useNuxtApp().$items.create({
-        collection: 'Thoughts',
-        body: {
-            content: newThought.value
-        },
-        query: {
-            fields: fields.join(',')
+    console.log('save')
+
+    const res = await $fetch(
+        '/api/content/thoughts/create',
+        {
+            method: 'POST',
+            headers: {
+                authorization: `Bearer ${me.value.accessToken.value}`
+            },
+            body: {
+                content: newThought.value
+            },
+            query: {
+                fields: fields.join(','),
+                // needs to be fixed to get the avatar id to show in the new thought
+                deep: {
+                    avatars: {
+                        _sort: "-currentAt",
+                        _limit: 1
+                    }
+                }
+            }
         }
-    })
+    )
+        console.log(res)
 
     if(res?.data) {
         newThought.value = ''

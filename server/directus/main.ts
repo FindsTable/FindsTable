@@ -109,7 +109,7 @@ interface DirectusAPIParams {
     contentType?: ContentType,
     body?: Body | LoginBody,
     query?: Query,
-    caller?: string
+    caller?: string  // !! I can't remeber what the idea was !!
 }
 
 interface $FetchOptions {

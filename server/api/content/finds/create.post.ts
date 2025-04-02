@@ -5,6 +5,7 @@ import { getItemById, getItemsByQuery } from '@/server/directus/items'
 import { getMe } from '@/server/directus/users'
 import { ItemObject } from '~/shared/types/dataObjects'
 import { H3Event } from 'h3'
+import { countMyItems, itemCountIsValid } from '@/server/directus/validation'
 
 const findsImagesFolderId = 'b95762e0-8e06-4c21-878c-7ad6213ef2cf'
 
@@ -13,9 +14,9 @@ event: H3Event
 ): Promise<ApiResponse<ExpectedItemObject | null>> => {
     // Read event and ensure token exists.
     const { bearerToken, error: tokenError } = await readEvent(event, ['bearerToken'])
+
     if (tokenError) return tokenError
 
-    
     const activityRecord = await getUserRecord(bearerToken!)
 
     if (!activityRecord) {
@@ -36,17 +37,19 @@ event: H3Event
         }
     }
     
-    const numOfFinds = await getNumberOfFinds(bearerToken!)
+    const countValid = await itemCountIsValid({
+        bearerToken: bearerToken!,
+        field: 'finds'
+    })
 
-    if(numOfFinds === undefined || numOfFinds === null) {
+    if(countValid === undefined || countValid === null) {
         return {
             ok: false,
             data: null,
             statusText: 'YAn error has occured'
         }
     }
-
-    if(numOfFinds > 5) {
+    if(!countValid) {
         return {
             ok: false,
             data: null,
