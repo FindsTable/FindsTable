@@ -5,6 +5,7 @@ import {
 
 const $users = useNuxtApp().$users
 const route = useRoute()
+const userId = ref(route.params.id)
 const me = useUserState()
 
 const fields = [
@@ -23,7 +24,8 @@ const fields = [
     'personalDataRecord.*',
     'personalDataRecord.email.*',
     'personalDataRecord.firstName.*',
-    'personalDataRecord.lastName.*'
+    'personalDataRecord.lastName.*',
+    'thoughts.*'
 ];
 const user = ref(null)
 
@@ -62,6 +64,17 @@ function changeTab(newTab) {
 onMounted( async () => {
     user.value = await getUserData()
 })
+
+const albums = [
+    {
+        id: 1,
+        title: 'goldorama'
+    },
+    {
+        id: 2,
+        title: 'Roman treasure'
+    }
+]
 </script>
 
 <template>
@@ -89,7 +102,19 @@ onMounted( async () => {
 
         <template #scrollMain>
             <div class="flex column marTop50">
-                
+                <KeepAlive>
+                    <PagesUsersFinds 
+                        v-if="selectedTab === 'finds'"
+                        :userId="route.params.id"
+                    />
+                </KeepAlive>
+
+                <KeepAlive>
+                    <PagesUsersThoughts 
+                        v-if="selectedTab === 'thoughts'"
+                        :userId="route.params.id"
+                    />
+                </KeepAlive>
             </div>
         </template>
     </NuxtLayout>

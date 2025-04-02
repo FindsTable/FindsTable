@@ -1,7 +1,7 @@
 <script setup>
 const props = defineProps({
     finds: {
-        type: Object
+        type: Array
     },
     requestOffset: Number,
     requestLimit: {
@@ -15,13 +15,21 @@ const emit = defineEmits(['getNextPage'])
 <template>
     <div 
         v-if="finds"
-        class="flex gap20 wrap"
+        class="flex column"
     >
-        <PagesHomeFindsCard 
-            v-for="find in finds" :key="find.id"
-            :find="find"
-            @click="navigateToItemPage(find)"
-        />
+        <template class="flex column">
+            <slot name="albumSelector">
+
+            </slot>
+        </template>
+        
+        <div class="flex gap20 wrap marTop20">
+            <PagesHomeFindsCard 
+                v-for="find in finds" :key="find.id"
+                :find="find"
+                @click="navigateToItemPage(find)"
+            />
+        </div>
     </div>
 
     <div class="centered">

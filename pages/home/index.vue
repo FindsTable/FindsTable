@@ -1,9 +1,4 @@
 <script setup>
-import {
-    PagesHomeThoughtsMain,
-    ArchitecturePageTabsMain as Tabs
-} from '#components'
-
 definePageMeta({
     title: 'Finds Table',
     description: 'Finds Table, a place to show your share of history.',
@@ -27,28 +22,6 @@ function changeTab(tabValue) {
     navigateTo(`/home?content=${tabValue}`)
 }
 
-const pageTabs = [
-    {
-        value: 'finds',
-        textPath: 'page.home.tabs.finds.tab',
-        icon: 'content'
-    },
-    {
-        value: 'thoughts',
-        textPath: 'page.home.tabs.thoughts.tab',
-        icon: 'chat'
-    },
-    {
-        value: 'reports',
-        textPath: 'page.home.tabs.huntReports.tab',
-        icon: "book"
-    },
-    {
-        value: 'articles',
-        textPath: 'page.home.tabs.articles.tab',
-        icon: "article"
-    }
-]
 onMounted(() => {
     selectedTab.value = route.query.content
 })
@@ -57,7 +30,7 @@ onMounted(() => {
 <template>
     <NuxtLayout name="private-route">
         <template #tabs>
-            <Tabs :tabs="pageTabs" :selectedTab="selectedTab" @changeTab="changeTab" />
+            <ArchitecturePageTabsFTHAContent  :selectedTab="selectedTab" @changeTab="changeTab" />
         </template>
 
         <template #title>
