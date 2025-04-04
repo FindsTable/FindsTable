@@ -14,10 +14,18 @@ async function getFinds() {
                 authorization: `Bearer ${me.value.accessToken.value}`
             },
             query: {
-                fields: '*,images.*',
+                fields: '*,images.*,owner.*,owner.avatars.*',
                 filter: {
                     owner: {
                         _eq: props.userId
+                    }
+                },
+                deep: {
+                    owner: {
+                        avatars: {
+                            _sort: "-currentAt",
+                            _limit: 1
+                        }
                     }
                 }
             }

@@ -23,8 +23,8 @@ const emit = defineEmits(['getNextPage'])
             </slot>
         </template>
         
-        <div class="flex gap20 wrap marTop20">
-            <PagesHomeFindsCard 
+        <div class="box flex gap20 wrap marTop20">
+            <ContentFindsCard 
                 v-for="find in finds" :key="find.id"
                 :find="find"
                 @click="navigateToItemPage(find)"
@@ -38,3 +38,7 @@ const emit = defineEmits(['getNextPage'])
         </button>
     </div>
 </template>
+
+<style scoped>
+
+</style>

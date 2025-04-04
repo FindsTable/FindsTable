@@ -2,13 +2,17 @@
 const props = defineProps({
     find: Object
 })
-
+const me = useUserState()
 const activeImageIndex = ref(0)
 
 </script>
 
 <template>
-    <article v-if="find" class="card flex column gap10 pointer">
+    <article v-if="find" class="card flex column gap10 pointer justifyEnd">
+        <ContentFindsCardMiniToolBar
+            v-if="me.id === find.owner.id"
+        />
+
         <div class="imageBox w100 h100 overflowHidden">
             <img
                 v-if="find.images.length" 
@@ -62,14 +66,6 @@ const activeImageIndex = ref(0)
                 <div class="comments">
 
                 </div>
-                <!-- <div class="likes flex alignCenter gap5">
-                    <span class="heart fS12">❤️</span>
-                    <span class="count fS12">24</span>
-                </div>
-                
-                <div class="username fS14 w100 ellipsis">
-                    {{ find.user_created.username }}
-                </div> -->
             </div>
         </footer>
     </article>
@@ -78,6 +74,7 @@ const activeImageIndex = ref(0)
 <style scoped>
 
 .card {
+    align-self: last baseline;
     flex-shrink: 0;
     width: 200px;
     font-family: sans-serif;
