@@ -27,6 +27,7 @@ export default {
         'device': 'material-symbols:devices-outline',
         'edit': 'material-symbols:edit',
         'email': 'material-symbols:alternate-email',
+        'folderCheck': 'material-symbols:folder-check-outline-rounded',
         'error': 'bx:error-alt0',
         'forest': 'material-symbols:forest-outline',
         'fullScreen': 'material-symbols:fullscreen-rounded',
