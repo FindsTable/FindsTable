@@ -25,3 +25,8 @@ logs
 
 # Local Netlify folder
 .netlify
+
+
+# Local ssl certificates
+
+certificates

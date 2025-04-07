@@ -1,10 +1,11 @@
+import { readFileSync } from 'fs'
 const isDev = process.env.NODE_ENV !== 'production'
 const devServerConfig = {
     host: 'dev.findstable.net',
     port: 3000,
     https: {
-    key: './certificates/key.pem',
-    cert: './certificates/cert.pem'
+    key: readFileSync('./certificates/key.pem'),
+    cert: readFileSync('./certificates/cert.pem')
     }
 }
 import i18n from './i18n.config';
