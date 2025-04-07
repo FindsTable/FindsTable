@@ -91,8 +91,9 @@ async function saveNewFind() {
             position: "bottom"
         })
         console.log(res.data)
-        // isPending.value = false
+        isPending.value = false
         // navigateTo(`/finds/${res.data.id}`)
+        navigateTo(`/home?content=finds`)
     } else {
         useToaster("show", {
             id: "newFind",
@@ -101,9 +102,9 @@ async function saveNewFind() {
             message: res.statusText ?? 'An error has occured',
             position: "bottom"
         })
-        // isPending.value = false
+        isPending.value = false
     }
-    // isPending.value = false
+    isPending.value = false
 }
 const formRef = ref()
 

@@ -91,7 +91,7 @@ onMounted(async () => {
         v-if="finds"
         class="flex gap20 wrap"
     >
-        <ContentFindsCard 
+        <ContentFindsCard
             v-for="find in finds" :key="find.id"
             :find="find"
             @click="navigateToItemPage(find)"

@@ -47,25 +47,9 @@ const activeImageIndex = ref(0)
                 :src="`https://admin.findstable.net/assets/${find.owner.avatars[0].image}?key=avatar-tiny-jpg&v=${Date.now()}`"
                 alt="metalhunter avatar" class="avatar"
             />
-<<<<<<< HEAD:components/Pages/Home/Finds/Card.vue
+
             <div>
                 {{ find.owner.displayName }}
-=======
-
-            <div class="infoBox flex column">
-                <div class="likes flex alignCenter gap5">
-                    <WidgetsReactionBoxLikeButton 
-                        :active="true" 
-                        iconSize="14px" 
-                        fontSize="12px"
-                        :count="24"
-                    />
-                </div>
-
-                <div class="comments">
-
-                </div>
->>>>>>> 895705ac5b6605d5e451ce200f883ae6c832112a:components/Content/Finds/Card.vue
             </div>
         </div>
 
