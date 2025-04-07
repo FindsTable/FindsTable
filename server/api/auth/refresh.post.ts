@@ -29,14 +29,26 @@ export default defineEventHandler(async (
         }
     }
 
+    // setCookie(
+    //     event,
+    //     'directus_refresh_token',
+    //     res.data.refresh_token,
+    //     {
+    //         httpOnly: true,
+    //         path: '/',
+    //         maxAge: res.data.expires,
+    //         sameSite: 'strict',
+    //         secure: true
+    //     }
+    // )
     setCookie(
         event,
         'directus_refresh_token',
         res.data.refresh_token,
         {
-            httpOnly: false,
+            httpOnly: true,
             path: '/',
-            maxAge: res.data.expires,
+            maxAge: 604800, // 7 days, this value is set in Directus config : REFRESH_TOKEN_TTL
             sameSite: 'strict',
             secure: true
         }
