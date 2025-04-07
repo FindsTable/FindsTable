@@ -159,6 +159,10 @@
 .fS32 { font-size: 32px; }
 .fS34 { font-size: 34px; }
 
+.pointer {cursor: pointer;}
+.defaultCursor {cursor: default;}
+.noPointer {cursor: not-allowed;}
+.noSelection {user-select: none;}
 .noEvents {
     pointer-events: none;
 }

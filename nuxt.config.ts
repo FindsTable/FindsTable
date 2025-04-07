@@ -4,8 +4,8 @@ const devServerConfig = {
     host: 'dev.findstable.net',
     port: 3000,
     https: {
-    key: readFileSync('./certificates/key.pem'),
-    cert: readFileSync('./certificates/cert.pem')
+    key: readFileSync('./certificates/key.pem', 'utf-8'),
+    cert: readFileSync('./certificates/cert.pem', 'utf-8')
     }
 }
 import i18n from './i18n.config';

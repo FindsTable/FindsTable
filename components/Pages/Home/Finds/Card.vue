@@ -31,47 +31,43 @@ const activeImageIndex = ref(0)
                 {{ find.title }}
             </h2>
 
-            <div class="username fS14 w100 ellipsis">
-                {{ find.owner.displayName }}
-            </div>
-
             <time class="date fS12 weight3" datetime="2025-03-26">
                 {{ useParseDate(find.date_created) }}
             </time>
-
-            
         </header>
 
-        <footer class="w100 flex alignCenter gap5">
+
+        <div class="userBox flex gap10 alignCenter">
             <img
                 v-if="find.owner.avatars"
                 :src="`https://admin.findstable.net/assets/${find.owner.avatars[0].image}?key=avatar-tiny-jpg&v=${Date.now()}`"
                 alt="metalhunter avatar" class="avatar"
             />
-
-            <div class="infoBox flex column">
-                <div class="likes flex alignCenter gap5">
-                    <WidgetsReactionBoxLikeButton 
-                        :active="true" 
-                        iconSize="14px" 
-                        fontSize="12px"
-                        :count="24"
-                    />
-                </div>
-
-                <div class="comments">
-
-                </div>
-                <!-- <div class="likes flex alignCenter gap5">
-                    <span class="heart fS12">❤️</span>
-                    <span class="count fS12">24</span>
-                </div>
-                
-                <div class="username fS14 w100 ellipsis">
-                    {{ find.user_created.username }}
-                </div> -->
+            <div>
+                {{ find.owner.displayName }}
             </div>
-        </footer>
+        </div>
+
+        <div class="infoBox flex justifyEvenly alignCenter gap10">
+            <div class="likes flex alignCenter gap5">
+                <WidgetsReactionBoxLikeButton
+                    :active="!!myLike" 
+                    iconSize="24px" 
+                    fontSize="16px"
+                    likeCollection="Finds_likes"
+                    :likes="find.likes"
+                    :itemId="find.id"
+                />
+            </div>
+
+            <div class="comments flex alignCenter gap5">
+                <Icon name="chat" size="24px" />
+                <span>
+                    {{ find.comments?.length || 0 }} 
+                </span>
+            </div>
+        </div>
+
     </article>
 </template>
 
@@ -79,7 +75,7 @@ const activeImageIndex = ref(0)
 
 .card {
     flex-shrink: 0;
-    width: 200px;
+    width: 250px;
     font-family: sans-serif;
     background-color: #3f3f3f;
     padding: 12px;
@@ -89,7 +85,8 @@ const activeImageIndex = ref(0)
 }
 
 .imageBox {
-    height: 160px;
+    width: 100%;
+    aspect-ratio: 1;
     border-radius: 12px;
     overflow: hidden;
 }
@@ -101,10 +98,13 @@ const activeImageIndex = ref(0)
     object-fit: cover;
 }
 
-.infoBox {
-    width: calc(100% - 34px);
+.userBox {
+    border-top: 1px solid rgba(255, 255, 255, 0.29);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.29);
+    padding: 7px 0;
+    /* margin-top: 8px;
+    margin-bottom: 8px; */
 }
-
 .likes {
     flex-shrink: 0;
 }

@@ -17,7 +17,8 @@ const fields = [
     'owner.displayName',
     'owner.username',
     'date_created',
-    'images.*'
+    'images.*',
+    'likes.*'
 ]
 
 async function getFinds() {
@@ -42,7 +43,7 @@ async function getFinds() {
     if(res?.toaster) {
         useToaster("show", res.toaster)
     }
-
+    console.log(res.data)
     if (res?.data) {
         return res.data
     }

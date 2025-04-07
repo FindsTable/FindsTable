@@ -2,7 +2,9 @@ import { getMe } from '@/server/directus/users'
 
 export {
     countMyItems,
-    itemCountIsValid
+    itemCountIsValid,
+    accessTokenIsValid,
+    getUserId
 }
 interface MaxItemCount {
     "finds" : number,
@@ -80,3 +82,26 @@ async function itemCountIsValid(p : {
   
     return firstItem.count;
   }
+
+
+async function getUserId(bearerToken: string): Promise<string | undefined> {
+    const { data } = await getMe({
+        bearerToken: bearerToken,
+        query: {
+        fields: 'id'
+        }
+    })
+
+    return data ? data.id : undefined
+}
+
+async function accessTokenIsValid(bearerToken: string): Promise<boolean> {
+    const { data } = await getMe({
+        bearerToken: bearerToken,
+        query: {
+            fields: 'id'
+        }
+    })
+
+    return data?.id ? true : false
+}
