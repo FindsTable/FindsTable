@@ -2,20 +2,21 @@
 import { ArchitectureOverlayToastersToast as Toast } from '#components';
 const toasters = useToasters()
 
-const props = defineProps({
-    position: {
-        type: String,
-        required: false
-    },
-    id: {
-        type: String,
-        required: true
-    },
-    type: {
-        type: String,
-        required: false
-    }
-})
+// const props = defineProps({
+//     position: {
+//         type: String,
+//         required: false
+//     },
+//     id: {
+//         type: String,
+//         required: true
+//     },
+//     type: {
+//         type: String,
+//         required: false
+//     }
+// })
+
 const tempToasters = {
     top: {
         position: 'top',
@@ -26,7 +27,6 @@ const tempToasters = {
         toasts: []
     }
 }
-
 const parsedToasters = computed(() => {
     const toasterIds = Object.keys(toasters.value)
 

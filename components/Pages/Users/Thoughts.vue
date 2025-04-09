@@ -20,7 +20,6 @@ const fields = [
 ]
 
 async function getThoughts() {
-    console.log('getting thoughts')
     const res = await $fetch(
         'https://admin.findstable.net/items/Thoughts',
         {
@@ -87,7 +86,7 @@ onMounted(async () => {
 <template>
     <ContentThoughtsMain 
         v-if="thoughts"
-        :_thoughts="thoughts"
+        :thoughts="thoughts"
     />
 </template>
 

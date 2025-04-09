@@ -15,23 +15,23 @@ export default defineEventHandler(async (
 
     if (error) return error
 
-    // const emailVerified = await emailIsVerified(reqBody.email)
-    // console.log('email verified ?', emailIsVerified)
+    const emailVerified = await emailIsVerified(reqBody.email)
+    console.log('email verified ?', emailIsVerified)
 
-    // if(!emailVerified) {
-    //     return newResponse({
-    //         ok: false,
-    //         status: 400,
-    //         statusText: 'Bad Request',
-    //         feedback: {
-    //             toaster: {
-    //                 messagePath: 'error.auth.badCredentials',
-    //                 type: 'error'
-    //             }
-    //         },
-    //         data: null
-    //     })
-    // }
+    if(!emailVerified) {
+        return newResponse({
+            ok: false,
+            status: 400,
+            statusText: 'Bad Request',
+            feedback: {
+                toaster: {
+                    messagePath: 'error.auth.badCredentials',
+                    type: 'error'
+                }
+            },
+            data: null
+        })
+    }
 
     const res = await loginWithEmailAndPassword(reqBody.email, reqBody.password)
     
@@ -48,7 +48,8 @@ export default defineEventHandler(async (
             path: '/',
             maxAge: 604800, // 7 days, this value is set in Directus config : REFRESH_TOKEN_TTL
             sameSite: 'strict',
-            secure: true
+            secure: true,
+            domain: '.findstable.net'
         }
     )
     setCookie(
@@ -64,24 +65,6 @@ export default defineEventHandler(async (
             domain: '.findstable.net'
         }
     )
-    // if(useRuntimeConfig().APP_CONTEXT === "DEVELOPEMENT") {
-    //     setCookie(event, 'directus_session_token', res.data.access_token, {
-    //         httpOnly: true,
-    //         secure: true,
-    //         sameSite: 'strict',
-    //         path: '/',
-    //         maxAge: 3600
-    //     })
-    // } else if(useRuntimeConfig().APP_CONTEXT === "PRODUCTION") {
-    //     setCookie(event, 'directus_session_token', res.data.access_token, {
-    //         httpOnly: true,
-    //         secure: true,
-    //         sameSite: 'lax',
-    //         path: '/',
-    //         maxAge: 3600,
-    //         domain: '.findstable.net'
-    //     })
-    // }
     
     return newResponse({
         ok: true,

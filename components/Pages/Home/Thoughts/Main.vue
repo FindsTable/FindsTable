@@ -18,8 +18,7 @@ const fields = [
 ]
 
 async function getThoughts() {
-    console.log('getting thoughts')
-    const res = await useNuxtApp().$items.getByQuery({
+    const thoughts = await useGetItems({
         collection: 'Thoughts',
         query: {
             fields: fields.join(','),
@@ -37,8 +36,8 @@ async function getThoughts() {
         }
     })
 
-    if (res?.data) {
-        return res.data
+    if (thoughts) {
+        return thoughts
     }
 
 }
@@ -82,41 +81,19 @@ onMounted(async () => {
         ...thoughts.value,
         ...res
     ]
-    useSetCacheData('thoughts', thoughts.value)
+    // useSetCacheData('thoughts', thoughts.value)
 })
+function thoughtDeleted() {
 
+}
 </script>
 
 <template>
-    <PagesHomeThoughtsNew 
-        @newThoughtPosted="newThoughtPosted"
+    <ContentThoughtsMain
+        v-if="thoughts.length"
+        :thoughts="thoughts"
+        @getNextPage="getNextPage"
     />
-
-    <div v-if="newThoughts">
-        <div
-            v-for="thought in newThoughts" :key="thought.id" 
-        >
-            <PagesHomeThoughtsThought :thought="thought" @thoughtDeleted="thoughtDeleted" />
-        </div>
-    </div>
-
-    <div v-if="thoughts" class="arch_scrollBottonPadding">
-        <div
-            v-for="thought in thoughts" :key="thought.id" 
-        >
-
-            <PagesHomeThoughtsThought :thought="thought" @thoughtDeleted="thoughtDeleted" />
-        </div>
-
-        <div class="centered">
-            <button 
-                class="comp-button -filled marTop20 font-text -main"
-                @click="getNextPage"
-            >
-                next page
-            </button>
-        </div>
-    </div>
 </template>
 
 <style scoped>

@@ -51,7 +51,7 @@ async function itemCountIsValid(p : {
       query: {
         fields: p.field,
         deep: {
-          finds: {
+          [p.field]: {
             _aggregate: { count: '*' }
           }
         }
@@ -59,6 +59,7 @@ async function itemCountIsValid(p : {
     });
   
     // If no response or missing data, return undefined
+    console.log(res.data)
     if (!res?.data) {
       return undefined;
     }

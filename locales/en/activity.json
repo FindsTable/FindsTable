@@ -36,5 +36,29 @@
                 "plural": "Likes"
             }
         }
+    },
+    "notifications":  {
+        "notification": {
+            "singular": "Notification",
+            "plural": "Notifications"
+        },
+        "actions": {
+            "liked": "liked",
+            "commented": "commented on",
+            "followingYou": "started following you",
+            "posted": "posted",
+            "signedUp": "signed up"
+        },
+        "content": {
+            "you": "you",
+            "yourFind": "you find",
+            "findYouCommented": "a find you have commented",
+            "findYouLiked": "a find you have liked",
+            "yourThought": "your thought",
+            "thoughtYouCommented": "a thought you have commented",
+            "thoughtYouLiked": "a thought you have liked",
+            "yourComment": "your comment",
+            "findsTable": "Finds Table"
+        }
     }
 }

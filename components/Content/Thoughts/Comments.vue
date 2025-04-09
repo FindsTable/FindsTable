@@ -22,7 +22,7 @@ const { data: comments, refresh } = useAsyncData(
             collection: 'Thoughts_comments',
             query: {
                 filter: {
-                    thought: {
+                    item: {
                         _eq: props.thought.id
                     }
                 },

@@ -11,7 +11,7 @@ async function handleClick() {
         collection: 'Thoughts_comments',
         body: {
             content: comment.value,
-            thought: props.thoughtId
+            item: props.thoughtId
         },
         query: {
             fields: '*'

@@ -13,6 +13,10 @@ export const useAppState = () => {
             campaign: {
                 tiers: any[]
             }
+        },
+        findViewer: {
+            active: boolean,
+            cardSize: 'image' | 'small' | 'medium' | 'large'
         }
     }>(
         'appState',
@@ -30,7 +34,29 @@ export const useAppState = () => {
                 campaign: {
                     tiers: [],
                 }
+            },
+            findViewer: {
+                active: false,
+                cardSize: 'small'
             }
         })
     );
+}
+
+export function useActivateRouteWatcher() {
+    const appState = useAppState()
+    const route = useRoute()
+
+    const handleRouteChange = () => {
+        console.log(route.fullPath)
+        if(route.fullPath.includes('content=finds')) {
+            appState.value.findViewer.active = true
+        } else {
+            appState.value.findViewer.active = false
+        }
+    }
+
+    handleRouteChange()
+
+    watch(() => route.fullPath, handleRouteChange)
 }

@@ -38,7 +38,7 @@ definePageMeta({
 
             <div class="centered marTop20">
                 <NuxtLink class="block comp-button -text patreonLink flex alignCenter justifyCenter pointer"
-                    to="https://www.patreon.com/Findstable" external="true">
+                    to="https://www.patreon.com/Findstable" :external="true">
                     <img class="logo r h100" src="/patreon/PATREON_SYMBOL_1_BLACK_RGB.png" alt="">
                     <img class="word h100" src="/patreon/PATREON_WORDMARK_1_BLACK_RGB.png" alt="">
                 </NuxtLink>

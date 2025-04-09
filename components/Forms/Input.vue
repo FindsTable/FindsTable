@@ -4,7 +4,7 @@ const props = defineProps({
     maxValue: Number,
     minValue: Number,
     step: Number,
-    placeholder: String,
+    placeholder: String | Number,
     minlength: Number,
     maxlength: Number,
     spellcheck: Boolean,

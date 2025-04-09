@@ -36,5 +36,31 @@
                 "plural": "approbations"
             }
         }
+    },
+    "notifications":  {
+        "notification": {
+            "singular": "Notification",
+            "plural": "Notifications"
+        },
+        "actors": {
+            "user": "utilisateur",
+            "users": "utilisateurs"
+        },
+        "actions": {
+            "liked": "aime",
+            "commented": "a commenté",
+            "followingYou": "a commencé à vous suivre",
+            "posted": "a publié"
+        },
+        "content": {
+            "you": "you",
+            "yourFind": "you find",
+            "findYouCommented": "a find you have commented",
+            "findYouLiked": "a find you have liked",
+            "yourThought": "your thought",
+            "thoughtYouCommented": "a thought you have commented",
+            "thoughtYouLiked": "a thought you have liked",
+            "yourComment": "your comment"
+        }
     }
 }

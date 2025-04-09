@@ -28,17 +28,6 @@ const newCommentsCount = ref(0)
 function emit_updateNewCommentsCount(increment) {
     newCommentsCount.value += increment
 }
-
-const myComputedLikeId = computed(() => {
-    const myLike = localThought.value.likes.find(like => like.owner === me.value.id)
-    return myLike ? myLike.id : undefined
-})
-function emit_deleteLike(myLikeId) {
-    localThought.value.likes = localThought.value.likes.filter( like => like.id !== myLikeId)
-}
-function emit_addNewLike(newLike) {
-    localThought.value.likes.push(newLike)
-}
 </script>
 
 <template>
@@ -64,19 +53,17 @@ function emit_addNewLike(newLike) {
             {{  thought.content }}
         </p>
 
-        <WidgetsReactionBoxMain
-            :itemId="localThought.id"
+        <WidgetsLikesAndCommentsMain
+            fonSize="16px"
+            iconSize="20px"
             collection="Thoughts"
-            :commentCount="localThought.comments.length + newCommentsCount"
-            :likeCount="localThought.likes.length"
-            :myLikeId="myComputedLikeId"
-            @toggleComments="showComments = !showComments"
-            @deletedLike="emit_deleteLike"
-            @createdLike="emit_addNewLike"
-        />        
+            :item="thought"
+            :likeClick="true"
+            :commentClick="true"
+        />
 
         <KeepAlive>
-            <PagesHomeThoughtsComments 
+            <ContentThoughtsComments 
                 v-if="showComments"
                 :thought="thought"
                 @closeComments="showComments = false"

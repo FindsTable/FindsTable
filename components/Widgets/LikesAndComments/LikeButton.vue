@@ -7,7 +7,7 @@ const props = defineProps({
         default: false
     },
     likeCollection: String,
-    itemId: String,
+    itemId: String | Number,
     likes: Array
 })
 
@@ -20,14 +20,16 @@ const myLike = computed(() => {
 })
 
 const isPending = ref(false)
-async function handleLikeClick(findId) {
+
+async function handleClick(itemId) {
+
     if (isPending.value) return
     isPending.value = true
 
     const params = {
         action: myLike.value ? 'unlike' : 'like',
         collection: props.likeCollection,
-        itemId: findId,
+        itemId: itemId,
         likeId: myLike.value?.id
     };
 
@@ -44,16 +46,14 @@ async function handleLikeClick(findId) {
     }
     isPending.value = false
 }
-onMounted(() => {
-    console.log(props.likes)
-})
+
 </script>
 
 <template>
-    <div
+    <button
         v-if="likes"
-        @click.stop.prevent="handleLikeClick(itemId)" 
-        class="box flex alignCenter gap5 pointer"
+        @click.stop.prevent="handleClick(itemId)" 
+        class="btn flex alignCenter gap5 pointer"
     >
         <Icon 
             :name="myLike ? 'heartFull' : 'heartEmpty'" 
@@ -67,18 +67,20 @@ onMounted(() => {
             v-if="localLikes.length" 
             class="count"
         >
-            {{ localLikes.length }}
+            {{ localLikes.length ? localLikes.length : '' }}
         </span>
-    </div>
+    </button>
 </template>
 
 <style scoped>
-.box {
+.btn {
     height: 40px;
+    background-color: transparent;
+        color: var(--textButton-textColor);
     padding: 5px 8px;
     border-radius: 5px;
 }
-.box:hover {
+.btn:hover {
     background-color: rgba(128, 128, 128, 0.468);
 }
 .count {

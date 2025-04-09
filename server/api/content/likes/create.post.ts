@@ -1,6 +1,7 @@
 import { getUserId } from '@/server/directus/validation'
 import { readEvent } from '@/server/apiUtils/readEvent'
 import { createItem } from '@/server/directus/items'
+import { createNotification } from '@/server/directus/notifications'
 
 const likeCollections = [
     'Finds_likes',
@@ -37,7 +38,6 @@ event: H3Event
         }
     }
 
-
     const uniqueKey = `${userId}-${body.itemData.find}}`
 
     const res = await createItem({
@@ -46,13 +46,36 @@ event: H3Event
         body: {
             ...body.itemData,
             unique_key: uniqueKey
+        },
+        query: {
+            fields: 'user, item.owner, item.id'
         }
     })
+    console.log(res)
+    if(!res?.data) {
+        return {
+            ok: false,
+            statusText: 'No data returned',
+            data: null
+        }
+    }
 
+    // buildNotification(res.data)
 
     return {
         ok: true,
         statusText: 'Token is valid',
-        data: null
+        data: res
     }
 })
+
+function buildNotification(likeData : any) {
+
+    console.log(likeData)
+    // const notif = {
+    //     user_for: '',
+    //     user_from: item.user,
+    //     action: '',
+    //     content: ''
+    // }
+}

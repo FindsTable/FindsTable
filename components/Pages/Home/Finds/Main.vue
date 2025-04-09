@@ -18,11 +18,12 @@ const fields = [
     'owner.username',
     'date_created',
     'images.*',
-    'likes.*'
+    'likes.*',
+    'comments.*'
 ]
 
 async function getFinds() {
-    const res = await useNuxtApp().$items.directGetByQuery({
+    const res = await useGetItems({
         collection: 'Finds',
         query: {
             fields: fields.join(','),
@@ -35,17 +36,13 @@ async function getFinds() {
                 }
             },
             sort: "-date_created",
-            offset: requestOffset.value,
-            limit: requestLimit.value
+            // offset: requestOffset.value,
+            // limit: requestLimit.value
         }
     })
 
-    if(res?.toaster) {
-        useToaster("show", res.toaster)
-    }
-    console.log(res.data)
-    if (res?.data) {
-        return res.data
+    if (res) {
+        return res
     }
 }
 
@@ -67,40 +64,21 @@ function navigateToItemPage(find) {
     
 }
 
+async function refreshThoughts() {
+    console.log('refreshing')
+    finds.value = await getFinds()
+}
+
 onMounted(async () => {
-    // const cacheData = useGetCachedData('finds')
-
-    // if (cacheData) {
-    //     finds.value = cacheData
-    //     return
-    // }
-
-    const res = await getFinds()
-
-    finds.value = [
-        ...finds.value,
-        ...res
-    ]
-    // useSetCacheData('finds', finds.value)
+    await refreshThoughts()
 })
 
 </script>
 
 <template>
-    <div 
-        v-if="finds"
-        class="flex gap20 wrap"
-    >
-        <ContentFindsCard
-            v-for="find in finds" :key="find.id"
-            :find="find"
-            @click="navigateToItemPage(find)"
-        />
-    </div>
-
-    <div class="centered">
-        <button class="comp-button -filled marTop20 font-text -main" @click="getNextPage">
-            next page
-        </button>
-    </div>
+    <ContentFindsMain
+        :finds="finds"
+        @getNextPage="getNextPage"
+        @refresh="refreshThoughts"
+    />
 </template>

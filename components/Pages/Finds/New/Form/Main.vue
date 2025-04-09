@@ -90,7 +90,7 @@ async function saveNewFind() {
             message: 'Votre trouvaille a été ajoutée avec succes !',
             position: "bottom"
         })
-        console.log(res.data)
+
         isPending.value = false
         // navigateTo(`/finds/${res.data.id}`)
         navigateTo(`/home?content=finds`)

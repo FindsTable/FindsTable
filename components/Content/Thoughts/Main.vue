@@ -1,6 +1,6 @@
 <script setup>
 const props = defineProps({
-    _thoughts: Array
+    thoughts: Array
 })
 const emit = defineEmits(['getNextPage'])
 const cache = useCache()
@@ -20,15 +20,18 @@ function newThoughtPosted(newThought) {
     // useSetCacheData('thoughts', thoughts.value)
 }
 
-const thoughts = computed(() => {
+const _thoughts = computed(() => {
     return [
-    ...newThoughts.value,
-        ...props._thoughts
+        ...newThoughts.value,
+        ...props.thoughts
     ]
 })
 
 function getNextPage() {
     emit('getNextPage')
+}
+function thoughtDeleted() {
+
 }
 </script>
 
@@ -37,17 +40,17 @@ function getNextPage() {
         @newThoughtPosted="newThoughtPosted"
     />
 
-    <div v-if="newThoughts">
+    <!-- <div v-if="newThoughts">
         <div
             v-for="thought in newThoughts" :key="thought.id" 
         >
             <ContentThoughtsThought :thought="thought" @thoughtDeleted="thoughtDeleted" />
         </div>
-    </div>
+    </div> -->
 
-    <div v-if="thoughts" class="arch_scrollBottonPadding">
+    <div v-if="_thoughts" class="arch_scrollBottonPadding">
         <div
-            v-for="thought in thoughts" :key="thought.id" 
+            v-for="thought in _thoughts" :key="thought.id" 
         >
 
             <ContentThoughtsThought :thought="thought" @thoughtDeleted="thoughtDeleted" />

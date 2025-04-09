@@ -53,7 +53,7 @@ definePageMeta({
 });
 
 const itsMe = computed(() => {
-    return me.id === route.params.id
+    return me.value.id === route.params.id
 })
 const selectedTab = ref("finds")
 

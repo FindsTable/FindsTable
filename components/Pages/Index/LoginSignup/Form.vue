@@ -37,10 +37,10 @@ const username = ref({
         }, 1000)
     }
 })
+
 const email = ref('')
 const password = ref('')
 const passwordConfirmation = ref('')
-
 const passwordsAreIdentical = computed(() => {
     return password.value === passwordConfirmation.value
 })
@@ -85,7 +85,6 @@ const submitMethods = {
                 autoClose: true,
                 position: 'bottom'
             })
-            // navigateTo('/home/thoughts')
             navigateTo(useAppConfig().welcomeUrl)
         }
     },

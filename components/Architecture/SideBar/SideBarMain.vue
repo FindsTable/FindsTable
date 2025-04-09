@@ -23,6 +23,8 @@ import { ArchitectureSideBarLegalLinks, WidgetsFullScreenMain as FullScreen } fr
 
         <ArchitectureSideBarLinksMain />
 
+        <ArchitectureSideBarAppSettingsMain />
+
         <div class="flex column">
             <div class="optionBar flex alignCenter">
                 <WidgetsLogout />
@@ -37,6 +39,9 @@ import { ArchitectureSideBarLegalLinks, WidgetsFullScreenMain as FullScreen } fr
             <ArchitectureSideBarAccountCard />
 
             <ArchitectureSideBarLegalLinks />
+
+
+
         </div>
     </div>
 </template>

@@ -26,35 +26,35 @@ onMounted(async () => {
 
 <template>
     <fieldset class="marTop20">
-            <legend class="standardLabel">
-                {{ t('page.finds.newFind.sections.description.fields.metals.label') }}
-            </legend>
+        <legend class="standardLabel">
+            {{ t('page.finds.newFind.sections.description.fields.metals.label') }}
+        </legend>
 
-            <div class="flex wrap gap20 marTop20">
-                <label
-                    v-for="metal in metals"
-                    :key="metal.id"
-                    :for="`metalCheckbox-${metal.id}`"
-                    class="metalTouchArea flex alignCenter gap10 pointer"
-                    :class="{ 'selected': selectedMetals.includes(metal.id) }"
-                >
-                    <span class="customCheckBox">
-                        <Icon class="checkIcon" name="check" :style="{ opacity: selectedMetals.includes(metal.id) ? 1 : 0 }" />
-                    </span>
+        <div class="flex wrap gap20 marTop20">
+            <label
+                v-for="metal in metals"
+                :key="metal.id"
+                :for="`metalCheckbox-${metal.id}`"
+                class="metalTouchArea flex alignCenter gap10 pointer"
+                :class="{ 'selected': selectedMetals.includes(metal.id) }"
+            >
+                <span class="customCheckBox">
+                    <Icon class="checkIcon" name="check" :style="{ opacity: selectedMetals.includes(metal.id) ? 1 : 0 }" />
+                </span>
 
-                    <span>{{ metal.name || metal.id }}</span>
+                <span>{{ metal.name || metal.id }}</span>
 
-                    <input
-                        type="checkbox"
-                        class="inputCheckBox"
-                        :id="`metalCheckbox-${metal.id}`"
-                        :value="metal.id"
-                        v-model="selectedMetals"
-                    />
-                </label>
+                <input
+                    type="checkbox"
+                    class="inputCheckBox"
+                    :id="`metalCheckbox-${metal.id}`"
+                    :value="metal.id"
+                    v-model="selectedMetals"
+                />
+            </label>
 
-            </div>
-        </fieldset>
+        </div>
+    </fieldset>
 </template>
 
 <style scoped>

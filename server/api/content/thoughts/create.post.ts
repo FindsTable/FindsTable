@@ -60,7 +60,9 @@ event: H3Event
             ...body,
             owner: userId
         },
-        query: query
+        query: {
+            fields: '*,owner.avatar,owner.username'
+        }
     })
 
     if(!res?.data) {

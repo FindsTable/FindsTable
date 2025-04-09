@@ -22,7 +22,7 @@ async function uploadFile(
     })
 
     if(!res.data) {
-        return handleNoDataError('No data returned in /files => uplaodFile()')
+        return handleNoDataError('No data returned in /files => uploadFile()')
     }
 
     return res

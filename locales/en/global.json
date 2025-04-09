@@ -36,5 +36,13 @@
     "auth": {
         "login": "Connexion",
         "signup": "Inscription"
+    },
+    "sideBarLinks": {
+        "users": "Users",
+        "finds": "Finds",
+        "newFind": "New Find",
+        "thoughts": "Thoughts",
+        "badges": "Badges",
+        "notifications": "Notifications"
     }
 }

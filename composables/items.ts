@@ -12,11 +12,11 @@ async function useGetItems(p : {
     const res : DirectusRes = await $fetch(
         `${useAppConfig().directusUrl}/items/${p.collection}`,
         {
-            method: 'POST',
+            method: 'GET',
             headers: {
                 authorization: `Bearer ${useUserState().value.accessToken.value}`
             },
-            body: p.query
+            query: p.query
         }
     )
 

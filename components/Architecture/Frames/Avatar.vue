@@ -34,7 +34,7 @@ const src = computed(() => {
 <template>
     <div 
         :class="{
-            'current': imageId === useUserState().value.avatar,
+            'current': fileId === useUserState().value.avatar,
             'pointer': pointer,
             'round' : round === true
         }"

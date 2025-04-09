@@ -2,6 +2,7 @@
 const props = defineProps({
     find: Object
 })
+const emit = defineEmits(['deleteFind'])
 const me = useUserState()
 const activeImageIndex = ref(0)
 
@@ -9,29 +10,18 @@ const activeImageIndex = ref(0)
 
 <template>
     <article v-if="find" class="card flex column gap10 pointer justifyEnd">
-        <ContentFindsCardMiniToolBar
-            v-if="me.id === find.owner.id"
-        />
+        <ContentFindsCardMiniToolBar v-if="me.id === find.owner.id" @deleteFind="emit('deleteFind')" />
 
         <div class="imageBox w100 h100 overflowHidden">
-            <img
-                v-if="find.images.length" 
-                :src="`https://admin.findstable.net/assets/${find.images[activeImageIndex].directus_files_id}?key=find-small-jpg&v=${Date.now()}`" alt=""
-                class="image w100 objectFitCover"
-            >
-            <img
-                v-else
-                :src="`/images/find-no-image.png`" alt=""
-                class="image w100 objectFitCover"
-            >
-                
+            <img v-if="find.images.length"
+                :src="`https://admin.findstable.net/assets/${find.images[activeImageIndex].directus_files_id}?key=find-250-jpg`"
+                alt="" class="image w100 objectFitCover">
+            <img v-else :src="`/images/find-no-image.png`" alt="" class="image w100 objectFitCover">
+
         </div>
 
         <header class="header row justifyBetween alignStart">
-            <h2 
-                v-if="find.title" 
-                class="title fS16 weight6 ellipsis"
-            >
+            <h2 v-if="find.title" class="title fS16 weight6 ellipsis">
                 {{ find.title }}
             </h2>
 
@@ -42,11 +32,9 @@ const activeImageIndex = ref(0)
 
 
         <div class="userBox flex gap10 alignCenter">
-            <img
-                v-if="find.owner.avatars"
+            <img v-if="find.owner.avatars"
                 :src="`https://admin.findstable.net/assets/${find.owner.avatars[0].image}?key=avatar-tiny-jpg&v=${Date.now()}`"
-                alt="metalhunter avatar" class="avatar"
-            />
+                alt="metalhunter avatar" class="avatar" />
 
             <div>
                 {{ find.owner.displayName }}
@@ -55,20 +43,13 @@ const activeImageIndex = ref(0)
 
         <div class="infoBox flex justifyEvenly alignCenter gap10">
             <div class="likes flex alignCenter gap5">
-                <WidgetsReactionBoxLikeButton
-                    :active="!!myLike" 
-                    iconSize="24px" 
-                    fontSize="16px"
-                    likeCollection="Finds_likes"
-                    :likes="find.likes"
-                    :itemId="find.id"
-                />
+
             </div>
 
             <div class="comments flex alignCenter gap5">
                 <Icon name="chat" size="24px" />
                 <span>
-                    {{ find.comments?.length || 0 }} 
+                    {{ find.comments?.length || 0 }}
                 </span>
             </div>
         </div>
@@ -77,7 +58,6 @@ const activeImageIndex = ref(0)
 </template>
 
 <style scoped>
-
 .card {
     align-self: last baseline;
     flex-shrink: 0;
@@ -111,6 +91,7 @@ const activeImageIndex = ref(0)
     /* margin-top: 8px;
     margin-bottom: 8px; */
 }
+
 .likes {
     flex-shrink: 0;
 }

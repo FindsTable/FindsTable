@@ -7,10 +7,6 @@ const myContent = useUserContent()
 
 const newThought = ref('')
 
-const fields = [
-    '*', "avatars.image"
-]
-
 async function saveNewThought() {
     console.log('save')
 
@@ -23,20 +19,11 @@ async function saveNewThought() {
             },
             body: {
                 content: newThought.value
-            },
-            query: {
-                fields: fields.join(','),
-                // needs to be fixed to get the avatar id to show in the new thought
-                deep: {
-                    avatars: {
-                        _sort: "-currentAt",
-                        _limit: 1
-                    }
-                }
             }
+            //query set byt the backend
         }
     )
-        console.log(res)
+    console.log(res)
 
     if(res?.data) {
         newThought.value = ''
