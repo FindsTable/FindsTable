@@ -4,12 +4,11 @@ const {
     notifications, 
     refreshNotifications, 
     markAsSeen, 
+    markOneAsSeen,
     clearSeen 
 } = useNotifications(me.value.id)
 
-onMounted(async () => {
-    await refreshNotifications()
-})
+
 
 function handleMarkAllAsSeen() {
     markAsSeen()
@@ -18,12 +17,22 @@ function handleMarkAllAsSeen() {
 function handleClearSeen() {
     clearSeen()
 }
+const seenHidden = ref(false)
+
+function hideSeen() {
+    seenHidden.value = !seenHidden.value
+}
+onMounted(async () => {
+    await refreshNotifications()
+    console.log(notifications.value)
+})
 
 definePageMeta({
     title: 'Notification',
     description: 'Keep track of what is going on around the fids table !',
     middleware: 'private-route',
 });
+
 </script>
 
 <template>
@@ -33,12 +42,42 @@ definePageMeta({
 
     <NuxtLayout name="private-route">
         <template #title>
-            Notifications 
+            Notifications
             <span v-if="notifications?.length">({{ notifications.length }})</span>
         </template>
 
         <template #header>
+            <div class="flex gap10">
+                <button 
+                    @click="handleMarkAllAsSeen"
+                    class="comp-button -filled"
+                    :class="[
+                        notifications.length == 0 ? 'disabled' : ''
+                    ]"
+                >
+                    Mark All as Seen
+                </button>
 
+                <button
+                    @click="handleClearSeen"
+                    class="comp-button -filled"
+                    :class="[
+                        notifications.length == 0 ? 'disabled' : ''
+                    ]"
+                >
+                    Clear All Seen
+                </button>
+
+                <button
+                    @click="hideSeen"
+                    class="comp-button -filled"
+                    :class="[
+                        notifications.length == 0 ? 'disabled' : ''
+                    ]"
+                >
+                    Hide seen
+                </button>
+            </div>
         </template>
 
         <template #noScrollMain>
@@ -47,23 +86,16 @@ definePageMeta({
 
         <template #scrollMain>
             <ul>
-                <li v-for="(notif, index) in notifications" :key="index">
-                    <strong>{{ notif.type }}</strong>
-                    <span> by user <b>{{ notif.actorId }}</b></span>
-                    <span v-if="notif.targetId"> on item {{ notif.targetId }}</span>
-                    <p>
-                        Date: {{ notif.createdAt }} |
-                        Seen? <b>{{ notif.isSeen }}</b>
-                    </p>
-                </li>
+                <div 
+                    v-for="(notif, index) in notifications" :key="index"
+                >
+                    <ContentNotificationsCardMain
+                        v-if="notif.isSeen != true || !seenHidden"
+                        :notification="notif"
+                        @markOneAsSeen="markOneAsSeen(notif.date_created)"
+                    />
+                </div>
             </ul>
-
-            <button @click="handleMarkAllAsSeen">
-                Mark All as Seen
-            </button>
-            <button @click="handleClearSeen">
-                Clear All Seen
-            </button>
         </template>
     </NuxtLayout>
 </template>

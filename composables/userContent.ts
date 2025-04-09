@@ -9,13 +9,11 @@ const useUserContent = () => {
         finds: any[]
         badges: any[]
         badgeRecord: undefined | BadgeRecord
-        notifications: any[]
         fetched: {
             avatars: boolean
             finds: boolean
             badges: boolean
-            badgeRecord: boolean,
-            notifications: boolean
+            badgeRecord: boolean
         }
     }>(
         'userContent',
@@ -24,13 +22,11 @@ const useUserContent = () => {
             finds: [],
             badges: [],
             badgeRecord: undefined,
-            notifications: [],
             fetched: {
                 avatars: false,
                 finds: false,
                 badges: false,
-                badgeRecord: false,
-                notifications: false
+                badgeRecord: false
             }
         })
     );

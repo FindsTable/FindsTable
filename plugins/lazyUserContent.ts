@@ -22,10 +22,6 @@ async function getContentFromUserObject() {
     if(useUserState().value?.patreon_account?.access_token !== undefined) {
         const patreonMe = await useNuxtApp().$patreon.getMe(useUserState().value.patreon_account.access_token)
     }
-    
-    if(!userContent.value.fetched.notifications) {
-        useGetUserContent('Notifications')
-    }
 
     if(!userContent.value.fetched.finds) {
 

@@ -23,14 +23,18 @@ export type NotificationType =
 
 export interface LocalNotification {
   type: NotificationType;
-  action: string            // action that triggered the notification
-  content?: string;       // content that triggered the notification
-  user_from: string;        // Who triggered it
-  user_for?: string;      // ID of the post, comment, etc.
-  date_created: string;      // ISO timestamp
+  action: string; 
+  content?: string;     
+  user_from: {
+    id: string;
+    username: string;
+    displayName: string,
+    avatar: string;
+  }; 
+  user_for?: string;
+  date_created: string;
   isSeen: boolean;
 }
-
 //
 // Main composable
 //
@@ -56,14 +60,22 @@ export const useNotifications = ( userId : string ) => {
   const markAsSeen = () => {
     notifications.value = notifications.value.map(n => ({ ...n, isSeen: true }))
   }
+  const markOneAsSeen = (date_created: string) => {
+  notifications.value = notifications.value.map(n =>
+    n.date_created === date_created
+      ? { ...n, isSeen: true }
+      : n
+  )
+}
 
   //
   // 3. Remove all notifs that are seen
   //
-  const clearSeen = () => {
-    notifications.value = notifications.value.filter(n => !n.isSeen)
-  }
 
+    const clearSeen = () => {
+        notifications.value = notifications.value.filter(n => !n.isSeen)
+        lastCheck.value = Date.now()
+    }
   //
   // 4. Refresh from Directus
   //
@@ -97,13 +109,24 @@ export const useNotifications = ( userId : string ) => {
                             }
                         }
                     },
-                    // {
-                    //     created_at: { 
-                    //         _gt: since 
-                    //     }
-                    // }
+                    {
+                        created_at: { 
+                            _gt: since 
+                        }
+                    }
                 ]
-            }
+            },
+            fields: [
+                'id',
+                'item',
+                'user_created',
+                'item.owner',
+                'user_created.id',
+                'user_created.username',
+                'user_created.displayName',
+                'user_created.avatar',
+                'date_created'
+            ]
         }
       }),
 
@@ -145,13 +168,23 @@ export const useNotifications = ( userId : string ) => {
                             }
                         }
                     },
-                    // {
-                    //     created_at: { 
-                    //         _gt: since 
-                    //     }
-                    // }
+                    {
+                        created_at: { 
+                            _gt: since 
+                        }
+                    }
                 ]
-            }
+            },
+            fields: [
+                'id',
+                'item',
+                'item.owner',
+                'user_created.id',
+                'user_created.username',
+                'user_created.displayName',
+                'user_created.avatar',
+                'date_created'
+            ]
         }
       }),
 
@@ -168,13 +201,23 @@ export const useNotifications = ( userId : string ) => {
                             }
                         }
                     },
-                    // {
-                    //     created_at: { 
-                    //         _gt: since 
-                    //     }
-                    // }
+                    {
+                        created_at: { 
+                            _gt: since 
+                        }
+                    }
                 ]
-            }
+            },
+            fields: [
+                'id',
+                'item',
+                'item.owner',
+                'user_created.id',
+                'user_created.username',
+                'user_created.displayName',
+                'user_created.avatar',
+                'date_created'
+            ]
         }
       }),
 
@@ -189,13 +232,22 @@ export const useNotifications = ( userId : string ) => {
                             _eq: userId
                         }
                     },
-                    // {
-                    //     created_at: { 
-                    //         _gt: since 
-                    //     }
-                    // }
+                    {
+                        created_at: { 
+                            _gt: since 
+                        }
+                    }
                 ]
-            }
+            },
+            fields: [
+                'id',
+                'follower.id',
+                'follower.username',
+                'follower.displayName',
+                'follower.avatar',
+                'followed',
+                'date_created'
+            ]
         }
       }),
 
@@ -224,7 +276,7 @@ export const useNotifications = ( userId : string ) => {
         content: "yourFind",
         user_from: like.user_created,
         user_for: like.item.owner,
-        date_created: like.created_at,
+        date_created: like.date_created,
         isSeen: false
       })
     }
@@ -240,7 +292,7 @@ export const useNotifications = ( userId : string ) => {
     //             content: "yourFind",
     //             user_from: c.owner,
     //             user_for: c.find.owner,
-    //             date_created: c.created_at,
+    //             date_created: c.date_created,
     //             isSeen: false
     //         })
     //     }
@@ -256,7 +308,7 @@ export const useNotifications = ( userId : string ) => {
             content: "yourThought",
             user_from: like.user_created,
             user_for: like.item.owner,
-            date_created: like.created_at,
+            date_created: like.date_created,
             isSeen: false
         })
     }
@@ -271,7 +323,7 @@ export const useNotifications = ( userId : string ) => {
             content: "yourThought",
             user_from: comment.owner,
             user_for: comment.item.owner,
-            date_created: comment.created_at,
+            date_created: comment.date_created,
             isSeen: false
         })
     }
@@ -286,7 +338,7 @@ export const useNotifications = ( userId : string ) => {
         content: "",
         user_from: follow.follower,
         user_for: follow.followed,
-        date_created: follow.created_at,
+        date_created: follow.date_created,
         isSeen: false
       })
     }
@@ -302,7 +354,7 @@ export const useNotifications = ( userId : string ) => {
     //          content: "",
     //      user_from: newUser.id, // or no actor?
     //      user_for: '',
-    //      date_created: newUser.created_at,
+    //      date_created: newUser.date_created,
     //       isSeen: false
     //     })
     //   }
@@ -312,13 +364,12 @@ export const useNotifications = ( userId : string ) => {
     // 4.7 Merge, dedupe, then store
     //
 
-    // Commented out to get all notifs while testing !!!
-    // notifications.value = trimAndSort([
-    //   ...notifications.value,
-    //   ...newNotifs.filter(n => !alreadyExists(n, notifications.value))
-    // ])
-    // get all notifs while testing
-    notifications.value = newNotifs
+
+    notifications.value = trimAndSort([
+      ...notifications.value,
+      ...newNotifs.filter(n => !alreadyExists(n, notifications.value))
+    ])
+
     lastCheck.value = now
   }
 
@@ -326,6 +377,7 @@ export const useNotifications = ( userId : string ) => {
     notifications,
     addNotification,
     markAsSeen,
+    markOneAsSeen,
     clearSeen,
     refreshNotifications
   }
@@ -334,15 +386,15 @@ export const useNotifications = ( userId : string ) => {
 //
 // Helpers
 //
+
 function alreadyExists(newNotif: LocalNotification, existing: LocalNotification[]) {
   return existing.some(n =>
     n.type === newNotif.type &&
-    n.user_from === newNotif.user_from &&
+    n.user_from.id === newNotif.user_from.id &&
     n.user_for === newNotif.user_for &&
     n.date_created === newNotif.date_created
   )
 }
-
 function trimAndSort(list: LocalNotification[], maxAgeDays = 7, maxCount = 100): LocalNotification[] {
   const cutoff = Date.now() - maxAgeDays * 86400_000
   return list
