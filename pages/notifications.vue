@@ -1,17 +1,16 @@
 <script setup>
 const me = useUserState()
+
 const { 
     notifications, 
     refreshNotifications, 
-    markAsSeen, 
+    markAllAsSeen, 
     markOneAsSeen,
     clearSeen 
 } = useNotifications(me.value.id)
 
-
-
 function handleMarkAllAsSeen() {
-    markAsSeen()
+    markAllAsSeen()
 }
 
 function handleClearSeen() {
@@ -22,9 +21,9 @@ const seenHidden = ref(false)
 function hideSeen() {
     seenHidden.value = !seenHidden.value
 }
+
 onMounted(async () => {
     await refreshNotifications()
-    console.log(notifications.value)
 })
 
 definePageMeta({
