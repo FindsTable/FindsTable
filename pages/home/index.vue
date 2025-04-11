@@ -5,11 +5,10 @@ definePageMeta({
     middleware: 'private-route',
 });
 
-const { t, locale } = useI18n();
-const $items = useNuxtApp().$items
-const user = useUserState()
+const me = useUserState()
 
 const route = useRoute()
+
 watch(() => route.query.content, (newVal) => {
     console.log('watching')
     selectedTab.value = newVal
@@ -38,13 +37,20 @@ onMounted(() => {
         </template>
 
         <template #scrollMain>
-            <div class="tabContent">
+            <div 
+                v-if="useUserState().value.id"
+                class="tabContent"
+            >
                 <KeepAlive>
-                    <PagesHomeThoughtsMain v-if="selectedTab === 'thoughts'" />
+                    <PagesHomeThoughtsMain 
+                        v-if="selectedTab === 'thoughts'" 
+                    />
                 </KeepAlive>
 
                 <KeepAlive>
-                    <PagesHomeFindsMain v-if="selectedTab === 'finds'" />
+                    <PagesHomeFindsMain 
+                        v-if="selectedTab === 'finds'"
+                    />
                 </KeepAlive>
             </div>
         </template>

@@ -56,11 +56,11 @@ async function deleteFind(findId) {
         </div>
     </div>
 
-    <!-- <div class="centered">
+    <div class="centered">
         <button class="comp-button -filled marTop20 font-text -main" @click="emit('getNextPage')">
             next page
         </button>
-    </div> -->
+    </div>
 </template>
 
 <style scoped>
