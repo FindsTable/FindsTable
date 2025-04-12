@@ -118,9 +118,9 @@ const formRef = ref()
             </TH2>
 
             <div class="section">
-                <PagesFindsNewFormTitle
+                <!-- <PagesFindsNewFormTitle
                     v-model="title"
-                />
+                /> -->
                 <PagesFindsNewFormType
                     v-model="selectedType"
                 />

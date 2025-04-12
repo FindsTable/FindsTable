@@ -39,7 +39,8 @@ event: H3Event
     
     const countValid = await itemCountIsValid({
         bearerToken: bearerToken!,
-        field: 'finds'
+        collection: 'Finds',
+        userId: userId
     })
 
     if(countValid === undefined || countValid === null) {

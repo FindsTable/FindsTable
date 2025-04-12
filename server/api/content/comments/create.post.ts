@@ -38,41 +38,27 @@ event: H3Event
             data: null
         }
     }
-    // return {
-    //     ok: true,
-    //     statusText: 'logging',
-    //     data: {
-    //         collection: body.collection,
-    //         auth: 'app',
-    //         body: {
-    //             ...body.item,
-    //             owner: userId
-    //         },
-    //         query: {
-    //             fields: '*,owner.avatar,owner.username'
-    //         }
-    //     }
-    // }
     
-    // const countValid = await itemCountIsValid({
-    //     bearerToken: bearerToken!,
-    //     field: 'thoughts'
-    // })
+    const countValid = await itemCountIsValid({
+        bearerToken: bearerToken!,
+        collection: body.collection,
+        userId: userId
+    })
 
-    // if(countValid === undefined || countValid === null) {
-    //     return {
-    //         ok: false,
-    //         data: null,
-    //         statusText: 'An error has occured'
-    //     }
-    // }
-    // if(!countValid) {
-    //     return {
-    //         ok: false,
-    //         data: null,
-    //         statusText: 'You have reached the maximum numner of thoughts !'
-    //     }
-    // }
+    if(countValid === undefined || countValid === null) {
+        return {
+            ok: false,
+            data: null,
+            statusText: 'An error has occured'
+        }
+    }
+    if(!countValid) {
+        return {
+            ok: false,
+            data: null,
+            statusText: 'You have reached the maximum numner of thoughts !'
+        }
+    }
 
     const res = await createItem({
         collection: body.collection,

@@ -1,4 +1,5 @@
 import { getMe } from '@/server/directus/users'
+import { getItemsByQuery } from './items'
 
 export {
     countMyItems,
@@ -7,18 +8,20 @@ export {
     getUserId
 }
 interface MaxItemCount {
-    "finds" : number,
-    "thoughts": number
+    [key : string ] : number
 }
 
-const maxItemCount = {
-    "finds": 6,
-    "thoughts": 10
+const maxItemCount : MaxItemCount = {
+    "Finds": 6,
+    "Thoughts": 10,
+    "Thoughts_comments": 100,
+    "Finds_comments": 100
 }
 
 async function itemCountIsValid(p : { 
-    bearerToken : string, 
-    field : string 
+    userId : string, 
+    bearerToken: string,
+    collection: string,
 }) {
     const count = await countMyItems(p);
   
@@ -28,7 +31,7 @@ async function itemCountIsValid(p : {
     }
   
     // If count has reached or exceeded the maximum, not valid
-    if (count >= maxItemCount[p.field]) {
+    if (count >= maxItemCount[p.collection]) {
       return false;
     }
   
@@ -42,46 +45,40 @@ async function itemCountIsValid(p : {
    *  - a number if aggregator data is found (including 0 if no items exist)
    *  - undefined if something goes wrong or aggregator is missing
    */
-  async function countMyItems(p : { 
-    bearerToken : string, 
-    field : string 
+async function countMyItems(p : { 
+    userId : string, 
+    bearerToken: string,
+    collection : string 
 }) {
-    const res = await getMe({
-      bearerToken: p.bearerToken,
-      query: {
-        fields: p.field,
-        deep: {
-          [p.field]: {
-            _aggregate: { count: '*' }
-          }
+    const res = await getItemsByQuery({
+        collection: p.collection,
+        auth: p.bearerToken,
+        query: {
+            filter: {
+                owner: {
+                    _eq: p.userId
+                }
+            },
+            aggregate: { 
+                count: '*' 
+            }
         }
-      }
     });
   
     // If no response or missing data, return undefined
-    console.log(res.data)
     if (!res?.data) {
       return undefined;
     }
   
     // If the field isn't an array at all, return undefined
-    const relatedItems = res.data[p.field];
-    if (!Array.isArray(relatedItems)) {
+    if (
+        !Array.isArray(res.data) || 
+        res.data.length === 0
+    ) {
       return undefined;
     }
   
-    // If the array is empty, that means count is 0 (valid scenario)
-    if (relatedItems.length === 0) {
-      return 0;
-    }
-  
-    // Grab the first item; if no numeric `count` property, return undefined
-    const firstItem = relatedItems[0];
-    if (typeof firstItem.count !== 'number') {
-      return undefined;
-    }
-  
-    return firstItem.count;
+    return res.data[0].count
   }
 
 

@@ -51,7 +51,7 @@ event: H3Event
             fields: 'user, item.owner, item.id'
         }
     })
-    console.log(res)
+
     if(!res?.data) {
         return {
             ok: false,
@@ -60,22 +60,9 @@ event: H3Event
         }
     }
 
-    // buildNotification(res.data)
-
     return {
         ok: true,
         statusText: 'Token is valid',
         data: res
     }
 })
-
-function buildNotification(likeData : any) {
-
-    console.log(likeData)
-    // const notif = {
-    //     user_for: '',
-    //     user_from: item.user,
-    //     action: '',
-    //     content: ''
-    // }
-}

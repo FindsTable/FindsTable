@@ -33,6 +33,7 @@ type UserObject = {
     first_name?: string
     last_name?: string
     patreon_account?: DirectusPatreonAccountObject | string
+    count?: number
     [key: string]: any
 };
 

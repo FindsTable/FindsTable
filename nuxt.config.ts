@@ -15,7 +15,12 @@ export default defineNuxtConfig({
     devServer: isDev ? devServerConfig : undefined,
 
     app: {
-        baseURL: '/'
+        baseURL: '/',
+        head: {
+            link: [
+                { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+            ]
+        }
     },
 
     devtools: {
