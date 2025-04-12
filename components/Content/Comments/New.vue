@@ -29,7 +29,7 @@ async function handleClick() {
             }
         }
     )
-    console.log(res)
+
     if (res) {
         emit('newCommentSaved', res)
         textContent.value = ''
