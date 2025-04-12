@@ -11,7 +11,7 @@ definePageMeta({
 <template>
     <NuxtLayout 
         name="private-route"
-        v-if="me.isLoggedIn"
+        v-if="useUserState().value.isLoggedIn"
     >
         <template #title>
 

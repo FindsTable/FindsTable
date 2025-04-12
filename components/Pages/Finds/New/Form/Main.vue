@@ -1,6 +1,7 @@
 <script setup>
 const { t } = useI18n()
 const title = ref('')
+const description = ref('')
 const selectedMetals = ref([])
 const selectedImages = ref()
 const selectedPeriod = ref()
@@ -29,6 +30,7 @@ const parsedMetals = computed(() => {
 function stringifiedFindItem() {
     return JSON.stringify({
         title: title.value,
+        description: description.value,
         type: selectedType.value,
         dating_range_from: dating.value.range.from,
         dating_range_to: dating.value.range.to,
@@ -121,6 +123,9 @@ const formRef = ref()
                 <!-- <PagesFindsNewFormTitle
                     v-model="title"
                 /> -->
+                <PagesFindsNewFormDescription
+                    v-model="description"
+                />
                 <PagesFindsNewFormType
                     v-model="selectedType"
                 />
