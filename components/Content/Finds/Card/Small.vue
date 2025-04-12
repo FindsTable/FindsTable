@@ -8,7 +8,7 @@ const activeImageIndex = ref(0)
 </script>
 
 <template>
-    <article v-if="find" class="card flex column gap10 pointer justifyEnd">
+    <article v-if="find" class="card -surface1 flex column gap10 pointer justifyEnd">
         <ContentFindsCardMiniToolBar v-if="me.id === find.owner.id" @deleteFind="emit('deleteFind')" />
 
         <div class="imageBox w100 h100 overflowHidden">
@@ -60,7 +60,6 @@ const activeImageIndex = ref(0)
     flex-shrink: 0;
     width: 250px;
     font-family: sans-serif;
-    background-color: #3f3f3f;
     padding: 12px;
     border-radius: 16px;
     overflow: hidden;

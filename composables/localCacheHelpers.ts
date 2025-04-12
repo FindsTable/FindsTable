@@ -74,9 +74,9 @@ function useLocalCache(userId : string) {
     
                 if (data?.length) {
                     dayMap.set(key, {
-                        date_from: data[data.length - 1].date_last,
+                        date_from: data[data.length - 1].date_lastEvent,
                         // date_to: data[0][getLastSeenDate(data[0])],
-                        date_to: data[0].date_last,
+                        date_to: data[0].date_lastEvent,
                         count: data.length
                     })
                 }

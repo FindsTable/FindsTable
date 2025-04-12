@@ -5,10 +5,11 @@ const props = defineProps({
 const emit = defineEmits(['deleteFind'])
 const me = useUserState()
 const activeImageIndex = ref(0)
+const showComments = ref(false)
 </script>
 
 <template>
-    <article v-if="find" class="card flex column gap10 pointer justifyEnd">
+    <article v-if="find" class="card -surface1 flex column gap10 pointer justifyEnd">
         <ContentFindsCardMiniToolBar v-if="me.id === find.owner.id" @deleteFind="emit('deleteFind')" />
 
         <div class="imageBox w100 h100 overflowHidden">
@@ -48,8 +49,16 @@ const activeImageIndex = ref(0)
                 :item="find"
                 :likeClick="true"
                 :commentClick="true"
+                @commentClicked="showComments = !showComments"
             />
         </div>
+
+        <ContentCommentsMain
+            v-if="showComments"
+            :itemId="find.id"
+            collection="Finds_comments"
+            @closeComments="showComments = !showComments"
+        />
 
     </article>
 </template>
@@ -60,7 +69,6 @@ const activeImageIndex = ref(0)
     flex-shrink: 0;
     width: 450px;
     font-family: sans-serif;
-    background-color: #3f3f3f;
     padding: 12px;
     border-radius: 16px;
     overflow: hidden;

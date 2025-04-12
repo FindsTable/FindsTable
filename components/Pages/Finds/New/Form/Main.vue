@@ -48,7 +48,7 @@ function stringifiedMetaData() {
         for(let i = 0; i < selectedImages.value.length; i++ ) {
             meta.images[i] = {
                 key: `image${i}`,
-                collection: "Finds_files"
+                collection: "Finds_images"
             };
         }
     }

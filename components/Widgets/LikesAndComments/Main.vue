@@ -7,7 +7,7 @@ const props = defineProps({
     likeClick: Boolean,
     commentClick: Boolean
 })
-const emit = defineEmits(['likeClick', 'commentClick'])
+const emit = defineEmits(['likeClick', 'commentClicked'])
 
 function commentClicked() {
     if(props.commentClick) {
@@ -28,7 +28,7 @@ function commentClicked() {
             :clickable="likeClick"
         />
         <WidgetsLikesAndCommentsCommentCount
-            @click.stop.prevent="emit('commentClick', item.id)"
+            @click.stop.prevent="emit('commentClicked', item.id)"
             :count="item.comments?.length || 0"
             :iconSize="iconSize"
             :fontSize="fontSize"

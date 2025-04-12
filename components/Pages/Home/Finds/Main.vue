@@ -1,7 +1,5 @@
 <script setup>
-let feedTools = {}
 const {
-    items : finds,
     feed,
     getNextPage
 } = await useFeed(
@@ -14,7 +12,7 @@ const {
         'owner.displayName',
         'owner.username',
         'date_created',
-        'date_last',
+        'date_lastEvent',
         'date_updated',
         'images.*',
         'likes.*',
@@ -23,25 +21,6 @@ const {
 )
 
 onMounted(async () => {
-    feedTools = await useFeed(
-    useUserState().value.id,
-    'Finds',
-    [
-        '*',
-        'owner.avatars.*',
-        'owner.id',
-        'owner.displayName',
-        'owner.username',
-        'date_created',
-        'date_last',
-        'date_updated',
-        'images.*',
-        'likes.*',
-        'comments.*'
-    ]
-)
-
-
     getNextPage()
 })
 
@@ -55,7 +34,7 @@ definePageMeta({
 
 <template>
     <ContentFindsMain
-        v-if="feed.length"
+        v-if="feed?.length"
         :finds="feed"
         @getNextPage="getNextPage"
         @refresh="refreshThoughts"

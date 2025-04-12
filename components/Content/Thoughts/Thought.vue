@@ -60,16 +60,16 @@ function emit_updateNewCommentsCount(increment) {
             :item="thought"
             :likeClick="true"
             :commentClick="true"
+            @commentClicked="showComments = !showComments"
         />
 
-        <KeepAlive>
-            <ContentThoughtsComments 
-                v-if="showComments"
-                :thought="thought"
-                @closeComments="showComments = false"
-                @updateNewCommentsCount="emit_updateNewCommentsCount"
-            />
-        </KeepAlive>
+        <ContentCommentsMain
+            v-if="showComments"
+            :itemId="thought.id"
+            collection="Thoughts_comments"
+            @newCommentPosted="emit_updateNewCommentsCount"
+            @closeComments="showComments = false"
+        />
     </div>
 </template>
 

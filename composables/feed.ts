@@ -78,7 +78,7 @@ async function useFeed(
                 _or: queryFilters_or.value
             },
             fields,
-            sort: "-date_last",
+            sort: "-date_lastEvent",
             limit: ITEMS_PER_PAGE,
             offset: currentPage.value * ITEMS_PER_PAGE
         }

@@ -1,12 +1,12 @@
 <script setup>
-import { 
-    ArchitectureFlexGrowScrollableChild as FlexGrowScroll,
-} from '#components'
 const appState = useAppState()
 </script>
 
 <template>
-    <div class="full flex column justifyEnd">
+    <div 
+        v-if="useUserState().value.isLoggedIn"
+        class="full flex column justifyEnd"
+    >
         <div class="grow flex w100 relative ">
             <nav class="sideBarBox relative" :class="{ 
                     'active' : appState.showSideBar
