@@ -28,9 +28,15 @@ const parsedMetals = computed(() => {
 })
 
 function stringifiedFindItem() {
+    
     return JSON.stringify({
-        title: title.value,
-        description: description.value,
+    // ⛑️ Dirty hack alert:
+    // Directus regex validation fails when `title === ""`, even if it's allowed.
+    // To bypass this, we force a single space to avoid empty string rejection.
+    // Ideally this should be fixed by using JS validation or backend-side sanitation.
+        title: title.value + " ",
+        description: description.value + " ",
+    // ⛑️
         type: selectedType.value,
         dating_range_from: dating.value.range.from,
         dating_range_to: dating.value.range.to,
@@ -83,6 +89,7 @@ async function saveNewFind() {
             body: fD
         }
     )
+    console.log(res)
 
     if(res.ok) {
         useToaster("show", {
@@ -120,9 +127,9 @@ const formRef = ref()
             </TH2>
 
             <div class="section">
-                <!-- <PagesFindsNewFormTitle
+                <PagesFindsNewFormTitle
                     v-model="title"
-                /> -->
+                />
                 <PagesFindsNewFormDescription
                     v-model="description"
                 />

@@ -36,7 +36,7 @@ event: H3Event
             data: null
         }
     }
-    
+
     const countValid = await itemCountIsValid({
         bearerToken: bearerToken!,
         collection: 'Finds',
@@ -114,47 +114,51 @@ event: H3Event
 
     // Process images in meta (upload file and create junction record).
     if (cache.meta.images && cache.meta.images.length) {
+        let count = 1
         for (const img of cache.meta.images) {
-        const fileEntry = cache[img.key]
-        if (!fileEntry) continue
+            if(count > 2) break // extra layer of protection, limit to 2 images
+            count++
+            
+            const fileEntry = cache[img.key]
+            if (!fileEntry) continue
 
-        const fileFormData = new FormData()
-        const blob = new Blob([fileEntry.data], { type: fileEntry.type || 'application/octet-stream' })
-        fileFormData.append('folder', findsImagesFolderId)
-        fileFormData.append('finds_id', cache.itemId!)
-        fileFormData.append('owner', userId)
-        fileFormData.append('file', blob, fileEntry.filename)
+            const fileFormData = new FormData()
+            const blob = new Blob([fileEntry.data], { type: fileEntry.type || 'application/octet-stream' })
+            fileFormData.append('folder', findsImagesFolderId)
+            fileFormData.append('Finds_id', cache.itemId!)
+            fileFormData.append('owner', userId)
+            fileFormData.append('file', blob, fileEntry.filename)
 
-        const uploadRes = await uploadFileGetId(fileFormData)
-        if (!uploadRes.ok) {
-            return {
-            ok: false,
-            statusText: `Failed to upload file for key ${img.key}: ${uploadRes.statusText}`,
-            data: null
+            const uploadRes = await uploadFileGetId(fileFormData)
+            if (!uploadRes.ok) {
+                return {
+                ok: false,
+                statusText: `Failed to upload file for key ${img.key}: ${uploadRes.statusText}`,
+                data: null
+                }
             }
-        }
 
-        const fileId = uploadRes.data
+            const fileId = uploadRes.data
 
-        const junctionRes = await createItem({
-            collection: img.collection,
-            auth: 'app',
-            body: {
-            Finds_id: cache.itemId,
-            directus_files_id: fileId
-            },
-            query: {
-            fields: 'id'
+            const junctionRes = await createItem({
+                collection: img.collection,
+                auth: 'app',
+                body: {
+                Finds_id: cache.itemId,
+                directus_files_id: fileId
+                },
+                query: {
+                fields: 'id'
+                }
+            })
+
+            if (!junctionRes.ok) {
+                return {
+                ok: false,
+                statusText: `Failed to create junction record for file ${fileId}: ${junctionRes.statusText}`,
+                data: null
+                }
             }
-        })
-
-        if (!junctionRes.ok) {
-            return {
-            ok: false,
-            statusText: `Failed to create junction record for file ${fileId}: ${junctionRes.statusText}`,
-            data: null
-            }
-        }
         }
     }
 
@@ -226,7 +230,7 @@ async function createItemGetId(collection: string, item: any): Promise<SimpleRes
         collection: collection,
         body: item,
         query: {
-        fields: 'id'
+            fields: 'id'
         }
     })
 
