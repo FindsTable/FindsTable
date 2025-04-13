@@ -5,7 +5,8 @@ const props = defineProps({
     collection: String,
     item: Object,
     likeClick: Boolean,
-    commentClick: Boolean
+    commentClick: Boolean,
+    bookmark: Boolean
 })
 const emit = defineEmits(['likeClick', 'commentClicked'])
 
@@ -33,6 +34,16 @@ function commentClicked() {
             :iconSize="iconSize"
             :fontSize="fontSize"
             :clickable="commentClick"
+        />
+        <WidgetsLikesAndCommentsBookmark
+            v-if="bookmark"
+            @click.stop.prevent="emit('commentClicked', item.id)"
+            :iconSize="iconSize"
+            :fontSize="fontSize"
+            :item="{
+                id: item.id,
+                collection: collection
+            }"
         />
     </div>
 </template>

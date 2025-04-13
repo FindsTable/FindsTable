@@ -23,6 +23,7 @@ const props = defineProps({
                     :item="find"
                     :likeClick="true"
                     :commentClick="false"
+                    :bookmark="true"
                 />
             </div>
         </div>

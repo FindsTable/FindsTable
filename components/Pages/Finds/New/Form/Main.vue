@@ -127,9 +127,9 @@ const formRef = ref()
             </TH2>
 
             <div class="section">
-                <PagesFindsNewFormTitle
+                <!-- <PagesFindsNewFormTitle
                     v-model="title"
-                />
+                /> -->
                 <PagesFindsNewFormDescription
                     v-model="description"
                 />

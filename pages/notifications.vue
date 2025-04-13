@@ -35,10 +35,6 @@ definePageMeta({
 </script>
 
 <template>
-    <TH1>
-        Notifications
-    </TH1>
-
     <NuxtLayout name="private-route">
         <template #title>
             Notifications

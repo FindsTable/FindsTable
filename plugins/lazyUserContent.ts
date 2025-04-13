@@ -23,8 +23,21 @@ async function getContentFromUserObject() {
         const patreonMe = await useNuxtApp().$patreon.getMe(useUserState().value.patreon_account.access_token)
     }
 
-    if(!userContent.value.fetched.finds) {
+    if(!userContent.value.fetched.bookmarks) {
+        const res = await useGetItems({
+            collection: "Bookmarks",
+            query: {
+                filter: {
+                    user_created: {
+                        _eq: useUserState().value.id
+                    }
+                }
+            }
+        })
+        console.log('bookmarks fetched', res)
 
+        userContent.value.bookmarks = res
+        userContent.value.fetched.bookmarks = true
     }
 
     if(!userContent.value.fetched.avatars) {

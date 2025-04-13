@@ -30,7 +30,7 @@ textarea {
     resize: vertical;
     transition: all 350ms ease;
 }
-/* textarea:focus {
+textarea:focus {
     height: 250px;
-} */
+}
 </style>

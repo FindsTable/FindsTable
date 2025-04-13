@@ -9,11 +9,13 @@ const useUserContent = () => {
         finds: any[]
         badges: any[]
         badgeRecord: undefined | BadgeRecord
+        bookmarks: any[]
         fetched: {
             avatars: boolean
             finds: boolean
             badges: boolean
             badgeRecord: boolean
+            bookmarks: boolean
         }
     }>(
         'userContent',
@@ -22,11 +24,13 @@ const useUserContent = () => {
             finds: [],
             badges: [],
             badgeRecord: undefined,
+            bookmarks: [],
             fetched: {
                 avatars: false,
                 finds: false,
                 badges: false,
-                badgeRecord: false
+                badgeRecord: false,
+                bookmarks: false
             }
         })
     );

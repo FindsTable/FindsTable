@@ -12,6 +12,8 @@ export default {
         'back': 'material-symbols:arrow-back-rounded',
         'bell': 'material-symbols:notifications-outline-rounded',
         'book': 'material-symbols:menu-book-outline-rounded',
+        'bookmarkFull': 'material-symbols:bookmark',
+        'bookmarkEmpty': 'material-symbols:bookmark-outline',
         'cameraBack': 'material-symbols:photo-camera-back-outline-rounded',
         'cameraFront': 'material-symbols:photo-camera-front-outline-rounded',
         'cardsTiny': 'material-symbols:background-grid-small-outline',
