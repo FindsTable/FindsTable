@@ -8,7 +8,8 @@ const props = defineProps({
     },
     likeCollection: String,
     itemId: String | Number,
-    likes: Array
+    likes: Array,
+    likes_count: Number
 })
 
 const localLikes = ref(props.likes)
@@ -53,7 +54,7 @@ async function handleClick(itemId) {
     <button
         v-if="likes"
         @click.stop.prevent="handleClick(itemId)" 
-        class="btn flex alignCenter gap5 pointer"
+        class="touch flex alignCenter gap5 pointer"
     >
         <Icon 
             :name="myLike ? 'heartFull' : 'heartEmpty'" 
@@ -73,14 +74,13 @@ async function handleClick(itemId) {
 </template>
 
 <style scoped>
-.btn {
-    height: 40px;
+.touch {
     background-color: transparent;
         color: var(--textButton-textColor);
-    padding: 5px 8px;
+    padding: 5px;
     border-radius: 5px;
 }
-.btn:hover {
+.touch:hover {
     background-color: rgba(128, 128, 128, 0.468);
 }
 .count {

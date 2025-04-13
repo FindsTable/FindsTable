@@ -3,25 +3,10 @@ const me = useUserState()
 const props = defineProps({
     thought: Object
 })
-const localThought = ref({...props.thought})
 
-const thoughtDeleted = ref(false)
-const emit = defineEmits(['thoughtDeleted'])
+const emit = defineEmits(['deleteThought'])
 
 const showComments = ref(false)
-
-
-async function deleteThought() {
-    const res = await useNuxtApp().$items.deleteById({
-        collection: 'Thoughts',
-        id: props.thought.id
-    })
-
-    if(res?.ok) {
-        emit('thoughtDeleted', props.thought.id)
-        thoughtDeleted.value = true
-    }
-}
 
 const newCommentsCount = ref(0)
 
@@ -31,7 +16,7 @@ function emit_updateNewCommentsCount(increment) {
 </script>
 
 <template>
-    <div v-if="!thoughtDeleted" class="thoughtPanel -surface1 marTop20">
+    <div class="thoughtPanel -surface1 marTop20">
         <div class="flex justifyBetween">
             <ArchitectureCardsUserMini 
                 :userId="thought.owner.id"
@@ -42,7 +27,7 @@ function emit_updateNewCommentsCount(increment) {
 
             <button 
                 v-if="thought.owner.id === me.id"
-                @click="deleteThought"
+                @click="emit('deleteThought', thought.id)"
                 class="theme-textColor-main pointer"
             >
                 <Icon name="delete" size="24px" />
@@ -75,7 +60,7 @@ function emit_updateNewCommentsCount(increment) {
 
 <style>
 .thoughtPanel {
-    padding: 16px;
+    padding: 10px;
     border-radius: 10px;
 }
 .content {

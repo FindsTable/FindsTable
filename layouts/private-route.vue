@@ -14,44 +14,50 @@ const appState = useAppState()
                 <ArchitectureSideBarMain />
             </nav>
 
-            <div class="relative grow h100">
-                <div class="
-                        contentWidth 
-                        absoluteFull 
-                        safeArea -full
-                        flex column
-                    ">
-                    <nav>
-                        <slot name="tabs">
-
-                        </slot>
-                    </nav>
-
-                    <main class="overflowScroll -scrollY flex column h100 contentBottomSpace">
-                        <TH1>
-                            <slot name="title">
+            <div class="relative grow h100 flex">
+                <div class="mainContent relative grow">
+                     <div class="
+                            absoluteFull 
+                            safeArea -full
+                            flex column
+                        ">
+                        <nav>
+                            <slot name="tabs">
 
                             </slot>
-                        </TH1>
+                        </nav>
 
-                        <div class="marTop10">
-                            <slot name="header" >
+                        <main class="overflowScroll -scrollY flex column h100 contentBottomSpace">
+                            <TH1>
+                                <slot name="title">
+
+                                </slot>
+                            </TH1>
+
+                            <div class="marTop10">
+                                <slot name="header" >
+
+                                </slot>
+                            </div>
+                            
+                            <slot name="noScrollMain">
 
                             </slot>
-                        </div>
-                        
-                        <slot name="noScrollMain">
 
-                        </slot>
-
-                        <div class="scrollContentMinHeight">
-                            <slot name="scrollMain">
+                            <div class="scrollContentMinHeight">
+                                <slot name="scrollMain">
 
 
-                            </slot>
-                        </div>
-                    </main>
+                                </slot>
+                            </div>
+                        </main>
+                    </div>
                 </div>
+
+                <div class="liveBox -surface1">
+
+                </div>
+               
             </div>
         </div>
 
@@ -62,6 +68,9 @@ const appState = useAppState()
 </template>
 
 <style scoped>
+.liveBox {
+    width: 400px;
+}
 .scrollContentMinHeight {
     height: max(50vh, auto);
 }

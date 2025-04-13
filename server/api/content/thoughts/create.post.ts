@@ -62,7 +62,7 @@ event: H3Event
             owner: userId
         },
         query: {
-            fields: '*,owner.avatar,owner.username'
+            fields: '*,owner.avatar,owner.username,owner.id'
         }
     })
 

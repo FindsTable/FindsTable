@@ -1,7 +1,8 @@
 <script setup>
 const {
     feed,
-    getNextPage
+    getNextPage,
+    removeItem
 } = await useFeed(
     useUserState().value.id,
     'Finds',
@@ -16,9 +17,14 @@ const {
         'date_updated',
         'images.*',
         'likes.*',
+        'likes_count',
         'comments.*'
     ]
 )
+
+function removeFind(findId) {
+    removeItem(findId)
+}
 
 onMounted(async () => {
     getNextPage()
@@ -37,6 +43,6 @@ definePageMeta({
         v-if="feed?.length"
         :finds="feed"
         @getNextPage="getNextPage"
-        @refresh="refreshThoughts"
+        @findDeleted="removeFind"
     />
 </template>

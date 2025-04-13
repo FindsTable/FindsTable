@@ -1,7 +1,8 @@
 <script setup>
 const {
     feed,
-    getNextPage
+    getNextPage,
+    removeItem
 } = await useFeed(
     useUserState().value.id,
     'Thoughts',
@@ -17,7 +18,9 @@ const {
         'likes.*'
     ]
 )
-
+function removeThought(thoughtId) {
+    removeItem(thoughtId)
+}
 
 onMounted(async () => {
     getNextPage()
@@ -33,9 +36,10 @@ definePageMeta({
 
 <template>
     <ContentThoughtsMain
-        v-if="feed?.length"
+        v-if="feed"
         :thoughts="feed"
         @getNextPage="getNextPage"
+        @thoughtDeleted="removeThought"
     />
 </template>
 

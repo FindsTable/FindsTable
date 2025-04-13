@@ -1,7 +1,7 @@
 <script setup>
 const me  = useUserState()
 const props = defineProps({
-    itemId: Object,
+    itemId: String,
     collection: String
 })
 const emit = defineEmits(['closeComments', 'updateNewCommentsCount'])
@@ -69,7 +69,7 @@ function newCommentSaved(newComment) {
     <div class="marTop20" @click.stop>
         <p class="font-title flex justifyBetween theme-textColor-main">
             <span>
-                Commentaires
+                Commentaires <span v-if="comments">({{ comments.length }})</span>
             </span>
 
             <Icon name="close" size="24px" class="pointer" @click="emit('closeComments')" />
@@ -83,7 +83,7 @@ function newCommentSaved(newComment) {
                 v-for="comment in comments" :key="comment.id"
                 class="flex alignStart marTop20"    
             >
-                <div class="flex column alignEnd">
+                <!-- <div class="flex column alignEnd">
                     <div class="avatarBg theme-surface-2">
                         <NuxtLink 
                             :to="`/users/${comment.owner.id}`"
@@ -102,6 +102,20 @@ function newCommentSaved(newComment) {
                     <div class="theme-surface-2 reversedBorderRadius">
 
                     </div>
+                </div> -->
+                <div class="avatarBg">
+                    <NuxtLink 
+                        :to="`/users/${comment.owner.id}`"
+                        class="pointer"    
+                    >
+                        <KeepAlive>
+                            <ArchitectureFramesAvatar 
+                                :fileId="comment.owner.avatar"
+                                width="40px"
+                                round
+                            />
+                        </KeepAlive>
+                    </NuxtLink>
                 </div>
 
                 <div class="content theme-surface-2 grow">
@@ -143,7 +157,8 @@ function newCommentSaved(newComment) {
 <style scoped>
 .avatarBg {
     border-radius: 10px 0 0 10px;
-    padding: 10px 5px 10px 10px;
+    /* padding: 10px 5px 10px 10px; */
+    translate: 5px 5px;
 }
 .reversedBorderRadius {
     width: 50%;
@@ -165,6 +180,6 @@ function newCommentSaved(newComment) {
 }
 .content {
     padding: 10px 15px;
-    border-radius: 0 10px 10px 10px;
+    border-radius: 8px;
 }
 </style>

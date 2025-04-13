@@ -33,7 +33,7 @@ async function useFeed(
     const currentCacheChunk_index = ref<number>(1) //start at 1 to skip today's chunk
 
     const items = useState<any[]>(`items-${itemType}`, () => [])
-    const tempCache_today = [
+    let tempCache_today = [
         ...localCache_today.value
     ]
     const followingCacheItems = ref<any[]>([])
@@ -142,10 +142,18 @@ async function useFeed(
         isPending.value = false
     }
 
+    function removeItem(itemId: string) {
+        items.value = items.value.filter(f => f.id !== itemId);
+        tempCache_today = tempCache_today.filter(f => f.id !== itemId);
+        followingCacheItems.value = followingCacheItems.value.filter(f => f.id !== itemId);
+    }
+
+
     return {
         items,
         feed,
         localCache_today,
+        removeItem,
         getNextPage
     }
 }

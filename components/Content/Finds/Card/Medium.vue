@@ -3,14 +3,19 @@ const props = defineProps({
     find: Object
 })
 const emit = defineEmits(['deleteFind'])
+
 const me = useUserState()
 const activeImageIndex = ref(0)
 const showComments = ref(false)
+
 </script>
 
 <template>
     <article v-if="find" class="card -surface1 flex column gap10 pointer justifyEnd">
-        <ContentFindsCardMiniToolBar v-if="me.id === find.owner.id" @deleteFind="emit('deleteFind')" />
+        <ContentFindsCardMiniToolBar
+            v-if="me.id === find.owner.id"
+            @deleteFind="emit('deleteFind')"
+        />
 
         <div class="imageBox w100 h100 overflowHidden">
             <img v-if="find.images.length"
@@ -50,6 +55,7 @@ const showComments = ref(false)
                 :likeClick="true"
                 :commentClick="true"
                 @commentClicked="showComments = !showComments"
+                :bookmark="true"
             />
         </div>
 

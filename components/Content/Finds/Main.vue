@@ -5,10 +5,9 @@ const props = defineProps({
     }
 })
 
-const emit = defineEmits(['getNextPage', 'refresh'])
+const emit = defineEmits(['getNextPage', 'refresh', 'findDeleted'])
 
 async function deleteFind(findId) {
-
     const { openModal } = useConfirmationModal()
 
     const confirmDelete = await openModal({
@@ -30,7 +29,7 @@ async function deleteFind(findId) {
             
         }
     )
-    emit('refresh')
+    emit('findDeleted', findId)
 }
 </script>
 
@@ -46,12 +45,12 @@ async function deleteFind(findId) {
         </template>
         
         <div class="box flex gap20 wrap marTop20">
-            <ContentFindsCardMainTemp
+            <ContentFindsCardMain
                 v-for="find in finds" :key="find.id"
                 :find="find"
                 :format="useAppState().value.findViewer.cardSize"
                 @click="navigateToItemPage(find)"
-                @deleteFind="deleteFind(find.id)"
+                @deleteFind="deleteFind"
             />
         </div>
     </div>

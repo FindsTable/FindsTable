@@ -8,8 +8,6 @@ const myContent = useUserContent()
 const newThought = ref('')
 
 async function saveNewThought() {
-    console.log('save')
-
     const res = await $fetch(
         '/api/content/thoughts/create',
         {
@@ -20,10 +18,9 @@ async function saveNewThought() {
             body: {
                 content: newThought.value
             }
-            //query set byt the backend
+            //query set by the backend
         }
     )
-    console.log(res)
 
     if(res?.data) {
         newThought.value = ''

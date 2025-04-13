@@ -13,7 +13,7 @@ const props = defineProps({
 
 <template>
     <button
-        class="btn"
+        class="touch flex alignCenter justifyCenter gap5"
         :class="[
             clickable ? 'pointer' : 'defaultCursor'
         ]"
@@ -32,8 +32,13 @@ const props = defineProps({
 </template>
 
 <style scoped>
-.btn {
+.touch {
     background-color: transparent;
-    color: var(--textButton-textColor);
+        color: var(--textButton-textColor);
+    padding: 5px;
+    border-radius: 5px;
+}
+.touch:hover {
+    background-color: rgba(128, 128, 128, 0.468);
 }
 </style>

@@ -19,31 +19,51 @@ function commentClicked() {
 </script>
 
 <template>
-    <div class="flex gap10">
-        <WidgetsLikesAndCommentsLikeButton
-            iconSize="24px" 
-            :fontSize="fontSize"
-            :likeCollection="`${collection}_likes`"
-            :likes="item.likes"
-            :itemId="item.id"
-            :clickable="likeClick"
-        />
-        <WidgetsLikesAndCommentsCommentCount
-            @click.stop.prevent="emit('commentClicked', item.id)"
-            :count="item.comments?.length || 0"
-            :iconSize="iconSize"
-            :fontSize="fontSize"
-            :clickable="commentClick"
-        />
-        <WidgetsLikesAndCommentsBookmark
-            v-if="bookmark"
-            @click.stop.prevent="emit('commentClicked', item.id)"
-            :iconSize="iconSize"
-            :fontSize="fontSize"
-            :item="{
-                id: item.id,
-                collection: collection
-            }"
-        />
+    <div
+        @click.stop
+        class="box flex justifyEvenly w100"
+    >
+        <div class="centered grow">
+            <WidgetsLikesAndCommentsLikeButton
+                iconSize="24px" 
+                :fontSize="fontSize"
+                :likeCollection="`${collection}_likes`"
+                :likes="item.likes"
+                :likes_count="item.likes_count"
+                :itemId="item.id"
+                :clickable="likeClick"
+            />
+        </div>
+
+        <div class="centered grow">
+            <WidgetsLikesAndCommentsCommentCount
+                @click.stop.prevent="emit('commentClicked')"
+                :count="item.comments?.length || 0"
+                :iconSize="iconSize"
+                :fontSize="fontSize"
+                :clickable="commentClick"
+            />
+        </div>
+
+        <div class="centered grow">
+            <WidgetsLikesAndCommentsBookmark
+                v-if="bookmark"
+                :iconSize="iconSize"
+                :fontSize="fontSize"
+                :item="{
+                    id: item.id,
+                    collection: collection
+                }"
+            />
+        </div>
     </div>
 </template>
+
+<style scoped>
+.box {
+    padding: 5px 0;
+}
+.grow {
+    width: calc(100% / 3);
+}
+</style>
