@@ -3,24 +3,10 @@ const me = useUserState()
 
 const { 
     notifications, 
+    deleteOne,
+    deleteAll,
     refreshNotifications, 
-    markAllAsSeen, 
-    markOneAsSeen,
-    clearSeen 
 } = useNotifications(me.value.id)
-
-function handleMarkAllAsSeen() {
-    markAllAsSeen()
-}
-
-function handleClearSeen() {
-    clearSeen()
-}
-const seenHidden = ref(false)
-
-function hideSeen() {
-    seenHidden.value = !seenHidden.value
-}
 
 onMounted(async () => {
     await refreshNotifications()
@@ -43,34 +29,14 @@ definePageMeta({
 
         <template #header>
             <div class="flex gap10">
-                <button 
-                    @click="handleMarkAllAsSeen"
-                    class="comp-button -filled"
-                    :class="[
-                        notifications.length == 0 ? 'disabled' : ''
-                    ]"
-                >
-                    Mark All as Seen
-                </button>
-
                 <button
-                    @click="handleClearSeen"
+                    @click="deleteAll"
                     class="comp-button -filled"
                     :class="[
                         notifications.length == 0 ? 'disabled' : ''
                     ]"
                 >
-                    Clear All Seen
-                </button>
-
-                <button
-                    @click="hideSeen"
-                    class="comp-button -filled"
-                    :class="[
-                        notifications.length == 0 ? 'disabled' : ''
-                    ]"
-                >
-                    Hide seen
+                    Delete All
                 </button>
             </div>
         </template>
@@ -87,7 +53,7 @@ definePageMeta({
                     <ContentNotificationsCardMain
                         v-if="notif.isSeen != true || !seenHidden"
                         :notification="notif"
-                        @markOneAsSeen="markOneAsSeen(notif.date_created)"
+                        @deleteOne="deleteOne(notif.date_created)"
                     />
                 </div>
             </ul>

@@ -4,8 +4,13 @@ const appState = useAppState()
 
 <template>
     <div class="">
+        <!--    
+            appState.findViewer.active is handled 
+            by the route watcher in composable/appState
+         -->
         <ArchitectureSideBarAppSettingsFindsViewer
-            v-if="appState.findViewer.active"
+            
+            v-if="appState.findViewer.active" 
         />
     </div>
 </template>

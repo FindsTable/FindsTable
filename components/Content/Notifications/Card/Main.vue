@@ -7,36 +7,72 @@ const props = defineProps({
         required: true
     }
 })
-const emit = defineEmits(['markOneAsSeen'])
+const emit = defineEmits(['markOneAsSeen', 'deleteOne'])
 
 </script>
 
 <template>
     <li 
         v-if="notification"
-        class="card flex alignCenter gap5 font-text -big"
+        class="card flex alignCenter gap20 font-text -big"
         :class="[
                 notification.isSeen ? 'dimmed':  ''
         ]"
     >
-        <span>
-            {{ notification.user_from.displayName }}
-        </span>
 
-        <span>
-            {{ t(`notifications.actions.${notification.action}`) }}
-        </span>
-
-        <span v-if="notification.content">
-            {{ t(`notifications.content.${notification.content}`) }}
-        </span>
-
-        <span 
-            @click.stop.prevent="emit('markOneAsSeen')"
-            class="markAsReadTouch centered pointer"
+        <NuxtLink 
+            v-if="notification.user_from?.avatar"
+            :to="`/users/${notification.user_from.id}`"
+            class="pointer"
         >
-            <Icon name="checkCircle" size="24px" />
-        </span>
+            <ArchitectureFramesAvatar 
+                :fileId="notification.user_from.avatar"
+                width="40px"
+            />
+        </NuxtLink>
+
+        <div class="flex gap5">
+            <NuxtLink 
+                v-if="notification.user_from?.avatar"
+                :to="`/users/${notification.user_from.id}`"
+                class="pointer"
+            >
+                <span>
+                    {{ notification.user_from.displayName }}
+                </span>
+            </NuxtLink>
+            
+
+            <span>
+                {{ t(`notifications.actions.${notification.action}`) }}
+            </span>
+
+            <span v-if="notification.content">
+                {{ t(`notifications.content.${notification.content}`) }}
+            </span>
+        </div>
+
+        <div class="flex gap10">
+            <NuxtLink 
+                v-if="notification.item?.toPath"
+                :to="notification.item.toPath"
+                class="pointer"
+            >
+                <ArchitectureFramesAvatar 
+                    v-if="notification.item?.thumbnail"
+                    @click="console.log(notification)"
+                    :fileId="notification.item.thumbnail"
+                    width="40px"
+                />
+            </NuxtLink>
+
+            <span 
+                @click.stop.prevent="emit('deleteOne')"
+                class="comp-button centered pointer"
+            >
+                <Icon name="delete" size="24px" />
+            </span>
+        </div>
     </li>
 </template>
 

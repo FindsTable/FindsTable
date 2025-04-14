@@ -4,18 +4,21 @@ const props = defineProps({
     activeImageIndex: Number
 })
 const showComments = ref(false)
+
+
+
 </script>
 
 <template>
-    <div 
+    <div
         v-if="find" 
-        class="contentBox flex  overflowHidden"
+        class="contentBox flex overflowHidden"
         :class="[
             showComments === true ? 'commentsOpen' : ''
         ]"
     >
-        <div>
-            <div class="imageBox w100 h100 overflowHidden relative">
+        <div class="">
+            <div class="imageBox overflowHidden relative">
                 <img v-if="find.images.length"
                     :src="`https://admin.findstable.net/assets/${find.images[activeImageIndex].directus_files_id}?key=find-250-jpg`"
                     alt="" class="image w100 objectFitCover">
@@ -61,7 +64,7 @@ const showComments = ref(false)
     /* border: 1px solid rgba(128, 128, 128, 0.478); */
 }
 .imageBox {
-    width: 100%;
+    width: 180px;
     aspect-ratio: 1;
 }
 .infoBox {

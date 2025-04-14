@@ -37,6 +37,11 @@ const useNotifications = ( userId : string ) => {
                 content: "yourFind",
                 user_from: like.user_created,
                 user_for: like.item.owner,
+                item: {
+                    id: like.item.id,
+                    thumbnail: like.item.images[0].directus_files_id,
+                    toPath: `/finds/${like.item.id}`
+                },
                 date_created: like.date_created,
                 isSeen: false
             })
@@ -103,8 +108,20 @@ const useNotifications = ( userId : string ) => {
         lastCheck.value = Date.now()
     }
 
+    const deleteOne = (date_created : string) => {
+        console.log(date_created)
+        notifications.value = notifications.value.filter(n => n.date_created !== date_created)
+        lastCheck.value = Date.now()
+    }
+
+    const deleteAll = () => {
+        notifications.value = []
+    }
+
     return {
         notifications,
+        deleteOne,
+        deleteAll,
         markAllAsSeen,
         markOneAsSeen,
         clearSeen,
@@ -151,21 +168,23 @@ function getFindsLikes(userId: string, since: string): Promise<any[]> {
                     { 
                         date_created: { _gt: since }
                     },
-                    { 
-                        user_created: { _neq: userId }
-                    }
+                    // { 
+                    //     user_created: { _neq: userId }
+                    // }
                 ]
             },
             fields: [
                 'id',
-                'item',
-                'user_created',
+                'item.id',
                 'item.owner',
+                'item.images.directus_files_id',
+                'user_created',
                 'user_created.id',
                 'user_created.username',
                 'user_created.displayName',
                 'user_created.avatar',
-                'date_created'
+                'date_created',
+                
             ]
         }
     })
@@ -290,6 +309,12 @@ interface LocalNotification {
         avatar: string;
     }; 
     user_for?: string;
+    item?: {
+        id: string,
+        collection?: string
+        thumbnail: string
+        toPath?: string
+    }
     date_created: string;
     isSeen: boolean;
 }

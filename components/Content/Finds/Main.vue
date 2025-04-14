@@ -44,7 +44,7 @@ async function deleteFind(findId) {
             </slot>
         </template>
         
-        <div class="box flex gap20 wrap marTop20">
+        <div class="box flex justifyCenter gap20 wrap marTop20">
             <ContentFindsCardMain
                 v-for="find in finds" :key="find.id"
                 :find="find"

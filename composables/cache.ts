@@ -1,9 +1,10 @@
 export {
-  useSetCacheData,
-  useIsCacheDataValid,
-  useSetCacheInLocalStorage,
-  useGetCachedData,
-  useClearLocalStorageCache
+    useCache,
+    useSetCacheData,
+    useIsCacheDataValid,
+    useSetCacheInLocalStorage,
+    useGetCachedData,
+    useClearLocalStorageCache
 }
 
 export type {
@@ -17,10 +18,11 @@ const cacheTTL = {
   badges: 999_999_999_999 // "never" expire
 }
 
-export const useCache = () => {
+const useCache = () => {
   return useState<
     Record<'itemCache', object | null> & Record<CacheKey, CacheEntry>
   >('cache', () => ({
+    //itemCache hold an item to make it accessible when navigationg to it's dedicated page
     itemCache: null,
     finds: { timestamp: 0, ttl: cacheTTL.finds, data: undefined },
     thoughts: { timestamp: 0, ttl: cacheTTL.thoughts, data: undefined },

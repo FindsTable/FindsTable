@@ -2,7 +2,7 @@
 import { WidgetsFollowPreferencesMain as FollowPreferences } from '#components'
 const { t } = useI18n()
 const $social = useNuxtApp().$social
-const $users = useNuxtApp().$users
+const me = useUserState()
 const props = defineProps({
     user: {
         id: String,
@@ -14,30 +14,34 @@ const props = defineProps({
 const { data : follow, refresh } = await useAsyncData(
     `following-${props.user.id}`,
     async () => {
-        const res = await $users.getMe({
-            fields: 'followings,followings.id,followings.followed',
-            deep: {
-                followings: {
-                    _filter: {
-                        followed: {
-                            _eq: props.user.id
+
+        const res = await useGetItems({
+            collection: 'Follows',
+            query: {
+                filter: {
+                    _and: [
+                        {
+                            follower: {
+                                _eq: me.value.id
+                            }
+                        },
+                        {
+                            followed: {
+                                _eq: props.user.id
+                            }
                         }
-                    }
+                    ]
                 }
             }
         })
 
-        if (res.data.followings.length) {
-            
-            return res.data.followings[0]
-        } else return null
+        return res[0]
     }
 )
 
 async function handleClick() {
     
     if (follow.value) {
-
         const { openModal } = useModal()
 
         await openModal({
@@ -56,7 +60,6 @@ async function handleClick() {
         refresh()
         return
     }
-
 
     let res = await $social.follow.start(props.user.id)
 
@@ -92,14 +95,16 @@ const activity =  {
 
 <template>
     <button @click.stop.prevent="handleClick"
-        class="pointer flex alignCenter gap10 theme-textColor-main comp-button -text">
+        class="pointer flex alignCenter gap10 theme-textColor-main comp-button -text"
+    >
         <Icon 
             :name="follow ? 'personCheck' : 'personAdd'"
             size="1.3rem"
         />
 
-        <span v-if="!follow">{{ t('activity.social.follow.start') }}</span>
-        <span v-else>{{ t('activity.social.follow.following') }}</span>
+        <span >
+            {{ t(`activity.social.follow.${!follow ? 'start' : 'following'}`) }}
+        </span>
     </button>
 </template>
 

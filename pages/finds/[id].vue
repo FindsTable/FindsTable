@@ -1,8 +1,27 @@
-<script setup>
-const route = useRoute()
-const cache = useCache()
+<script setup lang="ts">
+type Find = {
+    id: string,
+    description: string,
+    dating_period: {
+        value: string,
+        range_rom: number,
+        range_to: number
+    },
+    dating_range_from: number,
+    dating_range_to: number,
+    dating_marked: number,
+    user_created: {
+        id: string,
+        displayName: string,
+        username: string,
+        avatar: string
+    },
+    images: {
+        directus_files_id: string
+    }[]
+}
 
-const find = ref("null")
+const route = useRoute()
 
 const fields = [
     '*',
@@ -11,32 +30,22 @@ const fields = [
     'user_created.displayName',
     'user_created.username',
     'date_created',
-    'images.*'
+    'images.directus_files_id'
 ]
 
-async function fetchItem() {
-    const res = await useNuxtApp().$items.getById({
-        collection: 'Finds',
-        id: `${route.params.id}`,
+const {
+    response : find,
+    isPending,
+    error,
+    refresh
+} = useDirectFetch<Find>(
+    'GET', `/items/Finds/${route.params.id}`,
+    {
         query: {
             fields: fields.join(',')
         }
-    })
-
-    if(res?.ok && res.data) {
-        find.value = res.data
     }
-}
-
-onMounted(() => {
-    if(cache.value.itemCache?.id == route.params.id){
-        find.value = cache.value.itemCache
-
-        return
-    }
-
-    fetchItem()
-})
+)
 
 definePageMeta({
     title: 'Find made by our users',
@@ -51,11 +60,21 @@ definePageMeta({
         </template>
 
         <template #title>
-            {{ find.title }}
+            <div v-if="find">
+                {{ find.description }}
+            </div>
+
+            <div v-if="error">
+                error: {{ error }}
+            </div>
+
+            <div v-if="isPending">
+                LOADING ...
+            </div>
         </template>
 
         <template #scrollMain>
-            
+            {{ find }}
         </template>
     </NuxtLayout>
 </template>

@@ -14,8 +14,9 @@ const newThoughts = ref([])
 
 function newThoughtPosted(newThought) {
     newThoughts.value = [
+        newThought,
         ...newThoughts.value,
-        newThought
+        
     ]
 
     // useSetCacheData('thoughts', thoughts.value)

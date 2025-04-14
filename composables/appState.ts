@@ -43,12 +43,13 @@ export const useAppState = () => {
     );
 }
 
+//Check on the route to activate route based settings
+
 export function useActivateRouteWatcher() {
     const appState = useAppState()
     const route = useRoute()
 
     const handleRouteChange = () => {
-        console.log(route.fullPath)
         if(route.fullPath.includes('content=finds')) {
             appState.value.findViewer.active = true
         } else {

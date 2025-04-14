@@ -69,7 +69,7 @@ const appState = useAppState()
 
 <style scoped>
 .liveBox {
-    width: 400px;
+    width: 200px;
 }
 .scrollContentMinHeight {
     height: max(50vh, auto);

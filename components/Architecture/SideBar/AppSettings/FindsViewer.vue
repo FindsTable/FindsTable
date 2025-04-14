@@ -18,6 +18,7 @@ const cardSizes = [
     //     value: 'large'
     // }
 ]
+
 function handleClick(value) {
     appState.value.findViewer.cardSize = value
 }
@@ -26,7 +27,6 @@ function handleClick(value) {
 <template>
     <div 
         class="box flex justifyEvenly alignCenter gap5"
-        
     >
         <div 
             v-for="(size, index) in cardSizes" :key="index" 

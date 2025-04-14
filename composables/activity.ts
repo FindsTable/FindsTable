@@ -8,6 +8,7 @@ async function useLike(p: UseLikeParams): Promise<UseLikeResult> {
     try {
         if (p.action === 'like') {
             if (!p.itemId) throw new Error('Missing itemId for like action');
+            
 
             const res : any = await $fetch(`https://admin.findstable.net/items/${p.collection}`, {
                 method: 'POST',

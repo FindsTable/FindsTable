@@ -6,7 +6,7 @@ const props = defineProps({
 const follows = ref(null)
 
 async function getFollows() {
-    const res = await useNuxtApp().$items.getByQuery({
+    const res = await useGetItems({
         collection: 'Follows',
         query: {
             filter: {
@@ -26,8 +26,8 @@ async function getFollows() {
         }
     })
 
-    if(res?.data) {
-        follows.value = res.data
+    if(res) {
+        follows.value = res
     }    
 }
 
