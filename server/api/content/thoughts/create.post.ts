@@ -1,12 +1,8 @@
 import { readEvent } from '@/server/apiUtils/readEvent'
 import { createItem } from '@/server/directus/items'
-import { uploadFile } from '@/server/directus/files'
-import { getItemById, getItemsByQuery } from '@/server/directus/items'
-import { getMe } from '@/server/directus/users'
 import { ItemObject } from '~/shared/types/dataObjects'
 import { H3Event } from 'h3'
-import { countMyItems, itemCountIsValid } from '@/server/directus/validation'
-
+import { itemCountIsValid, validateUser } from '@/server/utils/validation'
 
 export default defineEventHandler(async <ExpectedItemObject extends ItemObject>(
 event: H3Event
@@ -23,9 +19,23 @@ event: H3Event
 
     if (tokenError) return tokenError
 
-    const userId = await getUserId(bearerToken!)
+    const currentUser = await validateUser({
+        bearerToken: bearerToken!,
+        fields: [
+            'id', 'thoughts_count'
+        ]
+    })
 
-    if (!userId) {
+    if( !currentUser || !currentUser.id ) {
+        return {
+            ok: false,
+            statusText: 'User is not logged in or dont esist'
+        }
+    }
+
+    const userId = currentUser.id
+
+    if (!userId || typeof userId !== 'string') {
         return {
             ok: false,
             statusText: 'User is not logged in.',
@@ -33,19 +43,11 @@ event: H3Event
         }
     }
     
-    const countValid = await itemCountIsValid({
-        bearerToken: bearerToken!,
+    const countValid = itemCountIsValid({
         collection: 'Thoughts',
-        userId: userId
+        items_count: currentUser.thoughts_count
     })
 
-    if(countValid === undefined || countValid === null) {
-        return {
-            ok: false,
-            data: null,
-            statusText: 'An error has occured'
-        }
-    }
     if(!countValid) {
         return {
             ok: false,
@@ -54,12 +56,17 @@ event: H3Event
         }
     }
 
+
+
     const res = await createItem({
         collection: 'Thoughts',
         auth: 'app',
         body: {
             ...body,
-            owner: userId
+            owner: {
+                id: userId,
+                thoughts_count: currentUser.thoughts_count + 1
+            }
         },
         query: {
             fields: '*,owner.avatar,owner.username,owner.id'
@@ -84,16 +91,3 @@ event: H3Event
     }
   
 })
-
-
-// Helper to get user id
-async function getUserId(bearerToken: string): Promise<string | undefined> {
-    const { data } = await getMe({
-        bearerToken: bearerToken,
-        query: {
-            fields: 'id'
-        }
-    })
-
-    return data ? data.id : undefined
-}

@@ -1,11 +1,5 @@
 <script setup>
-import {
-    PagesUsersBadges
-} from '#components'
-
-const $users = useNuxtApp().$users
 const route = useRoute()
-const userId = ref(route.params.id)
 const me = useUserState()
 
 const fields = [
@@ -27,11 +21,16 @@ const fields = [
     'personalDataRecord.lastName.*',
     'thoughts.*'
 ];
-const user = ref(null)
 
-async function getUserData() {
-    const res = await $users.getById({
-        id: route.params.id,
+const {
+    response : user,
+    error,
+    isPending,
+    directFetch
+} = useDirectAsyncFetch(
+    'GET', `/users/${route.params.id}`,
+    {
+        singleItem: true,
         query: {
             fields: fields.join(','),
             deep: {
@@ -41,10 +40,8 @@ async function getUserData() {
                 }
             }
         }
-    })
-    
-    return res.data
-}
+    }
+)
 
 definePageMeta({
     title: 'User page',
@@ -60,10 +57,6 @@ const selectedTab = ref("finds")
 function changeTab(newTab) {
     selectedTab.value = newTab
 }
-
-onMounted( async () => {
-    user.value = await getUserData()
-})
 
 const albums = [
     {

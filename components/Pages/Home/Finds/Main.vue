@@ -4,11 +4,10 @@ const {
     getNextPage,
     removeItem
 } = await useFeed(
-    useUserState().value.id,
     'Finds',
     [
         '*',
-        'owner.avatars.*',
+        'owner.avatar',
         'owner.id',
         'owner.displayName',
         'owner.username',
@@ -21,6 +20,7 @@ const {
         'comments.*'
     ]
 )
+
 
 function removeFind(findId) {
     removeItem(findId)

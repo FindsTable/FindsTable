@@ -3,8 +3,6 @@ const me = useUserState()
 
 const emit = defineEmits(['newThoughtPosted'])
 
-const myContent = useUserContent()
-
 const newThought = ref('')
 
 async function saveNewThought() {
@@ -22,7 +20,9 @@ async function saveNewThought() {
         }
     )
 
-    if(res?.data) {
+    console.log(res)
+
+    if(res?.ok && res?.data) {
         newThought.value = ''
         emit('newThoughtPosted', res.data)
     }
@@ -42,7 +42,7 @@ async function saveNewThought() {
             "
         >
             <ArchitectureFramesAvatar
-                :fileId="myContent.avatars[0]?.image"
+                :fileId="me.avatar"
                 round
                 width="32px"
             />

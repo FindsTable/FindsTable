@@ -1,36 +1,57 @@
-<script setup>
+<script setup lang="ts">
 const { t } = useI18n()
-const $social = useNuxtApp().$social
 const { confirm } = useModal()
 
-const props = defineProps({
-    user: {
-        id: String,
-        username: String,
-    },
+// TS style prop declaration !
+interface Props {
+  user: {
+    id: string
+    username: string
+    avatarUrl: string
+  },
     follow: {
         id: String
     }
-})
+}
+const props = defineProps<Props>()
 
 async function handleClick() {
+    const {
+      error,
+      directFetch
+    } = useDirectAsyncFetch(
+        'DELETE', `/items/Follows/${props.follow.id}`,
+        {
+            differed: true,
+            onResponse: () => {
+                showToaster(true)
+            },
+            onResponseError: () => {
+                showToaster(false)
+            }
+        }
+    )
+    await directFetch()
 
-    const res = await $social.follow.stop(props.follow.id)
-    
-    if (!res.ok) return
-
-    const toaster = {
-        id: `notFollowing-${props.user.id}`,
-        message: `${t('success.activity.follow.stop')} ${props.user.username}`,
-        type: 'warning',
-        autoClose: true,
-        position: 'bottom'
+    if(!error.value) {
+        confirm()
     }
-
-    useToaster('show', toaster)
-    confirm()
 }
 
+function showToaster( ok : boolean) {
+    const message = 
+        ok 
+        ? `${t('success.activity.follow.stop')} ${props.user.username}` 
+        : `There was an error, you are still following ${props.user.username}`;
+
+    useToaster('show', {
+        id: `notFollowing-${props.user.id}`,
+        message: message,
+        type: ok ? 'success' : 'error',
+        autoClose: true,
+        position: 'bottom'
+    })
+}
 </script>
 
 <template>

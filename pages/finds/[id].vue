@@ -38,7 +38,7 @@ const {
     isPending,
     error,
     refresh
-} = useDirectFetch<Find>(
+} = useDirectAsyncFetch<Find>(
     'GET', `/items/Finds/${route.params.id}`,
     {
         query: {

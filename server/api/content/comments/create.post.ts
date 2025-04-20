@@ -3,7 +3,8 @@ import { createItem } from '@/server/directus/items'
 import { getMe } from '@/server/directus/users'
 import { ItemObject } from '~/shared/types/dataObjects'
 import { H3Event } from 'h3'
-import { itemCountIsValid } from '@/server/directus/validation'
+import { itemCountIsValid, validateUser } from '@/server/utils/validation'
+import { updateItemsCountField as incrementCommentsCount } from '@/server/utils/apiContentUtils'
 
 
 export default defineEventHandler(async <ExpectedItemObject extends ItemObject>(
@@ -29,7 +30,21 @@ event: H3Event
         }
     }
 
-    const userId = await getUserId(bearerToken!)
+    const currentUser = await validateUser({
+        bearerToken: bearerToken!,
+        fields: [
+            'id', 'comments_count'
+        ]
+    })
+
+    if( !currentUser || !currentUser.id ) {
+        return {
+            ok: false,
+            statusText: 'User is not logged in or dont esist'
+        }
+    }
+
+    const userId = currentUser.id
 
     if (!userId) {
         return {
@@ -39,24 +54,16 @@ event: H3Event
         }
     }
     
-    const countValid = await itemCountIsValid({
-        bearerToken: bearerToken!,
+    const countValid = itemCountIsValid({
         collection: body.collection,
-        userId: userId
+        items_count: currentUser.comments_count
     })
 
-    if(countValid === undefined || countValid === null) {
-        return {
-            ok: false,
-            data: null,
-            statusText: 'An error has occured'
-        }
-    }
     if(!countValid) {
         return {
             ok: false,
             data: null,
-            statusText: 'You have reached the maximum numner of thoughts !'
+            statusText: 'You have reached the maximum numner of comments !'
         }
     }
 
@@ -73,6 +80,13 @@ event: H3Event
     })
 
     if(!res?.data) {
+
+        await incrementCommentsCount({
+            bearerToken: bearerToken!,
+            field: 'comments_count',
+            newValue: currentUser.comments_count + 1
+        })
+
         return {
             ok: false,
             data: null, 

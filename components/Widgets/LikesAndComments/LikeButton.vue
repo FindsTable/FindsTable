@@ -1,6 +1,4 @@
 <script setup>
-const { directFetch } = useDirectFetch()
-
 const props = defineProps({
     iconSize: String,
     fontSize: String,

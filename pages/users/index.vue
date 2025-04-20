@@ -1,7 +1,4 @@
 <script setup>
-const $users = useNuxtApp().$users
-const cache = useCache()
-
 const fields = [
   'id',
   'username',
@@ -20,39 +17,29 @@ const fields = [
   'personalDataRecord.lastName.*'
 ];
 
-const users = ref(null)
-
-async function getUsers() {
-    const res = await $users.getByQuery({
-        fields: fields.join(','),
-        filter: {
-            id: {
-                _neq: useUserState().value.id
-            }
-        },
-        deep: {
-            avatars: {
-                _sort: "-currentAt",
-                _limit: 1
+const {
+    response : users,
+    error,
+    isPending
+} = useDirectAsyncFetch(
+    'GET', '/users',
+    {
+        query: {
+            fields: fields.join(','),
+            filter: {
+                id: {
+                    _neq: useUserState().value.id
+                }
+            },
+            deep: {
+                avatars: {
+                    _sort: "-currentAt",
+                    _limit: 1
+                }
             }
         }
-    })
-    
-    if (res?.data) {
-        return res.data
     }
-}
-
-onMounted(async () => {
-    const cacheData = useGetCachedData('users')
-    if (cacheData) {
-        users.value = cacheData
-        return
-    }
-    
-    users.value = await getUsers()
-    useSetCacheData('users', users.value)
-})
+)
 
 definePageMeta({
     title: 'Users',

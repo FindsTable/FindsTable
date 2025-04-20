@@ -1,50 +1,68 @@
-<script setup>
+<script setup lang="ts">
 import { WidgetsFollowPreferencesMain as FollowPreferences } from '#components'
+
 const { t } = useI18n()
-const $social = useNuxtApp().$social
 const me = useUserState()
-const props = defineProps({
-    user: {
-        id: String,
-        username: String,
-        avatarUrl: String
-    }
-})
 
-const { data : follow, refresh } = await useAsyncData(
-    `following-${props.user.id}`,
-    async () => {
+// is used only in TS
+interface Props {
+  user: {
+    id: string
+    username: string
+    avatarUrl: string
+  }
+}
+const props = defineProps<Props>()
 
-        const res = await useGetItems({
-            collection: 'Follows',
-            query: {
-                filter: {
-                    _and: [
-                        {
-                            follower: {
-                                _eq: me.value.id
-                            }
-                        },
-                        {
-                            followed: {
-                                _eq: props.user.id
-                            }
+// BUT if used outside of TS, we need to use this declaration instead
+
+// const props = defineProps({
+//   user: {
+//     type: Object as PropType<{
+//       id: string
+//       username: string
+//       avatarUrl: string
+//     }>,
+//     required: true
+//   }
+// })
+
+const {
+    response : follow,
+    error : followError,
+    isPending : getFollowPending,
+    refresh
+} = useDirectAsyncFetch<object>(
+    'GET', '/items/Follows',
+    {
+        query: {
+            filter: {
+                _and: [
+                    {
+                        follower: {
+                            _eq: me.value.id
                         }
-                    ]
-                }
+                    },
+                    {
+                        followed: {
+                            _eq: props.user.id
+                        }
+                    }
+                ]
             }
-        })
-
-        return res[0]
+        },
+        singleItem: true
     }
 )
 
 async function handleClick() {
+
+    if(getFollowPending.value ) return
     
     if (follow.value) {
         const { openModal } = useModal()
 
-        await openModal({
+        const modalConfirmed = await openModal({
             modal: 'ComponentViewer',
             component: FollowPreferences,
             data: {
@@ -56,41 +74,47 @@ async function handleClick() {
                 follow: follow.value
             }
         })
-        
-        refresh()
+        if(modalConfirmed) {
+            follow.value = null
+        }
+
         return
     }
 
-    let res = await $social.follow.start(props.user.id)
-
-    if(!res.ok) return 
-    const toaster = {
-        id: `following-${props.user.id}`,
-        message: `${t('success.activity.follow.start')} ${props.user.username}`,
-        type: 'success',
-        autoClose: true,
-        position: 'bottom'
-    }
-    useToaster('show', toaster)
-
-    refresh()
-}
-
-const icons = {
-    none: 'friendRequest',
-    sent: 'cancelFriendRequest',
-    received: 'acceptFriendRequest'
-}
-const activity =  {
-    "social": {
-        "follow": {
-            "start": "Follow",
-            "stop": "Unfollow",
-            "following": "Following",
-            "followed": "Followed"
+    const {
+      response
+    } = useDirectAsyncFetch<object>(
+        'POST', '/items/Follows',
+        {
+            body: {
+                // followed: props.user.id
+            },
+            onResponse: () => {
+                console.log('response  !!')
+                follow.value = response.value
+                useToaster('show', {
+                    id: `following-${props.user.id}`, // same id as onRensponseError to have it only once
+                    message: `${t('success.activity.follow.start')} ${props.user.username}`,
+                    type: 'success',
+                    autoClose: true,
+                    position: 'bottom'
+                }) 
+            },
+            onResponseError: () => {
+                console.log('response error !!')
+                follow.value = null
+                useToaster('show', {
+                    id: `following-${props.user.id}`, // same id as onResponse to have it only once
+                    message: `Oh wait ! an error occured and you don't follow ${props.user.username} yet !`,
+                    type: 'error',
+                    autoClose: true,
+                    position: 'bottom'
+                })
+            }
         }
-    }
+    )
 }
+
 </script>
 
 <template>

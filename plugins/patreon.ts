@@ -70,21 +70,26 @@ async function unlinkAccount() {
 }
 
 async function getPatreonAccountFromDirectus() {
-    console.log('getting patreon account from directus')
 
-    const res = await useNuxtApp().$items.getByQuery({
-        collection: 'Patreon_accounts',
-        query: {
-            fields: '*,tier.*,tier.translations.*,user',
-            filter: {
-                user: {
-                    _eq: useUserState().value.id
+    const {
+        directFetch : getPatreonAccount
+    } = useDirectAsyncFetch(
+        'GET', '/items/Patreon_accounts',
+        {
+            differed: true,
+            singleItem: true,
+            query: {
+                fields: '*,tier.*,tier.translations.*,user',
+                filter: {
+                    user: {
+                        _eq: useUserState().value.id
+                    }
                 }
             }
         }
-    })
+    )
 
-    if(res?.data) {
-        return res.data[0]
-    }
+    const account = await getPatreonAccount()
+
+    return account ? account : undefined
 }

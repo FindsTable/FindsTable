@@ -1,6 +1,5 @@
 <script setup>
 import { 
-    FormsFieldset,
     ArchitecturePageSectionsH2Panel as H2Panel,
     WidgetsDevToolsNoteToBetaUsers
 } from '#components';
@@ -11,11 +10,21 @@ const me = useUserState()
 const unsubscribeConfirmInput = ref('')
 
 async function unsubscribe() {
-    const res = await useNuxtApp().$users.deleteById({
-        id: me.value.id,
-        username: me.value.username,
-        confirmation: unsubscribeConfirmInput.value
-    })
+    console.log('clicked')
+    const res = await $fetch(
+        '/api/me/delete',
+        {
+            method: 'DELETE',
+            headers: {
+                authorization: `Bearer ${me.value.accessToken.value}`
+            },
+            body: {
+                username: me.value.username,
+                confirmation: unsubscribeConfirmInput.value
+            }
+        }
+    )
+    console.log(res)
 
     if(res?.ok) {
         navigateTo('/')
@@ -90,6 +99,7 @@ async function unsubscribe() {
     border-radius: 8px;
     border: 1px solid var(--ui-color-dimmed);
     padding: 6px 12px;
+    background-color: #ffffff30;
 }
 .unsubscribeConfirmInput:focus {
     border: 1px solid var(--ui-color-main);

@@ -122,7 +122,6 @@ type UpdatedUser = {
     }
 } | undefined;
 
-
 async function updateUser(
     user: any
 ): Promise<'success' | undefined> {
@@ -142,29 +141,30 @@ async function updateUser(
                 user: user.id
             },
             personalDataRecord: {
-                user: user.id,
+                id: user.id,
+                user: user.id, // not sure if that is needed, needs testing
                 email: {
                     key: "email",
                     value: user.email,
-                    user: user.id,
+                    record: user.id,
                     public: false
                 },
                 firstName: {
                     key: "firstName",
                     value: "",
-                    user: user.id,
+                    record: user.id,
                     public: false
                 },
                 lastNAme: {
                     key: "lastNAme",
                     value: "",
-                    user: user.id,
+                    record: user.id,
                     public: false
                 },
                 country: {
                     key: "country",
                     value: "",
-                    user: user.id,
+                    record: user.id,
                     public: false
                 }
             }

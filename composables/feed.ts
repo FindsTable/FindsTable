@@ -3,7 +3,6 @@ export {
 }
 
 async function useFeed(
-    userId: string,
     collection: string,
     fields: string[]
     

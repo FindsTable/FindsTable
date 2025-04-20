@@ -1,65 +1,61 @@
-/*
-*
-*   Direct request to the database when data validation is not needed
-* 
-* */
+export {
+    useDirectAsyncFetch,
+    useDirectFetch
+}
 
-export { useDirectFetch }
-
-
-function useDirectFetch<T>(
-    _method: 'GET' | 'POST' | 'DELETE',
-    _path: string,
-    _options?: Options
-  ) {
-    const response = ref<T | null>(null)
+function useDirectAsyncFetch<T = any>(
+    method: Method,
+    path: string,
+    options?: Options
+): UseDirectFetchReturn<T> {
+    const response = ref<T | null>(null) as Ref<T | null>
     const error = ref<Record<string, any> | null>(null)
     const isPending = ref(false)
   
-    /*
-        Pass params when called directly, otherwhize it uses the params from useDirectFetch
-    */
-    async function directFetch(
-        method: 'GET' | 'POST' | 'DELETE' = _method,
-        path: string = _path,
-        options: Options = _options
-    ) {
+    async function directFetch() {
 
-        await $fetch<DirectusResponse<T>>(`${useAppConfig().directusUrl}${path}`, {
-            method,
-            headers: {
-                authorization: `Bearer ${useUserState().value.accessToken.value}`
-            },
-            ...options,
-            onRequest: () => {
-                isPending.value = true
-                if(options?.onRequest) {
-                    options.onRequest()
+        await $fetch<DirectusResponse<T>>(
+            `${useAppConfig().directusUrl}${path}`, 
+            {
+                method,
+                headers: {
+                    authorization: `Bearer ${useUserState().value.accessToken.value}`
+                },
+                ...options,
+                onRequest: () => {
+                    isPending.value = true
+                    options?.onRequest?.()
+                },
+                onResponse: (res) => {
+                    const data: any = res?.response?._data?.data || null
+
+                    if (Array.isArray(data)) {
+                        response.value = options?.singleItem ? data[0] : data
+                    } else {
+                        response.value = data
+                    }
+
+                    options?.onResponse?.()
+                    isPending.value = false
+                },
+                onResponseError: (err) => {
+                    error.value = err.response?._data || { message: 'Unknown error' }
+                    options?.onResponseError?.()
+                    isPending.value = false
                 }
-            },
-            onResponse: (res) => {
-                response.value = res.response._data.data || null
-                if(options?.onResponse) {
-                    options.onResponse()
-                }
-                isPending.value = false
-            },
-            onResponseError: (err) => {
-                error.value = err.response?._data || { message: 'Unknown error' }
-                if(options?.onResponseError) {
-                    options.onResponseError()
-                }
-                isPending.value = false
             }
-        })
+        )
+        return response.value
     }
   
-    async function refresh() {
-      directFetch()
+    async function refresh(): Promise<T | null> {
+        if (isPending.value) {
+            return response.value
+        }
+        return directFetch()
     }
-  
-    if (!_options?.differed) {
-      directFetch()
+if (!options?.differed) {
+        directFetch()
     }
   
     return {
@@ -69,21 +65,54 @@ function useDirectFetch<T>(
       refresh,
       directFetch
     }
-  }
-  
+}
 
-type DirectusResponse<T> = {
+/**
+ * Signature for useDirectAsyncFetch composable
+ */
+export type UseDirectAsyncFetch = <T = any>(
+    method: Method,
+    path: string,
+    options?: Options
+) => UseDirectFetchReturn<T>
+
+/**
+ * Return value of the useDirectAsyncFetch composable
+ */
+export type UseDirectFetchReturn<T> = {
+    response: Ref<T | null>
+    error: Ref<Record<string, any> | null>
+    isPending: Ref<boolean>
+    /**
+     * Trigger a fresh fetch and get the new data (or null on error)
+     */
+    refresh: () => Promise<T | null>
+    /**
+     * Perform a fetch with optional overrides and return the data
+     */
+    directFetch: (
+        method?: Method,
+        path?: string,
+        options?: Options
+    ) => Promise<T | null>
+}
+
+// Shape of Directus standard response
+export type DirectusResponse<T> = {
   data: T
   meta?: any
 }
 
-type Options = 
-    undefined |
-    {
-        body?: Record<string, any>
-        query?: Record<string, string | number | boolean>
-        differed?: boolean | undefined
-        onRequest?: Function
-        onResponse?: Function
-        onResponseError?: Function
-    }
+// HTTP methods supported by Directus
+export type Method = 'GET' | 'POST' | 'DELETE' | 'PATCH'
+
+// Options for each fetch call
+export type Options = {
+    body?: any
+    query?: any
+    differed?: boolean
+    singleItem?: boolean
+    onRequest?: () => void
+    onResponse?: () => void
+    onResponseError?: () => void
+}

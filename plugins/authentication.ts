@@ -91,11 +91,11 @@ async function getUserDataWithAccessToken(token: string)
         "avatar",
         "patreon_account",
         "patreon_account.*",
-        "personalDataRecord.id",
+        "personalDataRecord.*",
         "personalDataRecord.email.*",
         "personalDataRecord.firstName.*",
         "personalDataRecord.lastName.*",
-        "personalDataRecord.country.*"
+        "personalDataRecord.country.*",
     ]
 
     const res = await use$Fetch<{
@@ -125,6 +125,8 @@ async function getUserDataWithAccessToken(token: string)
     }
     if(res.data.patreon_account) {
         res.data.patreon_account = res.data.patreon_account[0] //extract patreon account from array. O2M field
+        res.data.personalDataRecord = res.data.personalDataRecord[0]
+        console.log(res.data.personalDataRecord)
     }
 
     return useParseApiResponse(res)

@@ -1,11 +1,11 @@
 import { readEvent } from '@/server/apiUtils/readEvent'
 import { createItem } from '@/server/directus/items'
 import { uploadFile } from '@/server/directus/files'
-import { getItemById, getItemsByQuery } from '@/server/directus/items'
-import { getMe } from '@/server/directus/users'
+import { getItemById } from '@/server/directus/items'
 import { ItemObject } from '~/shared/types/dataObjects'
 import { H3Event } from 'h3'
-import { countMyItems, itemCountIsValid } from '@/server/directus/validation'
+import { itemCountIsValid, validateUser } from '@/server/utils/validation'
+import { updateItemsCountField as incrementFindsCount } from '@/server/utils/apiContentUtils'
 
 const findsImagesFolderId = 'b95762e0-8e06-4c21-878c-7ad6213ef2cf'
 
@@ -17,40 +17,35 @@ event: H3Event
 
     if (tokenError) return tokenError
 
-    const activityRecord = await getUserRecord(bearerToken!)
-
-    if (!activityRecord) {
-        return {
-            ok: false,
-            statusText: 'User is not logged in.',
-            data: null
-        }
-    }
-
-    const userId = activityRecord.id
-
-    if (!userId) {
-        return {
-            ok: false,
-            statusText: 'User is not logged in.',
-            data: null
-        }
-    }
-
-    const countValid = await itemCountIsValid({
+    const currentUser = await validateUser({
         bearerToken: bearerToken!,
-        collection: 'Finds',
-        userId: userId
+        fields: [
+            'id', 'finds_count'
+        ]
+    })
+    if( !currentUser || !currentUser.id ) {
+        return {
+            ok: false,
+            statusText: 'User is not logged in or dont esist'
+        }
+    }
+
+    const userId = currentUser.id
+
+    if (!userId || typeof userId !== 'string') {
+        return {
+            ok: false,
+            statusText: 'User is not logged in.',
+            data: null
+        }
+    }
+
+    const countValid = itemCountIsValid({
+        items_count: currentUser.finds_count,
+        collection: 'Finds'
     })
 
-    if(countValid === undefined || countValid === null) {
-        return {
-            ok: false,
-            data: null,
-            statusText: 'YAn error has occured'
-        }
-    }
-    if(!countValid) {
+    if(countValid === false) {
         return {
             ok: false,
             data: null,
@@ -170,15 +165,21 @@ event: H3Event
     })
 
     if (itemRes.ok && itemRes.data) {
-    return {
-        ok: true,
-        data: {
-            item: itemRes.data,
-            record: activityRecord
-        },
-        statusText: 'Success'
-    }
 
+        const newFindsCount = await incrementFindsCount({
+            bearerToken: bearerToken!,
+            field: 'finds_count',
+            newValue: currentUser.finds_count + 1
+        })
+
+        return {
+            ok: true,
+            data: {
+                ...itemRes.data,
+                finds_count: newFindsCount
+            },
+            statusText: 'Success'
+        }
     }
 
     return {
@@ -188,40 +189,6 @@ event: H3Event
     }
   
 })
-async function getNumberOfFinds(bearerToken: string) {
-    const res = await getMe({
-        bearerToken: bearerToken,
-        query: {
-            fields: 'finds'
-        }
-    })
-    if(res.data?.finds) {
-        return res.data.finds.length
-    }
-    return undefined
-}
-async function getUserRecord(bearerToken: string): Promise<any> {
-    const { data } = await getMe({
-        bearerToken: bearerToken,
-        query: {
-            fields: 'id,activityRecord.*'
-        }
-    })
-    console.log(data)
-    return data
-}
-
-// Helper to get user id
-async function getUserId(bearerToken: string): Promise<string | undefined> {
-    const { data } = await getMe({
-        bearerToken: bearerToken,
-        query: {
-        fields: 'id'
-        }
-    })
-    return data ? data.id : undefined
-}
-
 
 // Helper to create an item and return its ID.
 async function createItemGetId(collection: string, item: any): Promise<SimpleResponse> {

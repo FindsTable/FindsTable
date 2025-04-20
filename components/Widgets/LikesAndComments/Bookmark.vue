@@ -9,6 +9,15 @@ const props = defineProps({
 const bookmarked = ref(false)
 const thisBookmark = ref([])
 
+const {
+    response
+} = useDirectAsyncFetch(
+    'GET', '/items/Bookmarks',
+    {
+
+    }
+)
+
 async function getBookmark() {
     const res = await useGetItems({
         collection: "Bookmarks",
@@ -21,7 +30,9 @@ async function getBookmark() {
                         }
                     },
                     {
-                        item: props.item.id
+                        [`${props.item.collection}_id`]: {
+                            _eq: props.item.id
+                        }
                     }
                 ]
             }
@@ -96,9 +107,7 @@ async function handleClick() {
                     authorization: `Bearer ${useUserState().value.accessToken.value}`
                 },
                 body: {
-                    [`${props.item.collection}_id`]: props.item.id,
-                    item: props.item.id,
-                    collection: props.item.collection
+                    [`${props.item.collection}_id`]: props.item.id
                 },
                 onRequest: () => {
                     bookmarked.value = true

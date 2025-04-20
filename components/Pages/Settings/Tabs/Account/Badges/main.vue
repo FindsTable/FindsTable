@@ -9,21 +9,26 @@ import {
 const { t } = useI18n()
 
 const userContent = useUserContent()
-
 const selectingBadge = ref('')
 
 const { data : allOwnedBadges } = useAsyncData(
     'allBadges',
     async () => {
-        const res = await useNuxtApp().$items.getByQuery({
-            collection: 'Badges',
-            query: {
-                fields: '*,translations.*'
+        const {
+            directFetch
+        } = useDirectAsyncFetch(
+            'GET', '/items/Badges',
+            {
+                dirrered: true,
+                query: {
+                    fields: '*,translations.*'
+                }
             }
-        })
+        )
+        const res = await directFetch()
 
-        const ownedBadges = res.data.filter((badge) => userContent.value.badgeRecord[badge.key])
-        
+        const ownedBadges = res.filter((badge) => userContent.value.badgeRecord[badge.key])
+        console.log(ownedBadges)
         return ownedBadges
     }
 )
@@ -63,7 +68,6 @@ function badgeSlotFileId(slot) {
     const badgeKey = userContent.value.badgeRecord[slot].key
     const badgeLevel = userContent.value.badgeRecord[badgeKey]
 
-    console.log(userContent.value.badgeRecord[slot][badgeLevel])
     return userContent.value.badgeRecord[slot][badgeLevel]
 
 }
@@ -109,7 +113,10 @@ function selectOwnedBadge(badgeKey) {
                     class="flex gap20 slotBox"
                 >
                     <div>
-                        <div class="slot slot1 centered pointer" @click="selectingBadge = 'slot1'">
+                        <div 
+                            @click="selectingBadge = 'slot1'"
+                            class="slot slot1 centered pointer"
+                        >
                             <img v-if="userContent.badgeRecord?.slot1" :src="`https://admin.findstable.net/assets/${badgeSlotFileId('slot1')}?key=badge-h150-q100-png`" alt="">
 
                             <Icon v-else name="plus" size="50px"/>

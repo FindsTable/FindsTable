@@ -5,18 +5,12 @@ import {
 } from '#components'
 import appConfig from '~/app.config';
 
-interface Avatar {
-    id: string;
-    image: string;
-    user: string;
-    currentAt: number;
-}
+
 
 const { t } = useI18n()
 const emit = defineEmits(['refreshAvatarCollection'])
-const user = useUserState();
-const $itemsWithFile = useNuxtApp().$itemsWithFile
-const $items = useNuxtApp().$items
+const me = useUserState();
+
 const { openModal } = useModal()
 
 const inputField = ref<HTMLInputElement & {$el: any} | null>(null)
@@ -43,15 +37,15 @@ async function openImageInCropperModal() {
     avatarUrl.value = URL.createObjectURL(newFile)
 }
 
-interface NewFileObject {
-    //based on the $itemsWithFile.create call
-    id: string
-    user: string
-    currentAtt: number
-    image: string
+interface Avatar {
+    id: string;
+    image: string;
+    user: string;
+    currentAt: number;
 }
 
 async function saveChanges() {
+
     if (!croppedFile.value) {
 
         if(canvasFrameRef.value) {
@@ -60,35 +54,25 @@ async function saveChanges() {
         if(!croppedFile.value) return
     }
 
-    // this could probably updte the user object directly ?
-    const res = await $itemsWithFile.create<NewFileObject>({
-        collection: 'Avatars',
-        item: {
-            body: {
-                user: user.value.id,
-                currentAt: Date.now()
-            },
-            query: {
-                fields: 'id,user,currentAt,image'
-            }
-        },
-        user: user.value.id,
-        file: croppedFile.value,
-    })
+    const fd = new FormData()
 
-    if(res.data?.image) {
-        user.value.avatar = res.data.image;
-        emit('refreshAvatarCollection')
+    fd.append('file', croppedFile.value)
 
-        const meRes = await useNuxtApp().$users.updateMe({
-            body: {
-                avatar: res.data.image
+    const res = await $fetch(
+        '/api/content/avatars/create',
+        {
+            method: 'POST',
+            headers: {
+                authorization: `Bearer ${me.value.accessToken.value}`
             },
-            query: {
-                fields: 'avatar,currentAvatar'
+            body: fd,
+            onResponse: (res) => {
+                console.log(res)
+                emit('refreshAvatarCollection')
             }
-        })
-    }
+        }
+    )
+    
 }
 
 

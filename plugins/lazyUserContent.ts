@@ -19,44 +19,53 @@ export default defineNuxtPlugin((nuxtApp) => {
 async function getContentFromUserObject() {
     const userContent = useUserContent()
 
-    if(useUserState().value?.patreon_account?.access_token !== undefined) {
-        const patreonMe = await useNuxtApp().$patreon.getMe(useUserState().value.patreon_account.access_token)
-    }
-
     if(!userContent.value.fetched.bookmarks) {
-        const res = await useGetItems({
-            collection: "Bookmarks",
-            query: {
-                filter: {
-                    user_created: {
-                        _eq: useUserState().value.id
+
+        const {
+            directFetch : getBookmarks
+        } = useDirectAsyncFetch(
+            'GET', '/items/Bookmarks',
+            {
+                differed: true,
+                query: {
+                    filter: {
+                        user_created: {
+                            _eq: useUserState().value.id
+                        }
                     }
                 }
             }
-        })
-        console.log('bookmarks fetched', res)
+        )
+        const bookmarks = await getBookmarks()
 
-        userContent.value.bookmarks = res
+        userContent.value.bookmarks = bookmarks
         userContent.value.fetched.bookmarks = true
     }
 
     if(!userContent.value.fetched.avatars) {
 
-        const res = await useNuxtApp().$items.getByQuery<any>({
-            collection: 'Avatars',
-            query: {
-                fields: '*',
-                filter: {
-                    user: {
-                        _eq: useUserState().value.id
-                    }
-                },
-                sort: '-currentAt'
+        const {
+            directFetch : getAvatars
+        } = useDirectAsyncFetch(
+            'GET', '/items/Avatars',
+            {
+                differed: true,
+                query: {
+                    fields: '*',
+                    filter: {
+                        owner: {
+                            _eq: useUserState().value.id
+                        }
+                    },
+                    sort: '-currentAt'
+                }
             }
-        })
+        )
 
-        if(res?.data && res.data) {
-            userContent.value.avatars = res.data
+        const avatars = await getAvatars()
+
+        if(avatars) {
+            userContent.value.avatars = avatars
             userContent.value.fetched.avatars = true
         }
     }
@@ -67,19 +76,27 @@ async function getContentFromUserObject() {
 
 async function refreshBadgeRecord() {
     const userContent = useUserContent()
-    const res = await useNuxtApp().$items.getByQuery<BadgeRecord>({
-        collection: 'Badge_records',
-        query: {
-            filter: {
-                user: {
-                    _eq: useUserState().value.id
-                },
-            },
-            fields: '*,slot1.*,slot2.*,slot3.*'
-        }
-    })
 
-    if(res?.data && res.data[0]) {
-        userContent.value.badgeRecord = res.data[0]
+    const {
+        directFetch : getBadgeRecord
+    } = useDirectAsyncFetch(
+        'GET', '/items/Badge_records',
+        {
+            differed: true,
+            query: {
+                filter: {
+                    user: {
+                        _eq: useUserState().value.id
+                    },
+                },
+                fields: '*,slot1.*,slot2.*,slot3.*'
+            }
+        }
+    )
+
+    const record = await getBadgeRecord()
+
+    if(record) {
+        userContent.value.badgeRecord = record
     }
 }

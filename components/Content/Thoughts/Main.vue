@@ -3,13 +3,13 @@ const props = defineProps({
     thoughts: Array
 })
 const emit = defineEmits(['getNextPage', 'thoughtDeleted'])
-const cache = useCache()
 
 /*
 *   new thoughts are stored in newThoughts to prevent a 
 *   full rendering 
 *   of the already rendered thoughts
 */
+
 const newThoughts = ref([])
 
 function newThoughtPosted(newThought) {
@@ -18,8 +18,6 @@ function newThoughtPosted(newThought) {
         ...newThoughts.value,
         
     ]
-
-    // useSetCacheData('thoughts', thoughts.value)
 }
 
 const _thoughts = computed(() => {
@@ -31,9 +29,6 @@ const _thoughts = computed(() => {
 
 function getNextPage() {
     emit('getNextPage')
-}
-function thoughtDeleted() {
-
 }
 
 async function deleteThought(thoughtId) {

@@ -4,7 +4,6 @@ const {
     getNextPage,
     removeItem
 } = await useFeed(
-    useUserState().value.id,
     'Thoughts',
     [
         '*',

@@ -38,7 +38,7 @@ const showComments = ref(false)
 
         <div class="userBox flex gap10 alignCenter">
             <img v-if="find.owner.avatars"
-                :src="`https://admin.findstable.net/assets/${find.owner.avatars[0].image}?key=avatar-tiny-jpg&v=${Date.now()}`"
+                :src="`https://admin.findstable.net/assets/${find.owner.avatar}?key=avatar-tiny-jpg&v=${Date.now()}`"
                 alt="metalhunter avatar" class="avatar" />
 
             <div>

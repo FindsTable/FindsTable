@@ -19,11 +19,12 @@ const showComments = ref(false)
     >
         <div class="">
             <div class="imageBox overflowHidden relative">
-                <img v-if="find.images.length"
+                <!-- <img v-if="find.images.length"
                     :src="`https://admin.findstable.net/assets/${find.images[activeImageIndex].directus_files_id}?key=find-250-jpg`"
                     alt="" class="image w100 objectFitCover">
-                <img v-else :src="`/images/find-no-image.png`" alt="" class="image w100 objectFitCover">
-
+                <img v-else :src="`/images/find-no-image.png`" alt="" class="image w100 objectFitCover"> -->
+                <img :src="`/images/find-no-image.png`" alt="" class="image w100 objectFitCover">
+                
                 <div
                     class="infoBox flex justifyEvenly alignCenter gap10"
                 >

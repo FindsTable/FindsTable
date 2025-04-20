@@ -26,7 +26,6 @@ async function deleteFind(findId) {
             headers: {
                 authorization: `Bearer ${useUserState().value.accessToken.value}`
             }
-            
         }
     )
     emit('findDeleted', findId)
@@ -35,7 +34,7 @@ async function deleteFind(findId) {
 
 <template>
     <div 
-        v-if="finds"
+        v-if="finds?.length"
         class="flex column"
     >
         <template class="flex column">

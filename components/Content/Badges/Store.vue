@@ -1,12 +1,11 @@
 <script setup>
-const cache = useCache()
-const $items = useNuxtApp().$items
-
-const badges = ref(null)
-
-async function getBadges() {
-    const res = await $items.getByQuery({
-        collection: 'Badges',
+const {
+    response : badges,
+    directFetch : getBadges
+} = useDirectAsyncFetch(
+    'GET', '/items/Badges',
+    {
+        differed: true,
         query: {
             fields: '*,translations.*,translations.Languages_id.code',
             deep: {
@@ -21,12 +20,8 @@ async function getBadges() {
                 }
             }
         }
-    })
-
-    if(res?.data) {
-        return res.data
     }
-}
+)
 
 const selectedBadge = ref('')
 
@@ -39,8 +34,9 @@ onMounted(async () => {
     if(cacheData) {
         badges.value = cacheData
     }
-        
-    badges.value = await getBadges()
+
+    await getBadges()
+    
     useSetCacheData('badges', badges.value)
 })
 

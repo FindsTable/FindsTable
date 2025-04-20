@@ -15,36 +15,34 @@ const fields = [
     'owner.displayName',
     'owner.avatar'
 ]
-
-const { data: comments, refresh } = useAsyncData(
-    `${props.thoughtId}-comments`,
-    async () => {
-        const res = await useNuxtApp().$items.getByQuery({
-            collection: props.collection,
-            query: {
-                filter: {
-                    item: {
-                        _eq: props.itemId
+const {
+    response : comments,
+    error,
+    isPending,
+    refresh
+} = useDirectAsyncFetch(
+    'GET', `/items/${props.collection}`,
+    {
+        query: {
+            filter: {
+                item: {
+                    _eq: props.itemId
+                }
+            },
+            fields: fields.join(','),
+            deep: {
+                owner: {
+                    avatars: {
+                        _sort: "-currentAt",
+                        _limit: 1
                     }
-                },
-                fields: fields.join(','),
-                deep: {
-                    owner: {
-                        avatars: {
-                            _sort: "-currentAt",
-                            _limit: 1
-                        }
-                    }
-                },
-                sort: 'date_created'
-            }
-        })
-
-        if(res?.data) {
-            return res.data
+                }
+            },
+            sort: 'date_created'
         }
     }
 )
+
 
 async function deleteComment(id) {
     const res = await useNuxtApp().$items.deleteById({

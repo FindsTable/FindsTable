@@ -1,13 +1,6 @@
 <script setup>
 const user = useUserState()
 
-const currentAvatar = computed(() => {
-    // lasyUserContent fetches the avatars, index 0 is the current one
-    if(useUserContent().value.avatars.length) {
-        return useUserContent().value.avatars[0].image
-    }
-})
-
 </script>
 
 <template>
