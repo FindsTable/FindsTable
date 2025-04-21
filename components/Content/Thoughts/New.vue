@@ -20,8 +20,6 @@ async function saveNewThought() {
         }
     )
 
-    console.log(res)
-
     if(res?.ok && res?.data) {
         newThought.value = ''
         emit('newThoughtPosted', res.data)

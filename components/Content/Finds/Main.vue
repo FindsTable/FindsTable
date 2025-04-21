@@ -20,15 +20,22 @@ async function deleteFind(findId) {
     }
 
     const res = await $fetch(
-        `https://admin.findstable.net/items/Finds/${findId}`,
+        `/api/content/deleteItem`,
         {
             method: 'DELETE',
             headers: {
                 authorization: `Bearer ${useUserState().value.accessToken.value}`
+            },
+            body: {
+                collection: 'Finds',
+                id: findId
             }
         }
     )
-    emit('findDeleted', findId)
+
+    if(res?.ok) {
+        emit('findDeleted', findId)
+    }
 }
 </script>
 

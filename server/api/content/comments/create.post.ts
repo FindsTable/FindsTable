@@ -1,10 +1,8 @@
 import { readEvent } from '@/server/apiUtils/readEvent'
 import { createItem } from '@/server/directus/items'
-import { getMe } from '@/server/directus/users'
 import { ItemObject } from '~/shared/types/dataObjects'
 import { H3Event } from 'h3'
 import { itemCountIsValid, validateUser } from '@/server/utils/validation'
-import { updateItemsCountField as incrementCommentsCount } from '@/server/utils/apiContentUtils'
 
 
 export default defineEventHandler(async <ExpectedItemObject extends ItemObject>(
@@ -55,8 +53,8 @@ event: H3Event
     }
     
     const countValid = itemCountIsValid({
-        collection: body.collection,
-        items_count: currentUser.comments_count
+        collection: 'All_comments',
+        items_count: currentUser.comments_count || 0
     })
 
     if(!countValid) {
@@ -67,12 +65,17 @@ event: H3Event
         }
     }
 
+    
+
     const res = await createItem({
         collection: body.collection,
         auth: 'app',
         body: {
             ...body.item,
-            owner: userId
+            owner: {
+                id: userId,
+                comments_count: currentUser.comments_count + 1
+            }
         },
         query: {
             fields: '*,owner.avatar,owner.username'
@@ -80,13 +83,6 @@ event: H3Event
     })
 
     if(!res?.data) {
-
-        await incrementCommentsCount({
-            bearerToken: bearerToken!,
-            field: 'comments_count',
-            newValue: currentUser.comments_count + 1
-        })
-
         return {
             ok: false,
             data: null, 
@@ -101,18 +97,4 @@ event: H3Event
             ...res.data
         }
     }
-  
 })
-
-
-// Helper to get user id
-async function getUserId(bearerToken: string): Promise<string | undefined> {
-    const { data } = await getMe({
-        bearerToken: bearerToken,
-        query: {
-            fields: 'id'
-        }
-    })
-
-    return data ? data.id : undefined
-}

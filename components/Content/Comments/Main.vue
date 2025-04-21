@@ -43,12 +43,22 @@ const {
     }
 )
 
-
 async function deleteComment(id) {
-    const res = await useNuxtApp().$items.deleteById({
-        collection: 'Thoughts_comments',
-        id: id
-    })
+    const res = await $fetch(
+        '/api/content/deleteItem',
+        {
+            method: 'DELETE',
+            headers: {
+                authorization: `Bearer ${me.value.accessToken.value}`
+            },
+            body: {
+                collection: props.collection,
+                id: id
+            }
+        }
+    )
+
+    console.log(res)
 
     if(res?.ok) {
         refresh()

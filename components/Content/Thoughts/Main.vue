@@ -41,10 +41,19 @@ async function deleteThought(thoughtId) {
     if (!confirmDelete) {
         return
     }
-    const res = await useNuxtApp().$items.deleteById({
-        collection: 'Thoughts',
-        id: thoughtId
-    })
+    const res = await $fetch(
+        '/api/content/deleteItem',
+        {
+            method: 'DELETE',
+            headers: {
+                authorization: `Bearer ${useUserState().value.accessToken.value}`
+            },
+            body: {
+                collection: 'Thoughts',
+                id: thoughtId
+            }
+        }
+    )
 
     if(res?.ok) {
         if(newThoughts.value.length) {

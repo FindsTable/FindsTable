@@ -114,9 +114,6 @@ type UpdatedUser = {
         betaTester: string;
         user: string;
     };
-    activityRecord: {
-        user: string;
-    };
     personalDataRecord: {
         user: string;
     }
@@ -135,9 +132,6 @@ async function updateUser(
             badgeRecord: {
                 firstBeliever:  "level1",
                 betaTester: "level1",
-                user: user.id
-            },
-            activityRecord: {
                 user: user.id
             },
             personalDataRecord: {

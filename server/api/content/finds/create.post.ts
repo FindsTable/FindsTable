@@ -121,7 +121,7 @@ event: H3Event
             const blob = new Blob([fileEntry.data], { type: fileEntry.type || 'application/octet-stream' })
             fileFormData.append('folder', findsImagesFolderId)
             fileFormData.append('Finds_id', cache.itemId!)
-            fileFormData.append('owner', userId)
+            // fileFormData.append('owner', userId)  //need to get rid of the link for cascade deletion
             fileFormData.append('file', blob, fileEntry.filename)
 
             const uploadRes = await uploadFileGetId(fileFormData)
@@ -139,11 +139,11 @@ event: H3Event
                 collection: img.collection,
                 auth: 'app',
                 body: {
-                Finds_id: cache.itemId,
-                directus_files_id: fileId
+                    Finds_id: cache.itemId,
+                    directus_files_id: fileId
                 },
                 query: {
-                fields: 'id'
+                    fields: 'id'
                 }
             })
 

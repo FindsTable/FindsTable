@@ -12,7 +12,7 @@ const isPending = ref(false)
 async function handleClick() {
     if(isPending.value) return
     isPending.value = true
-    
+
     const res = await $fetch(
         '/api/content/comments/create',
         {
@@ -29,8 +29,9 @@ async function handleClick() {
             }
         }
     )
+    console.log(res)
 
-    if (res) {
+    if (res?.ok) {
         emit('newCommentSaved', res)
         textContent.value = ''
     }

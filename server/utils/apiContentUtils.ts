@@ -13,7 +13,7 @@ async function updateItemsCountField(p: {
     const { data } = await updateMe({
       bearerToken: p.bearerToken,
       body: {
-        [p.field]: p.newValue
+        [p.field]: p.newValue < 0 ? 0 : p.newValue //safety in case of desync of items_count and actual items number
       },
       query: {
         fields: p.field

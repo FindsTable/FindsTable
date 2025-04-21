@@ -95,7 +95,7 @@ event: H3Event
     const directusForm = new FormData()
     directusForm.append('folder', avatarsFolderId)
     directusForm.append('Avatars_id', itemId)
-    directusForm.append('owner', userId)
+    // directusForm.append('owner', userId)  //need to get rid of the link for cascade deletion
     directusForm.append(
         'file',
         new Blob([fileEntry.data], { type: fileEntry.type }), // 👈 type added here
