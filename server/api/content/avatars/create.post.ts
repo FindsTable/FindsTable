@@ -12,7 +12,10 @@ const allowedTypes = ['image/jpeg', 'image/png']
 export default defineEventHandler(async <ExpectedItemObject extends ItemObject>(
 event: H3Event
 ): Promise<ApiResponse<ExpectedItemObject | null>> => {
-    const { bearerToken, error: tokenError } = await readEvent(event, ['bearerToken'])
+    const { 
+        bearerToken, 
+        error: tokenError
+    } = await readEvent(event, ['bearerToken'])
 
     if (tokenError) return tokenError
 
@@ -126,7 +129,7 @@ event: H3Event
 
     if (updateRes.ok && updateRes.data) {
         await incrementAvatarsCount({
-            bearerToken: bearerToken!,
+            bearerToken: bearerToken,
             field: 'avatars_count',
             newValue: currentUser.avatars_count + 1
         })

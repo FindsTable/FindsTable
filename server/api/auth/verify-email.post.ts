@@ -1,19 +1,24 @@
-import { getUsersByQuery, updateUserById } from '@/server/directus/users'
 import { readEvent } from '@/server/apiUtils/readEvent'
-import { setNewBadgeRecord } from '@/server/badges/badges'
+import {
+    configureVerifiedAccount
+} from '@/server/utils/apiAuthSignupUtils'
+import { 
+    validateUserEmail, 
+    tokensAreValid 
+} from '@/server/utils/validation'
 
 export default defineEventHandler(async (
     event
 ) : Promise<ApiResponse<undefined>> => 
 {
 
-    const { body, error } = await readEvent(event, [ 'body']);
+    const { body, error } = await readEvent(event, ['body']);
 
     if(error) return error
 
-    const user = await getUserWithEmail(body.email)
+    const validatedUser = await validateUserEmail(body.email)
     
-    if(!user) {
+    if(!validatedUser) {
         return newResponse({
             ok: false,
             status: 404,
@@ -23,7 +28,7 @@ export default defineEventHandler(async (
 
     if(!tokensAreValid(
         body.token,
-        user.email_verification_token
+        validatedUser.email_verification_token
     )){
         return newResponse({
             ok: false,
@@ -32,76 +37,27 @@ export default defineEventHandler(async (
         })
     }
 
-    const userSuccesfullyUpdated = await updateUser(user)
+    /*
+    *  Create dataRecord, dataValues, badgeRecord, update userObject
+    */
+    const accountConfigured = await configureVerifiedAccount(validatedUser)
 
-    if(!userSuccesfullyUpdated) {
+    if(accountConfigured.error) {
         return newResponse({
             ok: false,
             status: 500,
-            statusText: 'user not updated'
+            statusText: accountConfigured.error,
+            data: accountConfigured
         })
     }
-
     return newResponse({
         ok: true,
         status: 200,
-        statusText: 'email verified'
+        statusText: 'email verified',
+        data: accountConfigured
     })
 })
 
-interface UserFromEmail {
-    // based on the query in the getUserWithEmail function
-    id: string,
-    email: string,
-    email_verification_token: string
-}
-
-async function getUserWithEmail(
-    email: string
-): Promise<UserFromEmail | null> {
-
-    const user = await getUsersByQuery<UserFromEmail>({
-        auth: 'app',
-        query: {
-            filter: {
-                email: {
-                    _eq: email
-                }
-            },
-            fields: 'id,email,email_verification_token'
-        }
-    })
-
-    if(!user.ok || !user.data?.length) {
-        console.error('Error fetching user:', user.statusText)
-        return null
-    }
-    return user.data[0]
-}
-
-function tokensAreValid(
-    tokenFromRoute: unknown,
-    tokenFromDirectus: unknown
-) : boolean {
-
-    if (
-        typeof tokenFromRoute !== 'string' ||
-        typeof tokenFromDirectus !== 'string'
-    ) {
-        console.error('Invalid token: token must be a string.')
-        return false
-    }
-
-    if (
-        !tokenFromRoute.trim() ||
-        !tokenFromDirectus.trim()
-    ) {
-        console.error('Invalid token from route: token cannot be empty or whitespace-only.')
-        return false
-    }
-
-    return tokenFromRoute === tokenFromDirectus;
-}
 
 type UpdatedUser = {
     // based on the query in the updateUser function
@@ -118,67 +74,3 @@ type UpdatedUser = {
         user: string;
     }
 } | undefined;
-
-async function updateUser(
-    user: any
-): Promise<'success' | undefined> {
-
-    const res = await updateUserById<any>({
-        id: user.id,
-        auth: 'app',
-        body: {
-            email_verified: true,
-            role: useRuntimeConfig().USER_ROLE_ID,
-            badgeRecord: {
-                firstBeliever:  "level1",
-                betaTester: "level1",
-                user: user.id
-            },
-            personalDataRecord: {
-                id: user.id,
-                user: user.id, // not sure if that is needed, needs testing
-                email: {
-                    key: "email",
-                    value: user.email,
-                    record: user.id,
-                    public: false
-                },
-                firstName: {
-                    key: "firstName",
-                    value: "",
-                    record: user.id,
-                    public: false
-                },
-                lastNAme: {
-                    key: "lastNAme",
-                    value: "",
-                    record: user.id,
-                    public: false
-                },
-                country: {
-                    key: "country",
-                    value: "",
-                    record: user.id,
-                    public: false
-                }
-            }
-        },
-        query: {
-            fields: 'id,email,email_verified,role',
-        },
-    })
-
-    if (!res.ok || !res.data) {
-        console.error('Failed to update user:', res.statusText);
-        return
-    }
-
-    if (
-        res.data.email_verified && 
-        res.data.role === useRuntimeConfig().USER_ROLE_ID
-    ) {
-        return 'success'
-    }
-    console.error('Failed to update user in /auth/verify-email.post.ts', res);
-    return
-}

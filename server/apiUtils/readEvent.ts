@@ -68,10 +68,14 @@ function handleQuery(event: H3Event, result: ReadEventResult) {
 function handleBearerToken(event: H3Event, result: ReadEventResult) {
     const bearerToken = getHeader(event, 'Authorization')
     if (!bearerToken) {
-        result.bearerToken = ''
+        
+    }
+    if(bearerToken !== undefined && bearerToken && typeof bearerToken === 'string') {
+        result.bearerToken = bearerToken
+    } else {
+        result.bearerToken = '' as string
         throw new Error('Authorization header is missing')
     }
-    result.bearerToken = bearerToken
 }
 
 function handleParam(event: H3Event, result: ReadEventResult, option: string) {
