@@ -55,7 +55,6 @@ async function deleteFind(findId) {
                 v-for="find in finds" :key="find.id"
                 :find="find"
                 :format="useAppState().value.findViewer.cardSize"
-                @click="navigateToItemPage(find)"
                 @deleteFind="deleteFind"
             />
         </div>

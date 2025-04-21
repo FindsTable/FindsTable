@@ -10,24 +10,10 @@ export default defineNuxtPlugin((nuxtApp) => {
     checkVersionNumber()
 })
 
-
-
 function checkVersionNumber() {
   const { version: currentVersion } = useAppConfig() as unknown as { version: string }
   const versionKey = 'app_version'
-  const storedVersion = localStorage.getItem(versionKey)
 
-  if (storedVersion !== currentVersion) {
-    console.info(`[Cache] App version changed (${storedVersion || 'none'} → ${currentVersion}) — clearing localStorage caches.`)
-
-    const permanentCacheKeys = useAppConfig().permanentCacheKeys as CacheKey[]
-
-    permanentCacheKeys.forEach(key => {
-    useClearLocalStorageCache(key)
-    })
-
-    localStorage.setItem(versionKey, currentVersion)
-  }
 }
 
 

@@ -1,7 +1,7 @@
 <script setup>
 const {
     response : badges,
-    directFetch : getBadges
+    differedFetch : getBadges
 } = useDirectAsyncFetch(
     'GET', '/items/Badges',
     {
@@ -30,14 +30,7 @@ function handleEmit(badgeKey) {
 }
 
 onMounted(async () => {
-    const cacheData = useGetCachedData('badges')
-    if(cacheData) {
-        badges.value = cacheData
-    }
-
     await getBadges()
-    
-    useSetCacheData('badges', badges.value)
 })
 
 </script>

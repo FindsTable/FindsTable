@@ -18,7 +18,7 @@ const props = defineProps<Props>()
 async function handleClick() {
     const {
       error,
-      directFetch
+      differedFetch
     } = useDirectAsyncFetch(
         'DELETE', `/items/Follows/${props.follow.id}`,
         {
@@ -31,7 +31,7 @@ async function handleClick() {
             }
         }
     )
-    await directFetch()
+    await differedFetch()
 
     if(!error.value) {
         confirm()

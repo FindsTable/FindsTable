@@ -12,9 +12,15 @@ function useDirectAsyncFetch<T = any>(
     const error = ref<Record<string, any> | null>(null)
     const isPending = ref(false)
   
-    async function directFetch() {
+    async function directFetch(
+        method: Method,
+        path: string,
+        options?: Options
+    ) {
 
+        isPending.value = true
         await $fetch<DirectusResponse<T>>(
+            
             `${useAppConfig().directusUrl}${path}`, 
             {
                 method,
@@ -35,7 +41,7 @@ function useDirectAsyncFetch<T = any>(
                         response.value = data
                     }
 
-                    options?.onResponse?.()
+                    options?.onResponse?.(response)
                     isPending.value = false
                 },
                 onResponseError: (err) => {
@@ -47,15 +53,34 @@ function useDirectAsyncFetch<T = any>(
         )
         return response.value
     }
-  
+
+    async function differedFetch() {
+        if (isPending.value) {
+            directFetch(
+                method,
+                path,
+                options
+            )
+        }
+    }
+
     async function refresh(): Promise<T | null> {
         if (isPending.value) {
             return response.value
         }
-        return directFetch()
+        return directFetch(
+            method,
+            path,
+            options
+        )
     }
-if (!options?.differed) {
-        directFetch()
+
+    if (!options?.differed) {
+        directFetch(
+            method,
+            path,
+            options
+        )
     }
   
     return {
@@ -63,6 +88,7 @@ if (!options?.differed) {
       error,
       isPending,
       refresh,
+      differedFetch,
       directFetch
     }
 }
@@ -90,7 +116,7 @@ export type UseDirectFetchReturn<T> = {
     /**
      * Perform a fetch with optional overrides and return the data
      */
-    directFetch: (
+    differedFetch: (
         method?: Method,
         path?: string,
         options?: Options
@@ -113,6 +139,6 @@ export type Options = {
     differed?: boolean
     singleItem?: boolean
     onRequest?: () => void
-    onResponse?: () => void
-    onResponseError?: () => void
+    onResponse?: (res? : any) => void
+    onResponseError?: (err? : any) => void
 }

@@ -2,7 +2,6 @@
 const props = defineProps({
     userId: String
 })
-const cache = useCache()
 
 const requestOffset = ref(0)
 const requestLimit = ref(5)
@@ -62,23 +61,15 @@ async function getNextPage() {
         ...thoughts.value,
         ...res
     ]
-    // useSetCacheData('thoughts', thoughts.value)
 }
 
 onMounted(async () => {
-    // const cacheData = useGetCachedData('thoughts', thoughts.value)
-
-    // if (cacheData) {
-    //     thoughts.value = cacheData
-    //     return
-    // }
-
     const res = await getThoughts()
+    
     thoughts.value = [
         ...thoughts.value,
         ...res
     ]
-    useSetCacheData('thoughts', thoughts.value)
 })
 
 </script>

@@ -15,7 +15,7 @@ const { data : allOwnedBadges } = useAsyncData(
     'allBadges',
     async () => {
         const {
-            directFetch
+            differedFetch
         } = useDirectAsyncFetch(
             'GET', '/items/Badges',
             {
@@ -25,7 +25,7 @@ const { data : allOwnedBadges } = useAsyncData(
                 }
             }
         )
-        const res = await directFetch()
+        const res = await differedFetch()
 
         const ownedBadges = res.filter((badge) => userContent.value.badgeRecord[badge.key])
         console.log(ownedBadges)

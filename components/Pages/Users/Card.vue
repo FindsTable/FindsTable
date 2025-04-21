@@ -32,10 +32,10 @@ const props = defineProps({
 
                     <div class="flex marTop20">
                         <WidgetsFollowButton :user="{
-                                id: user.id,
-                                username: user.username,
-                                avatarUrl: `${useAppConfig().directusUrl}/assets/${user.avatar}`
-                            }" />
+                            id: user.id,
+                            username: user.username,
+                            avatarUrl: `${useAppConfig().directusUrl}/assets/${user.avatar}`
+                        }" />
                     </div>
                 </div>
             </div>

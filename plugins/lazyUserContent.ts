@@ -22,7 +22,7 @@ async function getContentFromUserObject() {
     if(!userContent.value.fetched.bookmarks) {
 
         const {
-            directFetch : getBookmarks
+            differedFetch : getBookmarks
         } = useDirectAsyncFetch(
             'GET', '/items/Bookmarks',
             {
@@ -45,7 +45,7 @@ async function getContentFromUserObject() {
     if(!userContent.value.fetched.avatars) {
 
         const {
-            directFetch : getAvatars
+            differedFetch : getAvatars
         } = useDirectAsyncFetch(
             'GET', '/items/Avatars',
             {
@@ -78,7 +78,7 @@ async function refreshBadgeRecord() {
     const userContent = useUserContent()
 
     const {
-        directFetch : getBadgeRecord
+        differedFetch : getBadgeRecord
     } = useDirectAsyncFetch(
         'GET', '/items/Badge_records',
         {

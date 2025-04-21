@@ -3,11 +3,11 @@ const props = defineProps({
     userId: String
 })
 
-const follows = ref(null)
-
-async function getFollows() {
-    const res = await useGetItems({
-        collection: 'Follows',
+const {
+    response : follows
+} = useDirectAsyncFetch(
+    'GET', '/items/Follows',
+    {
         query: {
             filter: {
                 _or: [
@@ -24,16 +24,8 @@ async function getFollows() {
                 ]
             }
         }
-    })
-
-    if(res) {
-        follows.value = res
-    }    
-}
-
-onMounted(() => {
-    getFollows()
-})
+    }
+)
 
 const followers = computed(() => {
     if(!follows?.value) return 0

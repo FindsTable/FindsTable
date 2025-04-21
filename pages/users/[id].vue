@@ -26,7 +26,7 @@ const {
     response : user,
     error,
     isPending,
-    directFetch
+    differedFetch
 } = useDirectAsyncFetch(
     'GET', `/users/${route.params.id}`,
     {

@@ -1,4 +1,5 @@
 <script setup>
+const cache = useCache()
 const props = defineProps({
     find: Object,
     format: String
@@ -8,7 +9,7 @@ const emit = defineEmits(['deleteFind'])
 const activeImageIndex = ref(0)
 
 function handleClick() {
-    useSetCacheData(props.find.id, props.find)
+    cache.value.navigation = props.find
     navigateTo(`/finds/${props.find.id}`)
 }
 </script>
@@ -30,13 +31,13 @@ function handleClick() {
             @deleteFind="emit('deleteFind', find.id)"
         />
 
-        <!-- <ContentFindsCardMedium
+        <ContentFindsCardMedium
             v-if="format === 'medium'"
             @click="handleClick"
             :find="find"
             :activeImageIndex="activeImageIndex"
             @deleteFind="emit('deleteFind', find.id)"
-        /> -->
+        />
     </div>
 </template>
 

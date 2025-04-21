@@ -22,6 +22,7 @@ type Find = {
 }
 
 const route = useRoute()
+const cache = useCache()
 
 const fields = [
     '*',
@@ -37,15 +38,25 @@ const {
     response : find,
     isPending,
     error,
-    refresh
+    refresh,
+    differedFetch
 } = useDirectAsyncFetch<Find>(
     'GET', `/items/Finds/${route.params.id}`,
     {
+        differed: true,
         query: {
             fields: fields.join(',')
         }
     }
 )
+
+onMounted(() => {
+    if(cache.value.navigation.id === route.params.id) {
+        find.value = cache.value.navigation
+    } else {
+        differedFetch()
+    }
+})
 
 definePageMeta({
     title: 'Find made by our users',
@@ -74,7 +85,10 @@ definePageMeta({
         </template>
 
         <template #scrollMain>
-            {{ find }}
+            <ContentFindsCardMain
+                :find="find"
+                format="medium"
+            />
         </template>
     </NuxtLayout>
 </template>

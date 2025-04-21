@@ -24,6 +24,8 @@ export default defineEventHandler(async (
         ]
     })
 
+    
+
     if(!currentUser || !currentUser.id) {
         return newResponse({
             ok: false,
@@ -39,6 +41,7 @@ export default defineEventHandler(async (
             }
         })
     }
+    
 
     if(body.confirmation !== body.username) { // user needs to confirm their username for security
         return newResponse({
@@ -56,61 +59,26 @@ export default defineEventHandler(async (
         })
     }
 
-    const app = await $fetch(
-        `https://admin.findstable.net/users/me`,
+    const res = await $fetch(
+        `https://admin.findstable.net/users/${currentUser.id}`,
         {
-            method: 'GET',
+            method: 'DELETE',
             headers: {
-                authorization: `Bearer Tggg0bTu-9rLyw3f6NJFj8PBLLEprTJT`
-            },
-            query: {
-                fields: [
-                    'id'
-                ]
+                authorization: `Bearer EEy6M6_k90rcs_wOb3SGZHZbbl3tZTal`
             }
         }
     )
 
-    try {
-        const res = await $fetch(
-          `https://admin.findstable.net/users/${currentUser.id}`,
-          {
-            method: 'DELETE',
-            headers: {
-              authorization: `Bearer Tggg0bTu-9rLyw3f6NJFj8PBLLEprTJT`
-            }
-          }
-        )
-        return {
-          ok: true,
-          deleteRes: res
-        }
-      } catch (err: any) {
-        console.error('FetchError:', err)
-      
-        return {
-          ok: false,
-          deleteError: {
-            name: err.name,
-            message: err.message,
-            statusCode: err?.response?.status,
-            statusText: err?.response?.statusText,
-            data: err?.response?._data || null,
-            full: JSON.stringify(err, Object.getOwnPropertyNames(err), 2)
-          }
-        }
-      }
-    
     if(res) {
         return newResponse({
-            ok: true,
+            ok: false,
             status: 200,
-            statusText: "User deleted",
+            statusText: "Account deleted",
             data: null,
             feedback: {
                 toaster: {
-                    messagePath: "user.deleted",
-                    message: "The user was succesfuly deleted",
+                    messagePath: "success.accountDeleted",
+                    message: "Thanks for the time you've spent with us ! :-)",
                     type: "success"
                 }
             }

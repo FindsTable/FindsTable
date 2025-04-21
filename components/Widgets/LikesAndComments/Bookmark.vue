@@ -7,20 +7,15 @@ const props = defineProps({
 })
 
 const bookmarked = ref(false)
-const thisBookmark = ref([])
-
 const {
-    response
+    response : thisBookmark,
+    differedFetch,
+    directFetch,
+    isPending
 } = useDirectAsyncFetch(
     'GET', '/items/Bookmarks',
     {
-
-    }
-)
-
-async function getBookmark() {
-    const res = await useGetItems({
-        collection: "Bookmarks",
+        singleItem: true,
         query: {
             filter: {
                 _and: [
@@ -36,44 +31,33 @@ async function getBookmark() {
                     }
                 ]
             }
+        },
+        onResponse: (res) => {
+            if(res.value) {
+                bookmarked.value = true
+            }
         }
-    })
-
-    if(res?.length) {
-        thisBookmark.value = res[0]
-        bookmarked.value = true
     }
-}
-
-onMounted(async() => {
-    getBookmark()
-})
-
-const isPending = ref(false)
+)
 
 async function handleClick() {
 
     if(isPending.value) return
-    isPending.value = true
 
     if(thisBookmark.value?.id) {
-        await $fetch(
-            `https://admin.findstable.net/items/Bookmarks/${thisBookmark.value.id}`,
+        await directFetch(
+            'DELETE', `/items/Bookmarks/${thisBookmark.value.id}`,
             {
-                method: 'DELETE',
-                headers: {
-                    authorization: `Bearer ${useUserState().value.accessToken.value}`
-                },
                 onRequest: () => {
                     bookmarked.value = false
                 },
                 onResponse: async () => {
-                    thisBookmark.value = []
+                    thisBookmark.value = null
                     useToaster(
                         'show',
                         {
                             id: `bookmark-${props.item.id}-deleted-success`,
-                            message: "This find was deleted ",
+                            message: "This bookmark was deleted ",
                             type: 'success',
                             autoClose: true,
                             position: 'bottom'
@@ -93,19 +77,14 @@ async function handleClick() {
                         }
                     )
                     getBookmark()
-                    isPending.value = false
                 }
             }
         )
 
     } else {
-        await $fetch(
-            `https://admin.findstable.net/items/Bookmarks`,
+        await directFetch(
+            'POST', `/items/Bookmarks`,
             {
-                method: 'POST',
-                headers: {
-                    authorization: `Bearer ${useUserState().value.accessToken.value}`
-                },
                 body: {
                     [`${props.item.collection}_id`]: props.item.id
                 },
@@ -113,7 +92,6 @@ async function handleClick() {
                     bookmarked.value = true
                 },
                 onResponse: (res) => {
-                    thisBookmark.value = res.response._data.data
                     useToaster(
                         'show',
                         {
@@ -138,14 +116,10 @@ async function handleClick() {
                         }
                     )
                     getBookmark()
-                    isPending.value = false
                 }
             }
         )
     }
-
-    isPending.value = false
-    
 }
 
 </script>

@@ -72,7 +72,7 @@ async function unlinkAccount() {
 async function getPatreonAccountFromDirectus() {
 
     const {
-        directFetch : getPatreonAccount
+        differedFetch : getPatreonAccount
     } = useDirectAsyncFetch(
         'GET', '/items/Patreon_accounts',
         {

@@ -29,9 +29,7 @@ const props = defineProps<Props>()
 
 const {
     response : follow,
-    error : followError,
-    isPending : getFollowPending,
-    refresh
+    isPending,
 } = useDirectAsyncFetch<object>(
     'GET', '/items/Follows',
     {
@@ -57,7 +55,7 @@ const {
 
 async function handleClick() {
 
-    if(getFollowPending.value ) return
+    if(isPending.value ) return
     
     if (follow.value) {
         const { openModal } = useModal()
@@ -87,10 +85,9 @@ async function handleClick() {
         'POST', '/items/Follows',
         {
             body: {
-                // followed: props.user.id
+                followed: props.user.id
             },
             onResponse: () => {
-                console.log('response  !!')
                 follow.value = response.value
                 useToaster('show', {
                     id: `following-${props.user.id}`, // same id as onRensponseError to have it only once
@@ -101,7 +98,6 @@ async function handleClick() {
                 }) 
             },
             onResponseError: () => {
-                console.log('response error !!')
                 follow.value = null
                 useToaster('show', {
                     id: `following-${props.user.id}`, // same id as onResponse to have it only once
