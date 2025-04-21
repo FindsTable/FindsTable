@@ -1,6 +1,6 @@
 import { readEvent } from '@/server/apiUtils/readEvent'
-import { deleteItemById } from '@/server/directus/items'
-import { ItemObject } from '~/shared/types/dataObjects'
+import { deleteItemById, getItemsByQuery } from '@/server/directus/items'
+import { ItemObject } from '@/shared/types/dataObjects'
 import { H3Event } from 'h3'
 import { validateUser } from '@/server/utils/validation'
 import { updateItemsCountField } from '@/server/utils/apiContentUtils'
@@ -26,6 +26,7 @@ event: H3Event
             data: null
         }
     }
+
     const countField = itemsCountField(body.collection)
 
     if(!countField) {

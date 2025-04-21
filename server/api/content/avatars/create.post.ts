@@ -5,6 +5,7 @@ import { ItemObject } from '~/shared/types/dataObjects'
 import { H3Event } from 'h3'
 import { itemCountIsValid, validateUser } from '@/server/utils/validation'
 import { updateItemsCountField as incrementAvatarsCount } from '@/server/utils/apiContentUtils'
+import { updateMe } from '@/server/directus/users'
 
 const avatarsFolderId = 'e82c8d84-9351-4e5b-a8bb-527757687066'
 const allowedTypes = ['image/jpeg', 'image/png']
@@ -97,8 +98,7 @@ event: H3Event
 
     const directusForm = new FormData()
     directusForm.append('folder', avatarsFolderId)
-    directusForm.append('Avatars_id', itemId)
-    // directusForm.append('owner', userId)  //need to get rid of the link for cascade deletion
+    directusForm.append('Avatars_id', itemId) // for cascade deletion
     directusForm.append(
         'file',
         new Blob([fileEntry.data], { type: fileEntry.type }), // 👈 type added here
@@ -116,7 +116,6 @@ event: H3Event
     }
 
     const fileId = fileRes.data.id
-    
 
     const updateRes = await updateItemById({
         collection: 'Avatars',
@@ -124,6 +123,14 @@ event: H3Event
         auth: 'app',
         body: {
             image: fileId
+        }
+    })
+
+    updateMe({
+        bearerToken: bearerToken!,
+        body: {
+            currentAvatar: itemId,
+            avatar: fileId
         }
     })
 

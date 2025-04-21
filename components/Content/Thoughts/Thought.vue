@@ -18,7 +18,7 @@ function emit_updateNewCommentsCount(increment) {
 <template>
     <div class="thoughtPanel -surface1 marTop20">
         <div class="flex justifyBetween">
-            <ArchitectureCardsUserMini 
+            <ContentUsersCardsMini
                 :userId="thought.owner.id"
                 :avatarId="thought.owner.avatar"
                 :username="thought.owner.displayName || thought.owner.username"

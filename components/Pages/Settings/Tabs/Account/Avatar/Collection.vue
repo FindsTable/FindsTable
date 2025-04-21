@@ -35,29 +35,31 @@ function showToaster(ok: boolean) {
 }
 
 async function deleteSelectedAvatar() {
+
   if (!selectedAvatar.value) return
   const tempSelectedAvatar = selectedAvatar.value
 
-  const {
-        directFetch
-    } = useDirectAsyncFetch(
-        'DELETE', `/files/${selectedAvatar.value.image}`,
+  const res = await $fetch(
+        `/api/content/deleteItem`,
         {
-            differed: true,
-            onResponse: () => {
-                selectedAvatar.value = null
-                showToaster(true)
+            method: 'DELETE',
+            headers: {
+                authorization: `Bearer ${useUserState().value.accessToken.value}`
             },
-            onResponseError: () => {
-                selectedAvatar.value = tempSelectedAvatar
-                showToaster(false)
+            body: {
+                collection: 'Avatars',
+                id: selectedAvatar.value.id
             }
         }
     )
 
-  await directFetch()
+    if(res.ok) {
+        showToaster(true)
+    } else {
+        showToaster(false)
+    }
 
-  emit('refreshAvatarCollection')
+    emit('refreshAvatarCollection')
 }
 
 async function setAsCurrentAvatar() {

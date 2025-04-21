@@ -55,7 +55,7 @@ async function updateUser(
                 firstBeliever:  "level1",
                 betaTester: "level1",
                 user: user.id
-            },
+            }
         },
         query: {
             fields: 'id,email,email_verified,role',

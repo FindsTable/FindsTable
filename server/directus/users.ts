@@ -126,8 +126,9 @@ async function updateMe<
     ExpectedUserObject extends UserObject
 >(
     p: { 
-        bearerToken: string; body: Body
-        query: Query
+        bearerToken: string; 
+        body: Body
+        query?: Query
     }
 ): 
     Promise<ApiResponse<ExpectedUserObject | null>> 
