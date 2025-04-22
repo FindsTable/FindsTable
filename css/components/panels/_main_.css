@@ -6,3 +6,7 @@
 .-surface1 {
     background-color: var(--surface1-bgColor);
 }
+
+.-surface2 {
+    background-color: var(--surface2-bgColor);
+}

@@ -5,6 +5,8 @@ definePageMeta({
     description: 'Earn badges by sharing finds.',
     middleware: 'private-route',
 });
+const appContent = useAppContent()
+
 </script>
 
 <template>
@@ -20,7 +22,9 @@ definePageMeta({
         </template>
 
         <template #scrollMain>
-            <ContentBadgesStore />
+            <ContentBadgesStore
+                :badges="appContent.badges"
+            />
         </template>
     </NuxtLayout>
 </template>

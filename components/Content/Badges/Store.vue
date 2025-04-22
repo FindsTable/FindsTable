@@ -1,38 +1,23 @@
-<script setup>
-const {
-    response : badges,
-    differedFetch : getBadges
-} = useDirectAsyncFetch(
-    'GET', '/items/Badges',
-    {
-        differed: true,
-        query: {
-            fields: '*,translations.*,translations.Languages_id.code',
-            deep: {
-                translations: {
-                    _filter: {
-                        Languages_id: {
-                            code: {
-                                _eq: 'en'
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-)
+<script setup lang="ts">
+
+const props = defineProps<{
+  badges: FTBadge[];
+}>();
 
 const selectedBadge = ref('')
 
-function handleEmit(badgeKey) {
+function handleEmit(badgeKey : string) {
     selectedBadge.value = badgeKey
 }
 
-onMounted(async () => {
-    await getBadges()
+onMounted(() => {
+    setTimeout(() => {
+        if(!useUserContent().value.badges.length) {
+        console.log('No badges found')
+        useGetUserContent()
+    }
+    }, 1000)
 })
-
 </script>
 
 <template>
@@ -45,8 +30,7 @@ onMounted(async () => {
             :badge="badge"
             :selected="selectedBadge === badge.key ? true : false"
             @selectBadge="handleEmit"
-        />    
-
+        />
     </div>
 </template>
 

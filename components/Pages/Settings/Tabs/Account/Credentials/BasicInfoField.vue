@@ -26,7 +26,9 @@ const fieldType = computed(() => {
 const fieldRef = useTemplateRef('field') // to toggle the editing state
 
 async function saveChanges(newValue) {
-    const res = await useNuxtApp().$users.updateMe({
+    console.log(newValue)
+    
+    const res = await useUpdateMe_user({
         body: {
             [props.fieldData.key]: props.prefix ? `${props.prefix}${newValue}` : newValue
         },
@@ -34,8 +36,6 @@ async function saveChanges(newValue) {
             fields: `${props.fieldData.key}`
         }
     })
-
-    console.log(res)
 
     if(res?.data) {
         userState.value[props.fieldData.key] = newValue

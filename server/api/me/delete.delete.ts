@@ -20,11 +20,9 @@ export default defineEventHandler(async (
     const currentUser = await validateUser({
         bearerToken: bearerToken!,
         fields: [
-            'id'
+            'id,username'
         ]
     })
-
-    
 
     if(!currentUser || !currentUser.id) {
         return newResponse({
@@ -42,8 +40,12 @@ export default defineEventHandler(async (
         })
     }
     
-
-    if(body.confirmation !== body.username) { // user needs to confirm their username for security
+    // user needs to confirm their username for security
+    if(
+            body.confirmation !== body.username  
+        ||  body.confirmation !== currentUser.username
+        ||  body.username !== currentUser.username
+    ) { 
         return newResponse({
             ok: false,
             status: 403,

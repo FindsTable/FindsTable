@@ -18,6 +18,11 @@ const pageTabs = [
         textPath: 'page.home.tabs.thoughts.tab',
         icon: 'chat'
     },
+    {
+        value: 'badges',
+        textPath: 'page.home.tabs.badges.tab',
+        icon: "badges"
+    },
     // {
     //     value: 'reports',
     //     textPath: 'page.home.tabs.huntReports.tab',

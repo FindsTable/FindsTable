@@ -16,12 +16,12 @@ function handleClick() {
 
 <template>
     <div v-if="find">
-        <!-- <ContentFindsCardImageOnly
+        <ContentFindsCardImageOnly
             v-if="format === 'image'"
             @click="handleClick"
             :find="find"
             :activeImageIndex="activeImageIndex"
-        /> -->
+        />
 
         <ContentFindsCardSmall
             v-if="format === 'small'"

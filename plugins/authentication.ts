@@ -126,7 +126,6 @@ async function getUserDataWithAccessToken(token: string)
     if(res.data.patreon_account) {
         res.data.patreon_account = res.data.patreon_account[0] //extract patreon account from array. O2M field
         res.data.personalDataRecord = res.data.personalDataRecord[0]
-        console.log(res.data.personalDataRecord)
     }
 
     return useParseApiResponse(res)

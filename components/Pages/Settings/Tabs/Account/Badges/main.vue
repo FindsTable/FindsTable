@@ -1,99 +1,116 @@
 <script setup>
-import {
-    ArchitecturePageSectionsH2Panel as H2Panel,
-    PagesSettingsTabsAccountAvatarSelectNew as SelectNewAvatar,
-    PagesSettingsTabsAccountAvatarCurrent as CurrentAvatar,
-    PagesSettingsTabsAccountAvatarCollection as Collection,
-} from '#components'
+    import {
+        ArchitecturePageSectionsH2Panel as H2Panel
+    } from '#components'
 
-const { t } = useI18n()
+    const { t } = useI18n()
+    const { directFetch } = useDirectAsyncFetch()
 
-const userContent = useUserContent()
-const selectingBadge = ref('')
+    const userContent = useUserContent()
 
-const { data : allOwnedBadges } = useAsyncData(
-    'allBadges',
-    async () => {
-        const {
-            differedFetch
-        } = useDirectAsyncFetch(
-            'GET', '/items/Badges',
+    const selectedSlot = ref('')
+
+    async function updateSlot(slot, newValue) {
+        const { response } = await directFetch(
+            'PATCH', `/items/Badge_records/${userContent.value.badgeRecord.id}`,
             {
-                dirrered: true,
-                query: {
-                    fields: '*,translations.*'
-                }
+                body: {
+                    [slot]: newValue
+                },
+                query: { fields: '*' }
             }
         )
-        const res = await differedFetch()
 
-        const ownedBadges = res.filter((badge) => userContent.value.badgeRecord[badge.key])
-        console.log(ownedBadges)
-        return ownedBadges
+        return response
     }
-)
 
-async function handleNewBadge(badge) {
+    async function handleNewBadge(badgeKey) {
 
-    const res = await useNuxtApp().$items.update({
-        collection: 'Badge_records',
-        id: userContent.value.badgeRecord.id,
-        body: {
-            [selectingBadge.value]: badge.key
-        },
-        query: {
-            fields: '*'
+        const response = await updateSlot(selectedSlot.value, badgeKey)
+
+        if(response) {
+            userContent.value.badgeRecord = response
         }
-    })
 
-    await useNuxtApp().$content.refreshBadgeRecord()
+        selectedSlot.value = ''
+    }
 
-    selectingBadge.value = ''
-}
+    async function clearSlot(slot) {
+        const response = await updateSlot(slot, null)
 
-async function clearSlot(slot) {
-    const res = await useNuxtApp().$items.update({
-        collection: 'Badge_records',
-        id: userContent.value.badgeRecord.id,
-        body: {
-            [slot]: null
+        if(response) {
+            userContent.value.badgeRecord = response
         }
-    })
 
-    await useNuxtApp().$content.refreshBadgeRecord()
-}
-
-function badgeSlotFileId(slot) {
-    
-    const badgeKey = userContent.value.badgeRecord[slot].key
-    const badgeLevel = userContent.value.badgeRecord[badgeKey]
-
-    return userContent.value.badgeRecord[slot][badgeLevel]
-
-}
-
-function badgeIsAvailableToBePlacedInSlot(badgeKey) {
-
-    if(
-        userContent.value.badgeRecord.slot1?.key === badgeKey ||
-        userContent.value.badgeRecord.slot2?.key === badgeKey ||
-        userContent.value.badgeRecord.slot3?.key === badgeKey
-    ) {
-        return false
-    }
-    return true
-}
-
-const selectedOwnedBadge = ref('')
-
-function selectOwnedBadge(badgeKey) {
-    if(selectedOwnedBadge.value === badgeKey) {
-        selectedOwnedBadge.value = ''
-        return
+        selectedSlot.value = ''
     }
 
-    selectedOwnedBadge.value = badgeKey
-}
+
+    function badgeIsAvailableToBePlacedInSlot(badgeKey) {
+        const record = userContent.value.badgeRecord
+        if(
+            record.slot1 === badgeKey ||
+            record.slot2 === badgeKey ||
+            record.slot3 === badgeKey
+        ) {
+            return false
+        }
+        return true
+    }
+
+    const selectedOwnedBadge = ref('')
+
+    function selectOwnedBadge(badgeKey) {
+        if(selectedOwnedBadge.value === badgeKey) {
+            selectedOwnedBadge.value = ''
+            return
+        }
+
+        selectedOwnedBadge.value = badgeKey
+    }
+
+    function getPublicBadge(badgeKey) {
+        const badge = findInLocalState(
+            'appContent', 
+            'badges', 
+            (badge) => {
+                return badge.key === badgeKey
+            }
+        )
+            
+        return badge ? badge : undefined
+    }
+    const slots = [ 'slot1', 'slot2', 'slot3']
+
+    const slotImageUrl = (slot) => {
+        //generate the url for the uer's level
+        const badgeKey = userContent.value.badgeRecord[slot]
+        if(!badgeKey) {
+            return undefined
+        }
+        const userBadge = findInLocalState(
+            'userContent', 
+            'badges', 
+            (badge) => {
+                return badge.badge === badgeKey
+            }
+        )
+
+        const imageId = userBadge.level.image
+        return imageId ? `https://admin.findstable.net/assets/${imageId}` : undefined
+    }
+
+    const noAvailableBadges = ref(false) // to toggle error message
+    function availableBadges(badges) {
+        //returns only the ones that are not already places in a slot
+
+        const available = badges.filter((b) => {
+            return  badgeIsAvailableToBePlacedInSlot(b.badge)
+        })
+
+        noAvailableBadges.value = available.length ? false : true
+        return available
+    }
 </script>
 
 <template>
@@ -109,53 +126,33 @@ function selectOwnedBadge(badgeKey) {
 
             <div class="marTop20">
                 <div
-                    v-if="!selectingBadge"
-                    class="flex gap20 slotBox"
+                    v-if="!selectedSlot"
+                    class="flex gap20"
                 >
-                    <div>
+                    <div
+                        v-for="slot in slots" :key="slot"
+                    >
                         <div 
-                            @click="selectingBadge = 'slot1'"
-                            class="slot slot1 centered pointer"
+                            @click="selectedSlot = slot"
+                            class="slot centered pointer"
                         >
-                            <img v-if="userContent.badgeRecord?.slot1" :src="`https://admin.findstable.net/assets/${badgeSlotFileId('slot1')}?key=badge-h150-q100-png`" alt="">
+                            <img 
+                                v-if="slotImageUrl(slot)" 
+                                :src="slotImageUrl(slot)" 
+                                alt=""
+                                class="full objectFitContain"
+                            >
 
-                            <Icon v-else name="plus" size="50px"/>
+                            <Icon
+                                v-else 
+                                name="plus" 
+                                size="50px"
+                            />
                         </div>
 
                         <button 
                             class="marTop20 selectButton comp-button -filled -bold w100"
-                            @click="clearSlot('slot1')"
-                        >
-                            clear
-                        </button>
-                    </div>
-
-
-                    <div>
-                        <div class="slot slot2 centered pointer" @click="selectingBadge = 'slot2'">
-                            <img v-if="userContent.badgeRecord?.slot2" :src="`https://admin.findstable.net/assets/${badgeSlotFileId('slot2')}?key=badge-h150-q100-png`" alt="">
-
-                            <Icon v-else name="plus" size="50px" />
-                        </div>
-
-                        <button 
-                            class="marTop20 selectButton comp-button -filled -bold w100"
-                            @click="clearSlot('slot2')"
-                        >
-                            clear
-                        </button>
-                    </div>
-
-                    <div>
-                        <div class="slot slot3 centered pointer" @click="selectingBadge = 'slot3'">
-                            <img v-if="userContent.badgeRecord?.slot3" :src="`https://admin.findstable.net/assets/${badgeSlotFileId('slot3')}?key=badge-h150-q100-png`" alt="">
-
-                            <Icon v-else name="plus" size="50px" />
-                        </div>
-
-                        <button 
-                            class="marTop20 selectButton comp-button -filled -bold w100"
-                            @click="clearSlot('slot3')"
+                            @click="clearSlot(slot)"
                         >
                             clear
                         </button>
@@ -163,27 +160,39 @@ function selectOwnedBadge(badgeKey) {
                 </div>
 
                 <div 
-                    v-if="selectingBadge && allOwnedBadges"
+                    v-if="selectedSlot && userContent.badges.length"
                     class="selectionBox"
                 >
-                    <button @click="selectingBadge = false" class="pointer">
+                    
+
+                    <button 
+                        @click="selectedSlot = false"
+                        class="pointer"
+                    >
                         <Icon name="back" size="32px" class="theme-textColor-main" />
                     </button>
 
+                    <p
+                        v-if="noAvailableBadges"
+                        class="comp-panel -surface2 font-h2 pad20"
+                    >
+                        Vous avez déjà utilisé tous vous badges
+                    </p>
+
                     <div class="badge flex gap20">
                         <div
-                            v-for="badge in allOwnedBadges" :key="badge.key"
+                            v-for="owned in availableBadges(userContent.badges)" :key="owned.id"
                         >
-                            <ContentBadgesFrameMain 
-                            
-                                @click="selectOwnedBadge(badge.key)"
-                                :badge="badge"
-                                :selected="selectedOwnedBadge === badge.key ? true : false"
+                            <ContentBadgesFrameMain
+                                @click="selectOwnedBadge(owned.badge)"
+                                :badge="getPublicBadge(owned.badge)"
+                                :selected="selectedOwnedBadge === owned.badge ? true : false"
                             />
+
                             <button 
                                 class="marTop20 selectButton comp-button -filled -bold w100"
-                                :disabled="!badgeIsAvailableToBePlacedInSlot(badge.key)"
-                                @click="handleNewBadge(badge)"
+                                :disabled="!badgeIsAvailableToBePlacedInSlot(owned.badge)"
+                                @click="handleNewBadge(owned.badge)"
                             >
                                 select
                             </button>
@@ -197,15 +206,14 @@ function selectOwnedBadge(badgeKey) {
 
 <style scoped>
 .slot {
+    flex-grow: 0;
     height: 150px;
     aspect-ratio: 1;
     padding: 10px;
     border: 1px solid rgba(86, 86, 86, 0.838);
     border-radius: 10px;
 }
-img {
-    height: 100%;
-}
+
 .available {
     cursor: pointer;
 }

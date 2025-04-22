@@ -3,8 +3,8 @@ export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.hooks.hook('app:mounted', async () => {
         if(useUserState().value.isLoggedIn) {
             await getContentFromUserObject()
+            await loadAppContent()
         }
-        
     });
 
     return {
@@ -15,6 +15,15 @@ export default defineNuxtPlugin((nuxtApp) => {
         }
     }
 });
+
+async function loadAppContent() {
+    const  {
+        initiateAppContent
+    } = useFTApp()
+    
+    await initiateAppContent()
+    await useGetUserContent()
+}
 
 async function getContentFromUserObject() {
     const userContent = useUserContent()

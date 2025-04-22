@@ -1,6 +1,7 @@
-<script setup>
+<script setup lang="ts">
 const route = useRoute()
-const me = useUserState()
+const userContent = useUserContent()
+const appContent = useAppContent()
 
 const fields = [
     '*',
@@ -49,25 +50,31 @@ definePageMeta({
     middleware: 'private-route',
 });
 
-const itsMe = computed(() => {
-    return me.value.id === route.params.id
-})
 const selectedTab = ref("finds")
 
-function changeTab(newTab) {
+// collection of full Badges items owned by the user. 
+// userContent.bades holds User_badges items
+const ownedPublicBadges = computed(() => {
+
+    const userBadges: UserBadge[] = userContent.value.badges
+    const publicBadges: FTBadge[] = appContent.value.badges
+
+    const publicBadgesOwnedByUser: FTBadge[] = publicBadges.filter((publicBadge) =>
+        userBadges.some((userBadge) => userBadge.badge === publicBadge.key)
+    )
+
+    return publicBadgesOwnedByUser
+})
+// *******
+
+function changeTab(newTab : string) {
     selectedTab.value = newTab
 }
 
-const albums = [
-    {
-        id: 1,
-        title: 'goldorama'
-    },
-    {
-        id: 2,
-        title: 'Roman treasure'
-    }
-]
+const typeSafeUserId = computed(() => {
+  const id = route.params.id
+  return typeof id === 'string' ? id : ''
+})
 </script>
 
 <template>
@@ -98,14 +105,21 @@ const albums = [
                 <KeepAlive>
                     <PagesUsersFinds 
                         v-if="selectedTab === 'finds'"
-                        :userId="route.params.id"
+                        :userId="typeSafeUserId"
                     />
                 </KeepAlive>
 
                 <KeepAlive>
                     <PagesUsersThoughts 
                         v-if="selectedTab === 'thoughts'"
-                        :userId="route.params.id"
+                        :userId="typeSafeUserId"
+                    />
+                </KeepAlive>
+
+                <KeepAlive>
+                    <ContentBadgesStore 
+                        v-if="selectedTab === 'badges'"
+                        :badges="ownedPublicBadges"
                     />
                 </KeepAlive>
             </div>

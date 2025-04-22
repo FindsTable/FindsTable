@@ -4,23 +4,24 @@ export {
 }
 
 function useDirectAsyncFetch<T = any>(
-    method: Method,
-    path: string,
+    method?: Method,
+    path?: string,
     options?: Options
 ): UseDirectFetchReturn<T> {
-    const response = ref<T | null>(null) as Ref<T | null>
-    const error = ref<Record<string, any> | null>(null)
+    const _response = ref<T | null>(null) as Ref<T | null>
+    const _error = ref<Record<string, any> | null>(null)
     const isPending = ref(false)
   
-    async function directFetch(
+    async function directFetch<Expected>(
         method: Method,
         path: string,
         options?: Options
-    ) {
+    ): Promise<{ response: T | null, error: any | null }> {
 
-        isPending.value = true
-        await $fetch<DirectusResponse<T>>(
-            
+        let response: Expected | null = null
+        let error: any | null = null
+      
+        await $fetch<DirectusResponse<Expected>>(
             `${useAppConfig().directusUrl}${path}`, 
             {
                 method,
@@ -29,67 +30,76 @@ function useDirectAsyncFetch<T = any>(
                 },
                 ...options,
                 onRequest: () => {
-                    isPending.value = true
                     options?.onRequest?.()
                 },
                 onResponse: (res) => {
                     const data: any = res?.response?._data?.data || null
-
-                    if (Array.isArray(data)) {
-                        response.value = options?.singleItem ? data[0] : data
+                  
+                    if (options?.singleItem && Array.isArray(data)) {
+                        response = data[0]
                     } else {
-                        response.value = data
+                        response = data
                     }
-
+                    
                     options?.onResponse?.(response)
-                    isPending.value = false
                 },
                 onResponseError: (err) => {
-                    error.value = err.response?._data || { message: 'Unknown error' }
-                    options?.onResponseError?.()
-                    isPending.value = false
+                    error = err.response?._data || { message: 'Unknown error' }
+                    options?.onResponseError?.(error)
                 }
             }
-        )
-        return response.value
-    }
+        ).catch((err) => {
+            error = err.response?._data || { message: 'Unexpected fetch error' }
+        })
 
-    async function differedFetch() {
-        if (isPending.value) {
-            directFetch(
-                method,
-                path,
-                options
-            )
+        return {
+            response,
+            error
         }
     }
 
-    async function refresh(): Promise<T | null> {
-        if (isPending.value) {
-            return response.value
+    async function runDirectFetch() {
+        if (!method || !path) {
+            console.warn('[useDirectAsyncFetch] Missing method or path. Nothing will be fetched.')
+            return
         }
-        return directFetch(
-            method,
-            path,
+
+        if (isPending.value) return
+        isPending.value = true
+
+        const {
+            response, 
+            error
+        } = await directFetch<T>(
+            method, path,
             options
         )
+
+        _error.value = error
+        _response.value = response
+        isPending.value = false
     }
 
-    if (!options?.differed) {
-        directFetch(
-            method,
-            path,
-            options
-        )
+    async function differedFetch(): Promise<void> {
+        runDirectFetch()
+    }
+
+    async function refresh(): Promise<void> {
+        runDirectFetch()
+
+    }
+
+    if (!options?.differed && method && path) {
+        runDirectFetch()
     }
   
     return {
-      response,
-      error,
-      isPending,
-      refresh,
-      differedFetch,
-      directFetch
+        response: _response,
+        error: _error,
+        isPending,
+        refresh,
+        differedFetch,
+        directFetch
     }
 }
 
@@ -110,17 +120,18 @@ export type UseDirectFetchReturn<T> = {
     error: Ref<Record<string, any> | null>
     isPending: Ref<boolean>
     /**
-     * Trigger a fresh fetch and get the new data (or null on error)
+     * Trigger a fresh fetch and update internal state
      */
-    refresh: () => Promise<T | null>
-    /**
-     * Perform a fetch with optional overrides and return the data
-     */
-    differedFetch: (
-        method?: Method,
-        path?: string,
+    refresh: () => Promise<void>
+    differedFetch: () => Promise<void>
+    /*
+    * use direct fetch to make request without affecting response and error state
+    */
+    directFetch: (
+        method: Method,
+        path: string,
         options?: Options
-    ) => Promise<T | null>
+    ) => Promise<{ response: T | null, error: any | null }>
 }
 
 // Shape of Directus standard response
@@ -139,6 +150,6 @@ export type Options = {
     differed?: boolean
     singleItem?: boolean
     onRequest?: () => void
-    onResponse?: (res? : any) => void
-    onResponseError?: (err? : any) => void
+    onResponse?: (res?: any) => void
+    onResponseError?: (err?: any) => void
 }

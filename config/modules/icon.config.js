@@ -10,6 +10,7 @@ export default {
         'article': 'material-symbols:article-outline-rounded',
         'attributes': 'material-symbols:user-attributes-outline-rounded',
         'back': 'material-symbols:arrow-back-rounded',
+        'badges': 'material-symbols:stack-hexagon-outline-rounded',
         'bell': 'material-symbols:notifications-outline-rounded',
         'book': 'material-symbols:menu-book-outline-rounded',
         'bookmarkFull': 'material-symbols:bookmark',

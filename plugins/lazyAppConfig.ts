@@ -1,5 +1,3 @@
-import { useSet$FetchTimeoutDuration } from '#imports'
-
 export default defineNuxtPlugin((nuxtApp) => {
 
     nuxtApp.hooks.hook('app:mounted', async () => {
@@ -8,10 +6,11 @@ export default defineNuxtPlugin((nuxtApp) => {
 
         if(useUserState().value.isLoggedIn) {
             useNuxtApp().$auth.ativateAccessTokenAutoRefresh()
-            await useSet$FetchTimeoutDuration()
         }
     });
 });
+
+
 
 async function checkIfDeviceForCamera() {
     let hasCamera = false

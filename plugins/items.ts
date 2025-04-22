@@ -4,7 +4,7 @@ export default defineNuxtPlugin(() => {
     return {
         provide: {
             items: {
-                create,
+                // create,
                 update,
                 deleteById
             }
@@ -14,30 +14,30 @@ export default defineNuxtPlugin(() => {
 
 
 
-async function create<
-    Data extends ItemObject
-> (
-    p: {
-    collection: string
-    body: any
-    query?: any
-}): 
-    Promise<ParsedApiResponse<Data | null>> 
-{
-    const res = await $fetch<ApiResponse<Data>>(
-        `/api/items/${p.collection}/create`,
-        {
-            method: 'POST',
-            headers: {
-                Authorization: `Bearer ${useUserState().value.accessToken.value}`
-            },
-            body: p.body,
-            query: p.query ? p.query : {}
-        }
-    )
+// async function create<
+//     Data extends ItemObject
+// > (
+//     p: {
+//     collection: string
+//     body: any
+//     query?: any
+// }): 
+//     Promise<ParsedApiResponse<Data | null>> 
+// {
+//     const res = await $fetch<ApiResponse<Data>>(
+//         `/api/items/${p.collection}/create`,
+//         {
+//             method: 'POST',
+//             headers: {
+//                 Authorization: `Bearer ${useUserState().value.accessToken.value}`
+//             },
+//             body: p.body,
+//             query: p.query ? p.query : {}
+//         }
+//     )
 
-    return useParseApiResponse<Data>(res)
-}
+//     return useParseApiResponse<Data>(res)
+// }
 
 async function update<
     Data extends ItemObject

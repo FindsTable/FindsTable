@@ -1,5 +1,4 @@
 <script setup>
-const userContent = useUserContent()
 const props = defineProps({
     badge: Object,
     selected: Boolean
@@ -7,33 +6,31 @@ const props = defineProps({
 
 const emit = defineEmits(['selectBadge'])
 
-const versionId = computed( () => {
-    if(!userContent.value.badgeRecord) {
-        return props.badge.level1
-    }
-    return props.badge[userContent.value.badgeRecord[props.badge.key]]
-})
-
-const owned = computed(() => {
-    if(!userContent.value.badgeRecord) {
-        return false
-    }
-    if(!userContent.value.badgeRecord[props.badge.key]) {
-        return false
-    } else {
-        return true
-    }
-})
 function handleClick() {
     emit('selectBadge', props.selected ? '' : props.badge.key)
 }
 
+const userVersion = computed(() => {
+    const myBadge = findInLocalState(
+        'userContent', 
+        'badges', 
+        (badge) => {
+            return badge.badge === props.badge.key
+        }
+    )
+        
+    if(myBadge) return myBadge.level.image
+})
 </script>
 
 <template>
     <div 
+        v-if="badge"
         class="frame pointer"
-        :class="[ selected ? 'selected' : '', owned ? 'owned' : 'notOwned' ]"
+        :class="[ 
+            selected ? 'selected' : '', 
+            userVersion ? 'owned' : 'notOwned'
+        ]"
         @click="handleClick"
     >
         <div class="drawer relative h100">
@@ -43,7 +40,7 @@ function handleClick() {
                 </div>
 
                 <img 
-                    :src="`https://admin.findstable.net/assets/${versionId || badge.level1}?key=badge-h150-q100-png`" alt=""
+                    :src="`https://admin.findstable.net/assets/${userVersion || badge.level1}?key=badge-h150-q100-png`" alt=""
                 >
                 <p class="badgeName -bold marTop20 flex justifyCenter" v-if="badge.translations[0]">
                     {{ badge.translations[0].name }}

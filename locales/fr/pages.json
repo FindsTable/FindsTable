@@ -20,6 +20,10 @@
                 "articles": {
                     "tab": "Articles",
                     "title": "Articles"
+                },
+                "badges": {
+                    "tab": "Badges",
+                    "title": "Badges"
                 }
             }
         },

@@ -3,11 +3,15 @@ export {
     useGetUserContent
 }
 
+export type {
+    UserBadge
+}
+
 const useUserContent = () => {
     return useState<{
         avatars: any[]
         finds: any[]
-        badges: any[]
+        badges: UserBadge[]
         badgeRecord: undefined | BadgeRecord
         bookmarks: any[]
         fetched: {
@@ -36,52 +40,83 @@ const useUserContent = () => {
     );
 }
 
+async function useGetUserContent() {
 
-const requestFields : {
-    [key: string]: string[]
-} = {
-    notifications: [
-        'id',
-        'user_for.username',
-        'user_from.username',
-        'action.*',
-        'content.*'
-    ]
-}
-
-
-async function useGetUserContent(
-    collection : string
-) {
-    type UserContentKey = 'avatars' | 'finds' | 'badges' | 'badgeRecord' | 'notifications';
-    const key = collection.toLowerCase() as UserContentKey;
-
-    const query = {
-        fields: requestFields[collection.toLowerCase()]!.join(','),
-        filter: {}
-    }
-
-    if (key === "notifications") {
-
-        const lastNotifCheck = localStorage.getItem(`last_notif_check_${useUserState().value.id}`) || "2025-01-01T00:00:00.000Z"
-
-        console.log(lastNotifCheck)
-        query.filter = {
-            date_created: {
-                _gt: lastNotifCheck
+    const fetchOptions : FetchOptions = {
+        User_badges: {
+            query: {
+                fields: [
+                    'id','owner','badge', 'level.*'
+                ].join(','),
+                filter: {
+                    owner: {
+                        _eq: useUserState().value.id
+                    }
+                }
+            }
+        },
+        Badge_records: {
+            singleItem: true,
+            query: {
+                fields: [
+                    '*'
+                ].join(','),
+                filter: {
+                    user: {
+                        _eq: useUserState().value.id
+                    }
+                }
             }
         }
     }
+    const collections : UserContentCollections = [
+        { name: 'User_badges', key: 'badges'},
+        { name: 'Badge_records', key: 'badgeRecord' },
+    ]
 
-    const userContent = useUserContent()
-    const res = await useGetItems({
-        collection: collection,
-        query: query
-    })
+    const {
+        directFetch
+    } = useDirectAsyncFetch()
 
-    if(res) {
-        userContent.value[key] = res
-        userContent.value.fetched[key] = true
+    for(let collection of collections) {
+        
+        const {
+            response
+        } = await directFetch<UserBadge>(
+            'GET', `/items/${collection.name}`,
+            fetchOptions[collection.name]
+        )
+
+        if(response) {
+            const userContent = useUserContent()
+            userContent.value[collection.key] = response
+        }
     }
+}
 
+
+type UserContentCollection = 'User_badges' | 'Badge_records'
+type UserContentKey = 'badges' | 'badgeRecord'
+type UserContentCollections = {
+    name: UserContentCollection
+    key: UserContentKey
+}[]
+
+type Query = {
+    fields?: string
+    filter?: Record<string, any>
+    sort?: string
+}
+type FetchOptions = {
+    [key in UserContentCollection]?: {
+        query?: Query
+        singleItem?: boolean
+    }
+}
+
+
+type UserBadge = {
+    id: string,
+    badge: string,
+    owner: string,
 }

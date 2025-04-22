@@ -25,7 +25,7 @@ function commentClicked() {
     >
         <div class="centered grow">
             <WidgetsLikesAndCommentsLikeButton
-                iconSize="24px" 
+                :iconSize="iconSize" 
                 :fontSize="fontSize"
                 :likeCollection="`${collection}_likes`"
                 :likes="item.likes"

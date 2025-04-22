@@ -49,20 +49,12 @@ watch(isPublic, async (newValue) => {
 } )
 
 async function saveChanges(newValue) {
-    const res = await useNuxtApp().$items.update({
-        collection: 'Personal_data_values',
-        id: props.fieldData.id,
-        body: {
-            value: newValue
-        },
-        query: {
-            fields: 'id,value,key,public'
-        }
-    })
 
-    const res_me = await useNuxtApp().$users.updateMe({
+    const res = await useUpdateMe_recordValue({
         body: {
-            email: newValue
+            id: props.fieldData.id,
+            key: props.fieldData.key,
+            value: newValue
         }
     })
 
