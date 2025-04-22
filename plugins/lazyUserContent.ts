@@ -7,13 +7,6 @@ export default defineNuxtPlugin((nuxtApp) => {
         }
     });
 
-    return {
-        provide: {
-            content: {
-                refreshBadgeRecord
-            }
-        }
-    }
 });
 
 async function loadAppContent() {
@@ -22,7 +15,12 @@ async function loadAppContent() {
     } = useFTApp()
     
     await initiateAppContent()
-    await useGetUserContent()
+
+    const {
+        loadUserContent
+    } = useHandleAppContent()
+
+    await loadUserContent()
 }
 
 async function getContentFromUserObject() {
@@ -78,34 +76,5 @@ async function getContentFromUserObject() {
             userContent.value.fetched.avatars = true
         }
     }
-    if(!userContent.value.badgeRecord) {
-        await refreshBadgeRecord()
-    }
 }
 
-async function refreshBadgeRecord() {
-    const userContent = useUserContent()
-
-    const {
-        differedFetch : getBadgeRecord
-    } = useDirectAsyncFetch(
-        'GET', '/items/Badge_records',
-        {
-            differed: true,
-            query: {
-                filter: {
-                    user: {
-                        _eq: useUserState().value.id
-                    },
-                },
-                fields: '*,slot1.*,slot2.*,slot3.*'
-            }
-        }
-    )
-
-    const record = await getBadgeRecord()
-
-    if(record) {
-        userContent.value.badgeRecord = record
-    }
-}

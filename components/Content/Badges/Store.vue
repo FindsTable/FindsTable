@@ -10,12 +10,17 @@ function handleEmit(badgeKey : string) {
     selectedBadge.value = badgeKey
 }
 
-onMounted(() => {
-    setTimeout(() => {
+onMounted(async () => {
+    setTimeout( async () => {
         if(!useUserContent().value.badges.length) {
-        console.log('No badges found')
-        useGetUserContent()
-    }
+
+            const {
+                refreshCollection
+            } = useHandleAppContent()
+
+            await refreshCollection('badges')
+
+        }
     }, 1000)
 })
 </script>

@@ -18,7 +18,7 @@ const userVersion = computed(() => {
             return badge.badge === props.badge.key
         }
     )
-        
+
     if(myBadge) return myBadge.level.image
 })
 </script>
@@ -40,7 +40,7 @@ const userVersion = computed(() => {
                 </div>
 
                 <img 
-                    :src="`https://admin.findstable.net/assets/${userVersion || badge.level1}?key=badge-h150-q100-png`" alt=""
+                    :src="`https://admin.findstable.net/assets/${userVersion || badge.default.image.id}?key=badge-h150-q100-png`" alt=""
                 >
                 <p class="badgeName -bold marTop20 flex justifyCenter" v-if="badge.translations[0]">
                     {{ badge.translations[0].name }}

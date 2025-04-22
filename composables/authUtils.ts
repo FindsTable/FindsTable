@@ -43,8 +43,7 @@ async function useLoginFlow(
 
         return false
     }
-    
-    
+
     const userData = await useNuxtApp().$auth.getUserDataWithAccessToken(res.data.access_token.value)
     
     if(!userData.ok || !userData.data) {

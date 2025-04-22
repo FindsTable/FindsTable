@@ -13,10 +13,17 @@ async function configureVerifiedAccount(
     }
 ) : Promise<any> {
 
-    const res = {
+    const res: {
+        error: string,
+        dataRecord: any
+        dataValues: any
+        badgeRecord: any
+        updatedUser: any
+    } = {
         error: '',
         dataRecord: undefined,
         dataValues: undefined,
+        badgeRecord: undefined,
         updatedUser: undefined
     }
 
@@ -32,6 +39,12 @@ async function configureVerifiedAccount(
         return res
     }
 
+    res.badgeRecord = await createBadgeRecord(user.id)
+    if( !res.dataValues )  {
+        res.error = 'Could not create personal data values'
+        return res
+    }
+
     res.updatedUser = await updateUser(user)
     if( !res.updatedUser )  {
         res.error = 'Could not update user object'
@@ -40,6 +53,7 @@ async function configureVerifiedAccount(
 
     return res
 }
+
 
 async function updateUser(
     user: any
@@ -50,12 +64,7 @@ async function updateUser(
         auth: 'app',
         body: {
             email_verified: true,
-            role: useRuntimeConfig().USER_ROLE_ID,
-            badgeRecord: {
-                firstBeliever:  "level1",
-                betaTester: "level1",
-                user: user.id
-            }
+            role: useRuntimeConfig().USER_ROLE_ID
         },
         query: {
             fields: 'id,email,email_verified,role',
@@ -141,4 +150,49 @@ async function createPersonalDataValues(
     })
 
     return res?.data ? res.data : undefined
+}
+
+async function createBadgeRecord(userId : string) {
+    const res = await createItem<{id: string}>({
+        collection: 'Badge_records',
+        auth: 'app',
+        body: {
+            id: userId, // records and users share the same id
+            owner: userId,
+        },
+        query: {
+            fields: 'id'
+        }
+    })
+
+    return res?.data ? res.data : undefined
+}
+
+function newBadges(userId : string) {
+    return [
+        {
+            badge: 'firstBeliever',
+            owner: userId,
+            level: 'firstBeliever_1'
+        },
+        {
+            badge: 'betaTester',
+            owner: userId,
+            level: 'betaTester_1'
+        }
+    ]
+}
+
+async function createBadges(userId : string) {
+    const res = await createItem<{id: string}>({
+        collection: 'User_badges',
+        auth: 'app',
+        body: newBadges(userId),
+        query: {
+            fields: 'id'
+        }
+    })
+
+    return res?.data ? res.data : undefined
+
 }

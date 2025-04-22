@@ -103,7 +103,7 @@ function useFTApp() {
             }
         );
 
-        // console.log('manifest', manifest);
+        console.log('manifest', manifest);
 
         // 3️⃣  Iterate over each bucket in the manifest.
         for (const entry of manifest.cache_entries) {
@@ -147,7 +147,7 @@ function useFTApp() {
         ls.setData(LS_KEY_VERSIONS, _versions.value);
 
         useAppContent().value = appContent.value;
-        // console.log(useAppContent().value)
+        console.log(useAppContent().value)
     }
 
     // --------------------------------------------------
