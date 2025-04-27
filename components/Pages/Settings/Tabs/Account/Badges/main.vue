@@ -1,116 +1,121 @@
 <script setup>
-    import {
-        ArchitecturePageSectionsH2Panel as H2Panel
-    } from '#components'
+import {
+    ArchitecturePageSectionsH2Panel as H2Panel
+} from '#components'
+const me = useUserState()
 
-    const { t } = useI18n()
-    const { directFetch } = useDirectAsyncFetch()
+const { t } = useI18n()
+const { directFetch } = useDirectAsyncFetch()
 
-    const userContent = useUserContent()
+const userContent = useUserContent()
 
-    const selectedSlot = ref('')
+const selectedSlot = ref('')
 
-    async function updateSlot(slot, newValue) {
-        const { response } = await directFetch(
-            'PATCH', `/items/Badge_records/${userContent.value.badgeRecord.id}`,
-            {
-                body: {
-                    [slot]: newValue
-                },
-                query: { fields: '*' }
-            }
-        )
-
-        return response
-    }
-
-    async function handleNewBadge(badgeKey) {
-
-        const response = await updateSlot(selectedSlot.value, badgeKey)
-
-        if(response) {
-            userContent.value.badgeRecord = response
+async function updateSlot(slot, newValue) {
+    console.log(me.value.id, slot, newValue)
+    const { response } = await directFetch(
+        'PATCH', `/items/Badge_records/${me.value.id}`,
+        {
+            body: {
+                [slot]: newValue
+            },
+            query: { fields: '*' }
         }
+    )
 
-        selectedSlot.value = ''
+    return response
+}
+
+async function handleNewBadge(badgeKey) {
+
+    const response = await updateSlot(selectedSlot.value, badgeKey)
+
+    if(response) {
+        userContent.value.badgeRecord = response
     }
 
-    async function clearSlot(slot) {
-        const response = await updateSlot(slot, null)
+    selectedSlot.value = ''
+}
 
-        if(response) {
-            userContent.value.badgeRecord = response
+async function clearSlot(slot) {
+    const response = await updateSlot(slot, null)
+
+    if(response) {
+        userContent.value.badgeRecord = response
+    }
+
+    selectedSlot.value = ''
+}
+
+const selectedOwnedBadge = ref('')
+
+function selectOwnedBadge(badgeKey) {
+    if(selectedOwnedBadge.value === badgeKey) {
+        selectedOwnedBadge.value = ''
+        return
+    }
+
+    selectedOwnedBadge.value = badgeKey
+}
+
+function getPublicBadge(badgeKey) {
+    const badge = findInLocalState(
+        'appContent', 
+        'badges', 
+        (badge) => {
+            return badge.key === badgeKey
         }
+    )
+        
+    return badge ? badge : undefined
+}
+const slots = [ 'slot1', 'slot2', 'slot3']
 
-        selectedSlot.value = ''
+const slotImageUrl = (slot) => {
+    //generate the url for the uer's level
+    const badgeVariationId = userContent.value.badgeRecord[slot]
+    
+    if(!badgeVariationId) {
+        return undefined
     }
 
-
-    function badgeIsAvailableToBePlacedInSlot(badgeKey) {
-        const record = userContent.value.badgeRecord
-        if(
-            record.slot1 === badgeKey ||
-            record.slot2 === badgeKey ||
-            record.slot3 === badgeKey
-        ) {
-            return false
+    const userBadge = findInLocalState(
+        'userContent', 
+        'badges', 
+        (badge) => {
+            return badge.id === badgeVariationId
         }
-        return true
+    )
+
+    const imageId = userBadge.level.image
+    return imageId ? `https://admin.findstable.net/assets/${imageId}` : undefined
+}
+
+const noAvailableBadges = ref(false) // to toggle error message
+
+function badgeIsAvailableToBePlacedInSlot(variationId) {
+
+    const record = userContent.value.badgeRecord
+    if(
+        record.slot1 === variationId ||
+        record.slot2 === variationId ||
+        record.slot3 === variationId
+    ) {
+        return false
     }
+    return true
+}
 
-    const selectedOwnedBadge = ref('')
+function availableBadges(badges) {
+    //returns only the ones that are not already places in a slot
 
-    function selectOwnedBadge(badgeKey) {
-        if(selectedOwnedBadge.value === badgeKey) {
-            selectedOwnedBadge.value = ''
-            return
-        }
+    const available = badges.filter((b) => {
+        return  badgeIsAvailableToBePlacedInSlot(b.id)
+    })
 
-        selectedOwnedBadge.value = badgeKey
-    }
-
-    function getPublicBadge(badgeKey) {
-        const badge = findInLocalState(
-            'appContent', 
-            'badges', 
-            (badge) => {
-                return badge.key === badgeKey
-            }
-        )
-            
-        return badge ? badge : undefined
-    }
-    const slots = [ 'slot1', 'slot2', 'slot3']
-
-    const slotImageUrl = (slot) => {
-        //generate the url for the uer's level
-        const badgeKey = userContent.value.badgeRecord[slot]
-        if(!badgeKey) {
-            return undefined
-        }
-        const userBadge = findInLocalState(
-            'userContent', 
-            'badges', 
-            (badge) => {
-                return badge.badge === badgeKey
-            }
-        )
-
-        const imageId = userBadge.level.image
-        return imageId ? `https://admin.findstable.net/assets/${imageId}` : undefined
-    }
-
-    const noAvailableBadges = ref(false) // to toggle error message
-    function availableBadges(badges) {
-        //returns only the ones that are not already places in a slot
-
-        const available = badges.filter((b) => {
-            return  badgeIsAvailableToBePlacedInSlot(b.badge)
-        })
-
-        noAvailableBadges.value = available.length ? false : true
-        return available
-    }
+    noAvailableBadges.value = available.length ? false : true
+    return available
+}
 </script>
 
 <template>
@@ -124,7 +129,7 @@
                 {{ t('page.settings.tabs.account.sections.badges.introText') }}
             </p>
 
-            <div class="marTop20">
+            <div class="marTop20" v-if="userContent.badgeRecord">
                 <div
                     v-if="!selectedSlot"
                     class="flex gap20"
@@ -192,7 +197,7 @@
                             <button 
                                 class="marTop20 selectButton comp-button -filled -bold w100"
                                 :disabled="!badgeIsAvailableToBePlacedInSlot(owned.badge)"
-                                @click="handleNewBadge(owned.badge)"
+                                @click="handleNewBadge(owned.id)"
                             >
                                 select
                             </button>

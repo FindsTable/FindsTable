@@ -1,10 +1,12 @@
+<!-- 
+    Used on the welcome page before the user logs in.
+-->
+
 <template>
     <div class="bottomBar w100 flex gap10 justifyBetween">
         <WidgetsLanguageSelector />
 
-
         <WidgetsColorModeToggler />
-
     </div>
 </template>
 

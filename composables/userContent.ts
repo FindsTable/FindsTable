@@ -1,33 +1,34 @@
 export {
     useUserContent,
-    useHandleAppContent
+    useHandleUserContent
 }
 
-export type {
-    UserBadge
+type UserContent = {
+    avatars: Avatar[]
+    finds: Find[]
+    badges: UserBadge<{
+                badge: BadgeKey
+                level: BadgeVariation
+            }>[]
+    badgeRecord: BadgeRecord | null
+    bookmarks: Bookmark[]
+    fetched: {
+        avatars: boolean
+        finds: boolean
+        badges: boolean
+        badgeRecord: boolean
+        bookmarks: boolean
+    }
 }
 
 const useUserContent = () => {
-    return useState<{
-        avatars: any[]
-        finds: any[]
-        badges: UserBadge[]
-        badgeRecord: undefined | BadgeRecord
-        bookmarks: any[]
-        fetched: {
-            avatars: boolean
-            finds: boolean
-            badges: boolean
-            badgeRecord: boolean
-            bookmarks: boolean
-        }
-    }>(
+    return useState<UserContent>(
         'userContent',
         () => ({
             avatars: [],
             finds: [],
             badges: [],
-            badgeRecord: undefined,
+            badgeRecord: null,
             bookmarks: [],
             fetched: {
                 avatars: false,
@@ -40,7 +41,7 @@ const useUserContent = () => {
     );
 }
 
-function useHandleAppContent() {
+function useHandleUserContent() {
 
     const {
         directFetch
@@ -74,22 +75,30 @@ function useHandleAppContent() {
                         owner: {
                             _eq: useUserState().value.id
                         }
-                    }
+                    },
+                    limit: 1
                 }
             }
         }
     }
-    async function getCollectionData(key : CollectionKey) {
+
+    async function getCollectionData<Expected>(key : CollectionKey) {
         const {
             response
-        } = await directFetch<UserBadge>(
+        } = await directFetch<Expected>(
             'GET', `/items/${collections[key].name}`,
             collections[key].fetOptions
         )
 
         if(response) {
             const userContent = useUserContent()
-            userContent.value[key] = response
+            if(key === 'badges') {
+                userContent.value.badges = response as UserContent['badges']
+                return
+            }
+            if(key === 'badgeRecord') {
+                userContent.value.badgeRecord = response as BadgeRecord
+            }
         }
     }
 
@@ -98,8 +107,8 @@ function useHandleAppContent() {
     }
 
     async function loadUserContent() {
-        await getCollectionData('badges')
-        await getCollectionData('badges')
+        await getCollectionData<UserContent['badges']>('badges')
+        await getCollectionData<UserContent['badgeRecord']>('badgeRecord')
     }
 
     return {
@@ -122,14 +131,10 @@ type CollectionsMeta = {
 type Query = {
     fields?: string
     filter?: Record<string, any>
-    sort?: string
+    sort?: string,
+    limit?: number
 }
 type FetchOptions = {
     query?: Query
     singleItem?: boolean
-}
-type UserBadge = {
-    id: string,
-    badge: string,
-    owner: string,
 }

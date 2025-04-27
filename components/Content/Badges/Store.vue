@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 const props = defineProps<{
-  badges: FTBadge[];
+  badges: Badge[];
 }>();
 
 const selectedBadge = ref('')
@@ -13,10 +13,9 @@ function handleEmit(badgeKey : string) {
 onMounted(async () => {
     setTimeout( async () => {
         if(!useUserContent().value.badges.length) {
-
             const {
                 refreshCollection
-            } = useHandleAppContent()
+            } = useHandleUserContent()
 
             await refreshCollection('badges')
 

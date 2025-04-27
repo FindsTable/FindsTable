@@ -206,6 +206,62 @@
         "badges": {
             "title": "Badges",
             "pageLead": "Les badges sont des récompenses que vous pouvez gagner en utilisant Finds Table. Ils sont affichés sur votre profil et vous permettent de montrer vos accomplissements à la communauté."
+        },
+        "huntReports": {
+            "newReport": {
+                "title": "Nouveau rapport de prospection",
+                "pageLead": "Racontez vos dernières aventures de détection sur Finds Table.",
+                "sections": {
+                    "description": {
+                        "title": "Description",
+                        "fields": {
+                        "title": {
+                            "label": "Titre",
+                            "placeholder": "Sortie au bord de la rivière"
+                        },
+                        "description": {
+                            "label": "Description",
+                            "placeholder": "Racontez votre sortie, le lieu, les conditions..."
+                        },
+                        "date": {
+                            "label": "Date de la prospection"
+                        },
+                        "status": {
+                            "label": "Statut"
+                        },
+                        "biome": {
+                            "label": "Biôme"
+                        },
+                        "weatherTags": {
+                            "label": "Météo"
+                        }
+                        }
+                    },
+                    "images": {
+                        "title": "Images",
+                        "fields": {
+                        "banner": {
+                            "label": "Photo de bannière"
+                        },
+                        "bootyPhoto": {
+                            "label": "Photo du butin"
+                        },
+                        "photos": {
+                            "label": "Autres photos"
+                        }
+                        }
+                    },
+                    "finds": {
+                        "title": "Trouvailles",
+                        "fields": {
+                        "finds": {
+                            "label": "Sélectionnez les trouvailles associées"
+                        }
+                        }
+                    }
+                }
+            }
         }
+
     }
 }

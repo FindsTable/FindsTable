@@ -1,8 +1,9 @@
-<script setup>
-const props = defineProps({
-    badge: Object,
-    selected: Boolean
-})
+<script setup lang="ts">
+
+const props = defineProps<{
+  badge: Badge
+  selected: Boolean
+}>();
 
 const emit = defineEmits(['selectBadge'])
 
@@ -10,8 +11,8 @@ function handleClick() {
     emit('selectBadge', props.selected ? '' : props.badge.key)
 }
 
-const userVersion = computed(() => {
-    const myBadge = findInLocalState(
+const userVersion : ComputedRef<FileId | undefined> = computed<FileId | undefined>(() => {
+    const myBadge = findInLocalState<UserBadge>(
         'userContent', 
         'badges', 
         (badge) => {
@@ -40,7 +41,7 @@ const userVersion = computed(() => {
                 </div>
 
                 <img 
-                    :src="`https://admin.findstable.net/assets/${userVersion || badge.default.image.id}?key=badge-h150-q100-png`" alt=""
+                    :src="`https://admin.findstable.net/assets/${userVersion || badge.default.image}?key=badge-h150-q100-png`" alt=""
                 >
                 <p class="badgeName -bold marTop20 flex justifyCenter" v-if="badge.translations[0]">
                     {{ badge.translations[0].name }}

@@ -1,14 +1,27 @@
-<script setup>
+<script setup lang="ts">
+
+type Fields = [
+    '*',
+    `${keyof Thought}.${keyof User}`,
+    `${keyof Thought}.${keyof User}`,
+    `${keyof Thought}.${keyof User}`,
+    `${keyof Thought}.${keyof User}`,
+    keyof Thought,
+    keyof Thought,
+    keyof Thought,
+    `${keyof Thought}.*`
+]
+
 const {
     feed,
     getNextPage,
     removeItem
-} = await useFeed(
+} = await useFeed<"Thoughts", Fields>(
     'Thoughts',
     [
         '*',
         'owner.avatar',
-        'owner.id',
+        'owner.id' ,
         'owner.displayName',
         'owner.username',
         'date_created',
@@ -17,7 +30,8 @@ const {
         'likes.*'
     ]
 )
-function removeThought(thoughtId) {
+
+function removeThought(thoughtId : ThoughtId) {
     removeItem(thoughtId)
 }
 

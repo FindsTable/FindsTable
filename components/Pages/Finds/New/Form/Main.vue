@@ -122,21 +122,15 @@ const formRef = ref()
 <template>
     <form class="flex column gap20 marTop20" ref="formRef">
         <ArchitecturePanelMain>
-            <TH2 class="sectionTitle">
-                {{ t('page.finds.newFind.sections.description.title') }}
-            </TH2>
-
             <div class="section">
-                <!-- <PagesFindsNewFormTitle
-                    v-model="title"
-                /> -->
-                <PagesFindsNewFormDescription
+                <FormsNewItemDescription
                     v-model="description"
+                    textPath="page.finds.newFind.sections.description.title"
                 />
-                <PagesFindsNewFormType
+                <FormsNewItemFindsType
                     v-model="selectedType"
                 />
-                <PagesFindsNewFormMetals
+                <FormsNewItemFindsMetals
                     v-model="selectedMetals"
                 />
             </div>
@@ -148,11 +142,11 @@ const formRef = ref()
             </TH2>
 
             <div class="section">
-                <PagesFindsNewFormDating
+                <FormsNewItemFindsDating
                     v-model="dating"
                 />
 
-                <PagesFindsNewFormPeriod
+                <FormsNewItemFindsPeriod
                     v-model="selectedPeriod"
                 />
             </div>
@@ -164,7 +158,7 @@ const formRef = ref()
             </TH2>
 
             <div class="section">
-                <PagesFindsNewFormImages
+                <FormsNewItemFindsImages
                 v-model="selectedImages"
                 />
             </div>

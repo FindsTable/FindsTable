@@ -1,13 +1,11 @@
-<script setup>
-const props = defineProps({
-    finds: {
-        type: Array
-    }
-})
+<script setup lang="ts">
+const props = defineProps<{
+    finds: Find[];
+}>();
 
 const emit = defineEmits(['getNextPage', 'refresh', 'findDeleted'])
 
-async function deleteFind(findId) {
+async function deleteFind(findId : FindId) {
     const { openModal } = useConfirmationModal()
 
     const confirmDelete = await openModal({

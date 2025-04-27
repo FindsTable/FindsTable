@@ -7,7 +7,8 @@ const links = [
     { textPath: 'sideBarLinks.finds', to: '/home?content=finds', icon: null },
     { textPath: 'sideBarLinks.thoughts', to: '/home?content=thoughts', icon: null },
     { textPath: 'sideBarLinks.badges', to: '/success-badges', icon: null },
-    { textPath: 'sideBarLinks.notifications', to: '/notifications', icon: 'bell' }
+    { textPath: 'sideBarLinks.notifications', to: '/notifications', icon: 'bell' },
+    { textPath: 'sideBarLinks.newHuntReport', to: '/hunt-reports/new', icon: 'bell' }
 ]
 </script>
 

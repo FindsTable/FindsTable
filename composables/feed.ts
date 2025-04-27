@@ -2,25 +2,28 @@ export {
     useFeed
 }
 
-async function useFeed(
-    collection: string,
-    fields: string[]
-    
-) {
-    const isPending = ref(false)
-    const itemType = collection.toLowerCase()
+async function useFeed<
+    CollName extends DirectusCollection,
+    ItemType
+>(
+    collection:  DirectusCollection,
+    fieldsArray: string[]
+): Promise<{
+    feed: ComputedRef<ItemType[]>;
+    removeItem: RemoveItem;
+    getNextPage: GetNextPage;
+}> {
+    const isPending = ref<boolean>(false)
 
-    const items = useState<any[]>(`items-${itemType}`, () => [])
+    const items = useState<any[]>(`items-${collection.toLowerCase()}`, () => [])
 
-    const feed = computed(() => {
-
+    const feed = computed<ItemType[]>(() => {
         const array =  Array.from(
             new Map([
                 ...items.value,
             ].map(item => [item.id, item]))
             .values()
         )
-
         return array
     })
 
@@ -31,12 +34,13 @@ async function useFeed(
     const queryFilters_or = ref<any>([])
 
     const query  = computed(() => {
+        
         return {
             filter: {
                 _and: queryFilters_and.value,
                 _or: queryFilters_or.value
             },
-            fields,
+            fields: fieldsArray.join(','),
             sort: "-date_lastEvent",
             limit: ITEMS_PER_PAGE,
             offset: currentPage.value * ITEMS_PER_PAGE
@@ -51,7 +55,6 @@ async function useFeed(
             collection,
             query: query.value
         })
-
 
         if(newItems.length) {
             items.value = [
@@ -75,14 +78,7 @@ async function useFeed(
         removeItem,
         getNextPage
     }
-}
+};
 
-interface Query {
-    filter: {
-        _and: any[]
-    },
-    fields: string[]
-    sort: string
-    limit: number
-    offset: number
-}
+type RemoveItem = (itemId: string) => void
+type GetNextPage = () => void

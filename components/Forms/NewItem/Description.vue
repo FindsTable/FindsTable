@@ -1,12 +1,19 @@
 <script setup>
 const { t } = useI18n()
 const description = defineModel()
+
+const props = defineProps({
+    textPath: {
+        type: String,
+        default: ''
+    }
+})
 </script>
 
 <template>
     <FormsLabel>
         <template #label>
-            {{ t('page.finds.newFind.sections.description.title') }}
+            {{ t(`${textPath}`) }}
         </template>
             
         <template #input>

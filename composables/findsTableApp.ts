@@ -9,7 +9,7 @@ export {
 }
 
 export type {
-    FTBadge
+    FTBadge         // DEPRECATING
 }
 
 const useAppContent = () => {
@@ -66,15 +66,14 @@ const ls = {
 const storageKey = (cacheKey: string) => { 
     return `${LS_PREFIX_PAYLOAD}${cacheKey}` 
 }
-
-
+type AppContentCollection = Badge | BadgeVariation
 
 function useFTApp() {
-    const appContent = useState<Record<string, any[]>>(
+    const appContent = useState<Record<string, AppContentCollection[]>>(
         'ftAppPayload', 
         () => reactive({})
     );
-    const _versions = ref<Record<string, number>>({});
+    const _versions = ref<Record<string, FrontEndCacheEntries['version']>>({});
 
     //---------------------------------------------------
     // App content is saved in localStorage.
@@ -82,77 +81,74 @@ function useFTApp() {
     //  - Refresh if needed
     //---------------------------------------------------
     async function initiateAppContent() {
-        Object.assign(_versions.value, ls.getData<Record<string, number>>(LS_KEY_VERSIONS) || {});
+        Object.assign(_versions.value, ls
+            .getData<Record<string, FrontEndCacheEntries['version']>>(LS_KEY_VERSIONS) || {}
+        );
+
         const { directFetch } = useDirectAsyncFetch();
 
-        const {
-            response : manifest
-        } = await directFetch<Manifest>(
+        const { response : manifest } = await directFetch<AppManifest>(
             'GET', '/items/App_manifest',
             {
                 query: {
                     fields: [
-                        '*',
-                        'cache_entries.version',
+                        'cache_entries.id',
                         'cache_entries.collection',
+                        'cache_entries.version',
                         'cache_entries.key',
-                        'cache_entries.query',
-                        'cache_entries.id'
+                        'cache_entries.query'
                     ].join(',')
                 }
             }
         );
 
-        console.log('manifest', manifest);
+        if(!manifest) return  // NEED TO HANDLE FALLBACK SOLUTION
 
         // 3️⃣  Iterate over each bucket in the manifest.
         for (const entry of manifest.cache_entries) {
-            const { version, collection, key, query } = entry;
+
+            const { 
+                version, 
+                collection, 
+                key, 
+                query 
+            } = entry;
 
             appContent.value[key] = ls.getData<any[]>(storageKey(key)) || [];
 
-            // console.log("appContent", appContent.value);
-            // console.log("badges", appContent.value[key].length);
-            // console.log(_versions.value[key]);
-            // console.log("query", query)
             if (
                 // true
                 !_versions.value[key] ||
                 !appContent.value[key].length ||
                 _versions.value[key] !== version
             ) {
-                // console.log('need to refetch payload');
 
                 const parsedQuery = query ? JSON.parse(query) : {};
 
-                const { 
-                    response : items
-                } = await directFetch(
+                const { response : items } = await directFetch<AppContentCollection[]>(
                     'GET', `/items/${collection}`,
                     {
                         query: parsedQuery
                     }
                 );
 
-                appContent.value[key] = items;
+                appContent.value[key] = items ? items : []
                 _versions.value[key] = version;
-                // console.log("appContent", appContent.value);
-                // console.log(_versions.value[key]);
 
                 ls.setData(storageKey(key), items);
             }
         }
 
-        // 4️⃣  Persist the version & timestamp tables (cheap, unconditional).
+        // Save versions to localstorage
         ls.setData(LS_KEY_VERSIONS, _versions.value);
 
         useAppContent().value = appContent.value;
-        console.log(useAppContent().value)
     }
 
     // --------------------------------------------------
     // BADGES  – typed helpers for the first bucket (key="badges").
     // --------------------------------------------------
+    
     const _badges = computed<FTBadge[]>(() => {
         return (appContent.value['badges'] ?? []) as FTBadge[];
     });
@@ -163,11 +159,9 @@ function useFTApp() {
 
     const allBadges = ref<FTBadge[]>(_badges.value);
 
-    function getBadge(id: string | number): FTBadge | undefined {
-        return _badges.value.find(badge => badge.id === id);
+    function getBadge(key: BadgeKey): FTBadge | undefined {
+        return _badges.value.find(badge => badge.key === key);
     }
-
-    // console.log('app content loaded from cache', appContent.value);
 
     // --------------------------------------------------
     // PUBLIC API (returned object)
@@ -188,29 +182,11 @@ function useFTApp() {
 }
 
 //--------------------------------------------------------------------------------------------------------------------
-// TYPES – extend as you add more buckets.
+// Local types
 //--------------------------------------------------------------------------------------------------------------------
 
-type FTBadge = {
-    key: number | string
-    variations: {
-        badgeLevel: string,
-        image: string
-    },
+type FTBadge = Badge<{
+    variations: BadgeVariation[];
+    default: BadgeVariation;
+}>
 
-    [k: string]: unknown
-}
-
-type CacheEntry = {
-    collection: string
-    key: string
-    version: number
-    query?: string
-    ttl?: number | null
-}
-
-type Manifest = {
-    cache_entries: CacheEntry[];
-    version_app: string | null;
-    version_badges: string;
-}

@@ -18,7 +18,7 @@ async function loadAppContent() {
 
     const {
         loadUserContent
-    } = useHandleAppContent()
+    } = useHandleUserContent()
 
     await loadUserContent()
 }

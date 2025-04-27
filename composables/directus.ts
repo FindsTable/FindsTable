@@ -1,6 +1,14 @@
+import type {
+    Method
+} from '@/types/directusData'
+
 export {
     useDirectAsyncFetch,
     useDirectFetch
+}
+
+export type {
+    Options as DirectFetchOptions
 }
 
 function useDirectAsyncFetch<T = any>(
@@ -8,6 +16,7 @@ function useDirectAsyncFetch<T = any>(
     path?: string,
     options?: Options
 ): UseDirectFetchReturn<T> {
+
     const _response = ref<T | null>(null) as Ref<T | null>
     const _error = ref<Record<string, any> | null>(null)
     const isPending = ref(false)
@@ -16,7 +25,7 @@ function useDirectAsyncFetch<T = any>(
         method: Method,
         path: string,
         options?: Options
-    ): Promise<{ response: T | null, error: any | null }> {
+    ): Promise<{ response: Expected | null, error: any | null }> {
 
         let response: Expected | null = null
         let error: any | null = null
@@ -127,24 +136,18 @@ export type UseDirectFetchReturn<T> = {
     /*
     * use direct fetch to make request without affecting response and error state
     */
-    directFetch: (
+    directFetch: <expected>(
         method: Method,
         path: string,
         options?: Options
-    ) => Promise<{ response: T | null, error: any | null }>
+    ) => Promise<{ 
+        response: expected | null, 
+        error: any | null 
+    }>
 }
-
-// Shape of Directus standard response
-export type DirectusResponse<T> = {
-  data: T
-  meta?: any
-}
-
-// HTTP methods supported by Directus
-export type Method = 'GET' | 'POST' | 'DELETE' | 'PATCH'
 
 // Options for each fetch call
-export type Options = {
+type Options = {
     body?: any
     query?: any
     differed?: boolean
