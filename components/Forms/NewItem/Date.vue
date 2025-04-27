@@ -31,7 +31,7 @@ function formatDate(dateString: string) {
       {{ t(textPath) }}
     </TH2>
 
-    <div class="dateWrapper pointer" @click="openCalendar">
+    <div class="dateWrapper pointer customDateInput" @click="openCalendar">
       <Icon name="datePrecise" size="28px" class="calendarIcon" />
       
       <div v-if="model" class="formattedDate">
@@ -58,9 +58,9 @@ function formatDate(dateString: string) {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 5px 10px;
+  padding: 10px 14px;
   border-radius: 8px;
-  background: var(--tone-grayscale-70);
+  background: var(--surface2-bgColor);
   cursor: pointer;
   min-height: 40px;
 }
