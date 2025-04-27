@@ -1,7 +1,6 @@
 input,
 input:focus {
     border: none;
-    /* background-color: transparent; */
     outline: none;
 }
 
@@ -19,7 +18,8 @@ form {
     --input-outline-color-focus: hsla(90, 100%, 26%, 0.19);
 }
 
-.inputTypeText {
+.inputTypeText,
+.customDateInput {
     padding: 8px 12px;
     border-radius: 5px;
     box-shadow: inset 1px 1px 5px black;
