@@ -9,7 +9,7 @@ const content = ref('')
 const biome = ref('')
 const weatherTags = ref<string[]>([])
 const banner = ref<File | null>(null)
-const bootyPhoto = ref<File | null>(null)
+const bootyPhoto = ref<File[] | null>(null)
 const finds = ref<any[]>([])
 const photos = ref<any[]>([])
 
@@ -90,70 +90,82 @@ function saveNewReport() {
 
 <template>
     <form class="flex column gap20 marTop20" ref="formRef">
-      <ArchitecturePanelMain>
-        <div class="section flex column gap20">
-          <FormsNewItemTitle v-model="title" />
-  
-            <FormsNewItemDescription 
-                v-model="content"
-                textPath="page.huntReports.newReport.sections.description.fields.description.label"
-            />
-  
-            <FormsNewItemDate 
-                v-model="date"
-                textPath="page.huntReports.newReport.sections.description.fields.date.label"
-            />
-  
-            <FormsNewItemStatus 
-                v-model="status"
-                textPath="page.huntReports.newReport.sections.description.fields.status.label"
-            />
-        </div>
-      </ArchitecturePanelMain>
-  
-      <ArchitecturePanelMain>
-        <div class="section">
-          <FormsNewItemBiome 
-            v-model="biome"
-                textPath="page.huntReports.newReport.sections.description.fields.biome.label"
-                multiple
-            />
-  
-          <TH2 class="sectionTitle">
-            {{ t('page.huntReports.newReport.sections.description.fields.weatherTags.label') }}
-          </TH2>
-          
-          <FormsNewItemHuntReportsWeatherTags v-model="weatherTags" />
-        </div>
-      </ArchitecturePanelMain>
-  
-      <ArchitecturePanelMain>
-        <div class="section">
-          <TH2 class="sectionTitle">
-            {{ t('page.huntReports.newReport.sections.images.fields.banner.label') }}
-          </TH2>
-          <FormsNewItemCroppedImage v-model="banner" label="Banner" />
-  
-          <TH2 class="sectionTitle">
-            {{ t('page.huntReports.newReport.sections.images.fields.bootyPhoto.label') }}
-          </TH2>
-          <FormsNewItemCroppedImage v-model="bootyPhoto" label="Booty Photo" />
-  
-          <TH2 class="sectionTitle">
-            {{ t('page.huntReports.newReport.sections.images.fields.photos.label') }}
-          </TH2>
-          <FormsNewItemCroppedImageGallery v-model="photos" label="Miscellaneous Photos" />
-        </div>
-      </ArchitecturePanelMain>
-  
-      <ArchitecturePanelMain>
-        <div class="section">
-          <TH2 class="sectionTitle">
-            {{ t('page.huntReports.newReport.sections.finds.fields.finds.label') }}
-          </TH2>
-          <FormsNewItemFindSelector v-model="finds" />
-        </div>
-      </ArchitecturePanelMain>
+        <ArchitecturePanelMain>
+            <div class="section flex column gap20">
+                <FormsNewItemTitle 
+                    v-model="title"
+                    textPath="page.huntReports.newReport.sections.description.fields.title.label"
+                    placeholderPath="page.huntReports.newReport.sections.description.fields.title.placeholder"
+                />
+    
+                <FormsNewItemDescription 
+                    v-model="content"
+                    textPath="page.huntReports.newReport.sections.description.fields.description.label"
+                />
+    
+                <FormsNewItemDate 
+                    v-model="date"
+                    textPath="page.huntReports.newReport.sections.description.fields.date.label"
+                />
+    
+                <FormsNewItemStatus 
+                    v-model="status"
+                    textPath="page.huntReports.newReport.sections.description.fields.status.label"
+                />
+            </div>
+        </ArchitecturePanelMain>
+    
+        <ArchitecturePanelMain>
+            <div class="section">
+                <FormsNewItemBiome 
+                    v-model="biome"
+                        textPath="page.huntReports.newReport.sections.description.fields.biome.label"
+                        multiple
+                />
+
+                <FormsNewItemHuntReportsWeatherTags
+                    v-model="weatherTags"
+                    textPath="page.huntReports.newReport.sections.description.fields.weatherTags.label"
+                />
+            </div>
+        </ArchitecturePanelMain>
+    
+        <ArchitecturePanelMain>
+            <div class="section">
+
+                <FormsNewItemImageSelector 
+                    v-model="banner"
+                    label="Booty Photo"
+                    :maxFiles="1"
+                    boxHeight="100px"
+                    aspectRatio="5/2"
+                    titlePath="page.huntReports.newReport.sections.images.fields.banner.label"
+                />
+                
+                <FormsNewItemImageSelector 
+                    v-model="bootyPhoto"
+                    label="Booty Photo"
+                    :maxFiles="1"
+                    titlePath="page.huntReports.newReport.sections.images.fields.bootyPhoto.label"
+                />
+
+                <FormsNewItemImageSelector 
+                    v-model="photos" 
+                    label="Booty Photo"
+                    :maxFiles="3"
+                    titlePath="page.huntReports.newReport.sections.images.fields.photos.label"
+                />
+            </div>
+        </ArchitecturePanelMain>
+    
+        <ArchitecturePanelMain>
+            <div class="section">
+            <TH2 class="sectionTitle">
+                {{ t('page.huntReports.newReport.sections.finds.fields.finds.label') }}
+            </TH2>
+            <FormsNewItemFindSelector v-model="finds" />
+            </div>
+        </ArchitecturePanelMain>
   
       <template class="centered">
         <button 

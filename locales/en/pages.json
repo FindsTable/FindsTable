@@ -207,7 +207,7 @@
         "huntReports": {
             "newReport": {
                 "title": "New Hunt Report",
-                "pageLead": "Share your latest detecting adventures on Finds Table.",
+                "pageLead": "Build your own collection of adventures. Each Hunt Report lets you document your outings, conditions, and finds. Over time, you’ll create a personal archive of all your exploration journeys.",
                 "sections": {
                     "description": {
                         "title": "Description",

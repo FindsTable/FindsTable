@@ -3,7 +3,7 @@
         "inputs": {
             "file": {
                 "image": {
-                    "icon": "addImage",
+                    "icon": "imageAdd",
                     "label": "Select an image"
                 },
                 "camera": {

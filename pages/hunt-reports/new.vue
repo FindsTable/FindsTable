@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { t } = useI18n()
 
 definePageMeta({
   title: 'Create a new Hunt Report',
@@ -11,7 +12,11 @@ definePageMeta({
   <NuxtLayout name="private-route">
 
     <template #title>
-      Create a New Hunt Report
+      {{t('page.huntReports.newReport.title')}}
+    </template>
+
+    <template #header>
+        {{t('page.huntReports.newReport.pageLead')}}
     </template>
 
     <template #scrollMain>

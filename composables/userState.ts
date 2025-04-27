@@ -2,7 +2,8 @@ import type { UserState } from '@/shared/types/state';
 
 
 export const useUserState = () => {
-    const userState =  useState<UserState>('userState',
+    const userState =  useState<UserState>(
+        'userState',
         () => ({
             isLoggedIn: false,
             avatar: '',

@@ -1,5 +1,10 @@
 <script setup lang="ts">
+const { t } = useI18n()
+
 const tags = defineModel<string[]>('tags')
+    const props = defineProps({
+  textPath: String
+})
 
 // Get available weather tags from app content
 const appContent = useAppContent()
@@ -31,10 +36,15 @@ function getTagLabel(tag: any) {
 </script>
 
 <template>
+    <TH2 class="sectionTitle">
+        {{ t(`${textPath}`) }}
+    </TH2>
+    
     <div class="flex wrap gap10 marTop10">
       <div
         v-for="tag in availableTags"
         :key="tag.key"
+        class="tag"
       >
         <button
           type="button"
@@ -47,3 +57,10 @@ function getTagLabel(tag: any) {
       </div>
     </div>
   </template>
+
+<style scoped>
+
+.-filled {
+    box-shadow: inset 0 0 5px black;
+}
+</style>

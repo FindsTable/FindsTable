@@ -23,7 +23,7 @@ const props = defineProps({
 const emit = defineEmits(['newFile'])
 
 const icons = {
-    image: 'addImage',
+    image: 'imageAdd',
     document: 'document',
     other: 'file',
 }

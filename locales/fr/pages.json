@@ -210,7 +210,7 @@
         "huntReports": {
             "newReport": {
                 "title": "Nouveau rapport de prospection",
-                "pageLead": "Racontez vos dernières aventures de détection sur Finds Table.",
+                "pageLead": "Construisez votre propre collection d'aventures. Chaque rapport de prospection vous permet de documenter vos sorties, les conditions et vos trouvailles. Avec le temps, vous créerez une archive personnelle de toutes vos explorations",
                 "sections": {
                     "description": {
                         "title": "Description",

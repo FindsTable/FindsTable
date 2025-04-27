@@ -21,20 +21,44 @@ const props = defineProps({
 
 const emit = defineEmits(['newFile'])
 
+/*********************************************************
+// this is used to allow the click on the 
+// image container to open the selection window
+*/
+const inputRef = ref(null)
+
+defineExpose({
+  openFileDialog
+})
+
+function openFileDialog() {
+    inputRef.value?.click()
+}
+/*
+***********************************************************/
+
 function handleNewFile(event) {
     const file = event.target.files[0]
     emit('newFile', file)
 }
+
 </script>
 
 <template>
-    <label class="relative comp-button -text">
+    <label class="relative comp-button -text" ref="inputRef">
         <span class="flex alignCenter gap10">
-            <Icon v-if="icon" :name="icon" />
+            <Icon v-if="icon" :name="icon" size="20px" />
 
-            <span>{{t(label)}}</span>
+            <span class="text">
+                {{t(label)}}
+            </span>
         </span>
-    <input type="file" @change="handleNewFile" :accept="accept" :capture="capture">
+    <input 
+        type="file" 
+        @change="handleNewFile" 
+        :accept="accept" 
+        :capture="capture"
+    >
 </label>
 </template>
 
@@ -43,5 +67,8 @@ input {
     display: none;
     position: absolute;
     pointer-events: none;
+}
+.text {
+    font-size: 12px;
 }
 </style>

@@ -118,17 +118,17 @@ async function saveChanges() {
             fileType="image"
             ref="inputField"
             label="forms.inputs.file.image.label"
-            icon="addImage"
+            icon="imageAdd"
         />
 
-        <FormsInputFile
+        <!-- <FormsInputFile
             v-if="appConfig.device.hasCamera"
             @newFile="handleFile"
             label="forms.inputs.file.camera.label"
             icon="cameraFront"
             accept="image/*"
             capture="user"
-        />
+        /> -->
     </div>
 </template>
 

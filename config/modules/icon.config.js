@@ -5,7 +5,6 @@ export default {
     aliases: {
         'account': 'material-symbols:account-circle',
         'activity': 'material-symbols:person-play-outline-rounded',
-        'addImage': 'material-symbols:add-photo-alternate-outline',
         'appSettings': 'tabler:device-desktop-cog',
         'article': 'material-symbols:article-outline-rounded',
         'attributes': 'material-symbols:user-attributes-outline-rounded',
@@ -44,6 +43,8 @@ export default {
         'heartFull': 'solar:heart-bold',
         'home': 'material-symbols:other-houses',
         'info': 'material-symbols:info-outline',
+        'imageAdd': 'material-symbols:add-photo-alternate-outline',
+        'imageDefault': 'material-symbols:imagesmode-outline-rounded',
         'loading': 'svg-spinners:12-dots-scale-rotate',
         'lockClosed': 'material-symbols:lock-outline',
         'logout': 'material-symbols:logout',

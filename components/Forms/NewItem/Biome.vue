@@ -1,14 +1,17 @@
 <script setup lang="ts">
 const appConfig = useAppConfig()
 const biome = defineModel<string | string[]>('biome')
-const { t } = useI18n()
+const { t, locale } = useI18n()
 type Biome = {
     key: string
     image: string
     translations: {
         id: number
         Biomes_key: string
-        Languages_id: number
+        Languages_id: {
+            id: number,
+            code: "en" | "fr"
+        }
         value: string | null
         description: string
     }[]
@@ -44,6 +47,7 @@ function toggleBiome(selectedKey: string) {
     }
 }
 
+
 function isSelected(key: string) {
     if (props.multiple) {
         return Array.isArray(biome.value) && biome.value.includes(key)
@@ -52,7 +56,7 @@ function isSelected(key: string) {
 }
 
 function getBiomeName(biome: Biome) {
-    const translation = biome.translations.find(t => t.value)
+    const translation = biome.translations.find(t => t.Languages_id.code === locale.value)
     return translation?.value || biome.key
 }
 
@@ -72,7 +76,7 @@ function getBiomeName(biome: Biome) {
         >
         <div class="biomeImage flex">
             <img 
-                :src="`${useAppConfig().directusUrl}/assets/${b.image}`"
+                :src="`${useAppConfig().directusUrl}/assets/${b.image}?key=biome-small-jpg`"
                 class="objectFitContain block"
             />
         </div>
@@ -89,8 +93,9 @@ function getBiomeName(biome: Biome) {
 }
 .biomeCard {
     background: var(--surface1-bgColor);
-    padding: 2px 3px;
+    padding: 3px 3px;
     border-radius: 12px;
+    
     cursor: pointer;
     transition: 200ms;
     overflow: hidden;
@@ -99,6 +104,7 @@ function getBiomeName(biome: Biome) {
     border-color: var(--titleColor-main);
     background-color: var(--color-ft-dark);
     outline: 2px solid var(--color-ft-darker);
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.766);
 }
 .biomeImage {
     font-size: 12px;
@@ -106,6 +112,7 @@ function getBiomeName(biome: Biome) {
 }
 .biomeName {
     font-size: 14px;
+    font-weight: 700;
     text-align: center;
 }
 .biomeImage {
