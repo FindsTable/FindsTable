@@ -1,18 +1,27 @@
-type ReadEventOption = 'body' | 'query' | 'bearerToken' | `param${string}` | `header${string}`
-type ReadEventOptions = ReadEventOption[]
+export type ReadEventOption = 'body' | 'query' | 'bearerToken' | `param${string}` | `header${string}`
+export type ReadEventOptions = ReadEventOption[]
 
-interface ReadEventResult {
-    body?: any
-    bearerToken?: string
-    params?: Record<string, string>
-    query?: Record<string, any>
-    headers?: Record<string, string>
-    [key: string]: any
+export type ReadEventResult = {
+    body: any
+    query: Record<string, any>
+    params: Record<string, string>
+    headers: Record<string, string>
+    bearerToken: string
     error?: ApiResponse
 }
 
-export async function readEvent(event: H3Event, options: ReadEventOptions): Promise<ReadEventResult> {
-    const result: ReadEventResult = {}
+export async function readEvent(
+    event: H3Event,
+    options: ReadEventOptions
+): Promise<ReadEventResult> {
+    
+    const result: ReadEventResult = {
+        body: {},
+        query: {},
+        params: {},
+        headers: {},
+        bearerToken: '',
+    }
 
     try {
         for (const option of options) {
@@ -25,8 +34,6 @@ export async function readEvent(event: H3Event, options: ReadEventOptions): Prom
             } else if (option.startsWith('param')) {
                 handleParam(event, result, option)
             } else if (option.startsWith('header')) {
-                handleHeader(event, result, option)
-            }else if (option.startsWith('header')) {
                 handleHeader(event, result, option)
             }
         }
@@ -67,38 +74,30 @@ function handleQuery(event: H3Event, result: ReadEventResult) {
 
 function handleBearerToken(event: H3Event, result: ReadEventResult) {
     const bearerToken = getHeader(event, 'Authorization')
-    if (!bearerToken) {
-        
+
+    if (!bearerToken || typeof bearerToken !== 'string') {
+        throw new Error('Authorization header is missing or invalid')
     }
-    if(bearerToken !== undefined && bearerToken && typeof bearerToken === 'string') {
-        result.bearerToken = bearerToken
-    } else {
-        result.bearerToken = '' as string
-        throw new Error('Authorization header is missing')
-    }
+
+    result.bearerToken = bearerToken
 }
 
 function handleParam(event: H3Event, result: ReadEventResult, option: string) {
     const paramName = option.slice(5).toLowerCase()
     const params = getRouterParams(event)
+
     if (!params[paramName]) {
         throw new Error(`Parameter ${paramName} is missing, have ${paramName} instead`)
     }
-    if (!result.params) {
-        result.params = {}
-    }
-    result[paramName] = params[paramName]
+    result.params[paramName] = params[paramName]
 }
 
 function handleHeader(event: H3Event, result: ReadEventResult, option: string) {
-    const headerName = option.slice(6)
+    const headerName = option.slice(6).toLowerCase()
     const headerValue = getHeader(event, headerName)
+
     if (!headerValue) {
         throw new Error(`Header ${headerName} is missing`)
     }
-    if (!result.headers) {
-        result.headers = {}
-    }
     result.headers[headerName] = headerValue
 }
-

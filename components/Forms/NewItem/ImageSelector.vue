@@ -49,60 +49,65 @@ function deleteImage(index: number) {
 </script>
 
 <template>
-  <div class="marTop20">
-    <TH2 class="sectionTitle">
-        {{ t(`${titlePath}`) }}
-    </TH2>
 
-    <div class="flex gap10 wrap marTop10">
-        <div 
-            v-for="(slot, index) in props.maxFiles" 
-            :key="index"
-            class="flex column gap5 alignCenter"
-        >
-            <div 
-                @click="inputField?.openFileDialog()"
-                class="imageBox centered pointer"
-                :style="{
-                    height: props.boxHeight,
-                    aspectRatio: props.aspectRatio
-                }"
-            >
-            <img 
-                v-if="fileUrls[index]"
-                :src="fileUrls[index]"
-                alt=""
-                class="selectedImage"
-            >
-                <Icon 
-                    v-else
-                    class="defaultImage" 
-                    name="imageDefault" 
-                    size="60px" 
-                />
+        <label >
+            {{ t(`${titlePath}`) }}
+        </label>
+
+        <div class="">
+            <div class="flex gap10 wrap marTop10">
+                <div 
+                    v-for="(slot, index) in props.maxFiles" 
+                    :key="index"
+                    class="flex column gap5 alignCenter"
+                >
+                    <div 
+                        @click="inputField?.openFileDialog()"
+                        class="imageBox centered pointer allEvents"
+                        :style="{
+                            height: props.boxHeight,
+                            aspectRatio: props.aspectRatio
+                        }"
+                    >
+                    <img 
+                        v-if="fileUrls[index]"
+                        :src="fileUrls[index]"
+                        alt=""
+                        class="selectedImage"
+                    >
+                        <Icon 
+                            v-else
+                            class="defaultImage" 
+                            name="imageDefault" 
+                            size="60px" 
+                        />
+                    </div>
+
+                    <button 
+                        @click.prevent="deleteImage(index)"
+                            class="comp-button -text font-text-main fS12 r"
+                            :class="!fileUrls[index] ? 'disabled' : ''"
+                        >
+                        Unselect
+                    </button>
+                </div>
             </div>
 
-            <button 
-                @click.prevent="deleteImage(index)"
-                    class="comp-button -text font-text-main fS12"
-                    :class="!fileUrls[index] ? 'disabled' : ''"
-                >
-                Unselect
-            </button>
-        </div>
-    </div>
+            <div class="flex">
 
-    <div class="flex">
-      <FormsInputFile 
-        @newFile="handleFile"
-        fileType="image"
-        ref="inputField"
-        label="forms.inputs.file.image.label"
-        icon="imageAdd"
-        :class="model?.length === maxFiles ? 'disabled' : ''"
-      />
-    </div>
-  </div>
+            <FormsInputFile 
+                @newFile="handleFile"
+                fileType="image"
+                ref="inputField"
+                label="forms.inputs.file.image.label"
+                icon="imageAdd"
+                class="allEvents"
+                :class="model?.length === maxFiles ? 'disabled' : ''"
+            />
+            </div>
+        </div>
+
+
 </template>
 
 <style scoped>

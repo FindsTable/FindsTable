@@ -209,55 +209,45 @@
         },
         "huntReports": {
             "newReport": {
-                "title": "Nouveau rapport de prospection",
-                "pageLead": "Construisez votre propre collection d'aventures. Chaque rapport de prospection vous permet de documenter vos sorties, les conditions et vos trouvailles. Avec le temps, vous créerez une archive personnelle de toutes vos explorations",
-                "sections": {
-                    "description": {
-                        "title": "Description",
-                        "fields": {
-                        "title": {
-                            "label": "Titre",
-                            "placeholder": "Sortie au bord de la rivière"
-                        },
-                        "description": {
-                            "label": "Description",
-                            "placeholder": "Racontez votre sortie, le lieu, les conditions..."
-                        },
-                        "date": {
-                            "label": "Date de la prospection"
-                        },
-                        "status": {
-                            "label": "Statut"
-                        },
-                        "biome": {
-                            "label": "Biôme"
-                        },
-                        "weatherTags": {
-                            "label": "Météo"
-                        }
-                        }
+                "title": "New Hunt Report",
+                "pageLead": "Build your own collection of adventures. Each Hunt Report lets you document your outings, conditions, and finds. Over time, you’ll create a personal archive of all your exploration journeys.",
+                "fields": {
+                    "title": {
+                        "label": "Title",
+                        "placeholder": "Riverbank outing"
                     },
-                    "images": {
-                        "title": "Images",
-                        "fields": {
-                        "banner": {
-                            "label": "Photo de bannière"
-                        },
-                        "bootyPhoto": {
-                            "label": "Photo du butin"
-                        },
-                        "photos": {
-                            "label": "Autres photos"
-                        }
-                        }
+                    "content": {
+                        "label": "Content",
+                        "placeholder": "Tell us about your outing, the location, the conditions..."
+                    },
+                    "date": {
+                        "label": "Date of the hunt"
+                    },
+                    "status": {
+                        "label": "Status"
+                    },
+                    "biome": {
+                        "label": "Biome"
+                    },
+                    "weatherTags": {
+                        "label": "Weather"
+                    },
+                    "banner": {
+                        "label": "Main banner"
+                    },
+                    "bootyPhoto": {
+                        "label": "Booty photo"
+                    },
+                    "photos": {
+                        "label": "Miscellaneous photos"
                     },
                     "finds": {
-                        "title": "Trouvailles",
-                        "fields": {
-                        "finds": {
-                            "label": "Sélectionnez les trouvailles associées"
-                        }
-                        }
+                        "label": "Select associated finds"
+                    },
+                    "relatedFinds": {
+                        "label": "Associated Finds",
+                        "lead": "Attach one or more finds related to your hunt.",
+                        "button": "Add Finds"
                     }
                 }
             }

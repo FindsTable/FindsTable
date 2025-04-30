@@ -1,5 +1,6 @@
 <script setup lang="ts">
-const state = defineModel<string>('state')
+const state = defineModel<string>()
+
 const { t } = useI18n()
 
 const props = defineProps({
@@ -38,42 +39,59 @@ async function toggleStatus() {
 </script>
 
 <template>
-    <div>
-        <TH2 class="sectionTitle">
-            {{ t(`${textPath}`) }}
-        </TH2>
-        
-        <div class="flex alignCenter gap10 marTop10">
-            <div
-                class="statusLabel"
-                :class="{ active: state === 'draft' }"
-            >
-                Draft
-            </div>
+    <div class="flex marTop10 w100">
+        <div
+            class="draft statusLabel flex justifyEnd"
+            :class="{ 
+                active: state === 'draft' 
+            }"
+        >
+            <span>
+                Save as draft
+            </span>
+        </div>
 
+        <div class="">
             <FormsSwitch
                 :model-value="state === 'published'"
                 @update:model-value="toggleStatus"
             />
+        </div>
 
-            <div
-                class="statusLabel"
-                :class="{ active: state === 'published' }"
-            >
-                Published
-            </div>
+        <div
+            class="published statusLabel"
+            :class="{ 
+                active: state === 'published' 
+            }"
+        >
+            <span>
+                Publish
+            </span>
         </div>
     </div>
 </template>
 
 <style scoped>
 .statusLabel {
-  font-size: 16px;
-  opacity: 0.5;
-  transition: 200ms;
+    font-size: 16px;
+    opacity: 0.5;
+    transition: 200ms;
+    flex-grow: 1;
+    flex-shrink: 0;
+    position: relative;
 }
 .statusLabel.active {
-  opacity: 1;
-  font-weight: bold;
+    opacity: 1;
+    font-weight: bold;
+}
+.statusLabel > span {
+    padding: 0px 10px;
+    position: absolute;
+}
+.draft.active {
+    color: var(--tone-mango-20);
+}
+.published.active {
+    color: var(--color-ft-light);
 }
 </style>

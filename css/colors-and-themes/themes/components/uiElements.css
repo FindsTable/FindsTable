@@ -3,12 +3,14 @@
     background-color: var(--backdropColor);
 }
 .theme-switch.true {
+    border-color:  var(--color-ft);
     border-color: var(--ui-color-on);
 }
 .theme-switch .dot {
     background-color: var(--ui-color-disabled);
 }
 .theme-switch.true .dot {
+    border-color:  var(--color-ft);
     background-color: var(--ui-color-on);
 }
 

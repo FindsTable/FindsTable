@@ -8,7 +8,8 @@ export {
     itemCountIsValid,
     validateUser,
     validateUserEmail,
-    tokensAreValid
+    tokensAreValid,
+    isValidImageType
 }
 interface MaxItemCount {
     [key : string ] : number
@@ -20,7 +21,8 @@ const maxItemCount : MaxItemCount = {
     "Thoughts_comments": 100,
     "Finds_comments": 100,
     "Avatars": 25,
-    "All_comments": 1000
+    "All_comments": 1000,
+    "Hunt-reports": 5
 }
 
 function itemCountIsValid(p : { 
@@ -116,4 +118,11 @@ function tokensAreValid(
     }
 
     return tokenFromRoute === tokenFromDirectus;
+}
+
+function isValidImageType(mimeType?: string): boolean {
+    if (!mimeType) return false
+
+    const allowedTypes = ['image/jpeg', 'image/png']
+    return allowedTypes.includes(mimeType)
 }

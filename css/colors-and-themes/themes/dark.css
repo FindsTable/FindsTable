@@ -81,7 +81,7 @@
     /* Ui widgets - switch, checkbox, radio box, etc*/
     --ui-color-main: var(--tone-zinc-20);
     --ui-color-dimmed: var(--tone-zinc-50);
-    --ui-color-on: var(--tone-kaki-40);
+    --ui-color-on: var(--color-ft);
     --ui-color-off: var(--tone-zinc-50);
     --ui-color-disabled: var(--tone-zinc-70);
 }

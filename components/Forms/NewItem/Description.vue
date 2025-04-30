@@ -19,7 +19,7 @@ const props = defineProps({
         <template #input>
             <textarea
                 v-model="description"
-                class="font-input-text theme-inputText-bgColor theme-textColor-main inputTypeText"
+                class="font-input-text theme-inputText-bgColor theme-textColor-main inputTypeText allEvents"
             >
 
             </textarea>

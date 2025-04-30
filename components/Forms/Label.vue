@@ -1,5 +1,19 @@
+<script setup>
+const props = defineProps({
+    labelClick: {
+        type: Boolean,
+        default: false
+    }
+})
+</script>
+
 <template>
-    <label class="flex column">
+    <label 
+        class="flex column"
+        :class="{
+            noEventLabel: labelClick === false
+        }"
+    >
         <span class="standardLabel theme-textColor-main">
             <slot name="label" />
         </span>
@@ -10,6 +24,12 @@
     </label>
 </template>
 
-<style scoped>
+<style>
+.noEventLabel {
+    pointer-events: none;
+}
 
+.noEventLabel input {
+    pointer-events: all;
+}
 </style>

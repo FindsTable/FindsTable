@@ -552,6 +552,47 @@ type FindMetal = {
 };
 
 /******************
+* Hunt reports
+******************/
+
+
+type HuntReportId = UUID;
+type HuntReport = {
+    id: HuntReportId;
+    owner: UserId | User;
+    status: 'draft' | 'published'
+    title: string;
+    content: string;
+    date: string;
+    biome: BiomeKey;
+    weatherTags: WeatherTagKey | WeatherTag[];
+    banner: FileId;
+    bootyPhoto: FileId;
+    photos: FileId[];
+    finds: FindId[];
+}
+
+type weatherTagKey = String;
+type weatherTags = {
+    key: weatherTagKey;
+    en: string;
+    fr: string;
+};
+
+type BiomeKey = 'beach' | 'field'
+type Biome = {
+    key: BiomeKey;
+    image: FileId;
+    en: string;
+    fr: string;
+}
+type LanguageKey = "en" | "fr"
+
+type Language = {
+    id: number,
+    key: LanguageKey
+}
+/******************
 * Resourses
 ******************/
 

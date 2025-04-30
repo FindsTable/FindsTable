@@ -6,7 +6,7 @@ export {
 
 async function updateItemsCountField(p: {
     bearerToken: string,
-    field: 'finds_count' | 'avatars_count' | 'thoughts_count' | 'comments_count',
+    field: 'finds_count' | 'avatars_count' | 'thoughts_count' | 'comments_count' | 'huntReports_count',
     newValue: number
   }): Promise<number | undefined> {
   

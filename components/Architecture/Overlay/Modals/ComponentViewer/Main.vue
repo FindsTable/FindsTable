@@ -4,8 +4,11 @@ const modal = useModalState()
 </script>
 
 <template>
-    <div @click.stop class="comp-panel -surface1 panel flex column alignCenter justifyCenter">
-        <component :is="modal.component" :data="modal.data" />
+    <div @click.stop class="comp-panel -surface1 panel flex column alignCenter justifyCenter r">
+        <component 
+            :is="modal.component" 
+            :data="modal.data"
+        />
     </div>
 </template>
 

@@ -68,11 +68,13 @@ const isPending = ref()
 
 async function saveNewFind() {
 
-    // if(isPending.value === true) return
-    // isPending.value = true
+    if(isPending.value === true) return
+    isPending.value = true
+
     const fD = new FormData();
     fD.append('meta', stringifiedMetaData());
     fD.append('item', stringifiedFindItem());
+    
     if(selectedImages.value?.length) {
         for(let i = 0; i < selectedImages.value.length; i++) {
             fD.append(`image${i}`, selectedImages.value[i]);
@@ -101,7 +103,7 @@ async function saveNewFind() {
         })
 
         isPending.value = false
-        // navigateTo(`/finds/${res.data.id}`)
+        navigateTo(`/finds/${res.data.id}`)
         navigateTo(`/home?content=finds`)
     } else {
         useToaster("show", {

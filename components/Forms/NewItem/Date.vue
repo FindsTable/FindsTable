@@ -2,10 +2,7 @@
 const model = defineModel<string>()
 
 const props = defineProps({
-  textPath: {
-    type: String,
-    default: ''
-  }
+    labelPath: String
 })
 
 const { t } = useI18n()
@@ -26,9 +23,36 @@ function formatDate(dateString: string) {
 </script>
 
 <template>
-  <div class="flex column alignStart gap10">
+<FormsLabel>
+    <template #label>
+        {{ t(`${labelPath}`) }}
+    </template>
+        
+    <template #input>
+        <div class="dateWrapper pointer customDateInput marTop10 allEvents" @click="openCalendar">
+            <Icon name="datePrecise" size="28px" class="calendarIcon" />
+            
+            <div v-if="model" class="formattedDate">
+                {{ formatDate(model)}}
+            </div>
+
+            <div v-else class="formattedDate">
+                Select a date
+            </div>
+
+            <input
+                ref="inputRef"
+                type="date"
+                v-model="model"
+                class="dateInputHidden"
+                aria-label="Select a date"
+            />
+        </div>
+    </template>
+</FormsLabel>
+  <!-- <div class="flex column alignStart gap10">
     <TH2 class="sectionTitle">
-      {{ t(textPath) }}
+        {{ t(`${labelPath}`) }}
     </TH2>
 
     <div class="dateWrapper pointer customDateInput" @click="openCalendar">
@@ -50,7 +74,7 @@ function formatDate(dateString: string) {
         aria-label="Select a date"
       />
     </div>
-  </div>
+  </div> -->
 </template>
 
 <style scoped>
