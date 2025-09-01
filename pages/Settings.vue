@@ -54,9 +54,17 @@ definePageMeta({
         </template>
         
         <template #scrollMain>
-            <Account v-if="selectedTab === 'account'" />
-            <App v-if="selectedTab === 'app'"/>
-            <Patreon v-if="selectedTab === 'patreon'" />
+            <KeepAlive>
+                <Account v-if="selectedTab === 'account'" />
+            </KeepAlive>
+
+            <KeepAlive>
+                <App v-if="selectedTab === 'app'"/>
+            </KeepAlive>
+
+            <KeepAlive>
+                <Patreon v-if="selectedTab === 'patreon'" />
+            </KeepAlive>
         </template>
     </NuxtLayout>
 </template>

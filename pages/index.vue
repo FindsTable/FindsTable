@@ -4,7 +4,14 @@ import {
     PagesIndexLoginSignupForm as LoginSignup,
     ArchitecturePanelMain as Panel
 } from '#components'
-const { t } = useI18n();
+const { t, locale } = useI18n();
+
+const messages = {
+    underConstruction: {
+        en: "Finds Table is currently in developement, you can learn about the project on the Finds Table Patreon page.  If you want to be a beta tester, visit the Discord server to request an invitation code ! ",
+        fr: "Finds Table est en cours de développement, vous pouvez découvrir le projet en visitant la page Patreon.  Pour être tester beta, visitez le serveur Discord pour obteenir un code d'invitation."
+    }
+}
 
 definePageMeta({
     title: 'Finds Table',
@@ -32,15 +39,26 @@ definePageMeta({
         </Panel>
 
         <Panel>
-            <p>
+            <p class="underConstruction pad10 marTop20">
                 {{ t('page.landing.patreonLink') }}
             </p>
 
+            <!-- <p class="underConstruction pad10 marTop20">
+                {{ t(messages.underConstruction[locale]) }}
+            </p> -->
+
             <div class="centered marTop20">
-                <NuxtLink class="block comp-button -text patreonLink flex alignCenter justifyCenter pointer"
+                <NuxtLink class="block comp-button -filled patreonLink flex alignCenter justifyCenter pointer"
                     to="https://www.patreon.com/Findstable" :external="true">
-                    <img class="logo r h100" src="/patreon/PATREON_SYMBOL_1_BLACK_RGB.png" alt="">
+                    <img class="logo h100" src="/patreon/PATREON_SYMBOL_1_BLACK_RGB.png" alt="">
                     <img class="word h100" src="/patreon/PATREON_WORDMARK_1_BLACK_RGB.png" alt="">
+                </NuxtLink>
+            </div>
+
+            <div class="centered marTop20">
+                <NuxtLink class="block comp-button -filled patreonLink flex alignCenter justifyCenter pointer"
+                    to="https://discord.gg/cAQG4Xcg2r" :external="true">
+                    Serveur Discord
                 </NuxtLink>
             </div>
         </Panel>
@@ -48,6 +66,11 @@ definePageMeta({
 </template>
 
 <style scoped>
+.underConstruction {
+    background-color: var(--color-info-bg);
+    border: 1px solid var(--color-info-border);
+    border-radius: 5px;
+}
 .patreonLink {
     height: 20px;
     padding: 10px 18px;

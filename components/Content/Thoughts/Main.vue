@@ -75,10 +75,6 @@ async function deleteThought(thoughtId) {
 </script>
 
 <template>
-    <ContentThoughtsNew 
-        @newThoughtPosted="newThoughtPosted"
-    />
-
     <div v-if="_thoughts" class="arch_scrollBottonPadding">
         <div
             v-for="thought in _thoughts" :key="thought.id" 

@@ -2,10 +2,23 @@
 const me = useUserState()
 
 const emit = defineEmits(['newThoughtPosted'])
+const props = defineProps({
+    showAvatar: {
+        type: Boolean,
+        default: false
+    }
+})
 
 const newThought = ref('')
 
+const isPending = ref()
+
 async function saveNewThought() {
+    console.log('saving ne thought')
+
+    if(isPending.value === true) return
+    isPending.value = true
+
     const res = await $fetch(
         '/api/content/thoughts/create',
         {
@@ -24,6 +37,8 @@ async function saveNewThought() {
         newThought.value = ''
         emit('newThoughtPosted', res.data)
     }
+
+    isPending.value = false
 }
 </script>
 
@@ -40,6 +55,7 @@ async function saveNewThought() {
             "
         >
             <ArchitectureFramesAvatar
+                v-if="showAvatar"
                 :fileId="me.avatar"
                 round
                 width="32px"

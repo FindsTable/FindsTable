@@ -67,17 +67,16 @@ function stringifiedMetaData() {
 const isPending = ref()
 
 async function saveNewFind() {
-
     if(isPending.value === true) return
     isPending.value = true
 
-    const fD = new FormData();
-    fD.append('meta', stringifiedMetaData());
-    fD.append('item', stringifiedFindItem());
+    const fD = new FormData()
+    fD.append('meta', stringifiedMetaData())
+    fD.append('item', stringifiedFindItem())
     
     if(selectedImages.value?.length) {
         for(let i = 0; i < selectedImages.value.length; i++) {
-            fD.append(`image${i}`, selectedImages.value[i]);
+            fD.append(`image${i}`, selectedImages.value[i])
         }
     }
     

@@ -19,20 +19,10 @@ const pageTabs = [
         icon: 'chat'
     },
     {
-        value: 'badges',
-        textPath: 'page.home.tabs.badges.tab',
-        icon: "badges"
-    },
-    // {
-    //     value: 'reports',
-    //     textPath: 'page.home.tabs.huntReports.tab',
-    //     icon: "book"
-    // },
-    // {
-    //     value: 'articles',
-    //     textPath: 'page.home.tabs.articles.tab',
-    //     icon: "article"
-    // }
+        value: 'reports',
+        textPath: 'page.home.tabs.huntReports.tab',
+        icon: "book"
+    }
 ]
 function changeTab(newTab) {
     emit('changeTab', newTab)

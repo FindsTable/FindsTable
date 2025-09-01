@@ -116,7 +116,7 @@
         "landing": {
             "welcomeText": "Bienvenue à la tables destrouvailles ! Finds Table est un endroit où les détectoristes peuvent partager leurs trouvailles.",
             "loginButton": "Connectez-vous !",
-            "patreonLink": "Finds Table est en cours de développement. Pour découvrir et supporter le projet, visitez notre page Patreon. ",
+            "patreonLink": "Finds Table est en cours de développement, vous pouvez découvrir le projet en visitant la page Patreon.  Pour être testeur beta, visitez le serveur Discord pour obtenir un code d'invitation.",
             "loginSignupInvitation": "Connectez-vous avec votre courriel et mot de passe ou inscrivez-vous pour creer un compte."
         },
         "legalNotice": {

@@ -15,17 +15,63 @@ export default defineEventHandler(async (
 
     if (error) return error
 
-    const emailVerified = await emailIsVerified(reqBody.email)
-    console.log('email verified ?', emailIsVerified)
+    reqBody.email = reqBody.email.trim().toLowerCase()
 
-    if(!emailVerified) {
+    const userValidation = await userValidationBeforeLogin(reqBody.email)
+
+    if( userValidation === undefined ) {
         return newResponse({
             ok: false,
             status: 400,
             statusText: 'Bad Request',
             feedback: {
                 toaster: {
-                    messagePath: 'error.auth.badCredentials',
+                    messagePath: 'error.global.unexpected',
+                    type: 'error'
+                }
+            },
+            data: null
+        })
+    }
+
+    if( userValidation.userExists === false ) {
+        return newResponse({
+            ok: false,
+            status: 401,
+            statusText: 'Unauthorized',
+            feedback: {
+                toaster: {
+                    messagePath: 'error.auth.invalidCredentials',
+                    type: 'error'
+                }
+            },
+            data: null
+        })
+    }
+
+    if( userValidation.status !== 'active') {
+        return newResponse({
+            ok: false,
+            status: 401,
+            statusText: 'Unauthorized',
+            feedback: {
+                toaster: {
+                    messagePath: 'error.auth.invalidCredentials',
+                    type: 'error'
+                }
+            },
+            data: null
+        })
+    } 
+
+    if( userValidation.email_verified !== true) {
+        return newResponse({
+            ok: false,
+            status: 401,
+            statusText: 'Unauthorized',
+            feedback: {
+                toaster: {
+                    messagePath: 'error.auth.emailNotVerified',
                     type: 'error'
                 }
             },
@@ -78,30 +124,56 @@ export default defineEventHandler(async (
         }
     })
 })
+type userValidationResponse = {
+    userExists: Boolean
+    status: String
+    email_verified: Boolean
+} | undefined
 
-async function emailIsVerified(
+async function userValidationBeforeLogin(
     email: string
-): 
-    Promise<boolean>
-{
-    
-    const res = await getUsersByQuery<{
-        email_verified: boolean
-    }> ({
-        auth: 'app',
-        query: {
-            fields: 'email,email_verified',
-            filter: {
-                email: {
-                    _eq: email
-                }
-            }
-        }
-    })
+) {
+    // Verify that user with this email address exists
+    // Check if email was verified
+    // Check status === active
 
-    if(!res.data) {
-        return false
+    const runtimeConfig = useRuntimeConfig()
+
+    const res : userValidationResponse = {
+        userExists: false,
+        status: 'notRegistered',
+        email_verified: false
     }
 
-    return res.data[0].email_verified
+    const user = await $fetch<any>(
+        'https://admin.findstable.net/users',
+        {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${runtimeConfig.APP_ACCESS_TOKEN}`
+            },
+            query: {
+                fields: 'email,email_verified,status',
+                filter: {
+                    email: {
+                        _eq: email
+                    }
+                },
+                limit: '1'
+            }
+        }
+    )
+
+    if(!user.data || !user.data.length) {
+        return res
+    }
+
+    const userData = user.data[0]
+
+    res.status = userData.status
+    res.email_verified = userData.email_verified
+    res.userExists = userData.email === email
+    console.log('user verification:', res)
+
+    return res
 }

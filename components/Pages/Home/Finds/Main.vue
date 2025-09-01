@@ -3,7 +3,7 @@
 type CollName = 'Finds'
 
 type CollType = ItemType<
-    Find3, 
+    Find, 
     {
         owner: User;
         date_created: string;

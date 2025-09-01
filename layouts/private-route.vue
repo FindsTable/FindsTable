@@ -21,6 +21,11 @@ const appState = useAppState()
                             safeArea -full
                             flex column
                         ">
+                        <div>
+                            <slot name="topContent">
+
+                            </slot>
+                        </div>
                         <nav>
                             <slot name="tabs">
 
@@ -54,9 +59,9 @@ const appState = useAppState()
                     </div>
                 </div>
 
-                <div class="liveBox -surface1">
+                <!-- <div class="liveBox -surface1">
 
-                </div>
+                </div> -->
                
             </div>
         </div>

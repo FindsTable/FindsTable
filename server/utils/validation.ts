@@ -32,13 +32,12 @@ function itemCountIsValid(p : {
 
     if( typeof p.items_count !== 'number') {
         console.log('items_count is not a number')
-        return false
+        return true
     }
 
     return p.items_count < maxItemCount[p.collection]
 }
   
-
 async function validateUser( p : {
     bearerToken: string,
     fields? : string[]
@@ -53,7 +52,6 @@ async function validateUser( p : {
 
     return data ? data : undefined
 }
-
 
 interface UserFromEmail {
     id: string,

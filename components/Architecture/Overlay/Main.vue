@@ -4,7 +4,6 @@ displayed on top of the screen.
 -->
 
 <script setup>
-const appState = useAppState()
 const modalState = useConfirmationModalState()
 const newModalState = useModalState()
 </script>

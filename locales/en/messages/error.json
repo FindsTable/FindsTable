@@ -15,7 +15,7 @@
             "invalidEmail": "Invalid email",
             "passwordsNotIdentical": "Passwords are not identical",
             "usernameAlreadyUsed": "Username is already in use",
-            "emailNotVerified": "Email is not verified",
+            "emailNotVerified": "Your email address has not been verified.",
             "invitationCode": {
                 "invalid": "The code you provided is invalid.",
                 "missing": "The invitation code is missing"            }

@@ -1,5 +1,6 @@
 <script setup>
 const modalState = useModalState()
+const { cancel } = useModal()
 
 </script>
 
@@ -10,6 +11,12 @@ const modalState = useModalState()
             class="modal comp-panel -surface1 flex column alignCenter" 
         >
             <div>
+                <div class="w100 flex justifyEnd">
+                    <Icon
+                        @click.prevent="cancel()"
+                        name="close"
+                    />
+                </div>
                 <h1 class="theme-titleColor-main font-h1">
                     {{ modalState.content.title }}
                 </h1>
@@ -31,6 +38,10 @@ const modalState = useModalState()
 
                 <ArchitectureOverlayModalsFindSelector
                     v-if="modalState.modal === 'ArchitectureOverlayModalsFindSelector'"
+                />
+
+                <ArchitectureOverlayModalsCreateNewMedia
+                    v-if="modalState.modal === 'ArchitectureOverlayModalsCreateNewMedia'"
                 />
             </div>
         </div>

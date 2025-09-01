@@ -69,6 +69,10 @@ async function handleSubmit() {
 
 const submitMethods = {
     login: async () => {
+        console.log({
+                email: email.value,
+                password: password.value
+            })
         const loginSuccess = await useLoginFlow(
             'emailAndPassword',
             {

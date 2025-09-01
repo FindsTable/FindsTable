@@ -38,6 +38,8 @@
         "signup": "Inscription"
     },
     "sideBarLinks": {
+        "create": "create",
+        "community": "Community",
         "users": "Users",
         "finds": "Finds",
         "newFind": "New Find",

@@ -24,6 +24,7 @@ async function useLoginFlow(
     if(flow === 'emailAndPassword') {
         if(!p.email || !p.password) return false
         res = await useGetAccessToken.withEmailAndPassword(p.email, p.password)
+        console.log(res)
     } else {
         // refreshTokenCookie
         res = await useGetAccessToken.withRefreshTokenCookie()
@@ -68,7 +69,8 @@ async function accessTokenFromEmailAndPassword(
     
     const $auth = useNuxtApp().$auth
     const res = await $auth.loginWithEmailAndPassword(email, password)
-
+    console.log(email, password)
+    console.log(res)
     return res
 }
 

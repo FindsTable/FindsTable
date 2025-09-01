@@ -26,6 +26,7 @@ const {
             sort: '-currentAt'
         },
         onResponse: () => {
+            console.log(avatars.value)
             if (Array.isArray(avatars.value) && avatars.value.length > 0) {
                 selectedButton.value = avatars.value.length ? 'collection' : 'uploadNew'
                 user.value.avatar = avatars.value[0].image
@@ -35,7 +36,7 @@ const {
     }
 )
 
-const selectedButton = ref('');
+const selectedButton = ref('collection');
 
 async function refreshAvatarCollection() {
     await refreshAvatars()

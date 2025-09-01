@@ -50,7 +50,7 @@ async function loginWithEmailAndPassword(
     email: string,
     password: string
 ): Promise<ParsedApiResponse> {
-    
+    console.log('in auth plugin:', email, password)
     const res = await use$Fetch<ParsedAccessToken>(
         '/api/auth/login', 
         {

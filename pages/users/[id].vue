@@ -93,6 +93,10 @@ const typeSafeUserId = computed(() => {
                 </div>
             </div>
 
+            <div>
+                <ContentThoughtsNew />
+            </div>
+
             <ArchitecturePageTabsFTHAContent
                 :selectedTab="selectedTab"
                 @changeTab="changeTab"

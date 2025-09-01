@@ -3,9 +3,6 @@ import {
     PagesSettingsTabsAccountAvatarFrame as Frame ,
     ArchitectureFramesAutoCropper as CanvasFrame
 } from '#components'
-import appConfig from '~/app.config';
-
-
 
 const { t } = useI18n()
 const emit = defineEmits(['refreshAvatarCollection'])
@@ -47,7 +44,6 @@ interface Avatar {
 async function saveChanges() {
 
     if (!croppedFile.value) {
-
         if(canvasFrameRef.value) {
             croppedFile.value = await canvasFrameRef.value.createResizedImageFile()
         }
@@ -72,10 +68,9 @@ async function saveChanges() {
             }
         }
     )
+    console.log(res)
     
 }
-
-
 </script>
 
 <template>
@@ -131,7 +126,3 @@ async function saveChanges() {
         /> -->
     </div>
 </template>
-
-<style scoped>
-
-</style>

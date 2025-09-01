@@ -17,7 +17,11 @@ export const useAppState = () => {
         findViewer: {
             active: boolean,
             cardSize: 'image' | 'small' | 'medium' | 'large'
+        },
+        layoutState: {
+            mainContentFlow: 'community' | 'user'
         }
+        
     }>(
         'appState',
         () => ({
@@ -38,6 +42,9 @@ export const useAppState = () => {
             findViewer: {
                 active: false,
                 cardSize: 'small'
+            },
+            layoutState: {
+                mainContentFlow: 'community'
             }
         })
     );

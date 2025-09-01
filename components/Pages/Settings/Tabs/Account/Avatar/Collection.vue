@@ -1,3 +1,12 @@
+/*
+**  list the user's avatars
+**  the current avatar, used as profile picture is stored 
+**  in the directus-default "avatar" field.
+**
+**  the "current_at" field that keeps track of the active avatar can be deprecated.
+**/
+
+
 <script setup lang="ts">
 import { PagesSettingsTabsAccountAvatarFrame as Frame } from '#components'
 import type { PropType } from 'vue'
@@ -37,7 +46,6 @@ function showToaster(ok: boolean) {
 async function deleteSelectedAvatar() {
 
   if (!selectedAvatar.value) return
-  const tempSelectedAvatar = selectedAvatar.value
 
   const res = await $fetch(
         `/api/content/deleteItem`,
