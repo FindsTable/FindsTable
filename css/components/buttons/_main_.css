@@ -3,6 +3,7 @@
 @import url('./radio.css');
 @import url('./outlined.css');
 @import url('./tab.css');
+@import url('./shaped.css');
 
 .comp-button {
     border-radius: min(0.4em, 10px);

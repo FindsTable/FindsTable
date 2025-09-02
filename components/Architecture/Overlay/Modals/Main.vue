@@ -5,23 +5,26 @@ const { cancel } = useModal()
 </script>
 
 <template>
-    <div class="backdrop full centered">
+    <div class="backdrop full centered" @click="cancel">
         <div 
             @click.stop
             class="modal comp-panel -surface1 flex column alignCenter" 
         >
-            <div>
+            <div class="w100">
                 <div class="w100 flex justifyEnd">
                     <Icon
                         @click.prevent="cancel()"
                         name="close"
+                        size="22px"
+                        class="pointer"
                     />
                 </div>
-                <h1 class="theme-titleColor-main font-h1">
+
+                <h1 class="theme-titleColor-main font-h1" v-if="modalState.content.title">
                     {{ modalState.content.title }}
                 </h1>
 
-                <p class="theme-textColor-main font-pageLead marTop20">
+                <p class="theme-textColor-main font-pageLead marTop20" v-if="modalState.content.message">
                     {{ modalState.content.message }}
                 </p>
             </div>

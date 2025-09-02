@@ -1,5 +1,10 @@
 // --------------------------------------------------
-// Manages cache for app content based on the App_manifest from Directus
+// Manages cache for app content 
+// (badges, badges_variations, weather tags, biomes) 
+// based on the App_manifest from Directus
+//
+//  Content is stored in Directus, 
+//  but kept in local cache for optimizaiton.
 //--------------------------------------------------------------------------------------------------------------------
 
 export {

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { t, locale } = useI18n()
 const route = useRoute()
 const userContent = useUserContent()
 const appContent = useAppContent()
@@ -75,6 +76,7 @@ const typeSafeUserId = computed(() => {
   const id = route.params.id
   return typeof id === 'string' ? id : ''
 })
+
 </script>
 
 <template>
@@ -93,14 +95,18 @@ const typeSafeUserId = computed(() => {
                 </div>
             </div>
 
-            <div>
-                <ContentThoughtsNew />
+            <div class="marTop20">
+                <TH2>
+                    {{ t( locale === 'fr' ? 'Quoi de neuf' : 'New thought') }}
+                </TH2>
+
+                <ContentThoughtsNew class="marTop10" />
             </div>
 
             <ArchitecturePageTabsFTHAContent
                 :selectedTab="selectedTab"
                 @changeTab="changeTab"
-                class="marTop10"
+                class="marTop20"
             />
         </template>
 
@@ -121,9 +127,9 @@ const typeSafeUserId = computed(() => {
                 </KeepAlive>
 
                 <KeepAlive>
-                    <ContentBadgesStore 
-                        v-if="selectedTab === 'badges'"
-                        :badges="ownedPublicBadges"
+                    <PagesUsersHuntReports 
+                        v-if="selectedTab === 'huntReports'"
+                        :userId="typeSafeUserId"
                     />
                 </KeepAlive>
             </div>

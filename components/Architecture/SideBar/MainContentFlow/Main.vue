@@ -6,9 +6,9 @@ const user = useUserState()
 const appState = useAppState()
 
 function handleClick(target) {
-    console.log(target)
     appState.value.layoutState.mainContentFlow = target
 }
+
 onMounted(() => {
     const fullPath = route.fullPath
 

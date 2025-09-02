@@ -1,0 +1,9 @@
+.-shaped {
+    background-color: var(--tone-zinc-60);
+    box-shadow: inset 1px 1px 5px var(--tone-zinc-70)
+}
+
+.-shaped.selected {
+    background-color: var(--tone-kaki-40);
+    box-shadow: inset 1px 1px 5px var(--tone-kaki-30)
+}

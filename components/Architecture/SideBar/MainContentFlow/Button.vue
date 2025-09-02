@@ -6,8 +6,8 @@ const props = defineProps({
 </script>
 <template>
     <NuxtLink 
-            :to="to" 
-            class="pointer comp-button -filled flex gap5 alignCenter justifyEnd"
+            :to="to"
+            class="pointer comp-button -shaped flex gap5 alignCenter justifyEnd"
             :class="selected ? 'selected' : ''"
         >
         
@@ -26,10 +26,10 @@ const props = defineProps({
     height: 48px;
 }
 
-.comp-button {
+/* .comp-button {
     filter: grayscale(1);
 }
 .comp-button.selected {
     filter: grayscale(0);
-}
+} */
 </style>

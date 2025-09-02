@@ -1,12 +1,14 @@
 <script setup lang="ts">
 const { t } = useI18n()
 
+const isPending = ref(false)
+
 // Form fields
 const status = ref('draft')
 const date = ref('')
 const title = ref('')
 const content = ref('')
-const biome = ref<string>('')
+const biome = ref<string | undefined>(undefined)
 const weatherTags = ref<string[]>([])
 const banner = ref<File[]>([])
 const bootyPhoto = ref<File[]>([])
@@ -56,16 +58,22 @@ function validateForm() {
         console.log(biome.value)
         errors.value.biome = 'A valid biome must be selected.'
     }
-    if (!Array.isArray(weatherTags.value) || weatherTags.value.some(tag => !appContent.weatherTags.includes(tag))) {
-        errors.value.weatherTags = 'All weather tags must be valid.'
+    if(!date.value) {
+        console.log(date.value)
+        errors.value.biome = 'A valid date must be selected.'
     }
     if (!Array.isArray(banner.value) || banner.value.length === 0) {
         errors.value.banner = 'Banner must be a JPG or PNG image.'
     }
-    if (!Array.isArray(bootyPhoto.value) || bootyPhoto.value.length === 0 || !isValidImageFile(bootyPhoto.value[0])) {
-        errors.value.bootyPhoto = 'Booty photo must be a JPG or PNG image.'
-    }
-
+    /*
+        if (!Array.isArray(weatherTags.value) || weatherTags.value.some(tag => !appContent.weatherTags.includes(tag))) {
+            errors.value.weatherTags = 'All weather tags must be valid.'
+        }
+        
+        if (!Array.isArray(bootyPhoto.value) || bootyPhoto.value.length === 0 || !isValidImageFile(bootyPhoto.value[0])) {
+            errors.value.bootyPhoto = 'Booty photo must be a JPG or PNG image.'
+        }
+    */
     // Show all errors
     const errorMessages = Object.values(errors.value).filter(msg => msg)
 
@@ -90,16 +98,18 @@ const formIsValid = computed(() => {
 })
 
 async function saveNewReport() {
+    if(isPending.value) return
+    isPending.value = true
+    
     validateForm()
 
     if (!formIsValid.value) {
+        isPending.value = false
         return
     }
 
-    const { directFetch } = useDirectAsyncFetch()
-
     const formData = new FormData()
-
+    
     // Prepare the hunt report object
     const reportPayload = {
         status: status.value,
@@ -110,31 +120,36 @@ async function saveNewReport() {
         weatherTags: weatherTags.value,
         finds: finds.value,
     }
-
+    
     formData.append('report', JSON.stringify(reportPayload))
-
+    
     // Attach images
-    if (banner.value.length > 0) {
+    if (banner.value && banner.value[0]) {
+        console.log('found a banner')
         formData.append('banner', banner.value[0])
     }
-    if (bootyPhoto.value.length > 0) {
-        formData.append('bootyPhoto', bootyPhoto.value[0])
-    }
+    // if (bootyPhoto.value.length > 0) {
+    //     formData.append('bootyPhoto', bootyPhoto.value[0])
+    // }
 
     // ⚡️ You said for now we **don't upload** photos array
     // formData.append('photos', ???)
 
     // Send POST request
-    const { 
-        response, 
-        error, 
-        isPending 
-    } = await directFetch(
-        'POST', '/api/content/hunt-reports/new/post',
+
+    const response = await $fetch(
+        '/api/content/hunt-reports/create',
         {
+            method: 'POST',
+            headers: {
+                'authorization': `Bearer ${useUserState().value.accessToken.value}`
+            },
             body: formData
         }
     )
+    console.log(response)
+    isPending.value = false
+    return
 
     if (error.value) {
         useToaster('show', {
@@ -145,6 +160,7 @@ async function saveNewReport() {
             autoClose: true,
             position: 'bottom'
         })
+        isPending.value = false
         return
     }
 
@@ -158,6 +174,7 @@ async function saveNewReport() {
             position: 'bottom'
         })
     }
+    isPending.value = false
 }
 </script>
 
@@ -210,19 +227,19 @@ async function saveNewReport() {
                     titlePath="page.huntReports.newReport.fields.banner.label"
                 />
                 
-                <FormsNewItemImageSelector 
+                <!-- <FormsNewItemImageSelector 
                     v-model="bootyPhoto"
                     label="Booty Photo"
                     :maxFiles="1"
                     titlePath="page.huntReports.newReport.fields.bootyPhoto.label"
-                />
+                /> -->
 
-                <FormsNewItemImageSelector 
+                <!-- <FormsNewItemImageSelector 
                     v-model="photos" 
                     label="Booty Photo"
                     :maxFiles="3"
                     titlePath="page.huntReports.newReport.fields.photos.label"
-                />
+                /> -->
             </div>
         </ArchitecturePanelMain>
     

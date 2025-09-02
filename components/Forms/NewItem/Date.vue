@@ -46,6 +46,7 @@ function formatDate(dateString: string) {
                 v-model="model"
                 class="dateInputHidden"
                 aria-label="Select a date"
+                :max="new Date().toISOString().split('T')[0]"
             />
         </div>
     </template>

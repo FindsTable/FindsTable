@@ -45,7 +45,7 @@
     --toneButton-disabled-textColor: var(--tone-grayscale-40);
 
     --outlinedButton-bgColor: transparent;
-    --outlinedButton-borderColor: var(--tone-grayscale-50);
+    --outlinedButton-borderColor: var(--tone-grayscale-70);
     --outlinedButton-hover-bgColor: var(--tone-grayscale-10);
     --outlinedButton-active-bgColor: var(--tone-grayscale-20);
     --outlinedButton-textColor: var(--tone-grayscale-95);

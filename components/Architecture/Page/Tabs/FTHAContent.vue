@@ -19,14 +19,16 @@ const pageTabs = [
         icon: 'chat'
     },
     {
-        value: 'reports',
+        value: 'huntReports',
         textPath: 'page.home.tabs.huntReports.tab',
         icon: "book"
     }
 ]
+
 function changeTab(newTab) {
     emit('changeTab', newTab)
 }
+
 </script>
 
 <template>

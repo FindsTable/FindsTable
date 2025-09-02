@@ -1,28 +1,38 @@
 import { readEvent } from '@/server/apiUtils/readEvent'
 import { createItem, updateItemById } from '@/server/directus/items'
-import { uploadFile } from '@/server/directus/files'
+import { 
+    uploadFile,
+    addFileToItem
+ } from '@/server/directus/files'
 import { ItemObject } from '~/shared/types/dataObjects'
 import { H3Event } from 'h3'
 import { itemCountIsValid, validateUser, isValidImageType } from '@/server/utils/validation'
-import { updateItemsCountField as incrementFindsCount } from '@/server/utils/apiContentUtils'
+import { updateItemsCountField } from '@/server/utils/apiContentUtils'
 
-const bannersFolderId = 'b95762e0-8e06-4c21-878c-7ad6213ef2cf'
-const bootyPhotoFolderId = 'b95762e0-8e06-4c21-878c-7ad6213ef2cf'
+const bannersFolderId = '23890189-57ac-49ff-96ca-39bffac3c7eb'
+const bootyPhotoFolderId = 'e6a6fb54-9c40-4b1d-ae78-c438dc39452b'
 
 export default defineEventHandler(async (
 event: H3Event
-): Promise<ApiResponse<HuntReport | null>> => {
+): Promise<ApiResponse<ReportId | null>> => {
 
     const { bearerToken, error: tokenError } = await readEvent(event, ['bearerToken'])
 
     if (tokenError) return tokenError
 
+/*
+/   Validation
+        -user
+        -number of hunt report
+*/
+    
     const currentUser = await validateUser({
         bearerToken: bearerToken,
         fields: [
             'id', 'huntReports_count', 'username'
         ]
     })
+    
     if( !currentUser || !currentUser.id ) {
         return {
             ok: false,
@@ -41,7 +51,7 @@ event: H3Event
     }
 
     const countValid = itemCountIsValid({
-        items_count: currentUser.finds_count,
+        items_count: currentUser.huntReports_count,
         collection: 'Hunt-reports'
     })
 
@@ -62,23 +72,84 @@ event: H3Event
         }
     }
 
+    if (fd.length > 5) {
+        return {
+            ok: false,
+            statusText: `Too many form entries in the formData.`
+        };
+    }
+
+/*
+    Parse the form data and store in a cache object
+*/
+
+    interface Cache {
+        report?: huntReportFromRequest
+        banner?: {
+            type: string | undefined
+            data: any
+            filename: string | undefined
+        }
+        bootyPhoto?: {
+            type: string | undefined
+            data: any
+            filename: string | undefined
+        }
+        // id's from directus
+        reportId?: ReportId 
+        bannerId?: string
+        bootyPhotoId?: string
+    }
+
     const cache: Cache = {}
+
+    /*
+*
+*
+*   Allowed entry names for the formData from the request
+* 
+* 
+    */
+    const nameOfFormDataEntries = [
+        'report',
+        'banner',
+        'bootyPhoto',
+        'photos'
+    ]
 
     // Populate cache: if text, convert Buffer->string->JSON if possible; if file, store the entry.
     for (const entry of fd) {
-
+        
         const name = entry.name
 
+        if(
+            typeof name !== 'string' ||
+            !nameOfFormDataEntries.includes(name)
+        ) {
+            return {
+                ok: false,
+                statusText: `Unexpected form entry: ${name}.`
+            };
+        }
+
         if (name === 'report') {
-            cache[name as string] = JSON.parse(entry.data.toString('utf-8'))
+            cache[name as 'report'] = JSON.parse(entry.data.toString('utf-8'))
         } else {
-            cache[name as string] = {
+            cache[name as 'banner' | 'bootyPhoto'] = {
                 data: entry.data,
                 type: entry.type,
                 filename: entry.filename
             }
         }
     }
+
+    /*
+*
+*
+*   Create the hunt report object and get the id
+*  
+* 
+    */
 
     const reportId = await createItemGetId('Hunt_reports', {
         ...cache.report,
@@ -89,11 +160,25 @@ event: H3Event
         return {
             ok: false,
             statusText: `Failed to create main item`,
-            data: cache.report
+            data: undefined
         }
+    } else {
+        const newHuntReportsCount = await updateItemsCountField({
+            bearerToken: bearerToken!,
+            field: 'huntReports_count',
+            newValue: currentUser.huntReports_count + 1
+        })
     }
 
     cache.reportId = reportId
+
+    /*
+*
+*
+*   Handle banner from the request
+* 
+* 
+    */
 
     if (cache.banner) {
         // Validate MIME type
@@ -105,23 +190,55 @@ event: H3Event
         }
     
         const fileFormData = new FormData()
-        const blob = new Blob([cache.banner.data], { type: cache.banner.type || 'application/octet-stream' })
+        const blob = new Blob(
+            [cache.banner.data], 
+            { 
+                type: cache.banner.type || 'application/octet-stream' 
+            }
+        )
     
         fileFormData.append('folder', bannersFolderId)
         fileFormData.append('Hunt_report_id', cache.reportId)
         fileFormData.append('file', blob, cache.banner.filename || 'banner.jpg')
     
-        const bannerId = await uploadFileGetId(fileFormData)
-    
-        if (!bannerId) {
+        const bannerRes = await addFileToItem({
+            file: fileFormData,
+            item: {
+                id: reportId,
+                collection: 'Hunt_reports',
+                field: {
+                    name: 'banner'
+                }
+            }
+        })
+
+        const newFile = bannerRes.file
+
+        if(!newFile.uploaded) {
             return {
                 ok: false,
-                statusText: 'Could not upload banner image.'
+                statusText: "FBanner could not be uploaded"
+            }
+        }
+        if(!newFile.linked) {
+            return {
+                ok: false,
+                statusText: "Banner could not be linked to item"
             }
         }
 
-        cache.bannerId = bannerId
+        if(newFile.id) {
+            cache.bannerId = newFile.id
+        }
     }
+
+    /*
+*
+*
+*   Handle Booty Photo from the request
+* 
+* 
+    */
     
     if (cache.bootyPhoto) {
         // Validate MIME type
@@ -139,62 +256,50 @@ event: H3Event
         fileFormData.append('Hunt_report_id', cache.reportId)
         fileFormData.append('file', blob, cache.bootyPhoto.filename || `hunt-report-bootyPhoto-${currentUser.username}.jpg`)
     
-        const bootyPhotoId = await uploadFileGetId(fileFormData)
-    
-        if (!bootyPhotoId) {
-            return {
-                ok: false,
-                statusText: 'Could not upload booty photo image.'
+        const bootyPhotoRes = await addFileToItem({
+            file: fileFormData,
+            item: {
+                id: reportId,
+                collection: 'Hunt_reports',
+                field: {
+                    name: 'banner'
+                }
             }
-        }
-        cache.bootyPhotoId = bootyPhotoId
-    }
-
-    const report = await updateItemById<HuntReport>({
-        id: cache.reportId,
-        collection: 'Hunt_reports',
-        auth: bearerToken,
-        body: {
-            banner: cache.bannerId,
-            bootyPhoto: cache.bootyPhotoId
-        },
-        query: {
-            fields: '*'
-        }
-    })
-
-    if(!report?.data || !report?.ok) {
-        return {
-            ok: false,
-            statusText: 'Could not update the new report with the banner and photo ids.'
-        }
-    }
-
-    if (report.data.banner && report.data.bootyPhoto) {
-
-        const newHuntReportsCount = await incrementFindsCount({
-            bearerToken: bearerToken!,
-            field: 'huntReports_count',
-            newValue: currentUser.huntReports_count + 1
         })
 
-        return {
-            ok: true,
-            data: report.data,
-            statusText: 'Success'
+        const newFile = bootyPhotoRes.file
+
+        if(!newFile.uploaded) {
+            return {
+                ok: false,
+                statusText: "FBanner could not be uploaded"
+            }
+        }
+        if(!newFile.linked) {
+            return {
+                ok: false,
+                statusText: "Banner could not be linked to item"
+            }
+        }
+
+        if(newFile.id) {
+            cache.bootyPhotoId = newFile.id
         }
     }
 
     return {
-        ok: false,
-        statusText: 'Failed to retrieve item after creation',
-        data: null
+        ok: true,
+        statusText: 'Success',
+        data: cache.reportId
     }
-  
 })
 
 // Helper to create an item and return its ID.
-async function createItemGetId(collection: string, item: any): Promise<string | undefined> {
+
+async function createItemGetId(
+    collection: string, 
+    item: any
+): Promise<string | undefined> {
     const res = await createItem<any>({
         auth: "app",
         collection: collection,
@@ -207,45 +312,33 @@ async function createItemGetId(collection: string, item: any): Promise<string | 
     if (!res.ok || !res.data) {
         return undefined
     }
+
     return res.data.id
 }
 
-// Helper to upload a file and return its ID.
-async function uploadFileGetId(fd: FormData): Promise<string | undefined> {
-    const res = await uploadFile(fd)
-    if (!res?.data?.id) {
-        return undefined
-    }
-    return res.data.id
-}
-
-function addOwnerId(item : any, id : string) {
-    return {
-        ...item,
-        owner: id
-    }
-}
-
-interface MetaImage {
-    key: string;
-    collection: string;
-    role?: string;
-}
-
-interface MetaData {
-    collection: string;
-    images?: MetaImage[];
-}
+type ReportId = string
 
 interface Cache {
-    [key: string]: any;
-    meta?: MetaData;
-    item?: any;
-    itemId?: string;
+    report?: huntReportFromRequest
+    banner?: {
+        type: string | undefined
+        data: any
+        filename: string | undefined
+    }
+    bootyPhoto?: {
+        type: string | undefined
+        data: any
+        filename: string | undefined
+    }
+    // id's from directus
+    reportId?: ReportId 
+    bannerId?: string
+    bootyPhotoId?: string
 }
 
-interface SimpleResponse {
-    ok: boolean;
-    statusText: string;
-    data?: any;
+type huntReportFromRequest = {
+    title: string
+    content: string
+    date: string
+    biome: string
 }
