@@ -1,3 +1,8 @@
+<!-- 
+    This switch simply reflects the state
+    passed by the parent
+-->
+
 <script setup>
 const props = defineProps({
     state: Boolean
