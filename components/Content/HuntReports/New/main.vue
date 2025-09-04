@@ -3,8 +3,17 @@ const { t } = useI18n()
 
 const isPending = ref(false)
 
+const statusSwitchComponent = ref()
+
 // Form fields
-const status = ref('draft')
+const status = computed(() => {
+    if(statusSwitchComponent.value?.status) {
+        console.log("the ref", statusSwitchComponent.value.status)
+        return statusSwitchComponent.value.status
+    }
+
+    return 'draft'
+})
 const date = ref('')
 const title = ref('')
 const content = ref('')
@@ -255,8 +264,8 @@ async function saveNewReport() {
         </ArchitecturePanelMain>
   
         <template class="centered">
-            <FormsNewItemStatus 
-                v-model="status"
+            <FormsNewItemStatus
+                ref="statusSwitchComponent"
                 textPath="page.huntReports.newReport.fields.status.label"
             />
 

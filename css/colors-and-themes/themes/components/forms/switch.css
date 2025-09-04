@@ -1,0 +1,36 @@
+/* 
+    components/forms/switch.css
+
+    --ui-color-main
+    --ui-color-secondary
+    --ui-color-dimmed
+    --ui-color-on
+    --ui-color-off
+    --ui-color-disabled
+*/
+
+#app.dark {
+    --switch-off-bgColor: var(--ui-color-main);
+    --switch-off-borderColor: var(--ui-color-secondary);
+
+    --switch-dot-off-bgColor: var(--ui-color-secondary);
+
+    --switch-on-bgColor: var(--ui-color-main);
+    --switch-on-borderColor: var(--ui-color-on);
+
+    --switch-dot-on-bgColor: var(--ui-color-on);
+}
+
+
+#app.light {
+    --switch-off-bgColor: var(--backdropColor);
+    --switch-off-borderColor: var(--ui-color-disabled);
+
+    --switch-dot-off-bgColor: var(--ui-color-disabled);
+
+    --switch-on-bgColor: var(--ui-color-disabled);
+    --switch-on-borderColor: var(--ui-color-on);
+
+    --switch-dot-on-bgColor: var(--ui-color-on);
+    --switch-dot-on-borderColor: var(--color-ft);
+}

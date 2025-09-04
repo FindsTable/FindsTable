@@ -79,7 +79,8 @@
     --sidebar-accountCard-bgColor: var(--tone-croco-50);
 
     /* Ui widgets - switch, checkbox, radio box, etc*/
-    --ui-color-main: var(--tone-zinc-20);
+    --ui-color-main: var(--tone-croco-70);
+    --ui-color-secondary: var(--tone-croco-60);
     --ui-color-dimmed: var(--tone-zinc-50);
     --ui-color-on: var(--color-ft);
     --ui-color-off: var(--tone-zinc-50);

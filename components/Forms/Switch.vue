@@ -17,10 +17,10 @@ onMounted(() => {
 
 <template>
     <label
-        class="theme-switch flex hiddenInput pointer"
+        class="comp-forms-switch flex hiddenInput pointer"
         :class="[ state ? 'true' : 'false' ]"
     >
-        <div class="dot"></div>
+        <div class="comp-forms-switch-dot"></div>
 
         <input type="checkbox" v-model="state" @click="handleClick" />
     </label>
@@ -38,14 +38,6 @@ label {
     border-radius: 500px;
     transition: all 0.3s ease;
 }
-.dot {
-    width: 50%;
-    aspect-ratio: 1;
-    border-radius: 100px;
-    transition: all 0.3s ease;
-}
-label.true .dot {
-    translate: 100%;
-}
+
 
 </style>

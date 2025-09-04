@@ -20,7 +20,7 @@ const value = defineModel()
         :placeholder="placeholder"
         minlength="minlength" 
         maxlength="maxlength" 
-        class="font-input-text theme-inputText-bgColor theme-textColor-main inputTypeText allEvents"
+        class="comp-inputText allEvents"
     />
 
     <input 
@@ -31,7 +31,7 @@ const value = defineModel()
         :min="minValue"
         :max="maxValue"
         :step="step"
-        class="font-input-text theme-inputText-bgColor theme-textColor-main inputTypeText allEvents"
+        class="comp-inputText allEvents"
     />
 </template>
 

@@ -23,6 +23,7 @@ const props = defineProps({
                 :maxlength="50"
                 spellcheck
                 v-model="title"
+                class="-fontStyle-title"
             >
             </FormsInput>
         </template>

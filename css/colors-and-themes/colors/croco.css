@@ -8,10 +8,9 @@ croco 60 : 66 11 22 croco 70 : 66 11 20 croco 80 : 66 11 18 croco 90 : 66 11 10 
     --tone-croco-30: hsl(66, 11%, 70%);
     --tone-croco-40: hsl(66, 11%, 60%);
     --tone-croco-50: hsl(66, 11%, 50%);
-    --tone-croco-60: hsl(66, 11%, 22%);
+    --tone-croco-60: hsl(66, 11%, 30%);
     --tone-croco-70: hsl(66, 11%, 20%);
     --tone-croco-80: hsl(66, 11%, 18%);
     --tone-croco-90: hsl(66, 11%, 10%);
     --tone-croco-95: hsl(66, 11%, 5%);
-    
 }
