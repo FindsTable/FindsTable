@@ -69,7 +69,7 @@ async function toggleStatus() {
         </div>
 
         <div class="">
-            <FormsSwitchDefineModel
+            <FormsSwitchBasic
                 :state="switchState"
                 @click="toggleStatus"
             />
