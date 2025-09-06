@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 /**
  * FormsNewItemImageSelector
  * - Wraps <FormsInputFile/> and formats incoming files.
@@ -11,8 +11,43 @@
  *     - clearAll(): void
  */
 
-const { t } = useI18n()
+import type { 
+    ComponentPublicInstance 
+} from 'vue'
 
+import type { 
+    FilePickerComponent
+} from '@/components/Forms/FilePicker.vue'
+
+import {
+    imageFormatPresets
+} from '@/shared/imageFormatPresets'
+
+import type {
+    ImageFormatPreset,
+    ImageFormatPresetKey
+} from '@/shared/imageFormatPresets'
+
+export type {
+    ImageSelectorComponent
+}
+
+type ExposedImage = {
+    id: string;
+    error: string | null
+    previewUrl: string | null,
+    file: File
+}
+
+interface ExposedData {
+  images: Readonly<ExposedImage[]>;
+  isProcessing: Readonly<boolean>;
+  clearAll: () => void;
+}
+
+type ImageSelectorComponent = ComponentPublicInstance<{}, {}, ExposedData>;
+
+const { t } = useI18n()
 const props = defineProps({
     label: {
         type: String
@@ -22,7 +57,7 @@ const props = defineProps({
         default: 1 
     },
     imageFormatPresetKey: { 
-        type: String, 
+        type: String as PropType<ImageFormatPresetKey>, 
         default: 'bootyPhoto' 
     },
     disabled: { 
@@ -51,14 +86,14 @@ const props = defineProps({
     },
 })
 
-const exposedImages = ref([])
+const picker = ref<FilePickerComponent | null>(null)
+const exposedImages = ref<ExposedImage[]>([])
 
 /** Processing state exposed to parent */
 const isProcessing = ref(false)
 
-
 /** Receive raw files from the picker and process them */
-async function onFilesSelected(files) {
+async function onFilesSelected(files : File[]) {
     if (
         !files?.length || 
         props.disabled ||
@@ -77,7 +112,7 @@ async function onFilesSelected(files) {
 
         exposedImages.value.push({
             id: crypto.randomUUID?.() ?? `${Date.now()}-${Math.random()}`,
-            error: '',
+            error: null,
             previewUrl: '',
             file: file
         })
@@ -87,7 +122,7 @@ async function onFilesSelected(files) {
     for(const image of exposedImages.value) {
         if(image.previewUrl) continue
 
-        const formatedFile = await useApplyImageFormatPreset(props.imageFormatPresetKey, image.file)
+        const formatedFile : File = await useApplyImageFormatPreset(props.imageFormatPresetKey, image.file)
         console.log(formatedFile)
         image.file = formatedFile
         image.previewUrl = URL.createObjectURL(image.file)
@@ -96,7 +131,7 @@ async function onFilesSelected(files) {
     isProcessing.value = false
 }
 
-function deleteExposedImageAtIndex(index) {
+function deleteExposedImageAtIndex(index : number) {
     const image = exposedImages.value[index]
     if (!image) return
     if (image.previewUrl) {
@@ -108,19 +143,25 @@ function deleteExposedImageAtIndex(index) {
 
 function clearAll() {
     for(const image of exposedImages.value) {
-        try { URL.revokeObjectURL(image.previewUrl) } catch {}
+        if(image.previewUrl) {
+            try { URL.revokeObjectURL(image.previewUrl) } catch {}
+        }
+        
     }
     exposedImages.value = []
 }
 
-onBeforeUnmount(clearAll)
-
+function openPickerDialog() {
+    picker.value?.openFileDialog?.();
+}
 
 defineExpose({
-  exposedImages,
-  isProcessing,
-  clearAll,
+    images: readonly(exposedImages),
+    isProcessing: readonly(isProcessing),
+    clearAll,
 })
+
+onBeforeUnmount(clearAll)
 </script>
 
 <template>
@@ -193,7 +234,7 @@ defineExpose({
                 v-if="!disabled && exposedImages.length < maxImageCount"
                 class="imageBox centered pointer allEvents"
                 :style="{ height: boxHeight, aspectRatio }"
-                @click="$refs.picker?.openFileDialog?.()"
+                @click="openPickerDialog"
             >
                 <Icon :name="pickerIcon" size="60px" class="defaultImage" />
             </div>

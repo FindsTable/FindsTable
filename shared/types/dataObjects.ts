@@ -11,8 +11,10 @@ export type {
     BadgeObject,
     UserBadgeObject,
     UserContentObject,
-    BadgeRecord
+    BadgeRecord,
+    HuntReportObject
 }
+
 type ItemObject = 
     AvatarObject | 
     FollowObject |
@@ -145,4 +147,13 @@ type UserContentObject = {
     id: string
     'avatars'?: AvatarObject[]
     'badges'?: BadgeObject[]
+}
+
+type HuntReportObject = {
+    id: string
+    title: string
+    content: string
+    biome: BiomeKey
+    date: string
+    bootyPhoto: string
 }

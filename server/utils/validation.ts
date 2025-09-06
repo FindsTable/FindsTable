@@ -2,6 +2,7 @@ import {
     getMe,
     getUsersByQuery
  } from '@/server/directus/users'
+import { ImageFormatPresetKey } from '~/shared/types/files'
 
 
 export {
@@ -123,4 +124,14 @@ function isValidImageType(mimeType?: string): boolean {
 
     const allowedTypes = ['image/jpeg', 'image/png']
     return allowedTypes.includes(mimeType)
+}
+
+function validateImage( p : {
+    preset : ImageFormatPresetKey,
+    image: File
+}) : boolean {
+
+    p.image.type === p.preset.mimeType
+
+    return true
 }

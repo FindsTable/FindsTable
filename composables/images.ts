@@ -3,12 +3,12 @@
  *
  * Purpose
  * -------
- * Single public API: `useformatImage(imageType, file)` that reformats an input image
+ * Single public API: `useformatImage(imageFormatPreset, file)` that reformats an input image
  * into dimensions/format dictated by your Nuxt `app.config.ts` presets.
  *
  * Design
  * ------
- * - The ONLY exported symbol is `useApplyImageFormatPreset(imageType, file)`.
+ * - The ONLY exported symbol is `useApplyImageFormatPreset(imageFormatPreset, file)`.
  * - Presets are defined in `app.config.ts` under `useApplyImageFormatPresets` (with keys like 'bootyPhoto', 'avatar').
  * - The function:
  *    1) Reads the preset from `useAppConfig()`.
@@ -21,29 +21,37 @@
  *             - 'auto':     infer from source orientation (w≥h → landscape else portrait)
  *    4) Center-crops the source to the target aspect, then scales to target size.
  *       If `allowUpscale` is false, scaling is capped at 1× (no enlargement).
- *    5) Encodes to `outputMime` (WebP recommended) with `quality`, optionally reducing
+ *    5) Encodes to `mimeType` (WebP recommended) with `quality`, optionally reducing
  *       quality to meet `sizeBudgetKB` if provided.
  *    6) Returns a new File with a suffix and correct extension.
  */
 
-import { useAppConfig } from '#app';
+import {
+    imageFormatPresets
+} from '@/shared/imageFormatPresets'
+
+import type {
+    ImageFormatPreset,
+    ImageFormatPresetKey
+} from '@/shared/imageFormatPresets'
+
 
 export {
     useApplyImageFormatPreset
 }
 
 async function useApplyImageFormatPreset(
-  imageType: imageFormatPresetKey,
+  imageFormatPresetKey: ImageFormatPresetKey,
   inputFile: File
 ): Promise<File> {
     if (!inputFile || !inputFile.type.startsWith('image/')) {
         throw new Error('Provided file is not an image.');
     }
 
-    const appConfig = useAppConfig() as unknown as AppConfigWithImages;
-    const preset = appConfig?.imageFormatPresets?.[imageType];
+    const preset : ImageFormatPreset = imageFormatPresets[imageFormatPresetKey];
+    
     if (!preset) {
-        throw new Error(`Unknown imageType preset: ${imageType}`);
+        throw new Error(`Unknown imageFormatPreset preset: ${imageFormatPresetKey}`);
     }
 
     // 1) Load pixels with EXIF-aware path if possible
@@ -70,7 +78,7 @@ async function useApplyImageFormatPreset(
     canvas.width = outW;
     canvas.height = outH;
 
-    const ctx = canvas.getContext('2d', { alpha: preset.outputMime !== 'image/jpeg' });
+    const ctx = canvas.getContext('2d', { alpha: preset.mimeType !== 'image/jpeg' });
     if (!ctx) {
         if (bitmap) bitmap.close?.();
         throw new Error('Failed to get 2D context.');
@@ -80,10 +88,10 @@ async function useApplyImageFormatPreset(
     ctx.drawImage(source as CanvasImageSource, cropX, cropY, cropW, cropH, 0, 0, outW, outH);
 
     // 6) Encode (optionally meet size budget by stepping quality down)
-    const blob = await encodeWithBudget(canvas, preset.outputMime, preset.quality, preset.sizeBudgetKB);
+    const blob = await encodeWithBudget(canvas, preset.mimeType, preset.quality, preset.sizeBudgetKB);
 
     // 7) Build output filename with suffix + correct extension
-    const desiredExt = extensionForMime(blob.type || preset.outputMime);
+    const desiredExt = extensionForMime(blob.type || preset.mimeType);
     const outputName = ensureSuffixAndExtension(inputFile.name, preset.filenameSuffix, desiredExt);
 
     if (bitmap) bitmap.close?.();
@@ -105,7 +113,12 @@ async function useApplyImageFormatPreset(
 /** Try EXIF-aware decoding first; fall back to <img>. */
 async function loadCanvasImageSource(
   file: File
-): Promise<{ source: CanvasImageSource; width: number; height: number; bitmap?: ImageBitmap }> {
+): Promise<{ 
+    source: CanvasImageSource; 
+    width: number; 
+    height: number; bitmap?: 
+    ImageBitmap 
+}> {
   if ('createImageBitmap' in window) {
     try {
       // @ts-expect-error: older TS DOM libs may not know this option
@@ -141,7 +154,7 @@ function computeCenteredCrop(
   srcW: number,
   srcH: number,
   targetAspect: number, // width / height
-  preset: imageFormatPreset
+  preset: ImageFormatPreset
 ): { cropX: number; cropY: number; cropW: number; cropH: number } {
   const srcAspect = srcW / srcH;
 
@@ -176,7 +189,7 @@ function computeCenteredCrop(
 
 /** Decide final target size using preset and (for 'auto') source orientation. */
 function resolveTargetSize(
-  preset: imageFormatPreset,
+  preset: ImageFormatPreset,
   srcW: number,
   srcH: number
 ): { targetW: number; targetH: number } {
@@ -202,7 +215,7 @@ function resolveTargetSize(
 /** Encode canvas to a Blob, optionally reducing quality to meet a size budget. */
 async function encodeWithBudget(
   canvas: HTMLCanvasElement,
-  mime: imageFormatPreset['outputMime'],
+  mime: ImageFormatPreset['mimeType'],
   initialQuality: number,
   sizeBudgetKB?: number
 ): Promise<Blob> {
@@ -272,24 +285,4 @@ function ensureSuffixAndExtension(
   const base = dot === -1 ? filename : filename.slice(0, dot);
   const newBase = base.endsWith(suffix) ? base : `${base}${suffix}`;
   return `${newBase}${desiredExt || (dot === -1 ? '' : filename.slice(dot))}`;
-}
-
-type OrientationMode = 'portrait' | 'landscape' | 'auto';
-type imageFormatPresetKey = 'bootyPhoto' | 'avatar'; // add more keys here as you add presets
-
-interface imageFormatPreset {
-  shortSidePx: number;
-  longSidePx: number;
-  orientation: OrientationMode; // 'auto' keeps EXIF-corrected source orientation
-  fit: 'cover';                 // reserved for future (always 'cover' for center-crop)
-  position: 'center';           // reserved for future (always 'center')
-  outputMime: 'image/webp' | 'image/jpeg' | 'image/png' | 'image/avif';
-  quality: number;              // 0..1 (encoder hint)
-  sizeBudgetKB?: number;        // optional soft cap; will lower quality to try to meet
-  allowUpscale: boolean;        // if false, never enlarge beyond source crop
-  filenameSuffix: string;       // appended before extension
-}
-
-interface AppConfigWithImages {
-  imageFormatPresets: Record<imageFormatPresetKey, imageFormatPreset>;
 }

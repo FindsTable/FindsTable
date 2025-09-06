@@ -1,7 +1,13 @@
 <script setup lang="ts">
+import type {
+    ImageSelectorComponent
+} from '@/components/Forms/NewItem/ImageSelector.vue'
+
 const { t } = useI18n()
+const bootyPhotoSelector = ref<ImageSelectorComponent | null>(null)
 
 const isPending = ref(false)
+const bootyPhotoIsProcessing = computed(() => bootyPhotoSelector.value?.isProcessing || false)
 
 // Form fields
 
@@ -21,9 +27,8 @@ const content = ref('')
 const biome = ref<string | undefined>(undefined)
 const weatherTags = ref<string[]>([])
 
-const bootyPhoto = ref<File[]>([])
-
-const selectorRef = ref(null)
+// Access exposed data from FormsNewItemImageSelector
+const bootyPhoto = computed(() => bootyPhotoSelector.value?.images?.[0] || null)
 
 const finds = ref<FindId[]>([])
 
@@ -37,12 +42,10 @@ const errors = ref<Record<string, string>>({
     bootyPhoto: ''
 })
 
-function isValidImageFile(file: File | undefined | null): boolean {
-    if (!file) return false
+function isValidImageFile(fileType: string | undefined | null): boolean {
+    if (!fileType) return false
 
-    const allowedTypes = ['image/jpeg', 'image/png']
-
-    return allowedTypes.includes(file.type)
+    return fileType === 'image/webp'
 }
 
 function validateForm() {
@@ -62,7 +65,7 @@ function validateForm() {
         console.log(biome.value)
         errors.value.biome = 'A valid biome must be selected.'
     }
-    if(!date.value) {
+    if (!date.value) {
         console.log(date.value)
         errors.value.biome = 'A valid date must be selected.'
     }
@@ -71,7 +74,7 @@ function validateForm() {
             errors.value.weatherTags = 'All weather tags must be valid.'
         }
     */
-    if (!Array.isArray(bootyPhoto.value) || bootyPhoto.value.length === 0 || !isValidImageFile(bootyPhoto.value[0])) {
+    if (bootyPhoto.value && !isValidImageFile(bootyPhoto.value.file.type)) {
         errors.value.bootyPhoto = 'Booty photo must be a JPG or PNG image.'
     }
     
@@ -99,7 +102,11 @@ const formIsValid = computed(() => {
 })
 
 async function saveNewReport() {
-    if(isPending.value) return
+    if (
+        isPending.value ||
+        bootyPhotoIsProcessing
+    ) return
+
     isPending.value = true
     
     validateForm()
@@ -125,13 +132,11 @@ async function saveNewReport() {
     formData.append('report', JSON.stringify(reportPayload))
     
     // Attach images
-
-    if (bootyPhoto.value && bootyPhoto.value[0]) {
-        formData.append('bootyPhoto', bootyPhoto.value[0])
+    if (bootyPhoto.value) {
+        formData.append('bootyPhoto', bootyPhoto.value.file)
     }
 
     // Send POST request
-
     const response = await $fetch(
         '/api/content/hunt-reports/create',
         {
@@ -145,6 +150,7 @@ async function saveNewReport() {
 
     isPending.value = false
 }
+
 </script>
 
 <template>
@@ -187,7 +193,7 @@ async function saveNewReport() {
         <ArchitecturePanelMain>
             <div class="section">
                 <FormsNewItemImageSelector
-                    ref="selectorRef"
+                    ref="bootyPhotoSelector"
                     :label="t('page.huntReports.newReport.fields.bootyPhoto.label')"
                     :maxImageCount="1"
                     imageFormatPresetKey="bootyPhoto"
