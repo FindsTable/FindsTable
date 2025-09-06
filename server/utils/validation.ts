@@ -1,8 +1,8 @@
 import { 
     getMe,
     getUsersByQuery
- } from '@/server/directus/users'
-import { ImageFormatPresetKey } from '~/shared/types/files'
+ } from '@@/server/directus/users'
+import { ImageFormatPresetKey } from '#shared/types/files'
 
 
 export {

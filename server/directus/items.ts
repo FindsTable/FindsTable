@@ -1,6 +1,6 @@
 import { BearerToken, Query } from './types/sdk/fetch'
 import { directusAPI, DirectusAPIParams } from './main'
-import { DirectusCollection } from '@/server/directus/types/api/collections'
+import { DirectusCollection } from '@@/server/directus/types/api/collections'
 
 export {
     createItem,

@@ -1,4 +1,4 @@
-import iconModuleConfig from '@/config/modules/icon.config.js'
+import iconModuleConfig from '@@/config/modules/icon.config.js'
 
 export default defineAppConfig({
     version: "1.0.0",

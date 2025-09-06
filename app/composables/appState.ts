@@ -14,10 +14,6 @@ export const useAppState = () => {
                 tiers: any[]
             }
         },
-        findViewer: {
-            active: boolean,
-            cardSize: 'image' | 'small' | 'medium' | 'large'
-        },
         layoutState: {
             mainContentFlow: 'community' | 'user'
         }
@@ -39,32 +35,9 @@ export const useAppState = () => {
                     tiers: [],
                 }
             },
-            findViewer: {
-                active: false,
-                cardSize: 'small'
-            },
             layoutState: {
                 mainContentFlow: 'community'
             }
         })
     );
-}
-
-//Check on the route to activate route based settings
-
-export function useActivateRouteWatcher() {
-    const appState = useAppState()
-    const route = useRoute()
-
-    const handleRouteChange = () => {
-        if(route.fullPath.includes('content=finds')) {
-            appState.value.findViewer.active = true
-        } else {
-            appState.value.findViewer.active = false
-        }
-    }
-
-    handleRouteChange()
-
-    watch(() => route.fullPath, handleRouteChange)
 }

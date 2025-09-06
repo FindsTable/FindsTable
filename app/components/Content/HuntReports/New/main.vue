@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type {
     ImageSelectorComponent
-} from '@/components/Forms/NewItem/ImageSelector.vue'
+} from '@@/app/components/Forms/NewItem/ImageSelector.vue'
 
 const { t } = useI18n()
 const bootyPhotoSelector = ref<ImageSelectorComponent | null>(null)

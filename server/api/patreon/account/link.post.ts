@@ -1,5 +1,5 @@
 import { createItem } from '../../../directus/items'
-import { getMe } from '@/server/directus/users'
+import { getMe } from '@@/server/directus/users'
 import {
     patreon_getTokensWithCode,
     patreon_getMe,

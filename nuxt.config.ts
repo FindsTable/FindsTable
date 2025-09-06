@@ -10,6 +10,7 @@ const devServerConfig = {
 }
 import i18n from './i18n.config';
 
+
 export default defineNuxtConfig({
 
     devServer: isDev ? devServerConfig : undefined,
@@ -21,6 +22,14 @@ export default defineNuxtConfig({
                 { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
             ]
         }
+    },
+
+    imports: {
+        dirs: [ 
+            '#shared',
+            '#shared/types',
+            '#shared/utils'
+        ],
     },
 
     devtools: {

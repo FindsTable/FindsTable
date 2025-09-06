@@ -3,7 +3,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     if (preferredLocaleCookie.value) {
         nuxtApp.vueApp.config.globalProperties.$i18n.locale = preferredLocaleCookie.value
     }
-    useActivateRouteWatcher()
+
     handleColorModeCookie()
     setBrowserColorModeSetting()
     watchBrowserColorModeSetting(nuxtApp)
@@ -15,9 +15,6 @@ function checkVersionNumber() {
   const versionKey = 'app_version'
 
 }
-
-
-
 
 function setBrowserColorModeSetting() {
     useAppConfig().colorMode.browser = getBrowserColorMode()

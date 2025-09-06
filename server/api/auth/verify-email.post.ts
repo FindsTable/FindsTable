@@ -1,11 +1,11 @@
-import { readEvent } from '@/server/apiUtils/readEvent'
+import { readEvent } from '@@/server/apiUtils/readEvent'
 import {
     configureVerifiedAccount
-} from '@/server/utils/apiAuthSignupUtils'
+} from '@@/server/utils/apiAuthSignupUtils'
 import { 
     validateUserEmail, 
     tokensAreValid 
-} from '@/server/utils/validation'
+} from '@@/server/utils/validation'
 
 export default defineEventHandler(async (
     event

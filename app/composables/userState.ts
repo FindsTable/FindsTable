@@ -1,4 +1,4 @@
-import type { UserState } from '@/shared/types/state';
+import type { UserState } from '@@/server/types/state';
 
 
 export const useUserState = () => {

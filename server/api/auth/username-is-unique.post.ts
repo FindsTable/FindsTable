@@ -1,6 +1,6 @@
-import { readEvent } from '@/server/apiUtils/readEvent'
-import { directusAPI } from '@/server/directus/main'
-import { getUsersByQuery } from '@/server/directus/users'
+import { readEvent } from '@@/server/apiUtils/readEvent'
+import { directusAPI } from '@@/server/directus/main'
+import { getUsersByQuery } from '@@/server/directus/users'
 import { onKeyDown } from '@vueuse/core'
 import { ApiResponse } from '#shared/types/apiResponse'
 

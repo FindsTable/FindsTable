@@ -1,4 +1,4 @@
-import type { ApiResponse } from "@/shared/types/apiResponse"
+import type { ApiResponse } from "@@/server/types/apiResponse"
 
 export {
     use$Fetch

@@ -1,4 +1,4 @@
-import { directusAPI } from '@/server/directus/main'
+import { directusAPI } from '@@/server/directus/main'
 import { updateItemById  } from './items'
 export {
     uploadFile,

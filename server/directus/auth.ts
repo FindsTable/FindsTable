@@ -1,6 +1,6 @@
 import { directusAPI } from "./main"
 import { ApiResponse } from '#shared/types/apiResponse'
-import { createItem } from '@/server/directus/items'
+import { createItem } from '@@/server/directus/items'
 
 export {
     loginWithEmailAndPassword,

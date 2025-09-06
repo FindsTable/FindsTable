@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { BadgeObject } from '#shared/types/dataObjects'
+import type { BadgeObject } from '#shared/types/dataObjects.ts'
 
 const props = defineProps<{
     active: boolean

@@ -1,7 +1,7 @@
-import { updateMe } from '@/server/directus/users'
-import { getItemById, updateItemById } from '@/server/directus/items'
-import { readEvent } from '@/server/apiUtils/readEvent'
-import { validateUser } from '@/server/utils/validation'
+import { updateMe } from '@@/server/directus/users'
+import { getItemById, updateItemById } from '@@/server/directus/items'
+import { readEvent } from '@@/server/apiUtils/readEvent'
+import { validateUser } from '@@/server/utils/validation'
 
 export default defineEventHandler( async <
     ExpectedUserObject extends UserObject

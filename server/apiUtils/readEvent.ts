@@ -7,7 +7,7 @@ export type ReadEventResult = {
     params: Record<string, string>
     headers: Record<string, string>
     bearerToken: string
-    error?: ApiResponse
+    error?: ApiResponse<any>
 }
 
 export async function readEvent(

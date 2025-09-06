@@ -1,7 +1,7 @@
-import { readEvent } from '@/server/apiUtils/readEvent'
-import { createItem } from '@/server/directus/items'
+import { readEvent } from '@@/server/apiUtils/readEvent'
+import { createItem } from '@@/server/directus/items'
 import { ApiResponse } from '#shared/types/apiResponse'
-import { getMe } from '@/server/directus/users'
+import { getMe } from '@@/server/directus/users'
 
 type ItemObject = {
     [key: string]: any

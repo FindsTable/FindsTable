@@ -1,4 +1,4 @@
-import { deleteItemById } from '@/server/directus/items'
+import { deleteItemById } from '@@/server/directus/items'
 
 export default defineEventHandler(async (event) => {
 

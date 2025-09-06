@@ -17,16 +17,16 @@ import type {
 
 import type { 
     FilePickerComponent
-} from '@/components/Forms/FilePicker.vue'
+} from '@@/app/components/Forms/FilePicker.vue'
 
 import {
     imageFormatPresets
-} from '@/shared/imageFormatPresets'
+} from '#shared/imageFormatPresets'
 
 import type {
     ImageFormatPreset,
     ImageFormatPresetKey
-} from '@/shared/imageFormatPresets'
+} from '#shared/imageFormatPresets'
 
 export type {
     ImageSelectorComponent

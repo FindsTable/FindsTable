@@ -1,5 +1,5 @@
-import { getItemsByQuery } from '@/server/directus/items'
-import { createUser } from '@/server/directus/auth'
+import { getItemsByQuery } from '@@/server/directus/items'
+import { createUser } from '@@/server/directus/auth'
 import crypto from 'crypto'
 
 interface ReqBody {

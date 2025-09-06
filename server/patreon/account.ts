@@ -1,6 +1,6 @@
-import { PatreonAuthorization } from '@/shared/types/patreon'
+import { PatreonAuthorization } from '@@/server/types/patreon'
 import {isMember, isTier, PatreonTokens_Raw } from './types'
-import { PatreonUser } from '@/shared/types/patreon'
+import { PatreonUser } from '@@/server/types/patreon'
 
 export {
     patreon_getTokensWithCode,

@@ -1,4 +1,4 @@
-import { directusAPI } from '@/server/directus/main'
+import { directusAPI } from '@@/server/directus/main'
 import { ApiResponse, handleNoDataError } from '#shared/types/apiResponse'
 
 export {

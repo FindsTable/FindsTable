@@ -1,9 +1,9 @@
-import { readEvent } from '@/server/apiUtils/readEvent'
-import { deleteItemById, getItemsByQuery } from '@/server/directus/items'
-import { ItemObject } from '@/shared/types/dataObjects'
+import { readEvent } from '@@/server/apiUtils/readEvent'
+import { deleteItemById, getItemsByQuery } from '@@/server/directus/items'
+import { ItemObject } from '@@/server/types/dataObjects'
 import { H3Event } from 'h3'
-import { validateUser } from '@/server/utils/validation'
-import { updateItemsCountField } from '@/server/utils/apiContentUtils'
+import { validateUser } from '@@/server/utils/validation'
+import { updateItemsCountField } from '@@/server/utils/apiContentUtils'
 
 export default defineEventHandler(async <ExpectedItemObject extends ItemObject>(
 event: H3Event

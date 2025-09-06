@@ -1,6 +1,6 @@
-import { readEvent } from '@/server/apiUtils/readEvent'
-import { getUsersByQuery } from '@/server/directus/users'
-import { loginWithEmailAndPassword } from '@/server/directus/auth'
+import { readEvent } from '@@/server/apiUtils/readEvent'
+import { getUsersByQuery } from '@@/server/directus/users'
+import { loginWithEmailAndPassword } from '@@/server/directus/auth'
 
 export default defineEventHandler(async (
     event
