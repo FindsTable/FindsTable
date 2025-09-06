@@ -52,7 +52,7 @@ async function deleteFind(findId : FindId) {
             <ContentFindsCardMain
                 v-for="find in finds" :key="find.id"
                 :find="find"
-                :format="useAppState().value.findViewer.cardSize"
+                format="small"
                 @deleteFind="deleteFind"
             />
         </div>

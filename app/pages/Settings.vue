@@ -1,6 +1,5 @@
 <script setup>
 import { 
-    ArchitecturePageTitlesH1 as h1Title,
     ArchitecturePageTabsMain as Tabs,
     PagesSettingsTabsAccountMain as Account,
     PagesSettingsTabsAppMain as App,

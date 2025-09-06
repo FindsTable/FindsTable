@@ -115,14 +115,5 @@ async function saveChanges() {
             label="forms.inputs.file.image.label"
             icon="imageAdd"
         />
-
-        <!-- <FormsInputFile
-            v-if="appConfig.device.hasCamera"
-            @newFile="handleFile"
-            label="forms.inputs.file.camera.label"
-            icon="cameraFront"
-            accept="image/*"
-            capture="user"
-        /> -->
     </div>
 </template>

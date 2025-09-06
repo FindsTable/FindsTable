@@ -1,7 +1,6 @@
 <script setup>
 import {
-    ArchitecturePanelMain as Panel,
-    ArchitecturePageTitlesH2 as H2
+    ArchitecturePanelMain as Panel
 } from '#components'
 
 const { t } = useI18n();
@@ -12,11 +11,11 @@ const editingField = ref('')
 
 <template>
     <Panel class="panel">
-        <H2>
+        <TH2>
             <slot name="H2">
 
             </slot>
-        </H2>
+        </TH2>
 
         <div class="mainBox flex column gap10">
             <slot name="content" />
