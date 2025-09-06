@@ -19,7 +19,13 @@ const props = defineProps({
         <template #input>
             <textarea
                 v-model="description"
-                class="comp-inputText -fontStyle-text -textarea allEvents"
+                class="
+                    comp-inputText 
+                    -fontStyle-text 
+                    -textarea 
+                    allEvents
+                    input-cutoutStyle
+                "
             >
 
             </textarea>
@@ -33,7 +39,6 @@ textarea {
     height: 50px;
     padding: 10px;
     border: none;
-    border-radius: 5px;
     resize: vertical;
     transition: all 350ms ease;
 }

@@ -18,7 +18,7 @@ const value = defineModel()
             <slot />
         </span>
 
-        <textarea 
+        <textarea
             :placeholder="placeHolder"
             class="font-textarea"
             v-model="value"
@@ -27,7 +27,3 @@ const value = defineModel()
         </textarea>
     </label>
 </template>
-
-<style scoped>
-
-</style>

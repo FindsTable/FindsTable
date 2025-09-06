@@ -20,7 +20,7 @@ const value = defineModel()
         :placeholder="placeholder"
         minlength="minlength" 
         maxlength="maxlength" 
-        class="comp-inputText allEvents"
+        class="comp-inputText input-cutoutStyle allEvents"
     />
 
     <input 
@@ -31,7 +31,7 @@ const value = defineModel()
         :min="minValue"
         :max="maxValue"
         :step="step"
-        class="comp-inputText allEvents"
+        class="comp-inputText input-cutoutStyle allEvents"
     />
 </template>
 

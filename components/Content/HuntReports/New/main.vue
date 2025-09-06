@@ -3,9 +3,10 @@ const { t } = useI18n()
 
 const isPending = ref(false)
 
-const statusSwitchComponent = ref()
-
 // Form fields
+
+//status is set based on the value of the exposed computedProperty 
+const statusSwitchComponent = ref()
 const status = computed(() => {
     if(statusSwitchComponent.value?.status) {
         console.log("the ref", statusSwitchComponent.value.status)
@@ -19,16 +20,12 @@ const title = ref('')
 const content = ref('')
 const biome = ref<string | undefined>(undefined)
 const weatherTags = ref<string[]>([])
-const banner = ref<File[]>([])
-const bootyPhoto = ref<File[]>([])
-const finds = ref<FindId[]>([])
-const photos = ref<File[]>([])
 
-// Dummy appContent (for now, you will implement it later)
-const appContent = {
-    biomes: ['forest', 'beach', 'mountain'],
-    weatherTags: ['sunny', 'rainy', 'cloudy']
-}
+const bootyPhoto = ref<File[]>([])
+
+const selectorRef = ref(null)
+
+const finds = ref<FindId[]>([])
 
 // Validation errors
 const errors = ref<Record<string, string>>({
@@ -39,17 +36,15 @@ const errors = ref<Record<string, string>>({
     banner: '',
     bootyPhoto: ''
 })
+
 function isValidImageFile(file: File | undefined | null): boolean {
     if (!file) return false
 
     const allowedTypes = ['image/jpeg', 'image/png']
-    const maxSizeInBytes = 1 * 1024 * 1024 // 1 MB
 
-    return (
-        allowedTypes.includes(file.type) &&
-        file.size <= maxSizeInBytes
-    )
+    return allowedTypes.includes(file.type)
 }
+
 function validateForm() {
     // Reset all errors
     for (const key in errors.value) {
@@ -71,18 +66,15 @@ function validateForm() {
         console.log(date.value)
         errors.value.biome = 'A valid date must be selected.'
     }
-    if (!Array.isArray(banner.value) || banner.value.length === 0) {
-        errors.value.banner = 'Banner must be a JPG or PNG image.'
-    }
     /*
         if (!Array.isArray(weatherTags.value) || weatherTags.value.some(tag => !appContent.weatherTags.includes(tag))) {
             errors.value.weatherTags = 'All weather tags must be valid.'
         }
-        
-        if (!Array.isArray(bootyPhoto.value) || bootyPhoto.value.length === 0 || !isValidImageFile(bootyPhoto.value[0])) {
-            errors.value.bootyPhoto = 'Booty photo must be a JPG or PNG image.'
-        }
     */
+    if (!Array.isArray(bootyPhoto.value) || bootyPhoto.value.length === 0 || !isValidImageFile(bootyPhoto.value[0])) {
+        errors.value.bootyPhoto = 'Booty photo must be a JPG or PNG image.'
+    }
+    
     // Show all errors
     const errorMessages = Object.values(errors.value).filter(msg => msg)
 
@@ -133,16 +125,10 @@ async function saveNewReport() {
     formData.append('report', JSON.stringify(reportPayload))
     
     // Attach images
-    if (banner.value && banner.value[0]) {
-        console.log('found a banner')
-        formData.append('banner', banner.value[0])
-    }
-    // if (bootyPhoto.value.length > 0) {
-    //     formData.append('bootyPhoto', bootyPhoto.value[0])
-    // }
 
-    // ⚡️ You said for now we **don't upload** photos array
-    // formData.append('photos', ???)
+    if (bootyPhoto.value && bootyPhoto.value[0]) {
+        formData.append('bootyPhoto', bootyPhoto.value[0])
+    }
 
     // Send POST request
 
@@ -156,33 +142,7 @@ async function saveNewReport() {
             body: formData
         }
     )
-    console.log(response)
-    isPending.value = false
-    return
 
-    if (error.value) {
-        useToaster('show', {
-            id: crypto.randomUUID(),
-            message: 'Failed to save your report',
-            icon: 'error',
-            type: 'error',
-            autoClose: true,
-            position: 'bottom'
-        })
-        isPending.value = false
-        return
-    }
-
-    if (response.value) {
-        useToaster('show', {
-            id: crypto.randomUUID(),
-            message: 'Hunt report saved!',
-            icon: 'success',
-            type: 'success',
-            autoClose: true,
-            position: 'bottom'
-        })
-    }
     isPending.value = false
 }
 </script>
@@ -226,29 +186,16 @@ async function saveNewReport() {
     
         <ArchitecturePanelMain>
             <div class="section">
-
-                <FormsNewItemImageSelector 
-                    v-model="banner"
-                    label="banner image"
-                    :maxFiles="1"
-                    boxHeight="100px"
-                    aspectRatio="5/2"
-                    titlePath="page.huntReports.newReport.fields.banner.label"
+                <FormsNewItemImageSelector
+                    ref="selectorRef"
+                    :label="t('page.huntReports.newReport.fields.bootyPhoto.label')"
+                    :maxImageCount="1"
+                    imageFormatPresetKey="bootyPhoto"
+                    :disabled="isPending"
+                    :boxHeight="'140px'"
+                    aspectRatio="1/1"
+                    class="marTop10"
                 />
-                
-                <!-- <FormsNewItemImageSelector 
-                    v-model="bootyPhoto"
-                    label="Booty Photo"
-                    :maxFiles="1"
-                    titlePath="page.huntReports.newReport.fields.bootyPhoto.label"
-                /> -->
-
-                <!-- <FormsNewItemImageSelector 
-                    v-model="photos" 
-                    label="Booty Photo"
-                    :maxFiles="3"
-                    titlePath="page.huntReports.newReport.fields.photos.label"
-                /> -->
             </div>
         </ArchitecturePanelMain>
     

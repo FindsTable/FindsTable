@@ -1,113 +1,228 @@
-<script setup lang="ts">
-const model = defineModel<File[] | null>()
+<script setup>
+/**
+ * FormsNewItemImageSelector
+ * - Wraps <FormsInputFile/> and formats incoming files.
+ * - Shows per-file tiles: spinner while processing → preview when done.
+ * - Exposes:
+ *     - formattedImages (readonly<File[]>)
+ *     - isProcessing (readonly<boolean>)
+ *     - waitUntilProcessingTrue(): Promise<void>
+ *     - waitUntilProcessingFalse(): Promise<void>
+ *     - clearAll(): void
+ */
+
 const { t } = useI18n()
 
 const props = defineProps({
-  maxFiles: {
-    type: Number,
-    default: 1
-  },
-  boxHeight: {
-    type: String,
-    default: '100px' // e.g., '100px', '150px'
-  },
-  aspectRatio: {
-    type: String,
-    default: '1/1' // e.g., '1/1' for square, '4/3' for photos
-  },
-  titlePath: {
-    type: String,
-    default: "Image"
-  }
+    label: {
+        type: String
+    },
+    maxImageCount: { 
+        type: Number, 
+        default: 1 
+    },
+    imageFormatPresetKey: { 
+        type: String, 
+        default: 'bootyPhoto' 
+    },
+    disabled: { 
+        type: Boolean, 
+        default: false 
+    },
+    allowedFileTypes: { 
+        type: String, 
+        default: 'image/*' 
+    },
+    boxHeight: { 
+        type: String, 
+        default: '120px' 
+    },
+    aspectRatio: { 
+        type: String, 
+        default: '1/1' 
+    },
+    pickerIcon: { 
+        type: String, 
+        default: 'imageAdd' 
+    },
+    pickerLabelKey: { 
+        type: String, 
+        default: 'forms.inputs.file.image.label' 
+    },
 })
 
-const inputField = ref()
+const exposedImages = ref([])
 
-const fileUrls = computed<string[]>(() => {
-  if (!model.value) return []
-  return model.value.map(file => URL.createObjectURL(file))
+/** Processing state exposed to parent */
+const isProcessing = ref(false)
+
+
+/** Receive raw files from the picker and process them */
+async function onFilesSelected(files) {
+    if (
+        !files?.length || 
+        props.disabled ||
+        isProcessing.value
+    ) {
+        return
+    }
+
+    isProcessing.value = true
+
+    // populate exposedImages to show empty cards in the UI
+    for(const file of files) {
+        if(exposedImages.value.length >= props.maxImageCount) {
+            break
+        }
+
+        exposedImages.value.push({
+            id: crypto.randomUUID?.() ?? `${Date.now()}-${Math.random()}`,
+            error: '',
+            previewUrl: '',
+            file: file
+        })
+    }
+
+    //process files and
+    for(const image of exposedImages.value) {
+        if(image.previewUrl) continue
+
+        const formatedFile = await useApplyImageFormatPreset(props.imageFormatPresetKey, image.file)
+        console.log(formatedFile)
+        image.file = formatedFile
+        image.previewUrl = URL.createObjectURL(image.file)
+    }
+
+    isProcessing.value = false
+}
+
+function deleteExposedImageAtIndex(index) {
+    const image = exposedImages.value[index]
+    if (!image) return
+    if (image.previewUrl) {
+            try { URL.revokeObjectURL(image.previewUrl) } catch {}
+    }
+
+    exposedImages.value.splice(index, 1)
+}
+
+function clearAll() {
+    for(const image of exposedImages.value) {
+        try { URL.revokeObjectURL(image.previewUrl) } catch {}
+    }
+    exposedImages.value = []
+}
+
+onBeforeUnmount(clearAll)
+
+
+defineExpose({
+  exposedImages,
+  isProcessing,
+  clearAll,
 })
-
-async function handleFile(file: File) {
-  if (!file) return
-
-  model.value = model.value || []
-  await nextTick()
-
-  if (model.value.length >= props.maxFiles) {
-    return
-  }
-
-  model.value = [...model.value, file]
-}
-
-function deleteImage(index: number) {
-  if (!Array.isArray(model.value)) return
-  model.value.splice(index, 1)
-}
-
 </script>
 
 <template>
-
-        <label >
-            {{ t(`${titlePath}`) }}
-        </label>
-
-        <div class="">
-            <div class="flex gap10 wrap marTop10">
-                <div 
-                    v-for="(slot, index) in props.maxFiles" 
-                    :key="index"
-                    class="flex column gap5 alignCenter"
-                >
-                    <div 
-                        @click="inputField?.openFileDialog()"
-                        class="imageBox centered pointer allEvents"
-                        :style="{
-                            height: props.boxHeight,
-                            aspectRatio: props.aspectRatio
-                        }"
-                    >
+    <div class="flex column gap10">
+        <!-- Horizontal scroll strip -->
+        <div 
+            class="flex gap10 marTop10" 
+            style="overflow-x:auto; -webkit-overflow-scrolling: touch;"
+        >
+        <!-- Existing items -->
+            <div
+                v-for="(image, idx) in exposedImages" :key="image.id"
+                class="centered imageBox allEvents"
+                :style="{ height: boxHeight, aspectRatio }"
+            >
+                <!-- Done -->
+                <template v-if="image.previewUrl">
                     <img 
-                        v-if="fileUrls[index]"
-                        :src="fileUrls[index]"
-                        alt=""
+                        :src="image.previewUrl" 
                         class="selectedImage"
+                    />
+                    
+                    <div 
+                        class="flex alignCenter gap5" 
+                        style="position:absolute; right:6px; top:6px;"
                     >
-                        <Icon 
-                            v-else
-                            class="defaultImage" 
-                            name="imageDefault" 
-                            size="60px" 
-                        />
+                        <button
+                            @click.prevent="deleteExposedImageAtIndex(idx)"
+                            class="comp-button -text fS12"
+                        >
+                            Delete
+                        </button>
                     </div>
+                </template>
+
+                <!-- Error -->
+                <div 
+                    v-else-if="image.error" 
+                    class="flex column centered gap5 pad10" 
+                    style="height:100%;"
+                >
+                    <Icon name="error" size="22px" />
+
+                    <span class="fS12">
+                        {{ image.error }}
+                    </span>
 
                     <button 
-                        @click.prevent="deleteImage(index)"
-                            class="comp-button -text font-text-main fS12 r"
-                            :class="!fileUrls[index] ? 'disabled' : ''"
-                        >
-                        Unselect
+                        @click.prevent="deleteExposedImageAtIndex(idx)"
+                        class="comp-button -text fS12 marTop5"
+                    >
+                        Remove
                     </button>
+                </div>
+
+                <!-- Pending -->
+                <div 
+                    v-else
+                    class="flex column centered gap5" 
+                    style="height:100%;"
+                >
+                    <div class="spinner" aria-hidden="true"></div>
+
+                    <span class="fS12">Processing…</span>
                 </div>
             </div>
 
-            <div class="flex">
-
-            <FormsInputFile 
-                @newFile="handleFile"
-                fileType="image"
-                ref="inputField"
-                label="forms.inputs.file.image.label"
-                icon="imageAdd"
-                class="allEvents"
-                :class="model?.length === maxFiles ? 'disabled' : ''"
-            />
+            <!-- Add another image frame -->
+            <div
+                v-if="!disabled && exposedImages.length < maxImageCount"
+                class="imageBox centered pointer allEvents"
+                :style="{ height: boxHeight, aspectRatio }"
+                @click="$refs.picker?.openFileDialog?.()"
+            >
+                <Icon :name="pickerIcon" size="60px" class="defaultImage" />
             </div>
         </div>
 
+    <!-- Actions -->
+        <div class="flex gap10 marTop10">
+            <FormsFilePicker
+                ref="picker"
+                :label="label"
+                :multiple="maxImageCount > 1"
+                :accept="allowedFileTypes"
+                :disabled="disabled || exposedImages.length >= maxImageCount"
+                :icon="pickerIcon"
+                @files="onFilesSelected"
+                class="allEvents"
+            />
 
+            <button
+                    v-if="exposedImages.length > 0"
+                    class="comp-button -text pointer"
+                    @click.prevent="clearAll"
+            >
+                <span>
+                    clear {{exposedImages.length > 1 ? 'all' : ''}}
+                </span>
+            </button>
+        </div>
+    </div>
 </template>
 
 <style scoped>
@@ -117,19 +232,18 @@ function deleteImage(index: number) {
   overflow: hidden;
   box-shadow: inset 0 0 5px black;
   position: relative;
+  min-width: 140px;
 }
+.selectedImage { width: 100%; height: 100%; object-fit: cover; }
+.defaultImage { opacity: 0.25; }
+.disabled { opacity: 0.5; pointer-events: none; }
 
-.defaultImage {
-  opacity: 0.2;
+.spinner {
+  width: 28px; height: 28px;
+  border: 3px solid rgba(255,255,255,0.35);
+  border-top-color: rgba(255,255,255,0.9);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
 }
-
-.selectedImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.disabled {
-    opacity: 0;
-    pointer-events: none;
-}
+@keyframes spin { to { transform: rotate(360deg); } }
 </style>

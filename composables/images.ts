@@ -1,0 +1,295 @@
+/**
+ * reformat-image.ts
+ *
+ * Purpose
+ * -------
+ * Single public API: `useformatImage(imageType, file)` that reformats an input image
+ * into dimensions/format dictated by your Nuxt `app.config.ts` presets.
+ *
+ * Design
+ * ------
+ * - The ONLY exported symbol is `useApplyImageFormatPreset(imageType, file)`.
+ * - Presets are defined in `app.config.ts` under `useApplyImageFormatPresets` (with keys like 'bootyPhoto', 'avatar').
+ * - The function:
+ *    1) Reads the preset from `useAppConfig()`.
+ *    2) Loads pixels (EXIF-aware when possible).
+ *    3) Decides final W/H from preset:
+ *         - If square (shortSidePx === longSidePx), orientation is ignored.
+ *         - Else it uses:
+ *             - 'portrait': width=shortSidePx, height=longSidePx
+ *             - 'landscape': width=longSidePx, height=shortSidePx
+ *             - 'auto':     infer from source orientation (w≥h → landscape else portrait)
+ *    4) Center-crops the source to the target aspect, then scales to target size.
+ *       If `allowUpscale` is false, scaling is capped at 1× (no enlargement).
+ *    5) Encodes to `outputMime` (WebP recommended) with `quality`, optionally reducing
+ *       quality to meet `sizeBudgetKB` if provided.
+ *    6) Returns a new File with a suffix and correct extension.
+ */
+
+import { useAppConfig } from '#app';
+
+export {
+    useApplyImageFormatPreset
+}
+
+async function useApplyImageFormatPreset(
+  imageType: imageFormatPresetKey,
+  inputFile: File
+): Promise<File> {
+    if (!inputFile || !inputFile.type.startsWith('image/')) {
+        throw new Error('Provided file is not an image.');
+    }
+
+    const appConfig = useAppConfig() as unknown as AppConfigWithImages;
+    const preset = appConfig?.imageFormatPresets?.[imageType];
+    if (!preset) {
+        throw new Error(`Unknown imageType preset: ${imageType}`);
+    }
+
+    // 1) Load pixels with EXIF-aware path if possible
+    const { source, width: srcW, height: srcH, bitmap } = await loadCanvasImageSource(inputFile);
+
+    // 2) Determine target dimensions (respect square & orientation)
+    const { targetW, targetH } = resolveTargetSize(preset, srcW, srcH);
+
+    // 3) Compute center crop to match target aspect
+    const targetAspect = targetW / targetH;
+    const { cropX, cropY, cropW, cropH } = computeCenteredCrop(srcW, srcH, targetAspect, preset);
+
+    // 4) If upscaling is disallowed, cap scale at 1×
+    const scaleX = targetW / cropW;
+    const scaleY = targetH / cropH; // should be same as scaleX
+    const scale = Math.min(scaleX, scaleY);
+    const finalScale = preset.allowUpscale ? scale : Math.min(1, scale);
+
+    const outW = Math.round(cropW * finalScale);
+    const outH = Math.round(cropH * finalScale);
+
+    // 5) Draw crop → scaled output
+    const canvas = document.createElement('canvas');
+    canvas.width = outW;
+    canvas.height = outH;
+
+    const ctx = canvas.getContext('2d', { alpha: preset.outputMime !== 'image/jpeg' });
+    if (!ctx) {
+        if (bitmap) bitmap.close?.();
+        throw new Error('Failed to get 2D context.');
+    }
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(source as CanvasImageSource, cropX, cropY, cropW, cropH, 0, 0, outW, outH);
+
+    // 6) Encode (optionally meet size budget by stepping quality down)
+    const blob = await encodeWithBudget(canvas, preset.outputMime, preset.quality, preset.sizeBudgetKB);
+
+    // 7) Build output filename with suffix + correct extension
+    const desiredExt = extensionForMime(blob.type || preset.outputMime);
+    const outputName = ensureSuffixAndExtension(inputFile.name, preset.filenameSuffix, desiredExt);
+
+    if (bitmap) bitmap.close?.();
+
+    return new File([blob], outputName, {
+        type: blob.type,
+        lastModified: Date.now(),
+    });
+}
+
+
+
+
+
+
+
+/* --------------------- Internals --------------------- */
+
+/** Try EXIF-aware decoding first; fall back to <img>. */
+async function loadCanvasImageSource(
+  file: File
+): Promise<{ source: CanvasImageSource; width: number; height: number; bitmap?: ImageBitmap }> {
+  if ('createImageBitmap' in window) {
+    try {
+      // @ts-expect-error: older TS DOM libs may not know this option
+      const bitmap = await createImageBitmap(file, { imageOrientation: 'from-image' });
+      return { source: bitmap, width: bitmap.width, height: bitmap.height, bitmap };
+    } catch {
+      // fall through
+    }
+  }
+  const objectUrl = URL.createObjectURL(file);
+  try {
+    const img = await loadImage(objectUrl);
+    const w = img.naturalWidth || img.width;
+    const h = img.naturalHeight || img.height;
+    return { source: img, width: w, height: h };
+  } finally {
+    URL.revokeObjectURL(objectUrl);
+  }
+}
+
+function loadImage(src: string): Promise<HTMLImageElement> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error('Failed to load image.'));
+    img.src = src;
+  });
+}
+
+/** Compute centered crop rectangle matching target aspect ratio. */
+function computeCenteredCrop(
+  srcW: number,
+  srcH: number,
+  targetAspect: number, // width / height
+  preset: imageFormatPreset
+): { cropX: number; cropY: number; cropW: number; cropH: number } {
+  const srcAspect = srcW / srcH;
+
+  // Step 1: Identify the smallest side and scale it to shortSidePx
+  const scaleFactor = preset.shortSidePx / Math.min(srcW, srcH);
+  const scaledW = Math.round(srcW * scaleFactor);
+  const scaledH = Math.round(srcH * scaleFactor);
+
+  // Step 2: Compare the other side to longSidePx
+  if (Math.max(scaledW, scaledH) <= preset.longSidePx) {
+    // No cropping needed, return the scaled dimensions
+    return { cropX: 0, cropY: 0, cropW: scaledW, cropH: scaledH };
+  }
+
+  // Step 3: Proceed with cropping logic if necessary
+  if (srcAspect > targetAspect) {
+    // Source is wider → crop width
+    const cropW = Math.round(scaledH * targetAspect);
+    const cropH = scaledH;
+    const cropX = Math.round((scaledW - cropW) / 2);
+    const cropY = 0;
+    return { cropX, cropY, cropW, cropH };
+  } else {
+    // Source is taller → crop height
+    const cropW = scaledW;
+    const cropH = Math.round(scaledW / targetAspect);
+    const cropX = 0;
+    const cropY = Math.round((scaledH - cropH) / 2);
+    return { cropX, cropY, cropW, cropH };
+  }
+}
+
+/** Decide final target size using preset and (for 'auto') source orientation. */
+function resolveTargetSize(
+  preset: imageFormatPreset,
+  srcW: number,
+  srcH: number
+): { targetW: number; targetH: number } {
+  const isSquareTarget = preset.shortSidePx === preset.longSidePx;
+  if (isSquareTarget) {
+    return { targetW: preset.shortSidePx, targetH: preset.longSidePx }; // same value
+  }
+
+  const srcIsLandscape = srcW >= srcH;
+  const orientation =
+    preset.orientation === 'auto'
+      ? (srcIsLandscape ? 'landscape' : 'portrait')
+      : preset.orientation;
+
+  if (orientation === 'landscape') {
+    return { targetW: preset.longSidePx, targetH: preset.shortSidePx };
+  } else {
+    // 'portrait'
+    return { targetW: preset.shortSidePx, targetH: preset.longSidePx };
+  }
+}
+
+/** Encode canvas to a Blob, optionally reducing quality to meet a size budget. */
+async function encodeWithBudget(
+  canvas: HTMLCanvasElement,
+  mime: imageFormatPreset['outputMime'],
+  initialQuality: number,
+  sizeBudgetKB?: number
+): Promise<Blob> {
+  // Attempt a few quality steps to fit within budget if provided.
+  const qualities = buildQualityLadder(initialQuality);
+  for (const q of qualities) {
+    const blob = await canvasToBlob(canvas, mime, q);
+    if (!sizeBudgetKB) return blob;
+
+    const kb = Math.ceil(blob.size / 1024);
+    if (kb <= sizeBudgetKB || q === qualities[qualities.length - 1]) {
+      return blob;
+    }
+    // else continue lowering quality
+  }
+  // Fallback (shouldn’t reach here)
+  return canvasToBlob(canvas, mime, Math.max(0.3, Math.min(initialQuality, 0.92)));
+}
+
+function buildQualityLadder(initial: number): number[] {
+  const clamp = (v: number) => Math.max(0.3, Math.min(0.98, v));
+  const steps = [1.0, 0.92, 0.85, 0.78, 0.7, 0.62, 0.55, 0.48, 0.4, 0.35, 0.3];
+  // Start from the closest lower-or-equal step to the initial quality.
+  const startIdx =
+    steps.findIndex((s) => s <= initial + 1e-6) >= 0
+      ? steps.findIndex((s) => s <= initial + 1e-6)
+      : 0;
+  return steps.slice(startIdx).map(clamp);
+}
+
+/** Promisified canvas.toBlob with MIME + quality. */
+function canvasToBlob(
+  canvas: HTMLCanvasElement,
+  mimeType: string,
+  quality = 0.9
+): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    canvas.toBlob(
+      (blob) => (blob ? resolve(blob) : reject(new Error('Canvas conversion failed.'))),
+      mimeType,
+      quality
+    );
+  });
+}
+
+function extensionForMime(mime: string): string {
+  switch (mime) {
+    case 'image/webp':
+      return '.webp';
+    case 'image/jpeg':
+      return '.jpg';
+    case 'image/png':
+      return '.png';
+    case 'image/avif':
+      return '.avif';
+    default:
+      return '';
+  }
+}
+
+function ensureSuffixAndExtension(
+  filename: string,
+  suffix: string,
+  desiredExt: string
+): string {
+  const dot = filename.lastIndexOf('.');
+  const base = dot === -1 ? filename : filename.slice(0, dot);
+  const newBase = base.endsWith(suffix) ? base : `${base}${suffix}`;
+  return `${newBase}${desiredExt || (dot === -1 ? '' : filename.slice(dot))}`;
+}
+
+type OrientationMode = 'portrait' | 'landscape' | 'auto';
+type imageFormatPresetKey = 'bootyPhoto' | 'avatar'; // add more keys here as you add presets
+
+interface imageFormatPreset {
+  shortSidePx: number;
+  longSidePx: number;
+  orientation: OrientationMode; // 'auto' keeps EXIF-corrected source orientation
+  fit: 'cover';                 // reserved for future (always 'cover' for center-crop)
+  position: 'center';           // reserved for future (always 'center')
+  outputMime: 'image/webp' | 'image/jpeg' | 'image/png' | 'image/avif';
+  quality: number;              // 0..1 (encoder hint)
+  sizeBudgetKB?: number;        // optional soft cap; will lower quality to try to meet
+  allowUpscale: boolean;        // if false, never enlarge beyond source crop
+  filenameSuffix: string;       // appended before extension
+}
+
+interface AppConfigWithImages {
+  imageFormatPresets: Record<imageFormatPresetKey, imageFormatPreset>;
+}

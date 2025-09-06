@@ -29,7 +29,18 @@ function formatDate(dateString: string) {
     </template>
         
     <template #input>
-        <div class="dateWrapper pointer customDateInput marTop10 allEvents" @click="openCalendar">
+        <div
+            @click="openCalendar"
+            class="
+                dateWrapper 
+                pointer 
+                customDateInput 
+                marTop10 
+                allEvents
+                input-cutoutStyle
+            " 
+        >
+
             <Icon name="datePrecise" size="28px" class="calendarIcon" />
             
             <div v-if="model" class="formattedDate">
@@ -44,7 +55,9 @@ function formatDate(dateString: string) {
                 ref="inputRef"
                 type="date"
                 v-model="model"
-                class="dateInputHidden"
+                class="
+                    dateInputHidden
+                "
                 aria-label="Select a date"
                 :max="new Date().toISOString().split('T')[0]"
             />
@@ -84,8 +97,6 @@ function formatDate(dateString: string) {
   align-items: center;
   gap: 10px;
   padding: 10px 14px;
-  border-radius: 8px;
-  background: var(--surface2-bgColor);
   cursor: pointer;
   min-height: 40px;
 }

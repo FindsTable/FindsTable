@@ -56,5 +56,19 @@ export default defineAppConfig({
         min: 100000,
         max: 5000,
         adapted: 0
+    },
+    imageFormatPresets: {
+        bootyPhoto: {
+            shortSidePx: 1024,
+            longSidePx: 1820,                 // 16:9 or 9:16 implied
+            orientation: 'auto',              // keep source orientation
+            fit: 'cover',
+            position: 'center',
+            outputMime: 'image/webp',
+            quality: 0.85,
+            sizeBudgetKB: 350,
+            allowUpscale: false,
+            filenameSuffix: '_webp_1024min_flex',
+        }
     }
 })

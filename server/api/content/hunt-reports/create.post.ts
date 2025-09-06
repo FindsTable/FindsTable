@@ -1,7 +1,6 @@
 import { readEvent } from '@/server/apiUtils/readEvent'
-import { createItem, updateItemById } from '@/server/directus/items'
+import { createItem } from '@/server/directus/items'
 import { 
-    uploadFile,
     addFileToItem
  } from '@/server/directus/files'
 import { ItemObject } from '~/shared/types/dataObjects'
@@ -9,7 +8,6 @@ import { H3Event } from 'h3'
 import { itemCountIsValid, validateUser, isValidImageType } from '@/server/utils/validation'
 import { updateItemsCountField } from '@/server/utils/apiContentUtils'
 
-const bannersFolderId = '23890189-57ac-49ff-96ca-39bffac3c7eb'
 const bootyPhotoFolderId = 'e6a6fb54-9c40-4b1d-ae78-c438dc39452b'
 
 export default defineEventHandler(async (
@@ -85,6 +83,7 @@ event: H3Event
 
     interface Cache {
         report?: huntReportFromRequest
+        linkedFinds?: string[]
         banner?: {
             type: string | undefined
             data: any
@@ -97,7 +96,6 @@ event: H3Event
         }
         // id's from directus
         reportId?: ReportId 
-        bannerId?: string
         bootyPhotoId?: string
     }
 
@@ -171,6 +169,7 @@ event: H3Event
     }
 
     cache.reportId = reportId
+    
 
     /*
 *
@@ -180,9 +179,9 @@ event: H3Event
 * 
     */
 
-    if (cache.banner) {
+    if (cache.bootyPhoto) {
         // Validate MIME type
-        if (!isValidImageType(cache.banner.type)) {
+        if (!isValidImageType(cache.bootyPhoto.type)) {
             return {
                 ok: false,
                 statusText: 'Invalid banner image type. Only JPG and PNG are allowed.'
@@ -191,70 +190,15 @@ event: H3Event
     
         const fileFormData = new FormData()
         const blob = new Blob(
-            [cache.banner.data], 
+            [cache.bootyPhoto.data], 
             { 
-                type: cache.banner.type || 'application/octet-stream' 
+                type: cache.bootyPhoto.type || 'application/octet-stream' 
             }
         )
     
-        fileFormData.append('folder', bannersFolderId)
-        fileFormData.append('Hunt_report_id', cache.reportId)
-        fileFormData.append('file', blob, cache.banner.filename || 'banner.jpg')
-    
-        const bannerRes = await addFileToItem({
-            file: fileFormData,
-            item: {
-                id: reportId,
-                collection: 'Hunt_reports',
-                field: {
-                    name: 'banner'
-                }
-            }
-        })
-
-        const newFile = bannerRes.file
-
-        if(!newFile.uploaded) {
-            return {
-                ok: false,
-                statusText: "FBanner could not be uploaded"
-            }
-        }
-        if(!newFile.linked) {
-            return {
-                ok: false,
-                statusText: "Banner could not be linked to item"
-            }
-        }
-
-        if(newFile.id) {
-            cache.bannerId = newFile.id
-        }
-    }
-
-    /*
-*
-*
-*   Handle Booty Photo from the request
-* 
-* 
-    */
-    
-    if (cache.bootyPhoto) {
-        // Validate MIME type
-        if (!isValidImageType(cache.bootyPhoto.type)) {
-            return {
-                ok: false,
-                statusText: 'Invalid booty photo image type. Only JPG and PNG are allowed.'
-            }
-        }
-    
-        const fileFormData = new FormData()
-        const blob = new Blob([cache.bootyPhoto.data], { type: cache.bootyPhoto.type || 'application/octet-stream' })
-    
         fileFormData.append('folder', bootyPhotoFolderId)
         fileFormData.append('Hunt_report_id', cache.reportId)
-        fileFormData.append('file', blob, cache.bootyPhoto.filename || `hunt-report-bootyPhoto-${currentUser.username}.jpg`)
+        fileFormData.append('file', blob, cache.bootyPhoto.filename || 'bootyOfFinds.jpg')
     
         const bootyPhotoRes = await addFileToItem({
             file: fileFormData,
@@ -262,7 +206,7 @@ event: H3Event
                 id: reportId,
                 collection: 'Hunt_reports',
                 field: {
-                    name: 'banner'
+                    name: 'bootyPhoto'
                 }
             }
         })
@@ -272,13 +216,13 @@ event: H3Event
         if(!newFile.uploaded) {
             return {
                 ok: false,
-                statusText: "FBanner could not be uploaded"
+                statusText: "Booty photo could not be uploaded"
             }
         }
         if(!newFile.linked) {
             return {
                 ok: false,
-                statusText: "Banner could not be linked to item"
+                statusText: "Booty photo  could not be linked to item"
             }
         }
 
@@ -317,28 +261,12 @@ async function createItemGetId(
 }
 
 type ReportId = string
-
-interface Cache {
-    report?: huntReportFromRequest
-    banner?: {
-        type: string | undefined
-        data: any
-        filename: string | undefined
-    }
-    bootyPhoto?: {
-        type: string | undefined
-        data: any
-        filename: string | undefined
-    }
-    // id's from directus
-    reportId?: ReportId 
-    bannerId?: string
-    bootyPhotoId?: string
-}
+type findId = string
 
 type huntReportFromRequest = {
     title: string
     content: string
     date: string
     biome: string
+    finds: findId[]
 }
