@@ -9,7 +9,8 @@ type CollType = ItemType<
         date_created: string;
         date_lastEvent: string;
         date_updated: string;
-        images: FindImageId;
+        image0: FindImageId;
+        image1: FindImageId;
         likes: Like;
         likes_count: number;
         comments: ItemComment
@@ -25,7 +26,8 @@ const theFields : ArrayOfValidFields<CollType, [
     'date_created',
     'date_lastEvent',
     'date_updated',
-    'images.*',
+    'image0',
+    'image1',
     'likes.*',
     'likes_count',
     'comments.*'

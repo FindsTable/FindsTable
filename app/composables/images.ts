@@ -64,14 +64,9 @@ async function useApplyImageFormatPreset(
     const targetAspect = targetW / targetH;
     const { cropX, cropY, cropW, cropH } = computeCenteredCrop(srcW, srcH, targetAspect, preset);
 
-    // 4) If upscaling is disallowed, cap scale at 1×
-    const scaleX = targetW / cropW;
-    const scaleY = targetH / cropH; // should be same as scaleX
-    const scale = Math.min(scaleX, scaleY);
-    const finalScale = preset.allowUpscale ? scale : Math.min(1, scale);
-
-    const outW = Math.round(cropW * finalScale);
-    const outH = Math.round(cropH * finalScale);
+    // 4) Scale to fill target dimensions completely
+    const outW = targetW;
+    const outH = targetH;
 
     // 5) Draw crop → scaled output
     const canvas = document.createElement('canvas');
@@ -85,7 +80,35 @@ async function useApplyImageFormatPreset(
     }
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
-    ctx.drawImage(source as CanvasImageSource, cropX, cropY, cropW, cropH, 0, 0, outW, outH);
+
+    if (preset.fit === 'contain') {
+        // Calculate dimensions to fit within canvas while maintaining aspect ratio
+        const scale = Math.min(outW / cropW, outH / cropH);
+        const scaledW = cropW * scale;
+        const scaledH = cropH * scale;
+        const x = (outW - scaledW) / 2;
+        const y = (outH - scaledH) / 2;
+
+        // Clear canvas with white background if needed
+        if (preset.mimeType === 'image/jpeg') {
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, outW, outH);
+        }
+
+        // Draw image centered
+        ctx.drawImage(
+            source as CanvasImageSource,
+            cropX, cropY, cropW, cropH,
+            x, y, scaledW, scaledH
+        );
+    } else {
+        // Cover - fill entire canvas
+        ctx.drawImage(
+            source as CanvasImageSource,
+            cropX, cropY, cropW, cropH,
+            0, 0, outW, outH
+        );
+    }
 
     // 6) Encode (optionally meet size budget by stepping quality down)
     const blob = await encodeWithBudget(canvas, preset.mimeType, preset.quality, preset.sizeBudgetKB);
@@ -158,33 +181,35 @@ function computeCenteredCrop(
 ): { cropX: number; cropY: number; cropW: number; cropH: number } {
   const srcAspect = srcW / srcH;
 
-  // Step 1: Identify the smallest side and scale it to shortSidePx
-  const scaleFactor = preset.shortSidePx / Math.min(srcW, srcH);
-  const scaledW = Math.round(srcW * scaleFactor);
-  const scaledH = Math.round(srcH * scaleFactor);
-
-  // Step 2: Compare the other side to longSidePx
-  if (Math.max(scaledW, scaledH) <= preset.longSidePx) {
-    // No cropping needed, return the scaled dimensions
-    return { cropX: 0, cropY: 0, cropW: scaledW, cropH: scaledH };
+  if (preset.fit === 'contain') {
+    // For 'contain', use the entire source image
+    return {
+      cropX: 0,
+      cropY: 0,
+      cropW: srcW,
+      cropH: srcH
+    };
   }
 
-  // Step 3: Proceed with cropping logic if necessary
+  // For 'cover', crop to fill
+  let cropW = srcW;
+  let cropH = srcH;
+  
   if (srcAspect > targetAspect) {
-    // Source is wider → crop width
-    const cropW = Math.round(scaledH * targetAspect);
-    const cropH = scaledH;
-    const cropX = Math.round((scaledW - cropW) / 2);
-    const cropY = 0;
-    return { cropX, cropY, cropW, cropH };
+    // Source is wider than target - match height and crop width
+    cropW = Math.round(srcH * targetAspect);
+    cropH = srcH;
   } else {
-    // Source is taller → crop height
-    const cropW = scaledW;
-    const cropH = Math.round(scaledW / targetAspect);
-    const cropX = 0;
-    const cropY = Math.round((scaledH - cropH) / 2);
-    return { cropX, cropY, cropW, cropH };
+    // Source is taller than target - match width and crop height
+    cropW = srcW;
+    cropH = Math.round(srcW / targetAspect);
   }
+
+  // Center the crop
+  const cropX = Math.round((srcW - cropW) / 2);
+  const cropY = Math.round((srcH - cropH) / 2);
+
+  return { cropX, cropY, cropW, cropH };
 }
 
 /** Decide final target size using preset and (for 'auto') source orientation. */

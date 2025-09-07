@@ -13,7 +13,11 @@ import {
         >
             <ContentWidth small class="h100 flex column gap20">
 
+                <slot name="title" />
+
                 <slot />
+
+                <slot name="scrollMain" />
 
                 <ArchitectureFooter />
             </ContentWidth>

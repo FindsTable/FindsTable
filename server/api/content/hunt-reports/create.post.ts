@@ -27,7 +27,7 @@ event: H3Event
     const currentUser = await validateUser({
         bearerToken: bearerToken,
         fields: [
-            'id', 'huntReports_count', 'username'
+            'id', 'huntReports_count', 'username', 'status', 'finds_count'
         ]
     })
     

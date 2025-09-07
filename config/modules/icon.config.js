@@ -7,6 +7,8 @@ export default {
         'activity': 'material-symbols:person-play-outline-rounded',
         'appSettings': 'tabler:device-desktop-cog',
         'article': 'material-symbols:article-outline-rounded',
+        'arrowRight': 'material-symbols:arrow-right-rounded',
+        'arrowLeft': 'material-symbols:arrow-left-rounded',
         'attributes': 'material-symbols:user-attributes-outline-rounded',
         'back': 'material-symbols:arrow-back-rounded',
         'badges': 'material-symbols:stack-hexagon-outline-rounded',

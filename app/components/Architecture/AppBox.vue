@@ -1,6 +1,8 @@
 <script setup>
 const app = useAppConfig()
+
 onMounted(() => {
+    console.log("setting up theme on appBox")
     if(!useAppConfig().colorMode.active) {
         console.log('fallback color mode setiing')
         useAppConfig().colorMode.setting = 'dark'

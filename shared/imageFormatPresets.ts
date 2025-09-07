@@ -1,3 +1,7 @@
+import {
+    allowedMimeTypes
+} from '#shared/config'
+
 export {
     imageFormatPresets
 }
@@ -17,26 +21,40 @@ const imageFormatPresets : ImageFormatPresets = {
         mimeType: 'image/webp',
         quality: 0.85,
         sizeBudgetKB: 350,
-        allowUpscale: false,
-        filenameSuffix: '_webp_1024min_flex',
+        allowUpscale: true,
+        filenameSuffix: 'finds-table_booty-photo',
+    },
+    find: {
+        shortSidePx: 1080,
+        longSidePx: 1080,
+        orientation: 'auto',
+        fit: 'cover',
+        position: 'center',
+        mimeType: 'image/webp',
+        quality: 0.85,
+        sizeBudgetKB: 350,
+        allowUpscale: true,
+        filenameSuffix: 'finds-table_find',
     }
 }
 
-type ImageFormatPresetKey = 'bootyPhoto'
+type ImageFormatPresetKey = 'bootyPhoto' | 'find'
 
 type ImageFormatPresets = {
     [key in ImageFormatPresetKey]: ImageFormatPreset
 }
 
+type MimeType = 'image/webp'
+
 interface ImageFormatPreset {
     shortSidePx: number
     longSidePx: number
-    orientation: 'auto' | 'landscape' | 'portrait'
+    orientation: 'auto' | 'portrait' | 'landscape'
     fit: 'cover' | 'contain'
     position: 'center' | 'top' | 'bottom' | 'left' | 'right'
-    mimeType: 'image/webp' | 'image/jpeg'
+    mimeType: string
     quality: number
-    sizeBudgetKB: number
+    sizeBudgetKB?: number
     allowUpscale: boolean
     filenameSuffix: string
 }

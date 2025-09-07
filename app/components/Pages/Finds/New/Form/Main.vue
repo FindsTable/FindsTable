@@ -51,27 +51,6 @@ function stringifiedFindItem() {
     });
 }
 
-function stringifiedMetaData() {
-    const meta = {
-        collection: 'Finds',
-        images: []
-    };
-
-    if(
-        Array.isArray(findImages.value) 
-        && findImages.value?.length
-    ) {
-        for(let i = 0; i < findImages.value.length; i++ ) {
-            meta.images[i] = {
-                key: `image${i}`,
-                collection: "Finds_images"
-            };
-        }
-    }
-
-    return JSON.stringify(meta);
-}
-
 const isPending = ref()
 
 async function saveNewFind() {
@@ -79,19 +58,12 @@ async function saveNewFind() {
     isPending.value = true
 
     const fD = new FormData()
-    fD.append('meta', stringifiedMetaData())
     fD.append('item', stringifiedFindItem())
     
-    if(findImages.value?.length) {
-        for(let i = 0; i < findImages.value.length; i++) {
-            //make sure a file is present
-            const file = findImages.value[i]?.file;
-
-            if (file) {
-                fD.append(`image${i}`, file);
-            }
-        }
-    }
+    // Add images if they exist, keeping the original indices
+    // image0 and image1 will be undefined if no image at that index
+    fD.append('image0', findImages.value[0]?.file || undefined)
+    fD.append('image1', findImages.value[1]?.file || undefined)
     
     const res = await $fetch(
         '/api/content/finds/create',
@@ -177,7 +149,7 @@ const formRef = ref()
                     ref="findImageSelectorComponent"
                     :label="t('add images')"
                     :maxImageCount="2"
-                    imageFormatPresetKey="bootyPhoto"
+                    imageFormatPresetKey="find"
                     :disabled="isPending"
                     :boxHeight="'140px'"
                     aspectRatio="1/1"

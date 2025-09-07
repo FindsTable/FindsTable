@@ -16,8 +16,8 @@ const activeImageIndex = ref(0)
         />
 
         <div class="imageBox w100 h100 overflowHidden">
-            <img v-if="find.images.length"
-                :src="`https://admin.findstable.net/assets/${find.images[activeImageIndex].directus_files_id}?key=find-250-jpg`"
+            <img v-if="find.image0"
+                :src="`https://admin.findstable.net/assets/${find.image0}?key=find-250-jpg`"
                 alt="" class="image w100 objectFitCover">
             <img v-else :src="`/images/find-no-image.png`" alt="" class="image w100 objectFitCover">
 

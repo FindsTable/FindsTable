@@ -122,7 +122,7 @@ function tokensAreValid(
 function isValidImageType(mimeType?: string): boolean {
     if (!mimeType) return false
 
-    const allowedTypes = ['image/jpeg', 'image/png']
+    const allowedTypes = ['image/webp']
     return allowedTypes.includes(mimeType)
 }
 
