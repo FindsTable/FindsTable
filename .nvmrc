@@ -1,0 +1,4 @@
+# This file specifies the Node.js version for the project
+# Required by Nuxt 4.x which needs Node.js >= 20.19.0
+# Used by both local development (nvm) and deployment (Netlify)
+20.19.0
