@@ -4,7 +4,7 @@ const user = useUserState()
 </script>
 
 <template>
-    <div class="box ">
+    <div class="box">
         <NuxtLink :to="`/users/${user.id}`" id="sidebarAccountCard" class="
                 -bgColor
                 card block pointer relative">

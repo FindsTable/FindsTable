@@ -30,7 +30,7 @@ onMounted(() => {
         <ArchitectureSideBarMainContentFlowButton
             to="/home?content=finds"
             @click.prevent="handleClick('community')"
-            :selected="appState.layoutState.mainContentFlow === 'community'"
+            :selected="appState?.layoutState?.mainContentFlow === 'community'"
         >
             <template #text>
                 {{ t("sideBarLinks.community") }}
@@ -48,7 +48,7 @@ onMounted(() => {
         <ArchitectureSideBarMainContentFlowButton
             :to="`/users/${user.id}`"
             @click.prevent="handleClick('user')"
-            :selected="appState.layoutState.mainContentFlow === 'user'"
+            :selected="appState?.layoutState?.mainContentFlow === 'user'"
         >
             <template #text>
                 {{ useUserState().value.username }}

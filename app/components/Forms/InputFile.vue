@@ -1,3 +1,9 @@
+<!-- 
+    DEPRECATED
+
+    SHOULD BE REPLACED BY FormsFilePicker.vue
+-->
+
 <script setup>
 const { t } = useI18n()
 const props = defineProps({

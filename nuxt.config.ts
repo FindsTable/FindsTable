@@ -28,7 +28,9 @@ export default defineNuxtConfig({
         dirs: [ 
             '#shared',
             '#shared/types',
-            '#shared/utils'
+            '#shared/utils',
+            '#shared/dataValidation',
+            '#shared/defaultValues'
         ],
     },
 
