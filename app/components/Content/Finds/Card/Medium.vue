@@ -23,13 +23,13 @@ const showComments = ref(false)
             >
                 <img 
                     v-if="find.image0"
-                    :src="`https://admin.findstable.net/assets/${find.image0}?key=find-250-jpg`"
+                    :src="`https://admin.findstable.net/assets/${find.image0}`"
                     alt="" 
                     class="image w100 objectFitCover full"
                 >
                 <img 
                     v-if="find.image1"
-                    :src="`https://admin.findstable.net/assets/${find.image1}?key=find-250-jpg`"
+                    :src="`https://admin.findstable.net/assets/${find.image1}`"
                     alt="" 
                     class="image w100 objectFitCover full"
 
