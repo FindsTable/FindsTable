@@ -6,7 +6,11 @@ const selectedMetals = ref([])
 const selectedPeriod = ref()
 const selectedType = ref()
 
-const findImages = ref(null)
+const findImageSelectorComponent = ref(null)
+
+const findImages = computed(() => {
+    return findImageSelectorComponent.value?.images || []
+})
 
 const dating = ref({
     markedYear: null,
@@ -53,7 +57,10 @@ function stringifiedMetaData() {
         images: []
     };
 
-    if(findImages.value?.length) {
+    if(
+        Array.isArray(findImages.value) 
+        && findImages.value?.length
+    ) {
         for(let i = 0; i < findImages.value.length; i++ ) {
             meta.images[i] = {
                 key: `image${i}`,
@@ -77,7 +84,12 @@ async function saveNewFind() {
     
     if(findImages.value?.length) {
         for(let i = 0; i < findImages.value.length; i++) {
-            fD.append(`image${i}`, findImages.value[i])
+            //make sure a file is present
+            const file = findImages.value[i]?.file;
+
+            if (file) {
+                fD.append(`image${i}`, file);
+            }
         }
     }
     
@@ -106,6 +118,7 @@ async function saveNewFind() {
         navigateTo(`/finds/${res.data.id}`)
         navigateTo(`/home?content=finds`)
     } else {
+        console.error('Error saving new find:', res);
         useToaster("show", {
             id: "newFind",
             type: "error",
@@ -161,7 +174,7 @@ const formRef = ref()
 
             <div class="section">
                 <FormsNewItemImageSelector
-                    ref="findImages"
+                    ref="findImageSelectorComponent"
                     :label="t('add images')"
                     :maxImageCount="2"
                     imageFormatPresetKey="bootyPhoto"

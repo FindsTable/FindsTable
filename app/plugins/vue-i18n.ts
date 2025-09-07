@@ -1,29 +1,27 @@
 import { createI18n } from 'vue-i18n'
 
-// Function to dynamically load and merge translation files
 async function loadLocaleMessages(locale: string) {
-  const files = [
-    'legal.json',
-    'forms.json',
-    'global.json',
-    'pages.json',
-    'activity.json',
-    'messages/info.json',
-    'messages/error.json',
-    'messages/success.json',
-    'messages/tip.json',
-    'messages/warning.json',
-  ];
+  const files = {
+    'legal.json': () => import(`../locales/${locale}/legal.json`),
+    'forms.json': () => import(`../locales/${locale}/forms.json`),
+    'global.json': () => import(`../locales/${locale}/global.json`),
+    'pages.json': () => import(`../locales/${locale}/pages.json`),
+    'activity.json': () => import(`../locales/${locale}/activity.json`),
+    'messages/info.json': () => import(`../locales/${locale}/messages/info.json`),
+    'messages/error.json': () => import(`../locales/${locale}/messages/error.json`),
+    'messages/success.json': () => import(`../locales/${locale}/messages/success.json`),
+    'messages/tip.json': () => import(`../locales/${locale}/messages/tip.json`),
+    'messages/warning.json': () => import(`../locales/${locale}/messages/warning.json`),
+  };
 
   const messages = {};
 
-  for (const file of files) {
-    const filePath = `../locales/${locale}/${file}`;
+  for (const [file, loader] of Object.entries(files)) {
     try {
-      const content = await import(filePath);
+      const content = await loader();
       Object.assign(messages, content.default || content);
     } catch (error) {
-      console.warn(`Could not load ${filePath}:`, error);
+      console.warn(`Could not load ${file}:`, error);
     }
   }
 
@@ -46,10 +44,4 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   });
 
   nuxtApp.vueApp.use(i18n);
-
-//   return {
-//     provide: {
-//       i18n,
-//     },
-//   };
 });
