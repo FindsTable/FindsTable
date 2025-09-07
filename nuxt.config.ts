@@ -8,8 +8,6 @@ const devServerConfig = {
     cert: readFileSync('./certificates/cert.pem', 'utf-8')
     }
 }
-import i18n from './i18n.config';
-
 
 export default defineNuxtConfig({
 
@@ -61,7 +59,6 @@ export default defineNuxtConfig({
     ],
 
     modules: [
-    '@nuxtjs/i18n', 
     '@vueuse/nuxt', 
     '@nuxt/icon', 
     '@nuxt/image',
@@ -80,8 +77,6 @@ export default defineNuxtConfig({
         }
     },
 
-    // i18n,
-
     runtimeConfig: {
         DIRECTUS_URL: process.env.DIRECTUS_URL,
         APP_ACCESS_TOKEN: process.env.APP_ACCESS_TOKEN,
@@ -96,16 +91,6 @@ export default defineNuxtConfig({
         public: {
             PATREON_FINDSTABLENET_CLIENT_ID: "r7HFLdQrNEoACYei5OPCD9jnU444NrL--juMyULyACAUKWpue7SXI4JBgiG8BqND",
         }
-      },
-
-      // routeRules: {
-      //     '/': { ssr: true },
-      //     '/privacy': { ssr: true },
-      //     '/legal-notice': { ssr: true },
-      //     '/home': { ssr: false }
-      // }
-      future: {
-          compatibilityVersion: 4
       },
 
       compatibilityDate: '2024-11-25'

@@ -63,6 +63,8 @@ export default {
         'plus': 'material-symbols:add',
         'search': 'material-symbols:search-rounded',
         'send': 'material-symbols:send-rounded',
+        'starEmpty': 'material-symbols:star-outline-rounded',
+        'starFull': 'material-symbols:star-rounded',
         'success': 'icon-park-outline:success',
         'tip': 'material-symbols:tips-and-updates-outline-rounded',
         'unchecked': 'mdi:checkbox-blank-outline',

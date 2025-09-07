@@ -1,17 +1,24 @@
+import { useI18n } from 'vue-i18n'
+
 export {
     use$t,
-    useLocaleText
+    useLocaleText,
+    useI18n
 }
 
 function use$t(messagePath: string): string {
-    return useNuxtApp().$i18n.t(messagePath) as string
+    const { t } = useI18n()
+    return t(messagePath) as string
 }
 
-type Locale = 'fr' | 'en'
+
+type Locale = 'fr' | 'en';
 
 function useLocaleText(
-    p: Record<Locale, string>
+  p: Record<Locale, string> 
 ): string {
-  const locale = useNuxtApp().$i18n.locale.value as Locale
-  return p[locale]
+  const { locale } = useI18n();
+  const currentLocale = locale.value as Locale;
+
+  return p[currentLocale] || p['en'];
 }

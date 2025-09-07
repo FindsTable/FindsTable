@@ -2,7 +2,7 @@
 
 export function useParseDate(timeStamp) {
 
-    const localeCode = useNuxtApp().$i18n.locale
+    const localeCode = useI18n().locale
 
     const d = new Date(timeStamp)
 

@@ -69,24 +69,24 @@
         "title": "Privacy Policy",
         "lastUpdated": "[Insert Date]",
         "sections": {
-          "intro": {
-            "title": "Introduction",
-            "text": "At Findstable, we value your privacy and are committed to transparency and ethical data practices. We do not use ads or cookies to track users, and we will never share or sell your personal data."
-          },
-          "dataCollection": {
-            "title": "Data Collection",
-            "text": "The only personal data we request the right to use is your username (username). We do not require or collect any additional personal information."
-          },
-          "dataStorage": {
-            "title": "Data Storage and Hosting",
-            "text": "Currently, our application is hosted on Netlify and our database is hosted on IONOS. We strive to be transparent about our data storage practices. However, we do not have full control over or detailed information about the physical location of our servers. While it is possible that data may be stored in the USA, France, or other jurisdictions, we are committed to handling your data ethically and responsibly."
-          },
-          "recommendation": {
-            "title": "Data Recommendations",
-            "text": "We recommend that you do not store sensitive or critical personal data on our platform. Our services are designed for social interaction and the sharing of finds, and we encourage you to use caution when deciding what information to share."
-          }
+            "intro": {
+                "title": "Introduction",
+                "text": "At Findstable, we value your privacy and are committed to transparency and ethical data practices. We do not use ads or cookies to track users, and we will never share or sell your personal data."
+            },
+            "dataCollection": {
+                "title": "Data Collection",
+                "text": "The only personal data we request the right to use is your username (username). We do not require or collect any additional personal information."
+            },
+            "dataStorage": {
+                "title": "Data Storage and Hosting",
+                "text": "Currently, our application is hosted on Netlify and our database is hosted on IONOS. We strive to be transparent about our data storage practices. However, we do not have full control over or detailed information about the physical location of our servers. While it is possible that data may be stored in the USA, France, or other jurisdictions, we are committed to handling your data ethically and responsibly."
+            },
+            "recommendation": {
+                "title": "Data Recommendations",
+                "text": "We recommend that you do not store sensitive or critical personal data on our platform. Our services are designed for social interaction and the sharing of finds, and we encourage you to use caution when deciding what information to share."
+            }
         },
         "consent": "By using Findstable, you acknowledge that you have read and understood this Privacy Policy. We are committed to protecting your privacy and handling your data with care."
-      },
+    }
 }
 

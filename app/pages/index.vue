@@ -4,6 +4,7 @@ import {
     PagesIndexLoginSignupForm as LoginSignup,
     ArchitecturePanelMain as Panel
 } from '#components'
+
 const { t, locale } = useI18n();
 
 const messages = {
@@ -21,6 +22,7 @@ definePageMeta({
 </script>
 
 <template>
+    
     <NuxtLayout name="public-route">
         <Panel>
             <Welcome />
@@ -42,10 +44,6 @@ definePageMeta({
             <p class="underConstruction pad10 marTop20">
                 {{ t('page.landing.patreonLink') }}
             </p>
-
-            <!-- <p class="underConstruction pad10 marTop20">
-                {{ t(messages.underConstruction[locale]) }}
-            </p> -->
 
             <div class="centered marTop20">
                 <NuxtLink class="block comp-button -filled patreonLink flex alignCenter justifyCenter pointer"

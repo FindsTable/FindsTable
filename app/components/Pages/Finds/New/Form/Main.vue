@@ -3,9 +3,10 @@ const { t } = useI18n()
 const title = ref('')
 const description = ref('')
 const selectedMetals = ref([])
-const selectedImages = ref()
 const selectedPeriod = ref()
 const selectedType = ref()
+
+const findImages = ref(null)
 
 const dating = ref({
     markedYear: null,
@@ -52,8 +53,8 @@ function stringifiedMetaData() {
         images: []
     };
 
-    if(selectedImages.value?.length) {
-        for(let i = 0; i < selectedImages.value.length; i++ ) {
+    if(findImages.value?.length) {
+        for(let i = 0; i < findImages.value.length; i++ ) {
             meta.images[i] = {
                 key: `image${i}`,
                 collection: "Finds_images"
@@ -74,9 +75,9 @@ async function saveNewFind() {
     fD.append('meta', stringifiedMetaData())
     fD.append('item', stringifiedFindItem())
     
-    if(selectedImages.value?.length) {
-        for(let i = 0; i < selectedImages.value.length; i++) {
-            fD.append(`image${i}`, selectedImages.value[i])
+    if(findImages.value?.length) {
+        for(let i = 0; i < findImages.value.length; i++) {
+            fD.append(`image${i}`, findImages.value[i])
         }
     }
     
@@ -159,12 +160,19 @@ const formRef = ref()
             </TH2>
 
             <div class="section">
-                <FormsNewItemFindsImages
-                v-model="selectedImages"
+                <FormsNewItemImageSelector
+                    ref="findImages"
+                    :label="t('add images')"
+                    :maxImageCount="2"
+                    imageFormatPresetKey="bootyPhoto"
+                    :disabled="isPending"
+                    :boxHeight="'140px'"
+                    aspectRatio="1/1"
+                    class="marTop10"
+                    :showImageSlots="true"
+                    :showFilePicker="false"
                 />
             </div>
-
-            
         </ArchitecturePanelMain>
 
         <template class="centered">

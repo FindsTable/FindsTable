@@ -55,6 +55,7 @@ const nativeInput = ref<HTMLInputElement | null>(null)
 
 function openFileDialog() {
     if (props.disabled) return
+
     nativeInput.value?.click()
 }
 
