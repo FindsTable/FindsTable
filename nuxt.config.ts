@@ -80,7 +80,7 @@ export default defineNuxtConfig({
         }
     },
 
-    i18n,
+    // i18n,
 
     runtimeConfig: {
         DIRECTUS_URL: process.env.DIRECTUS_URL,

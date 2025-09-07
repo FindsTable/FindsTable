@@ -1,0 +1,72 @@
+[33ma3acb87[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m some more clean ups. commit before i18n update
+[33m06c6a11[m[33m ([m[1;32mversion4[m[33m)[m more cleanups
+[33m4e3d087[m[33m ([m[1;31mgithub/version4[m[33m)[m upgrade to version 4
+[33ma9e6f2b[m[33m ([m[1;31mgithub/main[m[33m)[m imageFormatPresets in shared folder
+[33mafd2b23[m new filePicker and NewItemImageSelector
+[33mb190f85[m switch comment
+[33mf1a0962[m switchBasic renamed
+[33md550f17[m css components clean ups, FormsSwitch simplified
+[33m092ff0f[m hunt reports working for users, banner uploading to hunt report, users/hunt-reports/[id] created
+[33mdd4f287[m sideBar remade, some clean ups
+[33me91f131[m hunt reports
+[33m790269f[m new hunt report all components created
+[33md915ab3[m oups
+[33m0da9a7f[m corrections
+[33m9ec5895[m directus colelction typing, new hunt report form
+[33m47d7896[m userContent with refresh collection, default variation for badges
+[33mf1fdda2[m badges revamped with Badge_variations collection.  userContent, appContent
+[33m669f9aa[m differedFetch and directFetch returned from useDirectAsyncFetch, finds page fixed and revamped, useCache deleted
+[33m203a5bd[m avatar deletion corrected
+[33m8080a53[m revamped the email verification process after signup
+[33m0102a3d[m /api/content/deleteItems endpoint
+[33m712b9b0[m huge clean up, deleted plugins for getiing data, addes useDirectAsyncFetch
+[33ma8d51f1[m useDirectFetch
+[33m07d86c4[m directus new like and like deleted flows, likes_count field on finds
+[33mea0c3fb[m no title for finds, bookmarks
+[33m1d27050[m finds title and description repaired, hacky field validation
+[33m307bed4[m finds description, no title
+[33me81dc5a[m item count querying the main collection, not hte user
+[33mcbab8d5[m clean up
+[33mef4b838[m all collection with uuid, Finds_comments, content/comments for all content types
+[33mebac812[m useFeed
+[33m8abc4eb[m Merge branch 'nuxt316'
+[33m99e7ea7[m[33m ([m[1;32mnuxt316[m[33m)[m nuxt 3.16 update
+[33md0997b8[m notifications clean ups
+[33m6e70f8b[m notifications done !
+[33m302893f[m new reaction buttons, notification composable and page
+[33m0d1d11c[m coolie expiresAt test
+[33m38bb0ea[m find card repain, new find navigate to home/finds
+[33md701040[m Merge branch 'main' of https://github.com/FindsTable/FindsTable
+[33m463c841[m like button for finds cards, directus post to directus for likes
+[33m4267ebe[m local certificates
+[33m895705a[m mini tool bar on finds cards, policies env vars
+[33mfa088cb[m reorganizaton of component/fand and thoughts, better reusability of the tabs
+[33m44235d5[m finds and thought max count
+[33me11ea88[m maximum of 6 finds
+[33m2466f44[m Thought repaires !
+[33m3ab7221[m legal notice, privacy, coockie policie
+[33m4e19199[m new find interface made better, translations, layout improvements
+[33m2a98d15[m new find creation, files umpload
+[33m3d55d65[m dynamib cropping size in cropper modal, new find images component
+[33m071ca04[m item creation through nitro app, reading items directly to directus. new find form
+[33mc9a0c89[m local host ssl certificates, hosts file updated for using dev.findstable.net, /api/assets not used anymore, direct image fetching to directus
+[33mb945485[m APP_CONTECT env var
+[33mf2790d4[m cookie_prod test
+[33m7cb4810[m .findstable cookie test
+[33m4915713[m loginc correction, get cached data : useCache before localStorage
+[33m867febb[m app version, appconfig type, localStorage cahing, useCache compoasable
+[33m041d2cc[m find card with css
+[33ma78ee96[m finds tab on home page, finds page, cahce for thoughts, finds and itemCache when navigating to find page
+[33mac057e9[m avatar repair again
+[33m803338c[m user.avatar small update, arch_scrollBottonPadding class for romm at bottom of scroll element
+[33m8b1a9f3[m user.avatar in thoughts and comments
+[33m4052d79[m user.avatar for other users
+[33m9a55e9e[m currentAvatar and avatar in directus user object
+[33m9b059ae[m thoughts pages and new though rendered seperatly
+[33me50e8e7[m thoughts sorted by date
+[33m19866f9[m like comment translations
+[33mb25672b[m danger zone translations, line resks in thoughs display
+[33m502a073[m danger zone, delete user
+[33m286ce5b[m legal links, footer out
+[33mcc79e63[m directus mods, user records all m2o.  creation of these records is handled by the email verif end poin when updating the user
+[33m5724177[m first commit repo moved to findstable account
