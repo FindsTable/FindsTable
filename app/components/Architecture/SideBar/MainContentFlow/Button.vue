@@ -7,7 +7,8 @@ const props = defineProps({
 <template>
     <NuxtLink 
             :to="to"
-            class="pointer comp-button -shaped flex gap5 alignCenter justifyEnd"
+            class="
+                flowButton grow pointer comp-button -shaped flex alignCenter"
             :class="selected ? 'selected' : ''"
         >
         
@@ -22,14 +23,19 @@ const props = defineProps({
 </template>
 
 <style scoped>
-.comp-button {
+.sideBar .comp-button {
     height: 48px;
 }
-
-/* .comp-button {
-    filter: grayscale(1);
+.mobileTopBar .comp-button {
+    height: auto;
 }
-.comp-button.selected {
-    filter: grayscale(0);
-} */
+
+ .sideBar .flowButton {
+    justify-content:flex-end;
+    gap: 5px;
+ }
+  .mobileTopBar .flowButton {
+    justify-content: center;
+    gap: 10px;
+ }
 </style>

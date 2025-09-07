@@ -2,7 +2,10 @@
 const cache = useCache()
 const props = defineProps({
     find: Object,
-    format: String
+    format: {
+        type: String,
+        default: 'medium'
+    }
 })
 const emit = defineEmits(['deleteFind'])
 
@@ -15,24 +18,23 @@ function handleClick() {
 </script>
 
 <template>
-    <div v-if="find">
-        <ContentFindsCardImageOnly
+    <div v-if="find" class="w100">
+        <!-- <ContentFindsCardImageOnly
             v-if="format === 'image'"
             @click="handleClick"
             :find="find"
             :activeImageIndex="activeImageIndex"
-        />
+        /> -->
 
-        <ContentFindsCardSmall
+        <!-- <ContentFindsCardSmall
             v-if="format === 'small'"
             @click="handleClick"
             :find="find"
             :activeImageIndex="activeImageIndex"
             @deleteFind="emit('deleteFind', find.id)"
-        />
+        /> -->
 
         <ContentFindsCardMedium
-            v-if="format === 'medium'"
             @click="handleClick"
             :find="find"
             :activeImageIndex="activeImageIndex"

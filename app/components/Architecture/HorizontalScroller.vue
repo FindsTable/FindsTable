@@ -71,7 +71,7 @@ const goToSlide = (index: number) => {
             scroller-wrapper 
             relative
             flex alignCenter
-            w100
+            full
     ">
         <!-- Previous Button -->
         <button 
@@ -86,7 +86,12 @@ const goToSlide = (index: number) => {
 
         <div 
             ref="container"
-            class="scrollerContainer"
+            class="
+                scrollerContainer 
+                full
+                flex
+
+            "
             :style="{ gap: `${gap}px` }"
         >
             <slot />
@@ -119,15 +124,15 @@ const goToSlide = (index: number) => {
 
 <style scoped>
 .scrollerContainer {
-  display: flex;
   overflow-x: auto;
+  overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   touch-action: pan-x pan-y pinch-zoom; /* Allow both horizontal and vertical scroll */
-  flex: 1;
+  /* flex: 1; */
   position: relative; /* For proper stacking context */
 }
 
@@ -179,8 +184,8 @@ const goToSlide = (index: number) => {
   flex-shrink: 0;
   scroll-snap-align: start;
   scroll-snap-stop: always;
-  pointer-events: none; /* Prevent mouse events on children */
-  user-select: none; /* Prevent text selection while dragging */
+  pointer-events: none;
+  user-select: none; 
 }
 
 .navigationDots {

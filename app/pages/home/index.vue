@@ -29,8 +29,9 @@ onMounted(() => {
 <template>
     <NuxtLayout name="private-route">
         <template #topContent>
-            <ContentThoughtsNew showAvatar/>
+            
         </template>
+
         <template #tabs>
             <ArchitecturePageTabsFTHAContent  :selectedTab="selectedTab" @changeTab="changeTab" />
         </template>
@@ -40,6 +41,10 @@ onMounted(() => {
         </template>
 
         <template #scrollMain>
+            <div class="mobileWidthContainer">
+                <ContentThoughtsNew showAvatar/>
+            </div>
+            
             <div 
                 v-if="useUserState().value.id"
                 class="tabContent"

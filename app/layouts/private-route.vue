@@ -21,9 +21,17 @@ const appState = useAppState()
                             safeArea -full
                             flex column
                         ">
+
+                        <div>
+                            <slot name="topBar">
+                                <ArchitectureMobileTopBar
+                                    class="mobileTopBar"
+                                />
+                            </slot>
+                        </div>
+
                         <div>
                             <slot name="topContent">
-
                             </slot>
                         </div>
                         <nav>
@@ -92,6 +100,9 @@ const appState = useAppState()
 }
 
 @media (min-width: 769px) {
+    .mobileTopBar {
+        display: none;
+    }
     .mobile_bottomBar {
         display: none;
     }
@@ -101,6 +112,9 @@ const appState = useAppState()
 }
 
 @media (max-width: 768px) {
+    .mobileTopBar {
+        display: flex;
+    }
     .mobile_bottomBar {
         display: flex;
     }

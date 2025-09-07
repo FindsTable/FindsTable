@@ -11,29 +11,53 @@ const showComments = ref(false)
 </script>
 
 <template>
-    <article v-if="find" class="card -surface1 flex column gap10 pointer justifyEnd">
+    <article 
+        v-if="find" 
+        class="
+            card -surface1 
+            flex column gap10 pointer justifyEnd
+        "
+    >
         <ContentFindsCardMiniToolBar
             v-if="me.id === find.owner.id"
             @deleteFind="emit('deleteFind')"
         />
 
-        <div class="imageBox full overflowHidden">
+        <div class="imageBox w100 overflowHidden">
+
             <ArchitectureHorizontalScroller 
                 :gap="10"
             >
-                <img 
-                    v-if="find.image0"
-                    :src="`https://admin.findstable.net/assets/${find.image0}`"
-                    alt="" 
-                    class="image w100 objectFitCover full"
+                <picture 
+                    v-if="find.image0" 
+                    class="shrink0 w100"
                 >
-                <img 
-                    v-if="find.image1"
-                    :src="`https://admin.findstable.net/assets/${find.image1}`"
-                    alt="" 
-                    class="image w100 objectFitCover full"
+                    <source 
+                        :srcset="`https://admin.findstable.net/assets/${find.image0}?key=find-250-webp`" 
+                        type="image/webp"
+                    >
+                    <img 
+                        :src="`https://admin.findstable.net/assets/${find.image0}?key=find-250-jpg`"
+                        alt="" 
+                        class="image w100"
+                    >
+                </picture>
 
+                <picture 
+                    v-if="find.image1" 
+                    class="shrink0 w100"
                 >
+                    <source 
+                        :srcset="`https://admin.findstable.net/assets/${find.image1}?key=find-250-webp`" 
+                        type="image/webp"
+                    >
+                    <img 
+                        :src="`https://admin.findstable.net/assets/${find.image1}?key=find-250-jpg`"
+                        alt="" 
+                        class="image w100 objectFitCover full"
+                    >
+                </picture>
+
                 <img 
                     v-if="!find.image0 && !find.image1"
                     :src="`/images/find-no-image.png`" 
@@ -92,7 +116,7 @@ const showComments = ref(false)
 .card {
     align-self: last baseline;
     flex-shrink: 0;
-    width: 450px;
+    width: min(450px, 100%);
     font-family: sans-serif;
     padding: 12px;
     border-radius: 16px;

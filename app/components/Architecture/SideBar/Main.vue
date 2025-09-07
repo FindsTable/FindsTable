@@ -7,7 +7,9 @@
             class="flex column gap10"
         >
             <ArchitectureSideBarHomeButtonMain />
-            <ArchitectureSideBarMainContentFlowMain />
+            <ArchitectureSideBarMainContentFlowMain
+                class="column gap10"
+            />
         </div>
 
         <ArchitectureSideBarMenuMain />

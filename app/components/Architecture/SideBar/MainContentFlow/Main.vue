@@ -26,7 +26,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="flex column gap10">
+    <div class="flex w100">
         <ArchitectureSideBarMainContentFlowButton
             to="/home?content=finds"
             @click.prevent="handleClick('community')"
