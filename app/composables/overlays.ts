@@ -1,4 +1,10 @@
-export const useModalState = () => {
+export {
+    useModalState,
+    useModal,
+    useItemViewerState
+}
+
+const useModalState = () => {
     return useState<{
         visible: boolean
         modal?: string
@@ -34,7 +40,7 @@ export const useModalState = () => {
     );
 }
 
-export function useModal() {
+function useModal() {
     const modalState = useModalState()
 
     const openModal = (p: {
@@ -90,4 +96,22 @@ export function useModal() {
         confirm,
         cancel
     }
+}
+
+const useItemViewerState = () => {
+    return useState('itemViewerState', () => ({
+        visible: false,
+        collection: null,
+        id: null,
+        item: null,
+        reset: resetItemViewerState
+    }))
+}
+
+function resetItemViewerState() {
+    const itemViewer = useItemViewerState()
+    itemViewer.value.visible = false
+    itemViewer.value.collection = null
+    itemViewer.value.id = null
+    itemViewer.value.item = null
 }

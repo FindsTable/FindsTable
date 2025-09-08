@@ -68,7 +68,7 @@ const goToSlide = (index: number) => {
 <template>
     <div 
         class="
-            scroller-wrapper 
+            scrollerWrapper 
             relative
             flex alignCenter
             full
@@ -76,8 +76,8 @@ const goToSlide = (index: number) => {
         <!-- Previous Button -->
         <button 
             v-if="showArrows && totalSlides > 1" 
-            class="navButton prev" 
-            @click="goToSlide(currentIndex - 1)"
+            class="navButton prev pointer" 
+            @click.stop="goToSlide(currentIndex - 1)"
             :disabled="currentIndex === 0"
             aria-label="Previous slide"
         >
@@ -100,8 +100,8 @@ const goToSlide = (index: number) => {
         <!-- Next Button -->
         <button 
             v-if="showArrows && totalSlides > 1" 
-            class="navButton next" 
-            @click="goToSlide(currentIndex + 1)"
+            class="navButton next pointer" 
+            @click.stop="goToSlide(currentIndex + 1)"
             :disabled="currentIndex === totalSlides - 1"
             aria-label="Next slide"
         >
@@ -123,6 +123,9 @@ const goToSlide = (index: number) => {
 </template>
 
 <style scoped>
+.scrollerWrapper {
+    isolation: isolate;
+}
 .scrollerContainer {
   overflow-x: auto;
   overflow-y: hidden;
@@ -132,8 +135,9 @@ const goToSlide = (index: number) => {
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   touch-action: pan-x pan-y pinch-zoom; /* Allow both horizontal and vertical scroll */
-  /* flex: 1; */
+  flex: 1;
   position: relative; /* For proper stacking context */
+    
 }
 
 .navButton {

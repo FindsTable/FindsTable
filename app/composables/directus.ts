@@ -1,6 +1,6 @@
 import type {
     Method
-} from '@/types/directusData'
+} from '@@/types/directusData'
 
 export {
     useDirectAsyncFetch,
@@ -22,7 +22,7 @@ function useDirectAsyncFetch<T = any>(
     const isPending = ref(false)
   
     async function directFetch<Expected>(
-        method: Method,
+        method: Method ,
         path: string,
         options?: Options
     ): Promise<{ response: Expected | null, error: any | null }> {

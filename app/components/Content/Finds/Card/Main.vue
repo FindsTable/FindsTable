@@ -1,4 +1,6 @@
 <script setup>
+const itemViewer = useItemViewerState()
+
 const cache = useCache()
 const props = defineProps({
     find: Object,
@@ -12,13 +14,18 @@ const emit = defineEmits(['deleteFind'])
 const activeImageIndex = ref(0)
 
 function handleClick() {
-    cache.value.navigation = props.find
-    navigateTo(`/finds/${props.find.id}`)
+    itemViewer.value.item = props.find
+    itemViewer.value.collection = 'Finds'
+    itemViewer.value.id = props.find.id
+    itemViewer.value.visible = true
+    // cache.value.navigation = props.find
+    // navigateTo(`/finds/${props.find.id}`)
+
 }
 </script>
 
 <template>
-    <div v-if="find" class="w100">
+    <div v-if="find" class="w100 pointer">
         <!-- <ContentFindsCardImageOnly
             v-if="format === 'image'"
             @click="handleClick"

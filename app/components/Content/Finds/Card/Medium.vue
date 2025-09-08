@@ -34,6 +34,7 @@ const showComments = ref(false)
                     :sources="[
                         { presetKey: 'find-250-webp', mimeType: 'image/webp' }
                     ]"
+                    fallbackUrl="/images/find-no-image.png"
                     class="shrink0 w100 image"
                 />
 
@@ -43,8 +44,18 @@ const showComments = ref(false)
                     :sources="[
                         { presetKey: 'find-250-webp', mimeType: 'image/webp' }
                     ]"
+                    fallbackUrl="/images/find-no-image.png"
                     class="shrink0 w100 image objectFitCover full"
                 />
+
+                <div 
+                    v-if="find.description"
+                    class="descriptionSlide shrink0 full"
+                >
+                    <Tp>
+                        {{ find.description }}
+                    </Tp>
+                </div>
 
                 <HtmlPictureMain
                     v-if="!find.image0 && !find.image1"
@@ -100,6 +111,13 @@ const showComments = ref(false)
 </template>
 
 <style scoped>
+.descriptionSlide {
+    font-size: 18px;
+    font-weight: 500;
+    padding: 50px;
+    overflow: scroll;
+    background-color: var(--tone-kaki-90);
+}
 .card {
     align-self: last baseline;
     flex-shrink: 0;

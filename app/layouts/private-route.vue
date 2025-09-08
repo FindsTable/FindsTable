@@ -5,12 +5,19 @@ const appState = useAppState()
 <template>
     <div 
         v-if="useUserState().value.isLoggedIn"
-        class="full flex column justifyEnd"
+        class="full flex column justifyEnd isolate"
     >
-        <div class="grow flex w100 relative ">
-            <nav class="sideBarBox relative" :class="{ 
+        <div 
+            class="grow flex w100 relative"
+        >
+            <nav 
+                class="
+                    sideBarBox relative
+                " 
+                :class="{ 
                     'active' : appState.showSideBar
-                }">
+                }"
+            >
                 <ArchitectureToolBarsSideBarMain />
             </nav>
 
@@ -40,7 +47,7 @@ const appState = useAppState()
                             </slot>
                         </nav>
 
-                        <main class="overflowScroll -scrollY flex column h100 contentBottomSpace">
+                        <main class="relative overflowScroll -scrollY flex column h100 contentBottomSpace">
                             <TH1>
                                 <slot name="title">
 
@@ -54,25 +61,21 @@ const appState = useAppState()
                             </div>
                             
                             <slot name="noScrollMain">
-
+                                
                             </slot>
 
                             <div class="scrollContentMinHeight">
                                 <slot name="scrollMain">
-
 
                                 </slot>
                             </div>
                         </main>
                     </div>
                 </div>
-
-                <!-- <div class="liveBox -surface1">
-
-                </div> -->
-               
             </div>
         </div>
+
+        <ArchitectureOverlayItemViewerMain />
 
         <div class="mobile_bottomBar">
             <ArchitectureToolBarsBottomBar />

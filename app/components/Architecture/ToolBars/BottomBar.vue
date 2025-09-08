@@ -10,6 +10,7 @@ function toggleSideBar() {
 <template>
     <div 
         class="
+            isolate
             bottomBar
             full flex justifyEvenly alignCenter gap20
         "
