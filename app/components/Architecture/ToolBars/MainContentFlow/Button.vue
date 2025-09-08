@@ -23,19 +23,19 @@ const props = defineProps({
 </template>
 
 <style scoped>
-.sideBar .comp-button {
+.sideBar .flowButton {
     height: 48px;
 }
-.mobileTopBar .comp-button {
+.mobileTopBar .flowButton {
     height: auto;
+    font-size: 10px;
 }
-
- .sideBar .flowButton {
+.sideBar .flowButton {
     justify-content:flex-end;
     gap: 5px;
- }
-  .mobileTopBar .flowButton {
+}
+.mobileTopBar .flowButton {
     justify-content: center;
     gap: 10px;
- }
+}
 </style>

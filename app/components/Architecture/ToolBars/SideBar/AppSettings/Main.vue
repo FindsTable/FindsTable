@@ -8,7 +8,7 @@ const appState = useAppState()
             appState.findViewer.active is handled 
             by the route watcher in composable/appState
          -->
-        <ArchitectureSideBarAppSettingsFindsViewer
+        <ArchitectureToolBarsSideBarAppSettingsFindsViewer
             
             v-if="appState.findViewer.active" 
         />

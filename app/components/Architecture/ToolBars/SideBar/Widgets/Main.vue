@@ -17,7 +17,7 @@ import {
             <FullScreen />
         </div>
 
-        <ArchitectureSideBarLegalLinks />
+        <ArchitectureToolBarsSideBarLegalLinks />
     </div>
 </template>
 

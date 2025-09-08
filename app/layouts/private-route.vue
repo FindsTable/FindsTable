@@ -11,7 +11,7 @@ const appState = useAppState()
             <nav class="sideBarBox relative" :class="{ 
                     'active' : appState.showSideBar
                 }">
-                <ArchitectureSideBarMain />
+                <ArchitectureToolBarsSideBarMain />
             </nav>
 
             <div class="relative grow h100 flex">
@@ -24,8 +24,8 @@ const appState = useAppState()
 
                         <div>
                             <slot name="topBar">
-                                <ArchitectureMobileTopBar
-                                    class="mobileTopBar"
+                                <ArchitectureToolBarsTopBar
+                                    class="TopBar"
                                 />
                             </slot>
                         </div>
@@ -75,7 +75,7 @@ const appState = useAppState()
         </div>
 
         <div class="mobile_bottomBar">
-            <ArchitectureMobileBottomBar />
+            <ArchitectureToolBarsBottomBar />
         </div>
     </div>
 </template>
@@ -100,7 +100,7 @@ const appState = useAppState()
 }
 
 @media (min-width: 769px) {
-    .mobileTopBar {
+    .TopBar {
         display: none;
     }
     .mobile_bottomBar {
@@ -112,7 +112,7 @@ const appState = useAppState()
 }
 
 @media (max-width: 768px) {
-    .mobileTopBar {
+    .TopBar {
         display: flex;
     }
     .mobile_bottomBar {

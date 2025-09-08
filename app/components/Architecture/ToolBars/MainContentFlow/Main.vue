@@ -27,7 +27,7 @@ onMounted(() => {
 
 <template>
     <div class="flex w100">
-        <ArchitectureSideBarMainContentFlowButton
+        <ArchitectureToolBarsMainContentFlowButton
             to="/home?content=finds"
             @click.prevent="handleClick('community')"
             :selected="appState?.layoutState?.mainContentFlow === 'community'"
@@ -40,12 +40,12 @@ onMounted(() => {
                 <Icon
                     class="marTop5"
                     name="global"
-                    size="30px"
+                    size="24px"
                 />
             </template>
-        </ArchitectureSideBarMainContentFlowButton>
+        </ArchitectureToolBarsMainContentFlowButton>
 
-        <ArchitectureSideBarMainContentFlowButton
+        <ArchitectureToolBarsMainContentFlowButton
             :to="`/users/${user.id}`"
             @click.prevent="handleClick('user')"
             :selected="appState?.layoutState?.mainContentFlow === 'user'"
@@ -58,9 +58,9 @@ onMounted(() => {
                 <ArchitectureFramesAvatar 
                     :file-id="useUserState().value.avatar"
                     round
-                    width="30px"
+                    width="24px"
                 />
             </template>
-        </ArchitectureSideBarMainContentFlowButton>
+        </ArchitectureToolBarsMainContentFlowButton>
     </div>
 </template>

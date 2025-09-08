@@ -95,14 +95,6 @@ const typeSafeUserId = computed(() => {
                 </div>
             </div>
 
-            <div class="marTop20">
-                <TH2>
-                    {{ t( locale === 'fr' ? 'Quoi de neuf' : 'New thought') }}
-                </TH2>
-
-                <ContentThoughtsNew class="marTop10" />
-            </div>
-
             <ArchitecturePageTabsFTHAContent
                 :selectedTab="selectedTab"
                 @changeTab="changeTab"

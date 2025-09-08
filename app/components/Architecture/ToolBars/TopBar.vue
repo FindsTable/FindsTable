@@ -5,7 +5,7 @@
             mobileWidthContainer
         "
     >
-        <ArchitectureSideBarMainContentFlowMain
+        <ArchitectureToolBarsMainContentFlowMain
             class="gap10"
         />
 

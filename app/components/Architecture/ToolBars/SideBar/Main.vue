@@ -6,15 +6,15 @@
         <div
             class="flex column gap10"
         >
-            <ArchitectureSideBarHomeButtonMain />
-            <ArchitectureSideBarMainContentFlowMain
+            <ArchitectureToolBarsSideBarHomeButtonMain />
+            <ArchitectureToolBarsMainContentFlowMain
                 class="column gap10"
             />
         </div>
 
-        <ArchitectureSideBarMenuMain />
+        <ArchitectureToolBarsSideBarMenuMain />
 
-        <ArchitectureSideBarWidgetsMain />
+        <ArchitectureToolBarsSideBarWidgetsMain />
     </div>
 </template>
 

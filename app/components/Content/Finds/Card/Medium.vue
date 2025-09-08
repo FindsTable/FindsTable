@@ -28,42 +28,29 @@ const showComments = ref(false)
             <ArchitectureHorizontalScroller 
                 :gap="10"
             >
-                <picture 
-                    v-if="find.image0" 
-                    class="shrink0 w100"
-                >
-                    <source 
-                        :srcset="`https://admin.findstable.net/assets/${find.image0}?key=find-250-webp`" 
-                        type="image/webp"
-                    >
-                    <img 
-                        :src="`https://admin.findstable.net/assets/${find.image0}?key=find-250-jpg`"
-                        alt="" 
-                        class="image w100"
-                    >
-                </picture>
+                <HtmlPictureMain
+                    v-if="find.image0"
+                    :assetId="find.image0"
+                    :sources="[
+                        { presetKey: 'find-250-webp', mimeType: 'image/webp' }
+                    ]"
+                    class="shrink0 w100 image"
+                />
 
-                <picture 
-                    v-if="find.image1" 
-                    class="shrink0 w100"
-                >
-                    <source 
-                        :srcset="`https://admin.findstable.net/assets/${find.image1}?key=find-250-webp`" 
-                        type="image/webp"
-                    >
-                    <img 
-                        :src="`https://admin.findstable.net/assets/${find.image1}?key=find-250-jpg`"
-                        alt="" 
-                        class="image w100 objectFitCover full"
-                    >
-                </picture>
+                <HtmlPictureMain
+                    v-if="find.image1"
+                    :assetId="find.image1"
+                    :sources="[
+                        { presetKey: 'find-250-webp', mimeType: 'image/webp' }
+                    ]"
+                    class="shrink0 w100 image objectFitCover full"
+                />
 
-                <img 
+                <HtmlPictureMain
                     v-if="!find.image0 && !find.image1"
-                    :src="`/images/find-no-image.png`" 
-                    alt="" 
+                    :fallbackUrl="'/images/find-no-image.png'"
                     class="image w100 objectFitCover full"
-                >
+                />
             </ArchitectureHorizontalScroller>
 
         </div>

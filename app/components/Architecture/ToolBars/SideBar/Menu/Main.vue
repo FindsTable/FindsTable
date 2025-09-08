@@ -2,12 +2,9 @@
 const { t } = useI18n()
 const { openModal } = useModal()
 
-function handleClick(target) {
+function handleClick() {
     openModal({
-        modal: 'ArchitectureOverlayModalsCreateNewMedia',
-        // content: {
-        //     title: "What's new ?"
-        // }
+        modal: 'ArchitectureOverlayModalsCreateNewMedia'
     })
 }
 
@@ -21,7 +18,7 @@ const links = [
 <template>
     <div class="flex column gap10">
         <ButtonMain
-            @click.prevent="handleClick('createNewMedia')"
+            @click.prevent="handleClick"
             class="button"
         >
             {{ t("sideBarLinks.create") }}

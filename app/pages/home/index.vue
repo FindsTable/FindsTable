@@ -41,10 +41,6 @@ onMounted(() => {
         </template>
 
         <template #scrollMain>
-            <div class="mobileWidthContainer">
-                <ContentThoughtsNew showAvatar/>
-            </div>
-            
             <div 
                 v-if="useUserState().value.id"
                 class="tabContent"
