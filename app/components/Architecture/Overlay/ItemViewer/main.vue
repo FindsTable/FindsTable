@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const route = useRoute()
 const itemViewer = useItemViewerState()
 
 const fieldString: {
@@ -36,10 +37,16 @@ if (!itemViewer.value.item
     }
 }
 
-function handleBack() {
-    console.log('back')
+async function handleBack() {
     itemViewer.value.reset()
-    console.log(itemViewer.value)
+
+    // Delete the itemViewer query from the route
+    // For navigation history in the browser
+
+    if (route.query['itemViewer']) {
+        const router = useRouter()
+         router.back()
+    }
 }
 </script>
 

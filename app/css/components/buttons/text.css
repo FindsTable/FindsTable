@@ -15,10 +15,8 @@
 
 
 
-.panel .comp-button.-text:hover,
-
-.-surface1 .comp-button.-text:hover {
-    background-color: var(--textButton-onPanel-hover-bgColor);
+.panel .comp-button.-text:hover {
+    background-color: var(--textButton-hover-bgColor);
 }
 
 
@@ -27,15 +25,15 @@
 }
 
 
-.panel .comp-button.-text:active {
-    background-color: var(--textButton-onPanel-active-bgColor);
+.comp-button.-text:active {
+    background-color: var(--textButton-active-bgColor);
 }
 
-.panel .comp-button.-text.selected {
-    background-color: var(--textButton-onPanel-selected-bgColor);
+.comp-button.-text.selected {
+    background-color: var(--textButton-selected-bgColor);
 }
 
-.panel .comp-button.-text:disabled {
+.comp-button.-text:disabled {
     pointer-events: none;
     opacity: 0.3;
 }

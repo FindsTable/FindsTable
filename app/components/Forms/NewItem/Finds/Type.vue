@@ -40,6 +40,16 @@ async function getTypes() {
 onMounted(async () => {
     types.value = await getTypes()
 })
+
+function handleCLick(typeId) {
+    if(selectedType.value === typeId) {
+        selectedType.value = ''
+    } else {
+        selectedType.value = typeId
+    }
+    
+}
+
 </script>
 
 <template>
@@ -50,28 +60,16 @@ onMounted(async () => {
 
             <div class="flex wrap gap20 marTop20">
 
-                <label
+                <div
                     v-for="type in types"
                     :key="type.id"
                     :for="`metalCheckbox-${type.id}`"
-                    class="metalTouchArea flex alignCenter gap10 pointer"
+                    class="metalTouchArea cutoutContainer pad10 flex alignCenter gap10 pointer"
                     :class="{ 'selected': selectedType === type.id }"
+                    @click="handleCLick(type.id)"
                 >
-                    <span class="customCheckBox">
-                        <Icon class="checkIcon" name="check" :style="{ opacity: selectedType === type.id ? 1 : 0 }" />
-                    </span>
-
                     <span>{{ type.translations[0].name || type.value }}</span>
-
-                    <input
-                        type="radio"
-                        class="inputCheckBox"
-                        name="typeInput"
-                        :id="`metalCheckbox-${type.id}`"
-                        :value="type.id"
-                        v-model="selectedType"
-                    />
-                </label>
+                </div>
 
             </div>
         </fieldset>
@@ -87,20 +85,20 @@ onMounted(async () => {
     flex-shrink: 0;
     width: 20%;
 }
-.customCheckBox {
+/* .customCheckBox {
     height: 48px;
     aspect-ratio: 1;
     position: relative;
     isolation: isolate;
-}
-.customCheckBox::after {
+} */
+/* .customCheckBox::after {
     content: "";
     border-radius: 5px;
     background-color: gray;
     box-shadow: inset 1px 1px 5px black;
     position: absolute;
     inset: 6px;
-}
+} */
 .checkIcon {
     position: absolute;
     inset: 10px 12px 12px 11px;

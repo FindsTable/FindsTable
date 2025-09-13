@@ -28,14 +28,6 @@
 
     --filledButton-textColor: white;
     --filledButton-disabled-textColor: var(--tone-kaki-40);
-    /** Tone button */
-    --toneButton-bgColor: var(--tone-croco-10);
-    --toneButton-hover-bgColor: var(--tone-croco-20);
-    --toneButton-active-bgColor: var(--tone-croco-5);
-    --toneButton-disabled-bgColor: var(--tone-croco-30);
-
-    --toneButton-textColor: var(--tone-kaki-95);
-    --toneButton-disabled-textColor: var(--tone-kaki-40);
 
     /* Outlined button */
     --outlinedButton-bgColor: transparent;

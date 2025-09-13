@@ -57,15 +57,7 @@ function changeTab(newTab) {
         v-if="selectedTab === 'year'"
         class="marTop20"
     >
-        <p class="fieldSetTitle">
-            {{ t('page.finds.newFind.sections.dating.tabs.preciseYear.description') }}
-        </p>
-
         <FormsLabel class="marTop10">
-            <template #label>
-                {{ t('page.finds.newFind.sections.dating.fields.preciseYear.label') }}
-            </template>
-
             <template #input>
                 <FormsInput
                     type="number"
@@ -82,10 +74,6 @@ function changeTab(newTab) {
         v-if="selectedTab === 'range'" 
         class="marTop20"
     >
-        <p class="fieldSetTitle">
-            {{ t('page.finds.newFind.sections.dating.tabs.rangeOfYears.description') }}
-        </p>
-
         <div class="flex gap20">
             <FormsLabel class="marTop10">
                 <template #label>

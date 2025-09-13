@@ -270,7 +270,7 @@ function setAsPrimary(event : Event, index: number) {
         <!-- Existing items -->
             <div
                 v-for="(image, idx) in exposedImages" :key="image.id"
-                class="centered imageBox allEvents relative"
+                class="cutoutContainer centered imageBox allEvents relative"
                 :class="image.slot.state !== 'processing' ? 'pointer' : ''"
                 :style="{ height: boxHeight, aspectRatio }"
                 @click="openPickerDialog(image.slot.index)"
@@ -378,10 +378,7 @@ function setAsPrimary(event : Event, index: number) {
 }
 
 .imageBox {
-  background-color: var(--tone-grayscale-70);
-  border-radius: 5px;
   overflow: hidden;
-  box-shadow: inset 0 0 5px black;
   position: relative;
   min-width: 140px;
 }

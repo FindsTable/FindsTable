@@ -3,8 +3,8 @@ export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.hooks.hook('app:mounted', async () => {
         
         // Test cookie functionality first
-        const cookiesWork = await testCookieFunctionality()
-        useAppConfig().cookiesEnabled = cookiesWork
+        // const cookiesWork = await testCookieFunctionality()
+        // useAppConfig().cookiesEnabled = cookiesWork
 
         useAppConfig().device.hasCamera = await checkIfDeviceForCamera()
 

@@ -46,7 +46,7 @@ function toggleBiome(key: string) {
                 >
                     <div class="biomeImage flex">
                         <img 
-                            :src="`${useAppConfig().directusUrl}/assets/${b.image}?key=biome-small-jpg`"
+                            :src="`${useAppConfig().directusUrl}/assets/${b.image}?key=biome-small-webp`"
                             class="objectFitContain block"
                         />
                     </div>

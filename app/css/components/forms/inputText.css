@@ -3,10 +3,7 @@
 */
 
 .comp-inputText {
-    /* color: var(--inputText-textColor); */
-    /* background-color: var(--inputText-bgColor); */
     padding: 0.5rem 0.8rem;
-    /* box-shadow: inset 1px 1px var(--inputText-insetShadowColor); */
     border-radius: 8px;
 }
 

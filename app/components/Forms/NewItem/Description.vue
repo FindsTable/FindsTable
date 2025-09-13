@@ -20,6 +20,7 @@ const props = defineProps({
             <textarea
                 v-model="description"
                 class="
+                    cutoutContainer
                     comp-inputText 
                     -fontStyle-text 
                     -textarea 

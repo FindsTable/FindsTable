@@ -14,7 +14,7 @@ const props = defineProps({
 
 <template>
     <div class="container flex" v-if="user">
-        <NuxtLink :to="`/users/${user.id}`" class="card flex column alignStart gap20 pointer">
+        <NuxtLink :to="`/users/${user.id}`" class="card  theme-surface-1 -hoverable flex column alignStart gap20 pointer">
             <div class="flex gap20">
                 <div class="">
                     <AvFrame :fileId="user.avatar" />
@@ -40,7 +40,7 @@ const props = defineProps({
                 </div>
             </div>
 
-            <div class="badges" v-if="user.badgeRecord">
+            <div class="badges cutoutContainer" v-if="user.badgeRecord">
                 <PagesUsersBadges :badgeRecord="user.badgeRecord" />
             </div>
 
@@ -52,9 +52,6 @@ const props = defineProps({
 </template>
 
 <style scoped>
-.mouseFeedback:hover {
-    background-color: #ffffff1e;
-}
 .box {
     padding: 5px;
 }
@@ -65,7 +62,6 @@ const props = defineProps({
 }
 .card {
     flex-grow: 1;
-    background-color: #ffffff24;
     padding: 15px;
     user-select: none;
 }

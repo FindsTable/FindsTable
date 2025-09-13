@@ -12,17 +12,20 @@ All themes
 
 .theme-backdropColor {
     background-color: var(--backdropColor);
-    transition: 1000ms ease;
+    transition: 150ms ease;
 }
-
 .theme-surface-1 {
     background-color: var(--surface1-bgColor);
-    transition: 1000ms ease;
+    transition: 150ms ease;
+}
+
+.theme-surface-1 .-hoverable:hover {
+    background-color: var(--surface1-hover-bgColor);
 }
 .theme-surface-2 {
     color: var(--textColor-main);
     background-color: var(--surface2-bgColor);
-    transition: 1000ms ease;
+    transition: 150ms ease;
 }
 .theme-titleColor-main {
     color: var(--titleColor-main);

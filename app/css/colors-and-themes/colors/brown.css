@@ -1,0 +1,25 @@
+:root {
+    /* Brown color palette - Base: hsl(24, 20%, 15%) */
+    --tone-brown-5: hsl(24, 20%, 5%);
+    --tone-brown-10: hsl(24, 20%, 10%);
+    --tone-brown-20: hsl(24, 20%, 15%);
+    --tone-brown-30: hsl(24, 22%, 25%);
+    --tone-brown-40: hsl(24, 25%, 35%);
+    --tone-brown-50: hsl(24, 28%, 45%);
+    --tone-brown-60: hsl(24, 30%, 55%);
+    --tone-brown-70: hsl(24, 35%, 65%);
+    --tone-brown-80: hsl(24, 40%, 75%);
+    --tone-brown-90: hsl(24, 45%, 85%);
+    --tone-brown-95: hsl(24, 50%, 95%)
+}
+
+
+/* 
+this will modify the var color to .5 opacity 
+each of h , s and l can be also modified
+*/
+/* .test  {
+    background-color: hsl( from var(--tone-grayscale-1) h s l / .5);
+} */
+
+

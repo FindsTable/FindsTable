@@ -164,7 +164,7 @@
                         "title": "Dating",
                         "tabs": {
                             "preciseYear": {
-                                "tabText": "Precise",
+                                "tabText": "Year",
                                 "description": "Set a precise date"
                             },
                             "rangeOfYears": {

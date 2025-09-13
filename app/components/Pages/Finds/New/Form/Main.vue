@@ -108,7 +108,7 @@ const formRef = ref()
 
 <template>
     <form class="flex column gap20 marTop20" ref="formRef">
-        <ArchitecturePanelMain>
+        <ArchitecturePanelMain> 
             <div class="section">
                 <FormsNewItemDescription
                     v-model="description"
@@ -133,9 +133,9 @@ const formRef = ref()
                     v-model="dating"
                 />
 
-                <FormsNewItemFindsPeriod
+                <!-- <FormsNewItemFindsPeriod
                     v-model="selectedPeriod"
-                />
+                /> -->
             </div>
         </ArchitecturePanelMain>
 

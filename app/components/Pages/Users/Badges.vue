@@ -27,7 +27,6 @@ const slots = computed(() => {
 
 <style scoped>
 .box {
-    border: 1px solid rgba(118, 118, 118, 0.49);
     padding: 10px;
     border-radius: 10px;
 }

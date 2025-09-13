@@ -32,7 +32,7 @@ defineProps({
 </script>
 
 <template>
-    <label class="loginLabel relative flex">
+    <label class="loginLabel relative flex cutoutContainer">
         <div class="centered iconLeftBox">
             <slot name="iconLeft">
             
@@ -43,11 +43,11 @@ defineProps({
             v-if="model"
             class="labelText typeFace-main absolute"
         >
-            {{ t(label_key) }}
+            {{ t(label_key) }}s
         </span>
 
         <input 
-            class="w100" 
+            class="w100 " 
             :type="type" :name="name" 
             :placeholder="t(placeholder_key)"
             :aria-label="t(label_key)" 
@@ -59,12 +59,11 @@ defineProps({
 <style scoped>
 
 label {
-    padding: 10px;
     border: 1px solid var(--loginSignup-input-borderColor);
     border-radius: 3px;
 }
 label:has(input:focus) {
-    outline: 1px solid white;
+    /* outline: 1px solid white; */
 }
 
 .iconLeftBox {
@@ -77,17 +76,18 @@ input[type="email"] {
     font-size: 1.1rem;
     font-weight: 500;
     letter-spacing: 0.05em;
-    color: var(--theme-textColor-main);
+    /* color: var(--theme-textColor-main); */
     appearance: none;
-    background-color: var(--loginSignup-input-bgColor);
-    outline: none;
+    background-color: transparent;
+    padding: 10px;
+    /* outline: none; */
 }
-input:focus {
+/* input:focus {
     outline: none;
-}
+} */
 
 input::placeholder {
-    color: var(--loginSignup-input-placeholderColor);
+    color: var(--surface1-cutout-placeholderColor);
 }
 
 :root {
@@ -96,14 +96,13 @@ input::placeholder {
 input:autofill {
     -webkit-text-fill-color: var(--textColor-main);
     -moz-autofill-background: var(--textColor-main);
-    box-shadow: 0 0 0px 1000px var(--surface1-bgColor) inset;
 }
 .labelText {
     bottom: 100%;
     left: 14px;
     translate: 0 0.5em;
-    color: var(--loginSignup-input-labelColor);
-    background-color: var(--surface1-bgColor);
+    color: var(--surface1-cutout-textColor);
+    background-color: var(--surface1-cutout-bgColor);
     padding: 0px 6px;
     border-radius: 3px;
 }

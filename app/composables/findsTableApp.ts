@@ -107,7 +107,10 @@ function useFTApp() {
             }
         );
 
-        if(!manifest) return  // NEED TO HANDLE FALLBACK SOLUTION
+        if(!manifest)  {
+            console.log('no manifest yet!!!')
+            return  // NEED TO HANDLE FALLBACK SOLUTION
+        }
 
         // 3️⃣  Iterate over each bucket in the manifest.
         for (const entry of manifest.cache_entries) {
