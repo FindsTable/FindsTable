@@ -4,7 +4,7 @@ const { confirm, cancel } = useConfirmationModal()
 </script>
 
 <template>
-    <div class="full centered backdrop">
+    <div class="full centered backdrop theme-modalBackdrop">
         <ArchitecturePanelMain class="centered">
             <p clas="font-h1">
                 {{ modalState.title }}
@@ -26,9 +26,3 @@ const { confirm, cancel } = useConfirmationModal()
         </ArchitecturePanelMain>
     </div>
 </template>
-
-<style>
-.backdrop {
-    background-color: rgba(0, 0, 0, 0.806);
-}
-</style>

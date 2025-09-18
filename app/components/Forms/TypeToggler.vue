@@ -28,8 +28,10 @@ function handleClick(type) {
             @click.prevent.stop="handleClick(type)"
             class="
                 comp-button
+                theme-buttonText -selectable -brandColor
+                pointer
             "
-            :class="selectedType === type ? 'comp-button-filled' : 'comp-button -text'"
+            :class="selectedType === type ? 'selected' : ''"
         >
             {{ t(`forms.buttons.${type}`) }}
         </button>

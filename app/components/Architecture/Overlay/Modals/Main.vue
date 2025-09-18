@@ -1,14 +1,13 @@
 <script setup>
 const modalState = useModalState()
 const { cancel } = useModal()
-
 </script>
 
 <template>
-    <div class="backdrop full centered" @click="cancel">
+    <div class="backdrop theme-modalBackdrop full centered" @click="cancel">
         <div 
             @click.stop
-            class="modal comp-panel -surface1 flex column alignCenter" 
+            class="modal comp-panel theme-surface-1 flex column alignCenter" 
         >
             <div class="w100">
                 <div class="w100 flex justifyEnd">
@@ -53,13 +52,13 @@ const { cancel } = useModal()
 
 <style scoped>
 .backdrop {
-    background-color: rgba(0, 0, 0, 0.85);
+    opacity: 1;
     isolation: isolate;
+    transition: 1500ms ease;
 }
 .modal {
     width: min(auto, 100%);
     padding: 30px;
     border-radius: 10px;
 }
-
 </style>

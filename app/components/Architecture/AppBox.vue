@@ -12,30 +12,31 @@ onMounted(() => {
 </script>
 
 <template>
-    <div 
-        id="app" 
-        :class="[
-            'full',
-            'theme-backdropColor',
-            'theme-textColor-main', 
-            app.colorMode.active,
-            app.colorMode.active ? 'ready' : 'notReady',
-            app.fullScreen ? 'fullScreen' : ''
-        ]">
-        
-        <!-- seperate slots so Overlaywon't be restricted by the App's padding for safe-area -->
-        <slot name="content" />
-        <slot name="overlay" />
+    <div class="backdrop theme-backdropColor">
+        <div 
+            id="app" 
+            :class="[
+                'full',
+                '',
+                'theme-textColor-main', 
+                app.colorMode.active,
+                app.colorMode.active ? 'ready' : 'notReady',
+                app.fullScreen ? 'fullScreen' : ''
+            ]">
+            
+            <!-- seperate slots so Overlaywon't be restricted by the App's padding for safe-area -->
+            <slot name="content" />
+            <slot name="overlay" />
+        </div>
     </div>
 </template>
 
 <style scoped>
 #app {
     height: 100vh;
+    width: min(100%, 850px);
+    margin-inline: auto;
     overflow: hidden;
-}
-.theme-backdrop-color {
-    background-color: var(--backdrop-color);
 }
 .notReady {
     opacity: 0;

@@ -1,8 +1,5 @@
 <template>
-    <div class="sideBar theme-surface-1 full flex column justifyBetween">
-        
-        
-        
+    <div class="sideBar theme-surface1 full flex column justifyBetween">
         <div
             class="flex column gap10"
         >

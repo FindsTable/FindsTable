@@ -117,7 +117,7 @@ const submitMethods = {
         {{ t('page.landing.loginSignupInvitation') }}
     </p>
     <form 
-        class="flex column gap20 marTop50"
+        class="flex column gap20 marTop50 comp-panel -surface1 pad20"
     >
 
         <FormsTypeToggler :types="['login', 'signup']" v-model="formType" />
@@ -188,13 +188,14 @@ const submitMethods = {
             @click.prevent="handleSubmit"
             class="
                 relative
-                comp-button 
-                comp-button -filled
+                comp-button
+                theme-mainActionButton
             "
-            :class="[ isPending ?  'pending' : '']"
+            :class="[ isPending ?  'disabled' : '']"
             :disabled="!formIsValid || isPending" 
         >
             {{ t('forms.buttons.submit') }}
+            
             <UiButtonPendingOverlay />
         </button>
     </form>

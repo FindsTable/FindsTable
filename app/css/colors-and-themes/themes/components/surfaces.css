@@ -1,0 +1,13 @@
+.theme-surface1 {
+    background-color: var(--surface1-bgColor);
+    transition: 150ms ease;
+}
+
+.theme-surface1.-hoverable:hover {
+    background-color: var(--surface1-hover-bgColor);
+}
+.theme-surface2 {
+    color: var(--textColor-main);
+    background-color: var(--surface2-bgColor);
+    transition: 150ms ease;
+}

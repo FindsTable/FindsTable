@@ -8,23 +8,16 @@
     --safe-inset-left: 10px;
 
     --safeArea-value: 6px;
-}
-/*
-.safe-area {
-    padding: 
-        var(--safe-inset-top),
-        var(--safe-inset-right),
-        var(--safe-inset-bottom),
-        var(--safe-inset-left);
-    
-    padding: 
-        env(safe-area-inset-top),
-        env(safe-area-inset-right),
-        env(safe-area-inset-bottom),
-        env(safe-area-inset-left);
 
+    --sideBarLeft-width-px: 200px;
+    --sideBarRight-width-px: 200px;
+    
+    --content-box-width-desktop: 560px;
+    --appBox-width-max: calc(var(--sideBarLeft-width-px) + var(--content-box-width-desktop) + var(--sideBarRight-width-px));
 }
-*/
+.fullScreenWidth {
+    width: 100vw;
+}
 .safeArea.-full {
     padding-top: var(--safe-inset-top);
     padding-right: var(--safe-inset-right);
@@ -60,20 +53,6 @@ Scroll bars
 .overflowScroll.-scrollY {
     overflow-y: auto;
 }
-.overflowScroll::-webkit-scrollbar {
-    width: 3px;
-}
-
-.overflowScroll::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.3);
-}
-
-.overflowScroll::-webkit-scrollbar-thumb {
-    background-color: rgba(169, 169, 169, 0.267);
-    outline: 1px solid rgb(144, 131, 112);
-}
-
-
 .arch_scrollBottonPadding {
     padding-bottom: 30vh;
 } 

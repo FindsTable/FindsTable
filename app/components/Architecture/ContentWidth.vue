@@ -22,15 +22,16 @@ defineProps({
     }
 })
 </script>
+
 <template>
     <div
         :class="[
-        full ? 'fullContentWidth' : '',
-    large ? 'largeContentWidth' : '',
-    medium ? 'mediumContentWidth' : '',
-    small ? 'smallContentWidth' : '',
-        scrollable ? 'scrollable' : ''
-    ]">
+            full ? 'fullContentWidth' : '',
+            large ? 'largeContentWidth' : '',
+            medium ? 'mediumContentWidth' : '',
+            small ? 'smallContentWidth' : '',
+                scrollable ? 'scrollable' : ''
+        ]">
         <slot />
     </div>
 </template>

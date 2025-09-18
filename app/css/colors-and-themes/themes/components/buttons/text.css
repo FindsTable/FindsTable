@@ -1,0 +1,49 @@
+/* 
+*
+*   Theming for text buttons
+*
+*   1 - mod classes:
+*           -outlined
+*
+*   2 -     option classes: 
+*               -hoverable
+*               -selectable
+*
+* */
+
+/* Base styles */
+
+    .theme-buttonText {
+        color: var(--textButton-textColor);
+        background-color: var(--textButton-bgColor);
+    }
+    /* outlined */
+    .theme-buttonText.-outlined {
+        border-color: var(--textButton-borderColor);
+    }
+
+/* hoverable */
+    .theme-buttonText.-hoverable:hover {
+        color: var(--textButton-hover-textColor);
+        background-color: var(--textButton-hover-bgColor);
+    }
+    /* hoverable outlined */
+    .theme-buttonText.-outlined.-hoverable:hover {
+        border-color: var(--textButton-hover-borderColor);
+    }
+
+/* selectable */
+    .theme-buttonText.-selectable.selected {
+        color: var(--textButton-selected-textColor);
+        background-color: var(--textButton-selected-bgColor);
+    }
+    /* outlined selected  */
+    .theme-buttonText.-outlined.-selectable.selected {
+        border-color: var(--textButton-selected-borderColor);
+    }
+
+    .theme-buttonText.-selectable.-brandColor.selected {
+        background-color: var(--color-ft);
+    }
+
+

@@ -22,6 +22,10 @@
         --surface1-hover-bgColor: var(--tone-brown-30);
     --surface2-bgColor: var(--tone-zinc-70);
 
+    /* Layout */
+
+    --layout-line-color: var(--tone-brown-30);
+
     /* Buttons */
 
     --filledButton-bgColor: var(--color-ft);
@@ -31,13 +35,29 @@
     --filledButton-textColor: white;
         --filledButton-disabled-textColor: var(--tone-grayscale-50);
 
+    /* mainAction */
+        --mainActionButton-textColor: var(--textColor-main);
+        --mainActionButton-bgColor: var(--color-ft);
+            
+        --mainActionButton-hover-textColor: var(--textColor-main);
+        --mainActionButton-hover-bgColor: var(--color-ft-dark);
+    
+        --mainActionButton-disabled-textColor: var(--textColor-dimmed);
+        --mainActionButton-disabled-bgColor: var(--tone-grayscale-50);
+
     /*  New text color vars */
-        --textButton-bgColor: transparent;
-        --textButton-hover-bgColor: var(--tone-brown-30);
-        --textButton-active-bgColor: var(--tone-brown-50);
         --textButton-textColor: var(--text-color-main);
-        /* -outlined class added */
-        --textButton-outlined-borderColor: var(--tone-grayscale-30);
+        --textButton-bgColor: transparent;
+        --textButton-borderColor: var(--tone-grayscale-30);
+
+        --textButton-hover-textColor: var(--text-color-main);
+        --textButton-hover-bgColor: var(--tone-brown-30);
+        --textButton-hover-borderColor: var(--tone-grayscale-30);
+
+        --textButton-selected-textColor: var(--text-color-main);
+        --textButton-selected-bgColor: var(--tone-brown-30);
+        --textButton-selected-borderColor: var(--tone-grayscale-30);
+
     /*  end of new text button */
 
     /* Input fields cut out effect */
@@ -61,9 +81,53 @@
     --ui-color-on: var(--color-ft);
     --ui-color-off: var(--tone-zinc-50);
     --ui-color-disabled: var(--tone-zinc-70);
+
+    /* Modals */
+
+    --modalBackdrop-bgColor: var(--tone-brown-10);
+
+    /* Scroll bars */
+
+    @-moz-document url-prefix() {
+        * {
+            /* Firefox scrollbar-color takes two values: thumb and track */
+            scrollbar-color: var(--scrollbar-thumb-color) var(--scrollbar-track-color);
+        }
+        *:hover > * {
+            scrollbar-color: var(--scrollbar-thumb-hover-color) var(--scrollbar-track-color);
+        }
+    }
+
+    ::-webkit-scrollbar-track {
+        background: transparent;
+        border-color: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: var(--surface2-bgColor);
+        border-color: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--surface2-bgColor);
+    }
+
+    ::-webkit-scrollbar-thumb:active {
+        background: var(--surface2-bgColor);
+    }
+
+    ::-webkit-scrollbar-corner {
+        background: transparent;
+    }
+
+    ::-webkit-scrollbar-button {
+        display: block;
+        background: transparent;
+    }
 }
 
 /* pageStructure.css */
 #app.dark {
     --sectionTitle-border-bottom-color: var(--tone-zinc-70)
 }
+
