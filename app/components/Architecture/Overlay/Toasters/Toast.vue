@@ -10,7 +10,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="frame" v-if="toasters[toast.id]">
+    <div class="frame centered" v-if="toasters[toast.id]">
         <div class="toast" :class="[ props.toast.type ]">
             <p class="message font-text -big" v-if="toast.message">
                 {{ toast.message }}
@@ -25,10 +25,9 @@ const props = defineProps({
 
 <style scoped>
 .frame {
-    max-width: 100%;
+    width: 100%;
     height: 0;
     animation: in 300ms ease forwards;
-    overflow: hidden;
 }
 @keyframes in {
     from {
@@ -40,7 +39,7 @@ const props = defineProps({
 }
 
 .toast {
-    width: 100%;
+    width: min(auto, 100%);
     color: white;
     font-size: 1rem;
     font-weight: 400;

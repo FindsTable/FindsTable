@@ -31,13 +31,13 @@ async function useLoginFlow(
     }
     
     if(!res.ok || !res.data) {
-        // intercept unverified email
+        // to do: check response to intercept unverified email
         if(res.toaster) {
             useToaster('show', {
                 id: 'loggingIn',
                 messagePath: res.toaster.messagePath,
                 type: 'warning',
-                autoClose: false,
+                autoClose: true,
                 position: 'bottom'
             })
         }

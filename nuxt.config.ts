@@ -61,8 +61,8 @@ export default defineNuxtConfig({
     modules: [
     '@vueuse/nuxt', 
     '@nuxt/icon', 
-    '@nuxt/image',
-    '@nuxt/test-utils/module'
+    // '@nuxt/image',
+    // '@nuxt/test-utils/module'
     ],
 
     image: {
