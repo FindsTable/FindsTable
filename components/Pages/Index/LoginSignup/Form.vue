@@ -89,22 +89,22 @@ const submitMethods = {
         }
     },
     signup:  async () => {
-        const res = await useHandleSignup({
-            invitationCode: invitationCode.value,
-            username: username.value.input, 
-            email: email.value, 
-            password: password.value,
-            passwordConfirmation: passwordConfirmation.value
-        })
+        try {
+            const res = await useHandleSignup({
+                invitationCode: invitationCode.value,
+                username: username.value.input, 
+                email: email.value, 
+                password: password.value,
+                passwordConfirmation: passwordConfirmation.value
+            })
 
-        if(res.feedback) {
-            console.log(res.feedback)
+            console.log(res)
+            navigateTo(`/redirection/new-account-created?email=${useAnonymizeEmail(email.value)}`)
+        } catch(err) {
+            useHandleError(err)
         }
-
-        if(res.ok) navigateTo(`/redirection/new-account-created?email=${useAnonymizeEmail(email.value)}`)
     }
 }
-
 
 </script>
 

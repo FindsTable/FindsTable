@@ -95,15 +95,21 @@ async function useHandleSignup(p: {
     password: string
     passwordConfirmation: string
 }) {
-    console.log('handle signup')
-    const res = await useNuxtApp().$auth.createNewUser(
-        p.invitationCode,
-        p.username,
-        p.email,
-        p.password,
-        p.passwordConfirmation
-    );
-    console.log(res)
+
+    const res = await $fetch(
+        '/api/auth/signup',
+        {
+            method: 'POST',
+            body: {
+                invitation_code: p.invitationCode,
+                username: p.username,
+                email :p.email,
+                password : p.password,
+                passwordConfirmation :p.passwordConfirmation
+            }
+        }
+    )
+
     return res
 }
 

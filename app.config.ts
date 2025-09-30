@@ -15,6 +15,7 @@ export default defineAppConfig({
         hasCamera: false, //set in lazyAppConfig plugin
     },
     showConsoleLogs: true,
+    showErrorLogs: true,
     colorModes: [
         {
             id: 'light',

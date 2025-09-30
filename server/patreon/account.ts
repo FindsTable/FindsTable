@@ -61,7 +61,6 @@ function setRedirectUrl(): string {
     return url
 }
 
-
 async function patreon_getMe(
     bearerToken: string
 ): Promise<ApiResponse<PatreonUser | null>> {
@@ -89,14 +88,6 @@ async function patreon_getMe(
             data: user
         })
     } catch(error: any) {
-        // if (error.response._data.errors.length) {
-        //     return {
-        //         ok: false,
-        //         status: error.response._data.errors[0].status,
-        //         statusText: error.response._data.errors[0].title
-        //     }
-        // }
-
         return newResponse({
             ok: false,
             status: 500,

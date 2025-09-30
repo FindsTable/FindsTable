@@ -53,7 +53,8 @@ async function createUser<
         auth: 'app',
         body: {
             ...p.body,
-            email_verified: false
+            email_verified: false,
+            status: 'unverified'
         },
         query: p.query
     })

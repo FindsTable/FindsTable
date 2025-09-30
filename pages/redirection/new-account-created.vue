@@ -10,13 +10,10 @@ definePageMeta({
 
 <template>
     <NuxtLayout name="public-route">
-        <h1>
-            {{ t('page.redirection.newAccountCreated.title') }}
-        </h1>
-
-        <p>
+        <TH1>
             {{ t('page.redirection.newAccountCreated.success') }}
-        </p>
+        </TH1>
+
         <p>
             {{ t('page.redirection.newAccountCreated.checkYourEmails') }}
         </p>
