@@ -1,5 +1,5 @@
-import { readEvent } from "@/server/apiUtils/readEvent"
-import { getUsersByQuery } from '@/server/directus/users'
+import { readEvent } from "@@/server/apiUtils/readEvent"
+import { getUsersByQuery } from '@@/server/directus/users'
 
 export default defineEventHandler( async <
     ExpectedUserObject extends UserObject

@@ -1,0 +1,19 @@
+#app.light {
+    --shapedButton-off-bgColor: var(--tone-grayscale-30);
+    --shapedButton-off-textColor: var(--tone-kaki-90);
+    --shapedButton-off-insetShadowColor: var(--tone-grayscale-20);
+
+    --shapedButton-on-bgColor: var(--tone-mango-30);
+    --shapedButton-on-textColor: var(--tone-kaki-90);
+    --shapedButton-on-insetShadowColor: var(--tone-mango-50);
+}
+
+#app.dark {
+    --shapedButton-off-bgColor: var(--tone-grayscale-70);
+    --shapedButton-off-textColor: var(--tone-kaki-10);
+    --shapedButton-off-insetShadowColor: var(--tone-grayscale-60);
+
+    --shapedButton-on-bgColor: var(--tone-mango-70);
+    --shapedButton-on-textColor: var(--tone-kaki-0);
+    --shapedButton-on-insetShadowColor: var(--tone-mango-50);
+}

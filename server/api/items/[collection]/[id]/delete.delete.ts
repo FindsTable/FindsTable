@@ -1,7 +1,7 @@
-import { readEvent } from '@/server/apiUtils/readEvent'
+import { readEvent } from '@@/server/apiUtils/readEvent'
 
 import { ApiResponse } from '#shared/types/apiResponse'
-import { deleteItemById } from '@/server/directus/items';
+import { deleteItemById } from '@@/server/directus/items';
 
 export default defineEventHandler(async (event): Promise<ApiResponse<undefined>> => {
 

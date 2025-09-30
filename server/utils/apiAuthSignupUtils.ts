@@ -1,5 +1,5 @@
-import { updateUserById } from '@/server/directus/users'
-import { createItem, updateItemById } from '@/server/directus/items'
+import { updateUserById } from '@@/server/directus/users'
+import { createItem, updateItemById } from '@@/server/directus/items'
 
 export {
     configureVerifiedAccount

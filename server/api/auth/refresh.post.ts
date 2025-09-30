@@ -1,4 +1,4 @@
-import { refreshTokens } from '@/server/directus/auth'
+import { refreshTokens } from '@@/server/directus/auth'
 
 export default defineEventHandler(async (
     event

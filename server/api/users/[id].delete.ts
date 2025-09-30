@@ -1,6 +1,6 @@
-import { readEvent } from '@/server/apiUtils/readEvent'
+import { readEvent } from '@@/server/apiUtils/readEvent'
 import { ApiResponse } from '#shared/types/apiResponse'
-import { directusAPI } from '@/server/directus/main'
+import { directusAPI } from '@@/server/directus/main'
 
 export default defineEventHandler(async <
     Data extends UserObject

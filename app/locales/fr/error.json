@@ -1,0 +1,8 @@
+{
+    "error": {
+        "unknown": "Une erreur inconnue s'est produite",
+        "notFound": "La page que vous recherchez n'existe pas",
+        "forbidden": "Vous n'avez pas la permission d'accéder à cette page",
+        "server": "Une erreur de serveur s'est produite"
+    }
+}

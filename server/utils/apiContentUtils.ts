@@ -1,4 +1,4 @@
-import { updateMe } from '@/server/directus/users'
+import { updateMe } from '@@/server/directus/users'
 
 export {
     updateItemsCountField

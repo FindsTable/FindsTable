@@ -1,5 +1,5 @@
-import { readEvent } from '~/server/apiUtils/readEvent'
-import { getItemsByQuery } from '@/server/directus/items';
+import { readEvent } from '@@/server/apiUtils/readEvent'
+import { getItemsByQuery } from '@@/server/directus/items';
 
 
 type ItemObject = {

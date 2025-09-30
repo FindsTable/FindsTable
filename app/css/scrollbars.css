@@ -1,0 +1,69 @@
+/* 
+    Styles for firefox
+*/
+:root {
+  /* Dimensions */
+
+  --scrollbar-width-px: 6px;
+  --scrollbar-width-text: thin;
+
+  --scrollbar-height-px: 8px;
+
+  --scrollbar-border-radius: 4px;
+  
+  /* Border */
+  --scrollbar-border-width: 0px;
+}
+
+/* scrollbar styling for Geko engine browsers:
+*
+*   -Firefox
+*   -Firefox for Android
+*   -Tor Browser
+*   -GNU IceCat
+*   -SeaMonkey
+*    
+*/
+@-moz-document url-prefix() {
+  * {
+    scrollbar-width: var(--scrollbar-width-text);
+  }
+  /* *:hover > * {
+
+  } */
+}
+
+/* scrollbar styling for WebKit and Blink engine browsers:
+*
+*   -Safari
+*   -GNOME Web (Epiphany)
+*   -iOS browsers
+*   -Chrome
+*   -Edge
+*   -Opera
+*   -Brave
+*   -Vivaldi
+*   -Samsung Internet
+*   -Electron apps
+*    
+*/
+::-webkit-scrollbar {
+  width: var(--scrollbar-width-px);
+  height: var(--scrollbar-height-px);
+}
+
+::-webkit-scrollbar-track {
+  border-radius: var(--scrollbar-border-radius);
+  border-width: var(--scrollbar-border-width-px);
+  border-style: solid;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: var(--scrollbar-border-radius);
+  border-width: var(--scrollbar-border-width-px);
+  border-style: solid;
+}
+
+::-webkit-scrollbar-button {
+  display: var(--scrollbar-button-display);
+}

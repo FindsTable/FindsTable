@@ -1,0 +1,62 @@
+:root {
+
+    --bottom-bar-height: 60px;
+
+    --safe-inset-top: 10px;
+    --safe-inset-right: 10px;
+    --safe-inset-bottom: 10px;
+    --safe-inset-left: 10px;
+
+    --safeArea-value: 6px;
+
+    --sideBarLeft-width-px: 200px;
+    --sideBarRight-width-px: 200px;
+    
+    --content-box-width-desktop: 560px;
+    --appBox-width-max: calc(var(--sideBarLeft-width-px) + var(--content-box-width-desktop) + var(--sideBarRight-width-px));
+}
+.fullScreenWidth {
+    width: 100vw;
+}
+.safeArea.-full {
+    padding-top: var(--safe-inset-top);
+    padding-right: var(--safe-inset-right);
+    padding-bottom: var(--safe-inset-bottom);
+    padding-left: var(--safe-inset-left);
+}
+.safeArea.-top {
+    padding-top: var(--safe-inset-top);
+}
+.safeArea.-right {
+    padding-right: var(--safe-inset-right);
+}
+.safeArea.-bottom {
+    padding-bottom: var(--safe-inset-bottom);
+}
+.safeArea.-left {
+    padding-left: var(--safe-inset-left);
+}
+.contentBottomSpace {
+    padding-bottom: 50px;
+}
+
+/*
+Scroll bars
+*/
+
+.overflowScroll {
+    padding-right: 10px;
+}
+.overflowScroll.-scrollX {
+    overflow-x: auto;
+}
+.overflowScroll.-scrollY {
+    overflow-y: auto;
+}
+.arch_scrollBottonPadding {
+    padding-bottom: 30vh;
+} 
+
+.mobileWidthContainer {
+    width: min(550px, 100%)
+}

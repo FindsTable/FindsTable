@@ -1,0 +1,34 @@
+.comp-forms-switch {
+    background-color: var(--switch-off-bgColor);
+    border-color: var(--switch-off-borderColor);
+}
+.comp-forms-switch.true {
+    border-color:  var(--color-ft);
+}
+.comp-forms-switch .comp-forms-switch-dot {
+    background-color: var(--switch-dot-off-bgColor);
+}
+.comp-forms-switch.true .comp-forms-switch-dot {
+    background-color: var(--switch-dot-on-bgColor);
+    border-color:  var(--switch-on-borderColor);  
+}
+
+.comp-forms-switch {
+    width: 40px;
+    padding: 3px;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 500px;
+    transition: all 0.3s ease;
+}
+
+.comp-forms-switch-dot {
+    width: 50%;
+    aspect-ratio: 1;
+    border-radius: 100px;
+    transition: all 0.3s ease;
+}
+
+.comp-forms-switch.true .comp-forms-switch-dot {
+    translate: 100%;
+}

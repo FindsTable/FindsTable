@@ -1,4 +1,4 @@
-import { PatreonUser } from '@/shared/types/patreon'
+import { PatreonUser } from '@@/server/types/patreon'
 import { patreon_getMe, formatUserState_Patreon } from '../../patreon/account'
 
 export default defineEventHandler(async (

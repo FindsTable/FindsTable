@@ -1,7 +1,8 @@
 import { 
     getMe,
     getUsersByQuery
- } from '@/server/directus/users'
+ } from '@@/server/directus/users'
+import { ImageFormatPresetKey } from '#shared/types/files'
 
 
 export {
@@ -32,13 +33,12 @@ function itemCountIsValid(p : {
 
     if( typeof p.items_count !== 'number') {
         console.log('items_count is not a number')
-        return false
+        return true
     }
 
     return p.items_count < maxItemCount[p.collection]
 }
   
-
 async function validateUser( p : {
     bearerToken: string,
     fields? : string[]
@@ -53,7 +53,6 @@ async function validateUser( p : {
 
     return data ? data : undefined
 }
-
 
 interface UserFromEmail {
     id: string,
@@ -123,6 +122,16 @@ function tokensAreValid(
 function isValidImageType(mimeType?: string): boolean {
     if (!mimeType) return false
 
-    const allowedTypes = ['image/jpeg', 'image/png']
+    const allowedTypes = ['image/webp']
     return allowedTypes.includes(mimeType)
+}
+
+function validateImage( p : {
+    preset : ImageFormatPresetKey,
+    image: File
+}) : boolean {
+
+    p.image.type === p.preset.mimeType
+
+    return true
 }

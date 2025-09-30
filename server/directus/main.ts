@@ -7,7 +7,7 @@ import {
     Body,
     EndPoint
 } from './types/sdk/fetch'
-import {LoginBody } from '~/server/directus/types/api/auth'
+import {LoginBody } from '@@/server/directus/types/api/auth'
 import { newResponse, ApiResponse } from '#shared/types/apiResponse'
 
 export {

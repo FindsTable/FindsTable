@@ -1,5 +1,5 @@
 import { directusAPI } from './main';
-import { Query, Body, BearerToken } from '@/server/directus/types/sdk/fetch';
+import { Query, Body, BearerToken } from '@@/server/directus/types/sdk/fetch';
 import { ApiResponse, handleNoDataError } from '#shared/types/apiResponse';
 
 export { 

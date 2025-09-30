@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+import { getItemsByQuery } from '@@/server/directus/items'
+import { createUser } from '@@/server/directus/auth'
+>>>>>>> 8f87bcd6faa456761e0d61304add53e458b4aeef
 import crypto from 'crypto'
 
 import {
@@ -52,9 +57,6 @@ export default defineEventHandler( async (
     } catch(err) {
         throw new Error('/auth/signup => basic validation failed')
     }
-
-
-    
     
     // email and username should be unique in Directus, so no need to verify here
     await invitationCodeIsValid(body.code);

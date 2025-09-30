@@ -1,6 +1,6 @@
-import { readEvent } from '@/server/apiUtils/readEvent'
+import { readEvent } from '@@/server/apiUtils/readEvent'
 import { ApiResponse } from '#shared/types/apiResponse'
-import { validateUser } from '@/server/utils/validation'
+import { validateUser } from '@@/server/utils/validation'
 
 export default defineEventHandler(async (
     event: H3Event

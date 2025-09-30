@@ -1,0 +1,3 @@
+.theme-modalBackdrop {
+    background-color: hsl( from var(--backdropColor) h s l / .9);
+}

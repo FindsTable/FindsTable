@@ -1,4 +1,4 @@
-import { newResponse, ApiResponse } from '@/shared/types/apiResponse'
+import { newResponse, ApiResponse } from '#shared/types/apiResponse'
 
 export default defineEventHandler(async (
     event

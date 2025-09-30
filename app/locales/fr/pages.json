@@ -1,0 +1,257 @@
+{
+    "page": {
+        "account": {
+            "title": "Mon compte"
+        },
+        "home": {
+            "tabs": {
+                "thoughts": {
+                    "tab": "Pensées",
+                    "title": "User thoughts"
+                },
+                "finds": {
+                    "tab": "Trouvailles",
+                    "title": "Latest finds"
+                },
+                "huntReports": {
+                    "tab": "Excursions",
+                    "title": "Hunt reports"
+                },
+                "articles": {
+                    "tab": "Articles",
+                    "title": "Articles"
+                },
+                "badges": {
+                    "tab": "Badges",
+                    "title": "Badges"
+                }
+            }
+        },
+        "settings": {
+            "title": "Paramètres",
+            "tabs": {
+                "app": {
+                    "tab": "Application",
+                    "Title": "Application",
+                    "sections": {
+                        "colorMode": {
+                            "title": "Mode couleur"
+                        },
+                        "language": {
+                            "title": "Langue utilisée"
+                        }
+                    }
+                },
+                "account": {
+                    "tab": "Compte",
+                    "sections": {
+                        "credentials": {
+                            "title": "Informations personnelles",
+                            "username": "Nom du compte",
+                            "displayName": "Pseudonyme",
+                            "email": "Courriel",
+                            "firstName": "Prénom",
+                            "lastName": "Nom",
+                            "country": "Pays",
+                            "personalDataIntroText": "Configurez les infos que les autres utilisateurs peuvent voir.",
+                            "basicInfoIntroText": "Information de base de votre compte, visible de tous."
+                        },
+                        "avatar": {
+                            "title": "Avatar",
+                            "sections": {
+                                "current": {
+                                    "button": "Avatar actuel"
+                                },
+                                "myAvatars": {
+                                    "button": "Mes avatars"
+                                },
+                                "uploadNew": {
+                                    "button": "Télécharger un nouveau",
+                                    "selectAFile": "Sélectionnez une image sur votre appareil",
+                                    "cropThisImage": "Recadrer cette image",
+                                    "saveButton": "Enregistrer"
+                                }
+                            }
+                        },
+                        "badges": {
+                            "title": "Badges",
+                            "introText": "Selectionnez de badges qui vous représentent !"
+                        },
+                        "privacy": {
+                            "title": "Confidentialité"
+                        },
+                        "dangerZone": {
+                            "title": "Zone de danger",
+                            "sections": {
+                                "unsubscribe": {
+                                    "title": "Supprimer votre compte",
+                                    "warning": "SI vous supprimez votre compte, toutes vos données seront supprimées.",
+                                    "instructions": "Taper le texte suivant : ",
+                                    "devNote": "Pour l'instant, en supprimant un compte, toutes les données sont supprimées. Plus tard, le compte sera d'abord mis en pause, psui supprimé au bout d'un mois. "
+                                }
+                            }
+                        }
+                    }
+                },
+                "patreon": {
+                    "tab": "Patreon",
+                    "Title": "Patreon",
+                    "sections": {
+                        "visityourAccount": {
+                            "button": "Visitez votre compte Patreon"
+                        },
+                        "linkYourAccount": {
+                            "title": "Link your account"
+                        },
+                        "linkedAccount": {
+                            "title": "Your Patreon acount"
+                        },
+                        "unlink": {
+                            "button": "Délier votre compte"
+                        }
+                    }
+                }
+            }
+        },
+        "landing": {
+            "welcomeText": "Bienvenue à la tables destrouvailles ! Finds Table est un endroit où les détectoristes peuvent partager leurs trouvailles.",
+            "loginButton": "Connectez-vous !",
+            "patreonLink": "Finds Table est en cours de développement, vous pouvez découvrir le projet en visitant la page Patreon.  Pour être testeur beta, visitez le serveur Discord pour obtenir un code d'invitation.",
+            "loginSignupInvitation": "Connectez-vous avec votre courriel et mot de passe ou inscrivez-vous pour creer un compte."
+        },
+        "legalNotice": {
+            "title": "Mentions légales"
+        },
+        "privacy": {
+            "title": "Confidentialité"
+        },
+        "redirection": {
+            "emailVerification": {
+                "title": "Vérification de votre adresse courriel",
+                "verifying": "Nous vérifions votre adresse courriel...",
+                "verified": "Votre adresse courriel a été vérifiée avec succès.",
+                "notVerified": "Votre adresse courriel n'a pas pu être vérifiée.",
+                "toLogin": "Aller à la page de connexion"
+            },
+            "newAccountCreated": {
+                "title": "Welcome to the Finds Table",
+                "success": "Your account was successfully created.",
+                "checkYourEmails": "Please check your emails to verify your email address.",
+                "toIndex": "Go to the home page"
+            }
+        },
+        "finds": {
+            "newFind": {
+                "title": "Nouvelle trouvaille",
+                "pageLead": "Ajoutez vos dernières pièces à la table des trouvailles.",
+                "sections": {
+                    "description": {
+                        "title": "Description",
+                        "fields": {
+                            "title": {
+                                "label": "Titre",
+                                "placeholder": "Pièce en argent"
+                            },
+                            "type": {
+                                "label" : "Type"
+                            },
+                            "metals": {
+                                "label" : "Composition"
+                            }
+                        }
+                    },
+                    "dating": {
+                        "title": "Age",
+                        "tabs": {
+                            "preciseYear": {
+                                "tabText": "Précis",
+                                "description": "Date précise"
+                            },
+                            "rangeOfYears": {
+                                "tabText": "Fourchette",
+                                "description": "Date approximative"
+                            }
+                        },
+                        "fields": {
+                            "preciseYear": {
+                                "label": "Année",
+                                "placeholder": 1898
+                            },
+                            "rangeFrom": {
+                                "label": "Entre"
+                            },
+                            "rangeTo": {
+                                "label": "Et"
+                            },
+                            "images": {
+                                "label": "Add images"
+                            },
+                            "period": {
+                                "label": "Pédiode"
+                            }
+                        }
+                    },
+                    "images": {
+                        "title": "Images",
+                        "fields": {
+                            "images": {
+                                "label": "Ajoutez des images"
+                            }
+                        }
+                    }
+                }
+                
+            }
+        },
+        "badges": {
+            "title": "Badges",
+            "pageLead": "Les badges sont des récompenses que vous pouvez gagner en utilisant Finds Table. Ils sont affichés sur votre profil et vous permettent de montrer vos accomplissements à la communauté."
+        },
+        "huntReports": {
+            "newReport": {
+                "title": "New Hunt Report",
+                "pageLead": "Build your own collection of adventures. Each Hunt Report lets you document your outings, conditions, and finds. Over time, you’ll create a personal archive of all your exploration journeys.",
+                "fields": {
+                    "title": {
+                        "label": "Title",
+                        "placeholder": "Riverbank outing"
+                    },
+                    "content": {
+                        "label": "Content",
+                        "placeholder": "Tell us about your outing, the location, the conditions..."
+                    },
+                    "date": {
+                        "label": "Date of the hunt"
+                    },
+                    "status": {
+                        "label": "Status"
+                    },
+                    "biome": {
+                        "label": "Biome"
+                    },
+                    "weatherTags": {
+                        "label": "Weather"
+                    },
+                    "banner": {
+                        "label": "Main banner"
+                    },
+                    "bootyPhoto": {
+                        "label": "Booty photo"
+                    },
+                    "photos": {
+                        "label": "Miscellaneous photos"
+                    },
+                    "finds": {
+                        "label": "Select associated finds"
+                    },
+                    "relatedFinds": {
+                        "label": "Associated Finds",
+                        "lead": "Attach one or more finds related to your hunt.",
+                        "button": "Add Finds"
+                    }
+                }
+            }
+        }
+
+    }
+}

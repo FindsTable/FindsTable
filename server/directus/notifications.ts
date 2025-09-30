@@ -1,6 +1,6 @@
 import {
     createItem
-} from '@/server/directus/items'
+} from '@@/server/directus/items'
 
 export {
     createNotification

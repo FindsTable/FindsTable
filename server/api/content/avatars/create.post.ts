@@ -1,11 +1,11 @@
-import { readEvent } from '@/server/apiUtils/readEvent'
-import { createItem, updateItemById } from '@/server/directus/items'
-import { uploadFile } from '@/server/directus/files'
-import { ItemObject } from '~/shared/types/dataObjects'
+import { readEvent } from '@@/server/apiUtils/readEvent'
+import { createItem, updateItemById } from '@@/server/directus/items'
+import { uploadFile } from '@@/server/directus/files'
+import { ItemObject } from '#shared/types/dataObjects'
 import { H3Event } from 'h3'
-import { itemCountIsValid, validateUser } from '@/server/utils/validation'
-import { updateItemsCountField as incrementAvatarsCount } from '@/server/utils/apiContentUtils'
-import { updateMe } from '@/server/directus/users'
+import { itemCountIsValid, validateUser } from '@@/server/utils/validation'
+import { updateItemsCountField as incrementAvatarsCount } from '@@/server/utils/apiContentUtils'
+import { updateMe } from '@@/server/directus/users'
 
 const avatarsFolderId = 'e82c8d84-9351-4e5b-a8bb-527757687066'
 const allowedTypes = ['image/jpeg', 'image/png']

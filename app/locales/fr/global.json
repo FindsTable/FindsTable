@@ -1,0 +1,51 @@
+{
+    "global": {
+        "close": "Fermer",
+        "open": "Ouvrir"
+    },
+    "colorMode": {
+        "modes": {
+            "light": "clair",
+            "dark": "foncé",
+            "auto": "auto",
+            "coffee": "café",
+            "forest": "forêt"
+        }
+    },
+    "languages": {
+        "en": {
+            "name": "anglais",
+            "short": "en"
+        },
+        "fr": {
+            "name": "français",
+            "short": "fr"
+        }
+    },
+    "user": {
+        "username": "Pseudonime",
+        "email": "courriel"
+    },
+    "components": {
+        "button": {
+            "close": "close",
+            "open": "open",
+            "submit": "Ajouter"
+        }
+    },
+    "auth": {
+        "login": "Connexion",
+        "signup": "Inscription"
+    },
+    "sideBarLinks": {
+        "create": "créer",
+        "community": "Communautée",
+        "users": "Utilisateurs",
+        "finds": "Trouvailles",
+        "newFind": "nouvelle trouvaille",
+        "thoughts": "Pensées",
+        "badges": "Badges",
+        "notifications": "Notifications",
+        "newHuntReport": "Nouvelle excursion"
+    }
+}

@@ -1,8 +1,8 @@
-import { readEvent } from '@/server/apiUtils/readEvent'
-import { createItem } from '@/server/directus/items'
-import { ItemObject } from '~/shared/types/dataObjects'
+import { readEvent } from '@@/server/apiUtils/readEvent'
+import { createItem } from '@@/server/directus/items'
+import { ItemObject } from '#shared/types/dataObjects'
 import { H3Event } from 'h3'
-import { itemCountIsValid, validateUser } from '@/server/utils/validation'
+import { itemCountIsValid, validateUser } from '@@/server/utils/validation'
 
 
 export default defineEventHandler(async <ExpectedItemObject extends ItemObject>(

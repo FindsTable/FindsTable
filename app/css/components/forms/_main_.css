@@ -1,0 +1,8 @@
+@import url('./inputText.css');
+@import url('./switch.css');
+
+/* .input-cutoutStyle {
+    color: var(--inputText-textColor);
+    background-color: var(--inputText-bgColor);
+    box-shadow: inset 2px 1px 3px var(--inputText-insetShadowColor);
+} */

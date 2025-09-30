@@ -1,0 +1,16 @@
+.theme-mainActionButton {
+    color: var(--mainActionButton-textColor);
+    background-color: var(--mainActionButton-bgColor);
+}
+
+.theme-mainActionButton:hover {
+    color: var(--mainActionButton-hover-textColor);
+    background-color: var(--mainActionButton-hover-bgColor);
+}
+
+.theme-mainActionButton:disabled,
+.theme-mainActionButton.disabled {
+    color: var(--mainActionButton-disabled-textColor);
+    background-color: var(--mainActionButton-disabled-bgColor);
+}
+

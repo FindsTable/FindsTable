@@ -1,5 +1,5 @@
-import { updateMe } from '@/server/directus/users'
-import { readEvent } from '@/server/apiUtils/readEvent'
+import { updateMe } from '@@/server/directus/users'
+import { readEvent } from '@@/server/apiUtils/readEvent'
 
 export default defineEventHandler( async <
     ExpectedUserObject extends UserObject

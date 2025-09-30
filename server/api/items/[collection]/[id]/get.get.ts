@@ -1,12 +1,13 @@
-import { readEvent } from '@/server/apiUtils/readEvent'
+import { readEvent } from '@@/server/apiUtils/readEvent'
 import { ApiResponse } from '#shared/types/apiResponse'
-import { getItemById } from '@/server/directus/items';
+import { getItemById } from '@@/server/directus/items';
 
 type ItemObject = {
     [key: string]: any
 }
 
 export default defineEventHandler(async (event): Promise<ApiResponse<ItemObject>> => {
+    console.log('we are fetching my firnd!')
     const {
         query,
         bearerToken,

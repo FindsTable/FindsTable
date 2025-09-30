@@ -1,0 +1,92 @@
+{
+    "cookiePolicy": {
+        "title": "Cookie Policy",
+        "pageLead": "Learn about how we use cookies.",
+        "lastUpdated": "Last update",
+        "sections": {
+            "whatAreCookies": {
+                "title": "What Are Cookies?",
+                "text": "Cookies are small text files stored on your device when you visit a website. They help websites work more efficiently, improve user experience, and sometimes provide information to website owners. Many sites use cookies for marketing, analytics, and personalization. For more details, see the resource: All About Cookies."
+            },
+            "howWeUseCookies": {
+                "title": "How We Use Cookies",
+                "text": "At Findstable, we use cookies strictly for functional purposes essential to the operation of our application. This includes storing settings such as language, color mode, and other configuration options, as well as maintaining your login session. We do not use cookies for marketing, data collection, or tracking beyond what is necessary for the app to function correctly."
+            },
+            "ourCommitment": {
+                "title": "Our Commitment",
+                "text": "We believe that your privacy is a fundamental right. By limiting our cookie usage solely to essential functionality, we take a stand against intrusive cookie marketing and content control practices. We are committed to transparency and giving you control over your data."
+            },
+            "manageCookies": {
+                "title": "How to Manage Cookies",
+                "text": "Most browsers allow you to manage your cookie preferences. You can delete, block, or control cookies via your browser settings. Please note that disabling cookies may affect the functionality of our application.",
+                "links": {
+                "chrome": "https://support.google.com/chrome/answer/95647?hl=en",
+                "firefox": "https://support.mozilla.org/en-US/kb/enable-and-disable-cookies-website-preferences",
+                "safari": "https://support.apple.com/guide/safari/manage-cookies-and-website-data-sfri11471/mac",
+                "edge": "https://support.microsoft.com/en-us/microsoft-edge/delete-cookies-in-microsoft-edge-63947406-40ac-c3b8-57b9-2a946a29ae09",
+                "opera": "https://help.opera.com/en/latest/web-preferences/#cookies"
+                }
+            },
+            "furtherInformation": {
+                "title": "Further Information",
+                "text": "For additional details on cookies and their usage, please consult external resources or your browser’s help documentation. We encourage you to review this policy regularly for updates. If you have any questions or concerns regarding our cookie practices, please contact us at [Insert Contact Information]."
+            }
+        }
+    },
+    "test": "eric",
+    "legalNotice": {
+        "title": "Legal Notice and Terms of Use",
+        "lastUpdated": "Last update",
+        "sections": {
+          "generalDisclaimer": {
+            "title": "General Disclaimer",
+            "text": "Findstable is provided as a social platform where users are responsible for the content they post. We make every effort to foster a safe, respectful, and enjoyable environment; however, Findstable shall not be held liable for any negative consequences arising from user interactions or the publication of user-generated content. Users agree that by using the platform, they assume full responsibility for any content they submit."
+          },
+          "userSubmittedContent": {
+            "title": "User-Submitted Content and Declarations",
+            "text": "All content submitted by users, including but not limited to texts, images, and other media, is the sole responsibility of the user. In jurisdictions where certain finds must be declared (for example, in France, finds dating from before 1875 must be officially declared), users are solely responsible for ensuring they comply with such legal obligations. By posting any content, you confirm that you have made all necessary declarations and comply with all applicable laws. Findstable is not responsible for any failure to meet such obligations."
+          },
+          "licenseToUse": {
+            "title": "License to Use Submitted Content",
+            "text": "By submitting content to Findstable, you grant us a broad, non-exclusive, royalty-free license to use, display, reproduce, and distribute your content within the app and in connection with related activities such as advertising, promotions, and publications (including on third-party platforms like Facebook). This license is limited to the use necessary to support the operation and promotion of Findstable. You retain ownership of your content, but acknowledge that posting it constitutes your consent to the use of the content as described herein."
+          },
+          "codeOfConduct": {
+            "title": "Code of Conduct",
+            "text": "To maintain a respectful and safe environment, all users must adhere to the following rules:\n\n- Respect and Courtesy: Users must interact respectfully. Personal attacks, harassment, and hate speech are not tolerated.\n- Non-Discrimination: Discriminatory language or behavior based on race, ethnicity, gender, sexual orientation, religion, or any other status is strictly prohibited. In particular, harassment or abuse of women or any other group will not be tolerated.\n- Safe Environment: All users have the right to a safe and inclusive platform. Any behavior that undermines this will be subject to moderation, and may result in removal from the platform.\n- Responsibility: While we aim to monitor interactions and foster a positive community, Findstable is not responsible for disputes or negative encounters between users. By using the platform, you agree to resolve any issues amicably and acknowledge that Findstable is not liable for any damages resulting from user interactions."
+          },
+          "additionalProvisions": {
+            "title": "Additional Provisions",
+            "text": "Third-Party Links and External Content: The platform may include links or references to external resources. Findstable is not responsible for the content or practices of external websites.\n\nModifications: This legal notice may be updated from time to time. Continued use of the platform after such changes constitutes acceptance of the new terms.\n\nGoverning Law: The interpretation and enforcement of this notice shall be governed by the applicable laws of the jurisdiction in which you reside, and any disputes will be resolved accordingly."
+          },
+          "severabilityAndLiability": {
+            "title": "Severability and Limitation of Liability",
+            "text": "Should any provision of this legal notice be found invalid or unenforceable, the remaining provisions shall remain in full force and effect. Under no circumstances shall Findstable be liable for any indirect, incidental, or consequential damages arising from the use of the platform."
+          }
+        },
+        "consent": "By using Findstable, you acknowledge that you have read, understood, and agree to these terms. This legal notice is not exhaustive and does not substitute for professional legal counsel. Users are advised to consult their legal advisors regarding any uncertainties or local legal requirements."
+    },
+    "privacy": {
+        "title": "Privacy Policy",
+        "lastUpdated": "[Insert Date]",
+        "sections": {
+            "intro": {
+                "title": "Introduction",
+                "text": "At Findstable, we value your privacy and are committed to transparency and ethical data practices. We do not use ads or cookies to track users, and we will never share or sell your personal data."
+            },
+            "dataCollection": {
+                "title": "Data Collection",
+                "text": "The only personal data we request the right to use is your username (username). We do not require or collect any additional personal information."
+            },
+            "dataStorage": {
+                "title": "Data Storage and Hosting",
+                "text": "Currently, our application is hosted on Netlify and our database is hosted on IONOS. We strive to be transparent about our data storage practices. However, we do not have full control over or detailed information about the physical location of our servers. While it is possible that data may be stored in the USA, France, or other jurisdictions, we are committed to handling your data ethically and responsibly."
+            },
+            "recommendation": {
+                "title": "Data Recommendations",
+                "text": "We recommend that you do not store sensitive or critical personal data on our platform. Our services are designed for social interaction and the sharing of finds, and we encourage you to use caution when deciding what information to share."
+            }
+        },
+        "consent": "By using Findstable, you acknowledge that you have read and understood this Privacy Policy. We are committed to protecting your privacy and handling your data with care."
+    }
+}
+

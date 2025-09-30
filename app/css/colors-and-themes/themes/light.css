@@ -1,0 +1,69 @@
+#app.light {
+
+    /* text colors */
+    --titleColor-main: var(--tone-grayscale-90);
+    --h1Color-main: var(--tone-grayscale-90);
+    --h2Color-main: var(--tone-grayscale-80);
+    --h3Color-main: var(--tone-grayscale-80);
+
+    --textColor-main: var(--tone-grayscale-95);
+    --textColor-negative: var(--tone-grayscale-10);
+    
+    /* Background af app */
+    --backdropColor: var(--tone-grayscale-10);
+
+    /* Surfaces stacked on the app backdrop */
+    --surface1-bgColor: white;
+    --surface1-bgColor-hover: var(--tone-grayscale-20);
+    --surface1-bgColor-active: var(--tone-grayscale-30);
+
+    /* Surfaces stacked surface color 1 */
+    --surface2-bgColor: var(--tone-grayscale-40);
+    --surface2-bgColor-hover: var(--tone-grayscale-50);
+    --surface2-bgColor-active: var(--tone-grayscale-60);
+
+    /* Buttons */
+
+    --filledButton-bgColor: var(--color-ft);
+    --filledButton-hover-bgColor: var(--color-ft-dark);
+    --filledButton-active-bgColor: var(--color-ft-light);
+    --filledButton-disabled-bgColor: var(--tone-grayscale-30);
+
+    --filledButton-textColor: white;
+    --filledButton-disabled-textColor: var(--tone-grayscale-40);
+
+    --outlinedButton-bgColor: transparent;
+    --outlinedButton-hover-bgColor: var(--tone-grayscale-10);
+    --outlinedButton-active-bgColor: var(--tone-grayscale-20);
+    --outlinedButton-textColor: var(--tone-grayscale-95);
+
+    --textButton-bgColor: transparent;
+    --textButton-hover-bgColor: var(--tone-grayscale-10);
+    --textButton-onPanel-hover-bgColor: var(--tone-grayscale-10);
+    --textButton-active-bgColor: var(--tone-grayscale-20);
+    --textButton-onPanel-active-bgColor: var(--tone-grayscale-20);
+    --textButton-textColor: var(--tone-grayscale-95);
+    --textButton-onPanel-selected-bgColor: var(--tone-grayscale-30);
+
+    --fab-bgColor: var(--color-ft);
+    --fab-hover-bgColor: var(--color-ft-dark);
+    --fab-active-bgColor: var(--color-ft-light);
+    --fab-disabled-bgColor: var(--color-ft-lighter);
+    --fab-textColor: white;
+    --fab-disabled-textColor: var(--tone-grayscale-40);
+
+    /* login-signup form */
+    
+    --loginSignup-input-bgColor: transparent;
+    --loginSignup-input-borderColor: var(--tone-grayscale-40);
+    --loginSignup-input-placeholderColor: var(--tone-grayscale-40);
+    --loginSignup-input-labelColor: var(--tone-grayscale-50);
+
+    /* Sidebar*/
+    --sidebar-accountCard-bgColor: var(--tone-zinc-30);
+}
+
+/* pageStructure.css */
+#app.light {
+    --sectionTitle-border-bottom-color: var(--tone-zinc-30)
+}

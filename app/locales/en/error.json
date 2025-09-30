@@ -1,0 +1,8 @@
+{
+    "error": {
+        "unknown": "An unknown error occurred",
+        "notFound": "The page you are looking for does not exist",
+        "forbidden": "You do not have permission to access this page",
+        "server": "A server error occurred"
+    }
+}

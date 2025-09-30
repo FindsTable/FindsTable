@@ -1,5 +1,5 @@
-import { getSingleton } from '@/server/directus/singleton'
-import { readEvent } from '@/server/apiUtils/readEvent'
+import { getSingleton } from '@@/server/directus/singleton'
+import { readEvent } from '@@/server/apiUtils/readEvent'
 
 import { newResponse, ApiResponse } from '#shared/types/apiResponse'
 

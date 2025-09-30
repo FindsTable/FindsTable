@@ -1,5 +1,5 @@
-import { readEvent } from '@/server/apiUtils/readEvent'
-import { createItem } from '@/server/directus/items'
+import { readEvent } from '@@/server/apiUtils/readEvent'
+import { createItem } from '@@/server/directus/items'
 import { ApiResponse } from '#shared/types/apiResponse'
 
 type ItemObject = {

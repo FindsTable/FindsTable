@@ -1,6 +1,6 @@
-import { readEvent } from '~/server/apiUtils/readEvent'
+import { readEvent } from '@@/server/apiUtils/readEvent'
 import { ApiResponse } from '#shared/types/apiResponse'
-import { updateItemById } from '@/server/directus/items';
+import { updateItemById } from '@@/server/directus/items';
 
 type ItemObject = {
     [key: string]: any

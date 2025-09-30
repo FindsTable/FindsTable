@@ -1,0 +1,57 @@
+/*
+
+All themes
+
+*/
+
+@import url('light.css');
+@import url('dark.css');
+@import url('coffee.css');
+@import url('forest.css');
+@import url('components/_main_.css');
+
+.theme-backdropColor {
+    background-color: var(--backdropColor);
+    transition: 150ms ease;
+}
+
+.theme-titleColor-main {
+    color: var(--titleColor-main);
+}
+.theme-h1Color-main {
+    color: var(--h1Color-main);
+}
+.theme-h2Color-main {
+    color: var(--h2Color-main);
+}
+.theme-h3Color-main {
+    color: var(--h3Color-main);
+}
+.theme-textColor-main {
+    color: var(--textColor-main);
+}
+
+.theme-textColor-main * {
+    fill: var(--textColor-main);
+}
+.theme-textColor-dimmed {
+    color: var(--textColor-dimmed);
+}
+.theme-textColor-negative {
+    color: var(--textColor-negative);
+}
+
+/* sidebar */
+#sidebarAccountCard.-bgColor {
+    background-color: var(--sidebar-accountCard-bgColor);
+}
+
+
+/*  Ui elements color (switch, radio boxes, etc */
+
+.theme-uiColor {
+    background-color: var(--uiElement-bgColor);
+}
+.theme-inputText-bgColor {
+    background-color: var(--surface2-bgColor);
+}

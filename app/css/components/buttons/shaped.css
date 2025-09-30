@@ -1,0 +1,17 @@
+/* 
+    Shaped buttons appear to pop out and be lit from the inside
+
+    used for community/user library buttons
+*/
+
+.-shaped {
+    background-color: var(--shapedButton-off-bgColor);
+    color: var(--shapedButton-off-textColor);
+    box-shadow: inset 1px 1px 5px var(--shapedButton-off-insetShadowColor);
+}
+
+.-shaped.selected {
+    background-color: var(--shapedButton-on-bgColor);
+    color: var(--shapedButton-on-textColor);
+    box-shadow: inset 1px 1px 5px var(--shapedButton-on-insetShadowColor);
+}
