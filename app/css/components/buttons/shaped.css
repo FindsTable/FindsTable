@@ -7,13 +7,11 @@
 .-shaped {
     background-color: var(--shapedButton-off-bgColor);
     color: var(--shapedButton-off-textColor);
-    /* box-shadow: inset 1px 1px 5px var(--shapedButton-off-insetShadowColor); */
     border: 1px solid var(--shapedButton-off-borderColor);
 }
 
 .-shaped.selected {
     background-color: var(--shapedButton-on-bgColor);
     color: var(--shapedButton-on-textColor);
-    /* box-shadow: inset 1px 1px 5px var(--shapedButton-on-insetShadowColor); */
     border: 1px solid var(--shapedButton-on-borderColor);
 }

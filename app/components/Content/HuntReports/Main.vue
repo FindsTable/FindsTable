@@ -60,7 +60,7 @@ function getNextPage() {
         >
             <article
                 
-                class="comp-panel -surface1 pad10"
+                class="comp-panel  pad10"
             >
                 <div class="bannerFrame centered">
                     <img 

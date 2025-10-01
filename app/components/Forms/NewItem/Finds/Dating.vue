@@ -24,7 +24,6 @@ function handleClick() {
     }
 }
 
-
 const pageTabs = [
     {
         value: "year",

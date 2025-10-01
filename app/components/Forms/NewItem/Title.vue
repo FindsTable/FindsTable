@@ -18,7 +18,6 @@ const props = defineProps({
         <template #input>
             <FormsInput
                 type="text"
-                :placeholder="t(`${placeholderPath}`)"
                 :minlength="3"
                 :maxlength="50"
                 spellcheck

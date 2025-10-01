@@ -33,7 +33,10 @@ async function handleClick() {
 </script>
 
 <template>
-    <div v-if="find" class="w100 container pointer">
+    <ArchitecturePanelMain
+         v-if="find" 
+         class="w100 container pointer"
+    >
         <ContentFindsCardLarge
             @click="handleClick"
             :find="find"
@@ -41,13 +44,13 @@ async function handleClick() {
             @deleteFind="emit('deleteFind', find.id)"
         />
 
-        <ContentFindsCardMedium
+        <!-- <ContentFindsCardMedium
             @click="handleClick"
             :find="find"
             :activeImageIndex="activeImageIndex"
             @deleteFind="emit('deleteFind', find.id)"
-        />
-    </div>
+        /> -->
+    </ArchitecturePanelMain>
 </template>
 
 <style scoped>

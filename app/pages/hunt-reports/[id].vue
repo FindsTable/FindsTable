@@ -81,7 +81,7 @@ definePageMeta({
         <template #scrollMain>
             <article
                 
-                class="comp-panel -surface1 pad10"
+                class="comp-panel  pad10"
             >
                 <div class="flex column marTop10" v-if="huntReport">
                     <Tp>

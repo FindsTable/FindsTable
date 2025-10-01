@@ -117,7 +117,7 @@ const submitMethods = {
         {{ t('page.landing.loginSignupInvitation') }}
     </p>
     <form 
-        class="flex column gap20 marTop50 comp-panel -surface1 pad20"
+        class="flex column gap20 marTop50 comp-panel  pad20"
     >
 
         <FormsTypeToggler :types="['login', 'signup']" v-model="formType" />

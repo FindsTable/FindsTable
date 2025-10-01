@@ -1,8 +1,8 @@
 export default defineNuxtPlugin((nuxtApp) => {
-    const preferredLocaleCookie = useCookie('preferredLocale')
-    if (preferredLocaleCookie.value) {
-        nuxtApp.vueApp.config.globalProperties.$i18n.locale = preferredLocaleCookie.value
-    }
+    // const preferredLocaleCookie = useCookie('preferredLocale')
+    // if (preferredLocaleCookie.value) {
+    //     nuxtApp.vueApp.config.globalProperties.$i18n.locale = preferredLocaleCookie.value
+    // }
 
     handleColorModeCookie()
     setBrowserColorModeSetting()

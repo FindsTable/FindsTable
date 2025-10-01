@@ -3,6 +3,13 @@
     background-color: var(--mainActionButton-bgColor);
 }
 
+.theme-mainActionButton.-on {
+    background-color: var(--mainActionButton-bgColor);
+}
+.theme-mainActionButton.-off {
+    background-color: transparent;
+}
+
 .theme-mainActionButton:hover {
     color: var(--mainActionButton-hover-textColor);
     background-color: var(--mainActionButton-hover-bgColor);

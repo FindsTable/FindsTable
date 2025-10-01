@@ -1,5 +1,6 @@
 .theme-surface1 {
     background-color: var(--surface1-bgColor);
+    border-color: var(--surface1-borderColor);
     transition: 150ms ease;
 }
 
@@ -9,5 +10,11 @@
 .theme-surface2 {
     color: var(--textColor-main);
     background-color: var(--surface2-bgColor);
+    transition: 150ms ease;
+}
+
+.theme-surface2 {
+    background-color: var(--surface2-bgColor);
+    border-color: var(--surface2-borderColor);
     transition: 150ms ease;
 }

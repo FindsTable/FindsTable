@@ -46,7 +46,7 @@ async function saveNewThought() {
     <div 
         class="
             box
-            comp-panel -surface1
+            comp-panel 
         "
     >
         <div 

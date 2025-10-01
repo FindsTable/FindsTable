@@ -75,23 +75,11 @@ async function deleteThought(thoughtId) {
 </script>
 
 <template>
-    <div v-if="_thoughts" class="arch_scrollBottonPadding">
-        <ArchitectureAppStructureBoxesMainElement
+    <div v-if="_thoughts">
+        <ContentThoughtsThought 
             v-for="thought in _thoughts" :key="thought.id" 
-        >
-            <ContentThoughtsThought 
-                :thought="thought" 
-                @deleteThought="deleteThought" 
-            />
-        </ArchitectureAppStructureBoxesMainElement>
-
-        <div class="centered">
-            <button 
-                class="comp-button -filled marTop20 font-text -main"
-                @click="getNextPage"
-            >
-                next page
-            </button>
-        </div>
+            :thought="thought" 
+            @deleteThought="deleteThought" 
+        />
     </div>
 </template>

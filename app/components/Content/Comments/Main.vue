@@ -75,42 +75,24 @@ function newCommentSaved(newComment) {
 
 <template>  
     <div class="marTop20" @click.stop>
-        <p class="font-title flex justifyBetween theme-textColor-main">
-            <span>
-                Commentaires <span v-if="comments">({{ comments.length }})</span>
-            </span>
-
-            <Icon name="close" size="24px" class="pointer" @click="emit('closeComments')" />
-        </p>
-
-        <div 
+        <ArchitecturePanelMain 
             v-if="comments"
             class="commentsBox overflowScroll -scrollY"
+            themeSurface2
         >
+
+            <p class="font-title flex justifyBetween theme-textColor-main">
+                <span>
+                    Commentaires <span v-if="comments">({{ comments.length }})</span>
+                </span>
+
+                <Icon name="close" size="24px" class="pointer" @click="emit('closeComments')" />
+            </p>
+
             <div 
                 v-for="comment in comments" :key="comment.id"
-                class="flex alignStart marTop20"    
+                class="commentBox flex alignStart marTop20"    
             >
-                <!-- <div class="flex column alignEnd">
-                    <div class="avatarBg theme-surface-2">
-                        <NuxtLink 
-                            :to="`/users/${comment.owner.id}`"
-                            class="pointer"    
-                        >
-                            <KeepAlive>
-                                <ArchitectureFramesAvatar 
-                                    :fileId="comment.owner.avatar"
-                                    width="24px"
-                                    round
-                                />
-                            </KeepAlive>
-                        </NuxtLink>
-                    </div>
-
-                    <div class="theme-surface-2 reversedBorderRadius">
-
-                    </div>
-                </div> -->
                 <div class="avatarBg">
                     <NuxtLink 
                         :to="`/users/${comment.owner.id}`"
@@ -126,7 +108,7 @@ function newCommentSaved(newComment) {
                     </NuxtLink>
                 </div>
 
-                <div class="content theme-surface-2 grow">
+                <div class="content grow">
                     <div class="flex justifyBetween">
                         <NuxtLink 
                             :to="`/users/${comment.owner.id}`"
@@ -150,44 +132,31 @@ function newCommentSaved(newComment) {
                 </div>
             </div>
 
-        </div>
-
-        <div class="newCommentBox marTop20">
             <ContentCommentsNew
                 :itemId="itemId"
                 :collection="collection"
+                
                 @newCommentSaved="newCommentSaved"
             />
-        </div>
+
+        </ArchitecturePanelMain>
     </div>
 </template>
 
 <style scoped>
+.commentBox {
+    border-bottom: 1px solid var(--surface2-borderColor);
+}
 .avatarBg {
     border-radius: 10px 0 0 10px;
-    /* padding: 10px 5px 10px 10px; */
     translate: 5px 5px;
 }
-.reversedBorderRadius {
-    width: 50%;
-    aspect-ratio: 1;
-    position: relative;
-}
-.reversedBorderRadius::after {
-    content: "";
-    width: 100%;
-    aspect-ratio: 1;
-    background-color: var(--surface1-bgColor);
-    border-top-right-radius: 10px;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
+
 .commentsBox {
-    max-height: 600px;
+    max-height: 550px;
+    overflow: scroll;
 }
 .content {
     padding: 10px 15px;
-    border-radius: 8px;
 }
 </style>

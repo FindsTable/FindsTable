@@ -80,8 +80,3 @@ onMounted(async () => {
         :thoughts="thoughts"
     />
 </template>
-
-<style scoped>
-
-
-</style>

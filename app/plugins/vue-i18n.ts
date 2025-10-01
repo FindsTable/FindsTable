@@ -38,10 +38,14 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     legacy: false,
     locale: 'en',
     fallbackLocale: 'en',
-    messages,
-    strategy: 'no_prefix',
-    detectBrowserLanguage: false, 
+    messages
   });
+
+    const preferredLocaleCookie = useCookie("preferredLocale")
+    
+    if (preferredLocaleCookie.value) {
+        i18n.global.locale.value = preferredLocaleCookie.value
+    }
 
   nuxtApp.vueApp.use(i18n);
 });

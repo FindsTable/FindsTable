@@ -28,11 +28,14 @@ const appState = useAppState()
                 
 
                 <ArchitectureFlexGrowVerticalScroll>
-                    <TH1>
-                        <slot name="title">
+                    <ArchitectureAppStructureBoxesMainElement>
+                        <TH1>
+                            <slot name="title">
 
-                        </slot>
-                    </TH1>
+                            </slot>
+                        </TH1>
+                    </ArchitectureAppStructureBoxesMainElement>
+                    
 
                     <div class="marTop10">
                         <slot name="header" >

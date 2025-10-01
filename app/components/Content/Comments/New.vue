@@ -43,15 +43,17 @@ const textareaId = useId()
 
 
 <template>
-    <form class="flex theme-surface-2">
-        <label :for="textareaId">
-            {{ label }}
-        </label>
+    <form class="flex alignStart theme-surface2 marTop10">
+        <ArchitectureFramesAvatar 
+            :fileId="useUserState().value.avatar"
+            width="40px"
+            round
+        />
 
         <textarea v-model="textContent"
             :id="textareaId"
             class="
-                theme-surface-2 font-text -semibold
+                theme-textColor-main
                 grow
             "
             :class="[ 
@@ -59,13 +61,12 @@ const textareaId = useId()
                 textContent ? 'overflowScroll -scrollY' : 'overflowHidden'
 
             ]"
-            :placeholder="placeholder"
+            placeholder="Rédigez votre réponse"
         >
-
         </textarea>
 
-        <div class="flex alignEnd">
-            <button @click.prevent="handleClick">
+        <div>
+        <button @click.prevent="handleClick">
                 <Icon name="send" class="theme-textColor-main pointer" />
             </button>
         </div>

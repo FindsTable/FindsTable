@@ -14,7 +14,7 @@ const showComments = ref(false)
     <article 
         v-if="find" 
         class="
-            card -surface1
+            card 
             flex column gap10 pointer justifyEnd
         "
     >
@@ -128,7 +128,6 @@ const showComments = ref(false)
 
 <style scoped>
 .card {
-    padding: 12px;
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);

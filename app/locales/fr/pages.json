@@ -152,6 +152,10 @@
                                 "label": "Titre",
                                 "placeholder": "Pièce en argent"
                             },
+                            "description": {
+                                "label": "Description",
+                                "placeholder": "Jolie petite pièce en argent..."
+                            },
                             "type": {
                                 "label" : "Type"
                             },

@@ -37,7 +37,7 @@ app/css/
 ### Theme Classes
 ```css
 .theme-backdropColor      /* Background color */
-.theme-surface-1         /* Primary surface */
+.theme-surface1         /* Primary surface */
 .theme-surface-2         /* Secondary surface */
 .theme-titleColor-main   /* Main title color */
 .theme-textColor-main    /* Main text color */
@@ -46,7 +46,7 @@ app/css/
 
 ### Usage
 ```html
-<div class="theme-surface-1">
+<div class="theme-surface1">
   <h1 class="theme-titleColor-main">Title</h1>
   <p class="theme-textColor-main">Content</p>
 </div>
@@ -106,7 +106,7 @@ app/css/
 2. Use theme classes for colors:
 ```vue
 <template>
-  <div class="theme-surface-1">
+  <div class="theme-surface1">
     <h2 class="theme-titleColor-main">Title</h2>
   </div>
 </template>
@@ -173,7 +173,7 @@ Some CSS features are being phased out:
 ### Layout Component
 ```vue
 <template>
-  <div class="theme-surface-1 flex column gap20">
+  <div class="theme-surface1 flex column gap20">
     <header class="flex justifyBetween alignCenter">
       <h1 class="theme-titleColor-main">Title</h1>
       <nav class="flex gap10">

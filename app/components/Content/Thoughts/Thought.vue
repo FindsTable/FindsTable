@@ -16,53 +16,55 @@ function emit_updateNewCommentsCount(increment) {
 </script>
 
 <template>
-    <div class="thoughtPanel -surface1">
-        <div class="flex justifyBetween">
-            <ContentUsersCardsMini
-                :userId="thought.owner.id"
-                :avatarId="thought.owner.avatar"
-                :username="thought.owner.displayName || thought.owner.username"
-                :date="useParseDate(thought.date_created)"
-            />
+    <ArchitectureAppStructureBoxesMainElement>
+        <ArchitecturePanelMain>
+            <div class="thoughtPanel ">
+                <div class="flex justifyBetween">
+                    <ContentUsersCardsMini
+                        :userId="thought.owner.id"
+                        :avatarId="thought.owner.avatar"
+                        :username="thought.owner.displayName || thought.owner.username"
+                        :date="useParseDate(thought.date_created)"
+                    />
 
-            <button 
-                v-if="thought.owner.id === me.id"
-                @click="emit('deleteThought', thought.id)"
-                class="theme-textColor-main pointer"
-            >
-                <Icon name="delete" size="24px" />
-            </button>
-        </div>
+                    <button 
+                        v-if="thought.owner.id === me.id"
+                        @click="emit('deleteThought', thought.id)"
+                        class="theme-textColor-main pointer"
+                    >
+                        <Icon name="delete" size="24px" />
+                    </button>
+                </div>
 
-        <p class="content marTop20">
-            {{  thought.content }}
-        </p>
+                <p class="content marTop20">
+                    {{  thought.content }}
+                </p>
 
-        <WidgetsLikesAndCommentsMain
-            fonSize="16px"
-            iconSize="20px"
-            collection="Thoughts"
-            :item="thought"
-            :likeClick="true"
-            :commentClick="true"
-            @commentClicked="showComments = !showComments"
-        />
+                <WidgetsLikesAndCommentsMain
+                    fonSize="16px"
+                    iconSize="20px"
+                    collection="Thoughts"
+                    :item="thought"
+                    :likeClick="true"
+                    :commentClick="true"
+                    @commentClicked="showComments = !showComments"
+                />
 
-        <ContentCommentsMain
-            v-if="showComments"
-            :itemId="thought.id"
-            collection="Thoughts_comments"
-            @newCommentPosted="emit_updateNewCommentsCount"
-            @closeComments="showComments = false"
-        />
-    </div>
+                <ContentCommentsMain
+                    v-if="showComments"
+                    :itemId="thought.id"
+                    collection="Thoughts_comments"
+                    @newCommentPosted="emit_updateNewCommentsCount"
+                    @closeComments="showComments = false"
+                />
+            </div>
+        </ArchitecturePanelMain>
+    </ArchitectureAppStructureBoxesMainElement>
+    
 </template>
 
 <style>
-.thoughtPanel {
-    padding: 10px;
-    border-radius: 10px;
-}
+
 .content {
   white-space: pre-wrap;
 }

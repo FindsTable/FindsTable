@@ -152,6 +152,10 @@
                                 "label": "Title",
                                 "placeholder": "Silver coin"
                             },
+                            "description": {
+                                "label": "Description",
+                                "placeholder": "Silver coin"
+                            },
                             "type": {
                                 "label" : "Type"
                             },

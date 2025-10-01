@@ -107,12 +107,20 @@ const formRef = ref()
 </script>
 
 <template>
-    <form class="flex column gap20 marTop20" ref="formRef">
-        <ArchitecturePanelMain> 
-            <div class="section">
+    <form class="flex column marTop20" ref="formRef">
+        <ArchitectureAppStructureBoxesMainElement>
+            <ArchitecturePanelMain> 
+                <TH2 class="sectionTitle">
+                    {{ t('page.finds.newFind.sections.description.title') }}
+                </TH2>
+
+                <FormsNewItemTitle 
+                    v-model="title"
+                    textPath="page.finds.newFind.sections.description.fields.title.label"
+                />
                 <FormsNewItemDescription
                     v-model="description"
-                    textPath="page.finds.newFind.sections.description.title"
+                    textPath="page.finds.newFind.sections.description.fields.description.label"
                 />
                 <FormsNewItemFindsType
                     v-model="selectedType"
@@ -120,31 +128,27 @@ const formRef = ref()
                 <FormsNewItemFindsMetals
                     v-model="selectedMetals"
                 />
-            </div>
-        </ArchitecturePanelMain>
+            </ArchitecturePanelMain>
+        </ArchitectureAppStructureBoxesMainElement>
             
-        <ArchitecturePanelMain>
-            <TH2 class="sectionTitle">
-                {{ t('page.finds.newFind.sections.dating.title') }}
-            </TH2>
+        <ArchitectureAppStructureBoxesMainElement>
+            <ArchitecturePanelMain>
+                <TH2 class="sectionTitle">
+                    {{ t('page.finds.newFind.sections.dating.title') }}
+                </TH2>
 
-            <div class="section">
                 <FormsNewItemFindsDating
                     v-model="dating"
                 />
+            </ArchitecturePanelMain>
+        </ArchitectureAppStructureBoxesMainElement>
 
-                <!-- <FormsNewItemFindsPeriod
-                    v-model="selectedPeriod"
-                /> -->
-            </div>
-        </ArchitecturePanelMain>
+        <ArchitectureAppStructureBoxesMainElement>
+            <ArchitecturePanelMain>
+                <TH2 class="sectionTitle">
+                    Images
+                </TH2>
 
-        <ArchitecturePanelMain>
-            <TH2 class="sectionTitle">
-                Images
-            </TH2>
-
-            <div class="section">
                 <FormsNewItemImageSelector
                     ref="findImageSelectorComponent"
                     :label="t('add images')"
@@ -157,28 +161,30 @@ const formRef = ref()
                     :showImageSlots="true"
                     :showFilePicker="false"
                 />
-            </div>
-        </ArchitecturePanelMain>
+            </ArchitecturePanelMain>
+        </ArchitectureAppStructureBoxesMainElement>
+        
 
-        <template class="centered">
-            <button 
-                @click.prevent="saveNewFind"
-                class="font-h2 comp-button -filled marTop50"
-            >
-                {{ t('components.button.submit') }}
-            </button>
-        </template>
+        <ArchitectureAppStructureBoxesMainElement>
+            <template class="centered">
+                <button 
+                    @click.prevent="saveNewFind"
+                    class="font-h2 comp-button -filled marTop50"
+                >
+                    {{ t('components.button.submit') }}
+                </button>
+            </template>
+        </ArchitectureAppStructureBoxesMainElement>
+        
     </form>
 </template>
 
 <style scoped>
 .sectionTitle {
     padding-bottom: 5px;
-    border-bottom: 1px solid gray;
+    border-bottom: 1px solid var(--surface1-borderColor);
     margin-bottom: 10px;
 }
-.section {
-    margin-left: 5px;
-}
+
 
 </style>

@@ -14,7 +14,7 @@ const props = defineProps({
 
 <template>
     <div class="container flex" v-if="user">
-        <NuxtLink :to="`/users/${user.id}`" class="card  theme-surface-1 -hoverable flex column alignStart gap20 pointer">
+        <NuxtLink :to="`/users/${user.id}`" class="card  theme-surface1 -hoverable flex column alignStart gap20 pointer">
             <div class="flex gap20">
                 <div class="">
                     <AvFrame :fileId="user.avatar" />

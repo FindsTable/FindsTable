@@ -7,7 +7,7 @@
     color: var(--textColor-main);
 }
 
-.theme-surface-1 .cutoutContainer {
+.theme-surface1 .cutoutContainer {
     background-color: var(--surface1-cutout-bgColor);
     box-shadow: 
         inset 1px 1px 5px var(--surface1-cutout-insetShadowColor-dark),
@@ -17,13 +17,13 @@
     color: var(--textColor-main);
 }
 
-.theme-surface-1 .cutoutContainer:focus,
-.theme-surface-1 .cutoutContainer:active {
+.theme-surface1 .cutoutContainer:focus,
+.theme-surface1 .cutoutContainer:active {
     background-color: var(--surface1-cutout-active-bgColor);
     color: var(--textColor-main);
     outline: 2px solid var(--surface1-cutout-active-outlineColor);
     outline: 2px solid var(--surface1-cutout-active-outlineColor);
 }
-.theme-surface-1 .cutoutContainer.selected {
+.theme-surface1 .cutoutContainer.selected {
     background-color: var(--surface1-cutout-selected-bgColor);
 }

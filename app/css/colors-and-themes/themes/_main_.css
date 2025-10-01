@@ -31,6 +31,13 @@ All themes
     color: var(--textColor-main);
 }
 
+/* 
+    TO OD: make sure this is not too precise
+*/
+.iconify {
+    color: var(--textColor-main);
+}
+
 .theme-textColor-main * {
     fill: var(--textColor-main);
 }

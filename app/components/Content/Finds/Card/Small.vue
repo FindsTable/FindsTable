@@ -9,7 +9,7 @@ const activeImageIndex = ref(0)
 </script>
 
 <template>
-    <article v-if="find" class="card -surface1 flex column gap10 pointer justifyEnd">
+    <article v-if="find" class="card  flex column gap10 pointer justifyEnd">
         <ContentFindsCardMiniToolBar 
             v-if="me.id === find.owner.id" 
             @deleteFind="emit('deleteFind')"

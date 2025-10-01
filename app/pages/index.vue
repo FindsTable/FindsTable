@@ -24,7 +24,7 @@ definePageMeta({
 <template>
     <NuxtLayout name="public-route">
         <div class="container grow flex column justifyCenter">
-            <div class="mainPanel -surface1 pad20">
+            <div class="mainPanel  pad20">
                 <Panel class="">
                     <Welcome />
 

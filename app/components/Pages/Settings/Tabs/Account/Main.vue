@@ -9,15 +9,21 @@ import {
 </script>
 
 <template>
-    <div class="box">
+    <ArchitectureAppStructureBoxesMainElement>
         <Avatar />
+    </ArchitectureAppStructureBoxesMainElement>
 
+    <ArchitectureAppStructureBoxesMainElement>
         <Badges />
+    </ArchitectureAppStructureBoxesMainElement>
 
+    <ArchitectureAppStructureBoxesMainElement>
         <Credentials />
+    </ArchitectureAppStructureBoxesMainElement>
 
+    <ArchitectureAppStructureBoxesMainElement>
         <DangerZone />
-    </div>
+    </ArchitectureAppStructureBoxesMainElement>
 </template>
 
 <style scoped>

@@ -36,11 +36,11 @@ function handleToggle(setting) {
             v-for="mode in useAppConfig().colorModes" :key="mode.id" 
             @click="handleToggle(mode.id)"
             class="
-                comp-button 
+                theme-mainActionButton
                 pointer
             "
             :class="[
-                useAppConfig().colorMode.setting === mode.id ? '-filled' : '-text'
+                useAppConfig().colorMode.setting === mode.id ? '-on' : '-off'
             ]"
         >
 

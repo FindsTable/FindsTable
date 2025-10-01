@@ -9,15 +9,17 @@ const userState = useUserState()
 </script>
 
 <template>
-    <H2Panel>
-        <template #H2>
-            Patreon
-        </template>
+    <ArchitectureAppStructureBoxesMainElement>
+        <H2Panel>
+            <template #H2>
+                Patreon
+            </template>
 
-        <template #content>
-            <PatreonMembershipCard  v-if="userState.patreon_account?.id"/>
+            <template #content>
+                <PatreonMembershipCard  v-if="userState.patreon_account?.id"/>
 
-            <PatreonLinkAccountButton v-else />
-        </template>
-    </H2Panel>
+                <PatreonLinkAccountButton v-else />
+            </template>
+        </H2Panel>
+    </ArchitectureAppStructureBoxesMainElement>
 </template>

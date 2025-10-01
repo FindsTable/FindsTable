@@ -7,6 +7,11 @@ import {
 
 
 <template>
-    <ColorMode />
-    <Language />
+    <ArchitectureAppStructureBoxesMainElement>
+        <ColorMode />
+    </ArchitectureAppStructureBoxesMainElement>
+
+    <ArchitectureAppStructureBoxesMainElement>
+        <Language />
+    </ArchitectureAppStructureBoxesMainElement>
 </template>

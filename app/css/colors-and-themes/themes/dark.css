@@ -17,10 +17,11 @@
         stacked surfaces
     */
     --backdropColor: var(--tone-brown-5);
-    /* --surface1-bgColor: var(--tone-zinc-80);*/
     --surface1-bgColor: var(--tone-brown-10);
-        --surface1-hover-bgColor: var(--tone-brown-20);
-    --surface2-bgColor: var(--tone-zinc-70);
+    --surface1-borderColor: var(--tone-brown-30);
+
+    --surface2-bgColor: var(--tone-brown-20);
+    --surface2-borderColor: var(--tone-brown-40);
 
     /* Layout */
 

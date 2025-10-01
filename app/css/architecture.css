@@ -25,9 +25,7 @@ Scroll bars
 .overflowScroll.-scrollY {
     overflow-y: auto;
 }
-.arch_scrollBottonPadding {
-    padding-bottom: 30vh;
-} 
+
 
 .mobileWidthContainer {
     width: min(550px, 100%)

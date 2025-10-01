@@ -55,8 +55,3 @@ definePageMeta({
         @thoughtDeleted="removeThought"
     />
 </template>
-
-<style scoped>
-
-
-</style>

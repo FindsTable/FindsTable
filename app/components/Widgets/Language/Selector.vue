@@ -1,9 +1,10 @@
 <script setup>
-const { t, locale, locales, setLocale } = useI18n()
+const { t, locale, availableLocales } = useI18n()
 const preferredLocaleCookie = useCookie('preferredLocale');
 
 function handleClick(code) {
-    setLocale(code)
+    locale.value = code
+
     preferredLocaleCookie.value = code
 
     useToaster(
@@ -17,30 +18,24 @@ function handleClick(code) {
         }
     )
 }
+
 </script>
 
 <template>
-    <div class="selectorBox flex alignCenter">
-        <!-- <NuxtLink v-for="loc in locales" :key="loc.code" @click="handleClick(loc.code)" :to="switchLocalePath(loc.code)"
-            class="comp-button-square centered"
-            :class="[ loc.code === locale ? 'comp-button-filled' : 'comp-button -text']">
-            <span class="semibold centered pointer">
-                {{ loc.code }}
-            </span>
-        </NuxtLink> -->
-
+    <div class="selectorBox flex alignCenter gap20">
         <button 
-            v-for="loc in locales" :key="loc.code" 
-            @click="handleClick(loc.code)"
+            v-for="loc in availableLocales" :key="loc.code" 
+            @click="handleClick(loc)"
             class="
-                comp-button-square
+                theme-mainActionButton
                 centered
+                pointer
             " 
-            :class="[loc.code === locale ? 'comp-button-filled' : 'comp-button -text']"
+            :class="[loc === locale ? '-on' : '-off']"
         >
 
-            <span class="semibold centered pointer">
-                {{ loc.code }}
+            <span class="semibold centered">
+                {{ loc }}
             </span>
         </button>
     </div>
@@ -48,13 +43,13 @@ function handleClick(code) {
 
 <style scoped>
 .selectorBox {
-    height: 100%;
+    padding: 8px 0;
 }
-
-span {
-    width: 30px;
-    height: 30px;
-    font-size: 0.875rem;
+button {
+    height: 36px;
+    aspect-ratio: 1/1;
+    padding: 6px;
+    border-radius: 4px;
 }
 
 </style>

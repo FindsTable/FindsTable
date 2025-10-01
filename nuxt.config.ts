@@ -59,8 +59,8 @@ export default defineNuxtConfig({
     ],
 
     modules: [
-    '@vueuse/nuxt', 
-    '@nuxt/icon'
+        '@vueuse/nuxt', 
+        '@nuxt/icon'
     ],
     runtimeConfig: {
         DIRECTUS_URL: process.env.DIRECTUS_URL,

@@ -10,7 +10,7 @@ const editingField = ref('')
 </script>
 
 <template>
-    <Panel class="panel">
+    <Panel class="panel ">
         <TH2>
             <slot name="H2">
 
