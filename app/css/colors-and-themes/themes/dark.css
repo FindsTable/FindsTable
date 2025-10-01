@@ -1,4 +1,4 @@
-#app.dark {
+#viewportContainer.dark {
 
     /* text colors */
 
@@ -16,10 +16,10 @@
         Background af app
         stacked surfaces
     */
-    --backdropColor: var(--tone-zinc-90);
+    --backdropColor: var(--tone-brown-5);
     /* --surface1-bgColor: var(--tone-zinc-80);*/
-    --surface1-bgColor: var(--tone-brown-20);
-        --surface1-hover-bgColor: var(--tone-brown-30);
+    --surface1-bgColor: var(--tone-brown-10);
+        --surface1-hover-bgColor: var(--tone-brown-20);
     --surface2-bgColor: var(--tone-zinc-70);
 
     /* Layout */
@@ -127,7 +127,7 @@
 }
 
 /* pageStructure.css */
-#app.dark {
+#viewportContainer.dark {
     --sectionTitle-border-bottom-color: var(--tone-zinc-70)
 }
 

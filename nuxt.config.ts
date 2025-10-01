@@ -55,28 +55,13 @@ export default defineNuxtConfig({
     ssr: false,
 
     css: [
-        '@/css/_styles_.css',
+        '~/css/_styles_.css',
     ],
 
     modules: [
     '@vueuse/nuxt', 
-    '@nuxt/icon', 
-    // '@nuxt/image',
-    // '@nuxt/test-utils/module'
+    '@nuxt/icon'
     ],
-
-    image: {
-        presets: {
-            avatar: {
-                modifiers: {
-                    format: 'jpg',
-                    width: 50,
-                    height: 50
-                }
-            }
-        }
-    },
-
     runtimeConfig: {
         DIRECTUS_URL: process.env.DIRECTUS_URL,
         APP_ACCESS_TOKEN: process.env.APP_ACCESS_TOKEN,

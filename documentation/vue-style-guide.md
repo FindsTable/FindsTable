@@ -414,9 +414,6 @@ const { t } = useI18n()
 
 ### Layout and Structure
 ```css
-/* Safe Areas */
-.safeArea.-full
-.safeArea.-top
 
 /* Scroll */
 .overflowScroll.-scrollY
@@ -489,9 +486,9 @@ function useCustomHook(): {
 .theme-textColor-main
 
 /* App Themes */
-#app.light
-#app.dark
-#app.forest
+#viewportContainer.light
+#viewportContainer.dark
+#viewportContainer.forest
 
 /* Component Theming */
 .comp-button {

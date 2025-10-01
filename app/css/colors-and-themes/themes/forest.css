@@ -1,4 +1,4 @@
-#app.forest {
+#viewportContainer.forest {
     /* Text colors */
     --titleColor-main: var(--tone-mango-30);
     --h1Color-main: var(--tone-mango-20);

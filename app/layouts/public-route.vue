@@ -1,28 +1,30 @@
 <script setup>
 import {
-    PagesIndexBottomBarMain as BottomBar,
-    ArchitectureContentWidth as ContentWidth
+    PagesIndexBottomBarMain as BottomBar
 } from '#components'
 
 </script>
 
 <template>
-    <main class="full flex column justifyEnd">
-        <ArchitectureFlexGrowScrollableChild 
-            childClass="centered"
-        >
-            <ContentWidth small class="h100 flex column gap20">
+    <div class="full">
+        <ArchitectureAppStructureBoxesMain class="mainBox justifyBetween">
+            <ArchitectureFlexGrowVerticalScroll class="">
 
-                <slot name="title" />
+                <div class="h100 flex column">
+                    <slot />
 
-                <slot />
+                    <ArchitectureFooter />
+                </div>
 
-                <slot name="scrollMain" />
+            </ArchitectureFlexGrowVerticalScroll>
 
-                <ArchitectureFooter />
-            </ContentWidth>
-        </ArchitectureFlexGrowScrollableChild>
-
-        <BottomBar />
-    </main>
+            <BottomBar />
+        </ArchitectureAppStructureBoxesMain>
+    </div>
 </template>
+
+<style scoped>
+.mainBox {
+    margin: auto;
+}
+</style>

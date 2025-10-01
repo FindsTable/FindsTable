@@ -6,7 +6,8 @@ const props = defineProps({
     item: Object,
     likeClick: Boolean,
     commentClick: Boolean,
-    bookmark: Boolean
+    bookmark: Boolean,
+    commentsCount: Number
 })
 const emit = defineEmits(['likeClick', 'commentClicked'])
 

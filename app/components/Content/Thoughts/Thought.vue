@@ -16,7 +16,7 @@ function emit_updateNewCommentsCount(increment) {
 </script>
 
 <template>
-    <div class="thoughtPanel -surface1 marTop20">
+    <div class="thoughtPanel -surface1">
         <div class="flex justifyBetween">
             <ContentUsersCardsMini
                 :userId="thought.owner.id"

@@ -9,7 +9,7 @@
     --ui-color-disabled
 */
 
-#app.dark {
+#viewportContainer.dark {
     --switch-off-bgColor: var(--ui-color-main);
     --switch-off-borderColor: var(--ui-color-secondary);
 
@@ -22,7 +22,7 @@
 }
 
 
-#app.light {
+#viewportContainer.light {
     --switch-off-bgColor: var(--backdropColor);
     --switch-off-borderColor: var(--ui-color-disabled);
 

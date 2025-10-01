@@ -36,6 +36,5 @@ function changeTab(newTab) {
         :tabs="pageTabs"
         :selectedTab="selectedTab"
         @changeTab="changeTab"
-        class="marTop10"
     />
 </template>

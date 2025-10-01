@@ -2,13 +2,6 @@
 
     --bottom-bar-height: 60px;
 
-    --safe-inset-top: 10px;
-    --safe-inset-right: 10px;
-    --safe-inset-bottom: 10px;
-    --safe-inset-left: 10px;
-
-    --safeArea-value: 6px;
-
     --sideBarLeft-width-px: 200px;
     --sideBarRight-width-px: 200px;
     
@@ -17,27 +10,6 @@
 }
 .fullScreenWidth {
     width: 100vw;
-}
-.safeArea.-full {
-    padding-top: var(--safe-inset-top);
-    padding-right: var(--safe-inset-right);
-    padding-bottom: var(--safe-inset-bottom);
-    padding-left: var(--safe-inset-left);
-}
-.safeArea.-top {
-    padding-top: var(--safe-inset-top);
-}
-.safeArea.-right {
-    padding-right: var(--safe-inset-right);
-}
-.safeArea.-bottom {
-    padding-bottom: var(--safe-inset-bottom);
-}
-.safeArea.-left {
-    padding-left: var(--safe-inset-left);
-}
-.contentBottomSpace {
-    padding-bottom: 50px;
 }
 
 /*
@@ -60,3 +32,79 @@ Scroll bars
 .mobileWidthContainer {
     width: min(550px, 100%)
 }
+
+/* 
+    
+
+    =>  Structure of page componenets <=
+
+    #viewportContainter always fill the viewport
+    #app contains all element and sets the limits of the app
+    #mainBox hold the content and fills the viewport on small devices
+_____________________________________________________________________________________________
+|                                      #viewportContainter                                   |
+|    ____________________________________________________________________________________    |
+|   |                                    #app                                            |   | 
+|   |   _____________________________________________________________________________    |   |
+        |               |                                       |                   |
+        |               |                                       |                   |
+            leftBox     |             mainBox                   |      rightBox     |
+        |               |                                       |                   |
+        |               |                                       |                   |
+        |               |                                       |                   |
+        |               |                                       |                   |
+        |               |                                       |                   |
+        |               |                                       |                   |
+        |               |                                       |                   |
+        |               |                                       |                   |
+        |               |                                       |                   |
+        |               |                                       |                   |
+        |               |                                       |                   |
+
+
+*/
+
+
+
+
+:root {
+    --architecture-leftBox-width-px: 240px;
+    --architecture-rightBox-width-px: 330px;
+    --architecture-mainBox-width-px: 660px;
+    --architectu-app-calcWidth: calc(var(--architecture-leftBox-width-px) + var(--architecture-rightBox-width-px) + var(--architecture-mainBox-width-px));
+}
+
+#viewportContainer{
+    width: 100vw;
+    height: 100vh;
+}
+
+#architecture-appBox {
+    width: min(var(--architectu-app-calcWidth), 100%);
+    height: 100%;
+    margin-inline: auto;
+    overflow: hidden;
+}
+#architecture-leftBox {
+    width: var(--architecture-leftBox-width-px);
+}
+
+#architecture-rightBox {
+    width: var(--architecture-rightBox-width-px);
+}
+
+#architecture-mainBox {
+    width: min(100%, var(--architecture-mainBox-width-px));
+    height: 100%;
+}
+#architecture-mainBox .architecture-mainBox-section {
+    padding: 0px 15px 10px 10px;
+}
+
+@media (max-width: 900px) {
+  #architecture-rightBox {
+    display: none;
+  }
+}
+
+

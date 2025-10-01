@@ -59,7 +59,7 @@ const pageTabs = [
         </template>
 
         <template #scrollMain>
-            <div class="tabContent">
+            <div class="tabContent r">
                 <PagesHomeThoughtsMain v-if="selectedTab === 'thoughts'" />
             </div>
         </template>

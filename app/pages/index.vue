@@ -22,46 +22,52 @@ definePageMeta({
 </script>
 
 <template>
-    
     <NuxtLayout name="public-route">
-        <Panel>
-            <Welcome />
+        <div class="container grow flex column justifyCenter">
+            <div class="mainPanel -surface1 pad20">
+                <Panel class="">
+                    <Welcome />
 
-            <div class="centered marTop50">
-                <NuxtLink to="/login" 
-                    class="
-                        comp-button -bold -text-large 
-                        theme-mainActionButton
-                    ">
-                     {{ t('page.landing.loginButton') }}
-                </NuxtLink>
+                    <div class="centered marTop50">
+                        <NuxtLink to="/login" 
+                            class="
+                                comp-button -bold -text-large 
+                                theme-mainActionButton
+                            ">
+                            {{ t('page.landing.loginButton') }}
+                        </NuxtLink>
+                    </div>
+                </Panel>
+
+                <Panel>
+                    <p class="underConstruction pad10 marTop20">
+                        {{ t('page.landing.patreonLink') }}
+                    </p>
+
+                    <div class="centered marTop20">
+                        <NuxtLink class="block comp-button theme-buttonText -hoverable patreonLink flex alignCenter justifyCenter pointer"
+                            to="https://www.patreon.com/Findstable" :external="true">
+                            <img class="logo h100" src="/patreon/PATREON_SYMBOL_1_BLACK_RGB.png" alt="">
+                            <img class="word h100" src="/patreon/PATREON_WORDMARK_1_BLACK_RGB.png" alt="">
+                        </NuxtLink>
+                    </div>
+
+                    <div class="centered marTop20">
+                        <NuxtLink class="block comp-button theme-buttonText -hoverable patreonLink flex alignCenter justifyCenter pointer"
+                            to="https://discord.gg/cAQG4Xcg2r" :external="true">
+                            Serveur Discord
+                        </NuxtLink>
+                    </div>
+                </Panel>
             </div>
-        </Panel>
-
-        <Panel>
-            <p class="underConstruction pad10 marTop20">
-                {{ t('page.landing.patreonLink') }}
-            </p>
-
-            <div class="centered marTop20">
-                <NuxtLink class="block comp-button theme-buttonText -hoverable patreonLink flex alignCenter justifyCenter pointer"
-                    to="https://www.patreon.com/Findstable" :external="true">
-                    <img class="logo h100" src="/patreon/PATREON_SYMBOL_1_BLACK_RGB.png" alt="">
-                    <img class="word h100" src="/patreon/PATREON_WORDMARK_1_BLACK_RGB.png" alt="">
-                </NuxtLink>
-            </div>
-
-            <div class="centered marTop20">
-                <NuxtLink class="block comp-button theme-buttonText -hoverable patreonLink flex alignCenter justifyCenter pointer"
-                    to="https://discord.gg/cAQG4Xcg2r" :external="true">
-                    Serveur Discord
-                </NuxtLink>
-            </div>
-        </Panel>
+        </div>
     </NuxtLayout>
 </template>
 
 <style scoped>
+.mainPanel {
+    border-radius: 10px;
+}
 .underConstruction {
     background-color: var(--color-info-bg);
     border: 1px solid var(--color-info-border);
@@ -78,7 +84,7 @@ definePageMeta({
 .patreonLink .word {
     width: 72px;
 }
-#app.dark img {
+#viewportContainer.dark img {
     filter: invert();
 }
 </style>

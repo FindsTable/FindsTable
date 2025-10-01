@@ -1,17 +1,12 @@
-<<<<<<< HEAD
-=======
-import { getItemsByQuery } from '@@/server/directus/items'
-import { createUser } from '@@/server/directus/auth'
->>>>>>> 8f87bcd6faa456761e0d61304add53e458b4aeef
 import crypto from 'crypto'
 
 import {
     invitationCodeIsValid
-} from '@/server/directus/invitationCodes'
+} from '@@/server/directus/invitationCodes'
 
 import {
     appPost
-} from '@/server/directus/request'
+} from '@@/server/directus/request'
 
 interface ReqBody {
     username: string

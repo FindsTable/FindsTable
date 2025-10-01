@@ -15,6 +15,7 @@ const showComments = ref(false)
         v-if="find" 
         class="
             card -surface1
+            w100
             flex column gap10 pointer justifyEnd
         "
     >
@@ -58,47 +59,52 @@ const showComments = ref(false)
             {{ find.title }}
         </TH3>
 
-        <div class="imageBox w100 overflowHidden">
-
-            <ArchitectureHorizontalScroller 
-                :gap="10"
-            >
-                <HtmlPictureMain
-                    v-if="find.image0"
-                    :assetId="find.image0"
-                    :sources="[
-                        { presetKey: 'find-250-webp', mimeType: 'image/webp' }
-                    ]"
-                    fallbackUrl="/images/find-no-image.png"
-                    class="shrink0 w100 image"
-                />
-
-                <HtmlPictureMain
-                    v-if="find.image1"
-                    :assetId="find.image1"
-                    :sources="[
-                        { presetKey: 'find-250-webp', mimeType: 'image/webp' }
-                    ]"
-                    fallbackUrl="/images/find-no-image.png"
-                    class="shrink0 w100 image objectFitCover full"
-                />
-
-                <div 
-                    v-if="find.description"
-                    class="descriptionSlide shrink0 full"
-                >
-                    <Tp>
-                        {{ find.description }}
-                    </Tp>
+        <div class="imageBox">
+                <div class="frame">
+                    <HtmlPictureMain
+                        v-if="find.image0"
+                        :assetId="find.image0"
+                        :sources="[
+                            { presetKey: 'find-250-webp', mimeType: 'image/webp' }
+                        ]"
+                        fallbackUrl="/images/find-no-image.png"
+                        class="image"
+                    />
                 </div>
 
-                <HtmlPictureMain
-                    v-if="!find.image0 && !find.image1"
-                    :fallbackUrl="'/images/find-no-image.png'"
-                    class="image w100 objectFitCover full"
-                />
-            </ArchitectureHorizontalScroller>
+                <div class="frame">
+                    <HtmlPictureMain
+                        v-if="find.image1"
+                        :assetId="find.image1"
+                        :sources="[
+                            { presetKey: 'find-250-webp', mimeType: 'image/webp' }
+                        ]"
+                        fallbackUrl="/images/find-no-image.png"
+                        class="image"
+                    />
+                </div>
 
+                <div class="frame">
+                    <p 
+                        class="frame description"
+                        v-if="find.description"
+                    >
+                        {{ find.description }}
+                    </p>
+                </div>
+
+                
+
+                <div 
+                    v-if="!find.image0 && !find.image1"
+                    class="imageFrame"
+                >
+                    <HtmlPictureMain
+                        
+                        :fallbackUrl="'/images/find-no-image.png'"
+                        class="image w100 objectFitCover full"
+                    />
+                </div>
         </div>
 
         <div class="infoBox flex justifyEvenly alignCenter gap10">
@@ -114,51 +120,59 @@ const showComments = ref(false)
             />
         </div>
 
-        <KeepAlive>
-            <ContentCommentsMain
-                v-if="showComments"
-                :itemId="find.id"
-                collection="Finds_comments"
-                @closeComments="showComments = !showComments"
-            />
-        </KeepAlive>
+        <ContentCommentsMain
+            v-if="showComments"
+            :itemId="find.id"
+            collection="Finds_comments"
+            @closeComments="showComments = !showComments"
+        />
 
     </article>
 </template>
 
 <style scoped>
+.imageBox {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+}
+
+.frame {
+    /* border: 1px solid red; */
+    flex: 1;
+    border-radius: 5px;
+    aspect-ratio: 1 / 1;
+    overflow: hidden; 
+}
+.frame .description {
+    padding: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    overflow: auto;
+    background-color: var(--layout-line-color);
+    white-space: pre-wrap;
+}
 .card {
     padding: 12px;
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
-.userBox {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.29);
-    padding-bottom: 8px;
-}
+
 .avatar {
     height: 100%;
     aspect-ratio: 1;
     border-radius: 50%;
     object-fit: cover;
 }
+
+.userBox {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.29);
+    padding-bottom: 8px;
+}
 .username {
     font-size: 13px;
     font-weight: 600;
-}
-.imageBox {
-    width: 100%;
-    aspect-ratio: 1;
-    border-radius: 12px;
-    overflow: hidden;
-}
-.descriptionSlide {
-    font-size: 18px;
-    font-weight: 500;
-    padding: 50px;
-    overflow: scroll;
-    background-color: var(--tone-kaki-90);
 }
 
 .likes {

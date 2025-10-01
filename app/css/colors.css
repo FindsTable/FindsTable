@@ -32,36 +32,36 @@ html {
     background-color: black;
 }
 
-    #app.light {
+    #viewportContainer.light {
         --main-background-color: var(--main-light);
         --main-text-color: var(--main-dark);
         --main-dimmed: #dddddd;
     }
 
-    #app.light {
+    #viewportContainer.light {
         --panel-border: #00000017;
         --panel-shadow: 1px 2px 5px 3px #0000001c;
     }
 
-    #app.dark {
+    #viewportContainer.dark {
         --main-background-color: var(--main-dark);
         --main-text-color: var(--main-light);
         --main-dimmed: #484848;
     }
 
-    #app.dark {
+    #viewportContainer.dark {
         --panel-border: #ffffff3c;
         --panel-shadow: 1px 2px 5px 3px #000000d6;
     }
 
-    #app.coffee {
+    #viewportContainer.coffee {
         --main-background-color: var(--coffee-3);
         --main-text-color: var(--coffee-1);
         --main-dimmed: var(--coffee-4);
         --theme-color: var(--coffee-3);
     }
 
-    #app.coffee {
+    #viewportContainer.coffee {
         --panel-border: var(--coffee-5);
         --panel-shadow: 1px 2px 5px 3px var(--coffee-5);
     }

@@ -32,6 +32,9 @@ const props = defineProps({
 </template>
 
 <style scoped>
+.count {
+    font-weight: 600;
+}
 .touch {
     background-color: transparent;
         color: var(--textButton-textColor);

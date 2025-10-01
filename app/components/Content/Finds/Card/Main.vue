@@ -33,21 +33,13 @@ async function handleClick() {
 </script>
 
 <template>
-    <div v-if="find" class="w100 pointer">
-        <!-- <ContentFindsCardImageOnly
-            v-if="format === 'image'"
-            @click="handleClick"
-            :find="find"
-            :activeImageIndex="activeImageIndex"
-        /> -->
-
-        <!-- <ContentFindsCardSmall
-            v-if="format === 'small'"
+    <div v-if="find" class="w100 container pointer">
+        <ContentFindsCardLarge
             @click="handleClick"
             :find="find"
             :activeImageIndex="activeImageIndex"
             @deleteFind="emit('deleteFind', find.id)"
-        /> -->
+        />
 
         <ContentFindsCardMedium
             @click="handleClick"
@@ -58,3 +50,6 @@ async function handleClick() {
     </div>
 </template>
 
+<style scoped>
+
+</style>

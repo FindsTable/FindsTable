@@ -1,5 +1,5 @@
 <template>
-    <div class="scrollable">
+    <div class="scrollable r ">
         <div class="mainWidth">
             <slot />
         </div>

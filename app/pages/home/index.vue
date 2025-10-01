@@ -28,16 +28,8 @@ onMounted(() => {
 
 <template>
     <NuxtLayout name="private-route">
-        <template #topContent>
-            
-        </template>
-
         <template #tabs>
             <ArchitecturePageTabsFTHAContent  :selectedTab="selectedTab" @changeTab="changeTab" />
-        </template>
-
-        <template #title>
-
         </template>
 
         <template #scrollMain>
@@ -45,6 +37,10 @@ onMounted(() => {
                 v-if="useUserState().value.id"
                 class="tabContent"
             >
+                <ArchitectureAppStructureBoxesMainElement>
+                    <AppPromotionPlansPromoteBanner />
+                </ArchitectureAppStructureBoxesMainElement>
+
                 <KeepAlive>
                     <PagesHomeThoughtsMain 
                         v-if="selectedTab === 'thoughts'" 

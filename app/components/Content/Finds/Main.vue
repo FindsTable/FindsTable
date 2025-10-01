@@ -40,29 +40,16 @@ async function deleteFind(findId : FindId) {
 <template>
     <div 
         v-if="finds?.length"
-        class="flex column"
     >
-        <template class="flex column">
-            <slot name="albumSelector">
-
-            </slot>
-        </template>
-        
-        <div 
-            class="
-                box 
-                flex justifyCenter gap20 wrap 
-                marTop20
-            "
-
+        <ArchitectureAppStructureBoxesMainElement
+            v-for="find in finds" :key="find.id"
         >
             <ContentFindsCardMain
-                v-for="find in finds" :key="find.id"
                 :find="find"
                 format="small"
                 @deleteFind="deleteFind"
             />
-        </div>
+        </ArchitectureAppStructureBoxesMainElement>
     </div>
 
     <div class="centered">
@@ -71,7 +58,3 @@ async function deleteFind(findId : FindId) {
         </button>
     </div>
 </template>
-
-<style scoped>
-
-</style>

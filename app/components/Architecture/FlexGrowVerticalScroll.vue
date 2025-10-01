@@ -2,24 +2,20 @@
  
 Creates a scollable container in a flex-growing element.
 
+--- !!!!   NEEDS A FLEX COLUMN PARENT !!!! ---
+
 -->
-<script setup>
-const props = defineProps({
-    childClass: String
-})
-</script>
 
 <template>
-    <div class="relative grow">
-        <div class="absolute" :class="childClass">
+    <div class="relative w100 grow">
+        <div class="scroller absoluteFull">
             <slot />
         </div>
     </div>
 </template>
 
 <style scoped>
-.absolute {
-    inset: 0;
+.scroller {
     overflow-y: scroll;
     overflow-x: hidden;
 }

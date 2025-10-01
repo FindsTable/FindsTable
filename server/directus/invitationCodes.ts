@@ -1,4 +1,4 @@
-import { appGet } from '@/server/directus/request';
+import { appGet } from '@@/server/directus/request';
 
 export {
     invitationCodeIsValid

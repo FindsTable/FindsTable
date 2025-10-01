@@ -1,4 +1,4 @@
-#app.dark {
+#viewportContainer.dark {
     --inputText-bgColor: var(--surface2-bgColor);
     --inputText-textColor: var(--inputText-textColor);
     --inputText-insetShadowColor: var(--tone-grayscale-90);

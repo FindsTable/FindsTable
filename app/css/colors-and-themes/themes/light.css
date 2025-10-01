@@ -1,4 +1,4 @@
-#app.light {
+#viewportContainer.light {
 
     /* text colors */
     --titleColor-main: var(--tone-grayscale-90);
