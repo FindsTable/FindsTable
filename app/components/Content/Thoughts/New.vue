@@ -6,7 +6,8 @@ const props = defineProps({
     showAvatar: {
         type: Boolean,
         default: false
-    }
+    },
+    windowHeight: String
 })
 
 const newThought = ref('')
@@ -46,7 +47,7 @@ async function saveNewThought() {
     <div 
         class="
             box
-            comp-panel 
+            comp-panel grow
         "
     >
         <div 
@@ -65,7 +66,7 @@ async function saveNewThought() {
                 v-model="newThought"
                 class="
                     content 
-                    theme-surface-2 font-text -semibold
+                    theme-surface2 font-text -semibold
                     grow    
                 "
                 :class="[
@@ -96,7 +97,6 @@ async function saveNewThought() {
 .box {
     --padding-closed: 8px;
     --padding-open: 15px;
-    padding: 15px;
     border-radius: 10px;
 }
 textarea {
@@ -105,11 +105,13 @@ textarea {
     border-radius: 10px;
     resize: none;
     height: calc(1rem + (2 * var(--padding-closed)));
+    transition: 300ms ease;
 }
 textarea.active,
 textarea:focus {
-    height: calc(3rem + (2 * var(--padding-open)));
+    height: calc(15rem + (2 * var(--padding-open)));
     padding: var(--padding-open);
+    transition: 300ms ease;
 }
 textarea:focus {
     outline: 1px solid white;

@@ -6,7 +6,7 @@ const me = useUserState()
 const finds = ref(null)
 
 async function getFinds() {
-    console.log('geting finds!!')
+
     const res = await $fetch(
         'https://admin.findstable.net/items/Finds',
         {

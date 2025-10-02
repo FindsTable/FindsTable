@@ -4,24 +4,13 @@ const emit = defineEmits(['deleteFind'])
 </script>
 
 <template>
-    <div class="relative">
-        <div class="toolBar flex justifyEnd">
-            <span 
-                @click.stop="emit('deleteFind')"
-                class="iconTouch"
-            >
-                <Icon class="icon" name="delete" size="24px" />
-            </span>
-            
-            <!-- <span class="iconTouch">
-                <Icon class="icon" name="edit" size="24px" />
-            </span>
-            
-            <span class="iconTouch">
-                <Icon class="icon" name="folderCheck" size="24px" />
-            </span> -->
-            
-        </div>
+    <div class="toolBar flex justifyEnd noEvents_kidsEvents">
+        <span 
+            @click.stop="emit('deleteFind')"
+            class="iconTouch"
+        >
+            <Icon class="icon" name="delete" size="24px" />
+        </span>
     </div>
 </template>
 

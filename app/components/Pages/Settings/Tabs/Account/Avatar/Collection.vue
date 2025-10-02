@@ -45,29 +45,28 @@ function showToaster(ok: boolean) {
 
 async function deleteSelectedAvatar() {
 
-  if (!selectedAvatar.value) return
+    if (!selectedAvatar.value) return
 
-  const res = await $fetch(
-        `/api/content/deleteItem`,
-        {
-            method: 'DELETE',
-            headers: {
-                authorization: `Bearer ${useUserState().value.accessToken.value}`
-            },
-            body: {
-                collection: 'Avatars',
-                id: selectedAvatar.value.id
+    try {
+        await $fetch(
+            `/api/content/deleteItem`,
+            {
+                method: 'DELETE',
+                headers: {
+                    authorization: `Bearer ${useUserState().value.accessToken.value}`
+                },
+                body: {
+                    collection: 'Avatars',
+                    id: selectedAvatar.value.id
+                }
             }
-        }
-    )
-
-    if(res.ok) {
+        )
         showToaster(true)
-    } else {
+        emit('refreshAvatarCollection')
+    } catch(err) {
+        console.error(err)
         showToaster(false)
     }
-
-    emit('refreshAvatarCollection')
 }
 
 async function setAsCurrentAvatar() {

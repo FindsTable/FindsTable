@@ -106,7 +106,7 @@ onMounted(() => {
             </div>
 
             <!-- 
-                !!!!!!!!
+                !!!!!
                     v-if="find.description.length > 1"
                 !!!!!!!!
 

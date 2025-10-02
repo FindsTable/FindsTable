@@ -184,10 +184,10 @@ event: H3Event
         if (!isValidImageType(cache.bootyPhoto.type)) {
             return {
                 ok: false,
-                statusText: 'Invalid banner image type. Only JPG and PNG are allowed.'
+                statusText: 'Invalid booty image image type.'
             }
         }
-    
+
         const fileFormData = new FormData()
         const blob = new Blob(
             [cache.bootyPhoto.data], 

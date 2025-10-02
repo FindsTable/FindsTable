@@ -1,101 +1,88 @@
 <script setup>
 const props = defineProps({
-    find: Object
+    find: Object,
+    showUser: {
+        type: Boolean,
+        default: false
+    }
 })
-const emit = defineEmits(['deleteFind'])
-const me = useUserState()
-const activeImageIndex = ref(0)
-
 </script>
 
 <template>
-    <article v-if="find" class="card  flex column gap10 pointer justifyEnd">
-        <ContentFindsCardMiniToolBar 
-            v-if="me.id === find.owner.id" 
-            @deleteFind="emit('deleteFind')"
-        />
-
-        <div class="imageBox w100 h100 overflowHidden">
-            <img v-if="find.image0"
-                :src="`https://admin.findstable.net/assets/${find.image0}?key=find-250-jpg`"
-                alt="" class="image w100 objectFitCover">
-            <img v-else :src="`/images/find-no-image.png`" alt="" class="image w100 objectFitCover">
-
+    <article 
+        v-if="find" 
+        class="
+            card
+            w100 
+            flex column gap10 pointer justifyEnd
+            theme-surface2
+        "
+    >
+        <div
+            class="flex justifyBetween"
+        >
+            <p class="title">
+                {{ find.title }}
+            </p>
         </div>
 
-        <header class="header row justifyBetween alignStart">
-            <h2 v-if="find.title" class="title fS16 weight6 ellipsis">
-                {{ find.title }}
-            </h2>
+        <div
+            v-if="find.image0 || find.image1"
+            class="imageBox"
+        >
+            <div
+                v-if="find.image0"
+                class="frame"
+            >
+                <HtmlPictureMain
+                    :assetId="find.image0"
+                    :sources="[
+                        { presetKey: 'find-250-webp', mimeType: 'image/webp' }
+                    ]"
+                    fallbackUrl="/images/find-no-image.png"
+                />
+            </div>
 
-            <time class="date fS12 weight3" datetime="2025-03-26">
-                {{ useParseDate(find.date_created) }}
-            </time>
-        </header>
-
-
-        <div class="userBox flex gap10 alignCenter">
-            <img v-if="find.owner.avatars"
-                :src="`https://admin.findstable.net/assets/${find.owner.avatar}?key=avatar-tiny-jpg&v=${Date.now()}`"
-                alt="metalhunter avatar" class="avatar" />
-
-            <div>
-                {{ find.owner.displayName }}
+            <div
+                v-if="!find.image0 && find.image1"
+                class="frame"
+            >
+                <HtmlPictureMain
+                    :assetId="find.image1"
+                    :sources="[
+                        { presetKey: 'find-250-webp', mimeType: 'image/webp' }
+                    ]"
+                    fallbackUrl="/images/find-no-image.png"
+                />
             </div>
         </div>
-
-        <div class="infoBox flex justifyEvenly alignCenter gap10">
-            <WidgetsLikesAndCommentsMain
-                fonSize="16px"
-                iconSize="20px"
-                collection="Finds"
-                :item="find"
-                :likeClick="true"
-                :commentClick="false"
-                :bookmark="true"
-            />
-        </div>
-
     </article>
 </template>
 
 <style scoped>
 .card {
-    align-self: last baseline;
-    flex-shrink: 0;
-    width: 250px;
-    font-family: sans-serif;
-    padding: 12px;
-    border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    padding: 10px 5px;
 }
-.card:hover {
-    filter: brightness(0.9);
+.title {
+    font-size: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 .imageBox {
     width: 100%;
-    aspect-ratio: 1;
-    border-radius: 12px;
+    display: flex;
+    gap: 10px;
+}
+
+.frame {
+    flex: 1;
+    border-radius: 5px;
+    aspect-ratio: 1 / 1;
     overflow: hidden;
 }
 
-.avatar {
-    width: 30px;
-    aspect-ratio: 1;
-    border-radius: 50%;
-    object-fit: cover;
-}
 
-.userBox {
-    border-top: 1px solid rgba(255, 255, 255, 0.29);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.29);
-    padding: 7px 0;
-    /* margin-top: 8px;
-    margin-bottom: 8px; */
-}
-
-.likes {
-    flex-shrink: 0;
-}
 </style>

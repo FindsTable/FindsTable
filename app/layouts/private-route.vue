@@ -33,12 +33,15 @@
                         </TH1>
                     </ArchitectureAppStructureBoxesMainElement>
                     
-
-                    <div class="marTop10">
+                    <ArchitectureAppStructureBoxesMainElement
+                         class="marTop10"
+                    >
                         <slot name="header" >
 
                         </slot>
-                    </div>
+                    </ArchitectureAppStructureBoxesMainElement>
+                        
+    
                     
                     <slot name="noScrollMain">
                         

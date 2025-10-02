@@ -1,6 +1,12 @@
 <script setup>
 const { cancel } = useModal()
 
+
+async function requestNewThought() {
+    const modalState = useModalState()
+    modalState.value.modal = "NewThought"
+    modalState.value.content.title = "New thought"
+}
 </script>
 
 <template>
@@ -38,6 +44,20 @@ const { cancel } = useModal()
 
             <Icon name="book" size="22px" />
         </NuxtLink>
+
+        <div
+            class="option comp-button -shaped pointer"
+            @click="requestNewThought"
+        >
+            {{ 
+                useLocaleText({
+                    fr: 'Nouveau post', 
+                    en: 'New thought'
+                }) 
+            }}
+
+            <Icon name="chat" size="22px" />
+        </div>
     </div>
 </template>
 

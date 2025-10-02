@@ -17,12 +17,16 @@ const emit = defineEmits(['getNextPage', 'thoughtDeleted'])
 const newThoughts = ref([])
 
 function newThoughtPosted(newThought) {
+    console.log(newThought)
     newThoughts.value = [
         newThought,
         ...newThoughts.value,
-        
     ]
 }
+
+defineExpose({
+    newThoughtPosted
+})
 
 const _thoughts = computed(() => {
     return [
@@ -30,10 +34,6 @@ const _thoughts = computed(() => {
         ...props.thoughts
     ]
 })
-
-function getNextPage() {
-    emit('getNextPage')
-}
 
 async function deleteThought(thoughtId) {
     const { openModal } = useConfirmationModal()
@@ -45,26 +45,26 @@ async function deleteThought(thoughtId) {
     if (!confirmDelete) {
         return
     }
-    const res = await $fetch(
-        '/api/content/deleteItem',
-        {
-            method: 'DELETE',
-            headers: {
-                authorization: `Bearer ${useUserState().value.accessToken.value}`
-            },
-            body: {
-                collection: 'Thoughts',
-                id: thoughtId
-            }
-        }
-    )
 
-    if(res?.ok) {
+    try {
+        await $fetch(
+            '/api/content/deleteItem',
+            {
+                method: 'DELETE',
+                headers: {
+                    authorization: `Bearer ${useUserState().value.accessToken.value}`
+                },
+                body: {
+                    collection: 'Thoughts',
+                    id: thoughtId
+                }
+            }
+        )
+
         if(newThoughts.value.length) {
-            //filter new finds
             newThoughts.value = newThoughts.value.filter(t => t.id !== thoughtId)
         }
-        //emit to filter older finds
+
         emit('thoughtDeleted', thoughtId)
 
         useToaster('show',{
@@ -74,6 +74,8 @@ async function deleteThought(thoughtId) {
             autoClose: true,
             position: 'bottom'
         })
+    } catch(err) {
+        console.error(err)
     }
 }
 </script>

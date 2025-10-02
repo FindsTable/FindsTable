@@ -45,21 +45,18 @@ async function getHuntReports() {
             }
         }
     )
-    console.log(res)
 
     if (res?.data) {
         return res.data
     }
-
 }
 
-async function getNextPage() {
-    requestOffset.value+= requestLimit.value
-    const res = await getHuntReports()
-    huntReports.value = [
-        ...huntReports.value,
-        ...res
-    ]
+function removeDeletedHuntReport(id) {
+    const index = huntReports.value.findIndex(report => report.id === id)
+
+    if (index !== -1) {
+        huntReports.value.splice(index, 1)
+    }
 }
 
 onMounted(async () => {
@@ -74,13 +71,14 @@ onMounted(async () => {
 </script>
 
 <template>
+    <ArchitectureAppStructureBoxesMainElement>
+        <LazyAppPromotionMediaHuntreportNewBanner />
+    </ArchitectureAppStructureBoxesMainElement>
+    
     <ContentHuntReportsMain
         v-if="huntReports"
         :huntReports="huntReports"
+        :communityContent="false"
+        @removeDeletedHuntReport="removeDeletedHuntReport"
     />
 </template>
-
-<style scoped>
-
-
-</style>

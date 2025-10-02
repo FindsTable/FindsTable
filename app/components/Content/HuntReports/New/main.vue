@@ -15,7 +15,6 @@ const bootyPhotoIsProcessing = computed(() => bootyPhotoSelector.value?.isProces
 const statusSwitchComponent = ref()
 const status = computed(() => {
     if(statusSwitchComponent.value?.status) {
-        console.log("the ref", statusSwitchComponent.value.status)
         return statusSwitchComponent.value.status
     }
 
@@ -62,11 +61,9 @@ function validateForm() {
         errors.value.content = 'Content must be provided and less than 2000 characters.'
     }
     if (!biome.value) {
-        console.log(biome.value)
         errors.value.biome = 'A valid biome must be selected.'
     }
     if (!date.value) {
-        console.log(date.value)
         errors.value.biome = 'A valid date must be selected.'
     }
     /*
@@ -74,8 +71,10 @@ function validateForm() {
             errors.value.weatherTags = 'All weather tags must be valid.'
         }
     */
-    if (bootyPhoto.value && !isValidImageFile(bootyPhoto.value.file.type)) {
-        errors.value.bootyPhoto = 'Booty photo must be a JPG or PNG image.'
+    if (bootyPhoto.value?.file) {
+        if(!isValidImageFile(bootyPhoto.value.file.type)) {
+            errors.value.bootyPhoto = 'Booty photo must be a JPG or PNG image.';
+        }
     }
     
     // Show all errors
@@ -104,7 +103,7 @@ const formIsValid = computed(() => {
 async function saveNewReport() {
     if (
         isPending.value ||
-        bootyPhotoIsProcessing
+        bootyPhotoIsProcessing.value
     ) return
 
     isPending.value = true
@@ -130,23 +129,47 @@ async function saveNewReport() {
     }
     
     formData.append('report', JSON.stringify(reportPayload))
-    
+
     // Attach images
-    if (bootyPhoto.value) {
+    if (bootyPhoto.value?.file) {
         formData.append('bootyPhoto', bootyPhoto.value.file)
     }
 
-    // Send POST request
-    const response = await $fetch(
-        '/api/content/hunt-reports/create',
-        {
-            method: 'POST',
-            headers: {
-                'authorization': `Bearer ${useUserState().value.accessToken.value}`
-            },
-            body: formData
-        }
-    )
+    try {
+        // Send POST request
+        const res = await $fetch(
+            '/api/content/hunt-reports/create',
+            {
+                method: 'POST',
+                headers: {
+                    'authorization': `Bearer ${useUserState().value.accessToken.value}`
+                },
+                body: formData
+            }
+        )
+
+        const reportId = res.data
+        navigateTo(`/hunt-reports/${reportId}`)
+
+        useToaster('show', {
+            id: crypto.randomUUID(),
+            message: "Hunt report created succesfully !",
+            icon: 'success',
+            type: 'success',
+            autoClose: true,
+            position: 'bottom'
+        })
+    } catch(err) {
+        console.error('cant creat hunt report', err)
+        useToaster('show', {
+            id: crypto.randomUUID(),
+            message: "Oops ! we could not save your hunt report...",
+            icon: 'error',
+            type: 'error',
+            autoClose: true,
+            position: 'bottom'
+        })
+    }
 
     isPending.value = false
 }
@@ -154,44 +177,56 @@ async function saveNewReport() {
 </script>
 
 <template>
-    <form class="flex column gap20 marTop20" ref="formRef">
-        <ArchitecturePanelMain>
-            <div class="section flex column gap20">
-                <FormsNewItemTitle 
-                    v-model="title"
-                    textPath="page.huntReports.newReport.fields.title.label"
-                    placeholderPath="page.huntReports.newReport.fields.title.placeholder"
-                />
-    
-                <FormsNewItemDescription 
-                    v-model="content"
-                    textPath="page.huntReports.newReport.fields.content.label"
-                />
-    
-                <FormsNewItemDate 
-                    v-model="date"
-                    labelPath="page.huntReports.newReport.fields.date.label"
-                />
-            </div>
-        </ArchitecturePanelMain>
-    
-        <ArchitecturePanelMain>
-            <div class="section">
-                <FormsNewItemBiome 
-                    v-model="biome"
-                        labelPath="page.huntReports.newReport.fields.biome.label"
-                        multiple
-                />
+    <form class="flex column marTop20" ref="formRef">
+        <ArchitectureAppStructureBoxesMainElement>
+            <ArchitecturePanelMain>
+                <div class="section flex column gap20">
+                    <FormsNewItemTitle 
+                        v-model="title"
+                        textPath="page.huntReports.newReport.fields.title.label"
+                        placeholderPath="page.huntReports.newReport.fields.title.placeholder"
+                    />
+        
+                    <FormsNewItemDescription 
+                        v-model="content"
+                        textPath="page.huntReports.newReport.fields.content.label"
+                    />
+        
+                    <FormsNewItemDate 
+                        v-model="date"
+                        labelPath="page.huntReports.newReport.fields.date.label"
+                    />
+                </div>
+            </ArchitecturePanelMain>
+        </ArchitectureAppStructureBoxesMainElement>
+        
+        <ArchitectureAppStructureBoxesMainElement>
+            <ArchitecturePanelMain>
+                <div class="section">
+                    <FormsNewItemBiome 
+                        v-model="biome"
+                            labelPath="page.huntReports.newReport.fields.biome.label"
+                            multiple
+                    />
 
-                <FormsNewItemHuntReportsWeatherTags
-                    v-model="weatherTags"
-                    textPath="page.huntReports.newReport.fields.weatherTags.label"
-                />
-            </div>
-        </ArchitecturePanelMain>
+                    <FormsNewItemHuntReportsWeatherTags
+                        v-model="weatherTags"
+                        textPath="page.huntReports.newReport.fields.weatherTags.label"
+                    />
+                </div>
+            </ArchitecturePanelMain>
+        </ArchitectureAppStructureBoxesMainElement>
     
-        <ArchitecturePanelMain>
-            <div class="section">
+        <ArchitectureAppStructureBoxesMainElement>
+            <ArchitecturePanelMain>
+                <TH2 class="sectionTitle">
+                    Empy your pouch !
+                </TH2>
+
+                <Tp>
+                    Add a photo of all your findings. Nails, coins, b.o.a.t., etc ...
+                </Tp>
+
                 <FormsNewItemImageSelector
                     ref="bootyPhotoSelector"
                     :label="t('page.huntReports.newReport.fields.bootyPhoto.label')"
@@ -201,20 +236,24 @@ async function saveNewReport() {
                     :boxHeight="'140px'"
                     aspectRatio="1/1"
                     class="marTop10"
+                    :showImageSlots="true"
+                    :showFilePicker="false"
                 />
-            </div>
-        </ArchitecturePanelMain>
+            </ArchitecturePanelMain>
+        </ArchitectureAppStructureBoxesMainElement>
     
-        <ArchitecturePanelMain>
-            <div class="section">
-                <FormsNewItemRelatedFinds
-                    labelPath="page.huntReports.newReport.fields.relatedFinds.label"
-                    leadPath="page.huntReports.newReport.fields.relatedFinds.lead"
-                    buttonTextPath="page.huntReports.newReport.fields.relatedFinds.button"
-                    v-model="finds"
-                />
-            </div>
-        </ArchitecturePanelMain>
+        <ArchitectureAppStructureBoxesMainElement>
+            <ArchitecturePanelMain>
+                <div class="section">
+                    <FormsNewItemRelatedFinds
+                        labelPath="page.huntReports.newReport.fields.relatedFinds.label"
+                        leadPath="page.huntReports.newReport.fields.relatedFinds.lead"
+                        buttonTextPath="page.huntReports.newReport.fields.relatedFinds.button"
+                        v-model="finds"
+                    />
+                </div>
+            </ArchitecturePanelMain>
+        </ArchitectureAppStructureBoxesMainElement>
   
         <template class="centered">
             <FormsNewItemStatus

@@ -21,22 +21,22 @@ async function deleteFind(findId : FindId) {
         return
     }
 
-    const res = await $fetch(
-        `/api/content/deleteItem`,
-        {
-            method: 'DELETE',
-            headers: {
-                authorization: `Bearer ${useUserState().value.accessToken.value}`
-            },
-            body: {
-                collection: 'Finds',
-                id: findId
+    try {
+        await $fetch(
+            `/api/content/deleteItem`,
+            {
+                method: 'DELETE',
+                headers: {
+                    authorization: `Bearer ${useUserState().value.accessToken.value}`
+                },
+                body: {
+                    collection: 'Finds',
+                    id: findId
+                }
             }
-        }
-    )
-
-    if(res?.ok) {
-        emit('findDeleted', findId)
+        )
+    } catch(err) {
+        console.error(err)
     }
 }
 </script>

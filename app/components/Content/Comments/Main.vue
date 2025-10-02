@@ -44,25 +44,25 @@ const {
 )
 
 async function deleteComment(id) {
-    const res = await $fetch(
-        '/api/content/deleteItem',
-        {
-            method: 'DELETE',
-            headers: {
-                authorization: `Bearer ${me.value.accessToken.value}`
-            },
-            body: {
-                collection: props.collection,
-                id: id
+    try {
+        await $fetch(
+            '/api/content/deleteItem',
+            {
+                method: 'DELETE',
+                headers: {
+                    authorization: `Bearer ${me.value.accessToken.value}`
+                },
+                body: {
+                    collection: props.collection,
+                    id: id
+                }
             }
-        }
-    )
+        )
 
-    console.log(res)
-
-    if(res?.ok) {
         refresh()
         emit('updateNewCommentsCount', -1)
+    } catch(err) {
+        console.error(err)
     }
 }
 

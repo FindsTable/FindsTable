@@ -19,14 +19,23 @@ const props = defineProps({
         required: false
     }
 })
+
 const emit = defineEmits(['changeTab'])
+
+const selectedTabForSmallScreen = computed(() => {
+  const tab = props.tabs.find(tab => tab.value === props.selectedTab)
+  return tab?.textPath
+})
+
 function handleClick(tabValue) {
+
     emit('changeTab', tabValue)
 }
+
 </script>
 
 <template>
-    <div class="tabContainer flex gap20">
+    <div class="tabContainer gap20">
         <ArchitectureAppStructureBoxesMainElement>
             <button 
                 v-for="tab in tabs" :key="tab.value"
@@ -49,7 +58,14 @@ function handleClick(tabValue) {
                 </span>
             </button>
         </ArchitectureAppStructureBoxesMainElement>
-        
+
+        <ArchitectureAppStructureBoxesMainElement
+            class="selectedTabOnSmallScreen"
+        >
+            <TH2>
+                {{ t(selectedTabForSmallScreen) }}
+            </TH2>
+        </ArchitectureAppStructureBoxesMainElement>        
     </div>
 </template>
 
@@ -58,4 +74,9 @@ function handleClick(tabValue) {
     border-bottom: 1px solid var(--layout-line-color);
 }
 
+@media (min-width: 859px) {
+    .selectedTabOnSmallScreen {
+        display: none;
+    }
+}
 </style>

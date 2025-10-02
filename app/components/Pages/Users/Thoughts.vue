@@ -3,11 +3,6 @@ const props = defineProps({
     userId: String
 })
 
-const requestOffset = ref(0)
-const requestLimit = ref(5)
-
-const thoughts = ref([])
-
 const fields = [
     '*',
     'owner.avatar',
@@ -18,65 +13,68 @@ const fields = [
     'likes.*'
 ]
 
-async function getThoughts() {
-    const res = await $fetch(
-        'https://admin.findstable.net/items/Thoughts',
-        {
-            method: "GET",
-            headers: {
-                authorization: `Bearer ${useUserState().value.accessToken.value}`
-            },
-            query: {
-                fields: fields.join(','),
-                filter: {
-                    owner: {
-                        _eq: props.userId
-                    }
+const {data : thoughts } = await useAsyncData(
+    'myThoughts',
+    async () => {
+        const res = await $fetch(
+            'https://admin.findstable.net/items/Thoughts',
+            {
+                method: "GET",
+                headers: {
+                    authorization: `Bearer ${useUserState().value.accessToken.value}`
                 },
-                deep: {
-                    owner: {
-                        avatars: {
-                            _sort: "-currentAt",
-                            _limit: 1
+                query: {
+                    fields: fields.join(','),
+                    filter: {
+                        owner: {
+                            _eq: props.userId
                         }
-                    }
-                },
-                sort: "-date_created",
-                offset: requestOffset.value,
-                limit: requestLimit.value
+                    },
+                    deep: {
+                        owner: {
+                            avatars: {
+                                _sort: "-currentAt",
+                                _limit: 1
+                            }
+                        }
+                    },
+                    sort: "-date_created"
+                }
             }
-        }
-    )
-
-    if (res?.data) {
+        )
         return res.data
     }
+)
 
+function removeThought(id) {
+    const index = thoughts.value.findIndex(thought => thought.id === id)
+    console.log('removing thought',thoughts.value)
+
+    if (index !== -1) {
+         thoughts.value = thoughts.value.filter(thought => thought.id !== id)
+    }
+    console.log('removing thought',thoughts.value)
 }
 
-async function getNextPage() {
-    requestOffset.value+= requestLimit.value
-    const res = await getThoughts()
-    thoughts.value = [
-        ...thoughts.value,
-        ...res
-    ]
-}
+const ref_ContentThoughtsMain = ref(null)
 
-onMounted(async () => {
-    const res = await getThoughts()
-    
-    thoughts.value = [
-        ...thoughts.value,
-        ...res
-    ]
-})
+function handleNewThoughtPosted(newThought) {
+    ref_ContentThoughtsMain.value.newThoughtPosted(newThought)
+}
 
 </script>
 
 <template>
+    <ArchitectureAppStructureBoxesMainElement>
+        <ContentThoughtsNew 
+            @newThoughtPosted="handleNewThoughtPosted"
+        />
+    </ArchitectureAppStructureBoxesMainElement>
+
     <ContentThoughtsMain 
         v-if="thoughts"
         :thoughts="thoughts"
+        @thoughtDeleted="removeThought"
+        ref="ref_ContentThoughtsMain"
     />
 </template>

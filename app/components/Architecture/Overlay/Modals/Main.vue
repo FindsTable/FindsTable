@@ -10,7 +10,7 @@ const { cancel } = useModal()
             class="modal flex column alignCenter" 
         >
             <ArchitecturePanelMain
-                class="w100"
+                class="w100 h100 flex column"
             >
                 <div class="w100">
                     <div class="w100 flex justifyEnd">
@@ -22,16 +22,19 @@ const { cancel } = useModal()
                         />
                     </div>
 
-                    <h1 class="theme-titleColor-main font-h1" v-if="modalState.content.title">
+                    <h2 class="theme-titleColor-main font-h2" v-if="modalState.content.title">
                         {{ modalState.content.title }}
-                    </h1>
+                    </h2>
 
-                    <p class="theme-textColor-main font-pageLead marTop20" v-if="modalState.content.message">
+                    <p 
+                        v-if="modalState.content.message"
+                        class="theme-textColor-main marTop20"
+                    >
                         {{ modalState.content.message }}
                     </p>
                 </div>
 
-                <div class="marTop10">
+                <div class="marTop10 grow">
                     <ArchitectureOverlayModalsCropper
                         v-if="modalState.component === 'cropper'" 
                         class="marTop50"
@@ -48,6 +51,10 @@ const { cancel } = useModal()
                     <ArchitectureOverlayModalsCreateNewMedia
                         v-if="modalState.modal === 'ArchitectureOverlayModalsCreateNewMedia'"
                     />
+
+                    <ArchitectureOverlayModalsNewThought
+                        v-if="modalState.modal === 'NewThought'"
+                    />
                 </div>
             </ArchitecturePanelMain>
             
@@ -63,6 +70,7 @@ const { cancel } = useModal()
 }
 .modal {
     width: min(350px, 100%);
+    height: min(650px, 100vh);
     padding: 30px;
     border-radius: 10px;
 }

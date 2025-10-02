@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ContentFindsCardSmall } from '#components'
+
 const { confirm, cancel } = useModal()
 
 const model = defineModel<string[]>()
@@ -23,6 +25,7 @@ const {
     {
         query: useModalState().value.data.query,
         onResponse: (res) => {
+            console.log(res)
             domInfoMessage.value = res.length === 0 ? 'You have no finds yet' : ''
         }
     }
@@ -58,13 +61,13 @@ function handleCancel() {
 </script>
 
 <template>
-    <div class="findSelectorModal flex column fullHeight">
+    <div class="h100 flex column">
         <div class="buttonsRow flex gap10">
             <button 
                 @click="handleConfirm" 
                 class="comp-button -filled"
             >
-                    Confirm
+                Confirm
             </button>
 
             <button 
@@ -82,7 +85,9 @@ function handleCancel() {
             </button>
         </div>
 
-        <div class="findsScroller grow scrollY marTop20">
+        <ArchitectureFlexGrowVerticalScroll
+            class="marTop20"
+        >
             <div 
                 v-if="domInfoMessage" 
                 class="loadingState"
@@ -98,33 +103,30 @@ function handleCancel() {
             </div>
 
             <div 
-                v-if="finds?.length" 
-                class="flex wrap gap10"
+                v-if="finds?.length"
+                class="grow findScroller flex wrap"
             >
                 <div 
                     v-for="find in finds" 
                     :key="find.id"
-                    class="findBox pointer"
-                    :class="{ selected: isSelected(find.id) }"
-                    @click="toggleFind(find.id)"
+                    class="w50 pad5"
                 >
-                    <img 
-                        v-if="find.images?.length"
-                        :src="`${useAppConfig().directusUrl}/assets/${find.images[0].directus_files_id}`"
-                        class="objectFitCover"
-                    />
+                    <div 
+                        class="findBox pointer r w100 r"
+                        :class="{ selected: isSelected(find.id) }"
+                        @click="toggleFind(find.id)"
+                    >
+                        <ContentFindsCardSmall
+                            :find="find"
+                        /> 
+                    </div> 
                 </div>
             </div>
-        </div>
+        </ArchitectureFlexGrowVerticalScroll>
     </div>
 </template>
 
 <style scoped>
-.findSelectorModal {
-    width: 100%;
-    max-width: 600px;
-    padding: 20px;
-}
 
 .buttonsRow {
     justify-content: center;
@@ -132,17 +134,14 @@ function handleCancel() {
 }
 
 .findsScroller {
-    flex-grow: 1;
     overflow-y: auto;
 }
 
 .findBox {
-    width: 100px;
-    aspect-ratio: 1;
     border: 2px solid transparent;
-    border-radius: 8px;
-    overflow: hidden;
+    border-radius: 10px;
     transition: 200ms;
+    overflow: hidden;
 }
 
 .findBox.selected {

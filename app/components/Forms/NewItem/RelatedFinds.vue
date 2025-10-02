@@ -15,8 +15,8 @@ async function openFindSelector() {
     const selectedFinds = await openModal({
         modal: 'ArchitectureOverlayModalsFindSelector',
         content: {
-            title: 'Join some finds',
-            message: 'Choose the finds you want to associate with this hunt report.'
+            title: 'Select finds',
+            message: 'asociate finds to your hunt report'
         },
         data: {
             query: {
