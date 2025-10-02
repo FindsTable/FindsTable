@@ -25,40 +25,44 @@ definePageMeta({
     <NuxtLayout name="public-route">
         <div class="container grow flex column justifyCenter">
             <div class="mainPanel  pad20">
-                <Panel class="">
-                    <Welcome />
+                <LazyArchitectureAppStructureBoxesMainElement>
+                    <Panel class="">
+                        <Welcome />
 
-                    <div class="centered marTop50">
-                        <NuxtLink to="/login" 
-                            class="
-                                comp-button -bold -text-large 
-                                theme-mainActionButton
-                            ">
-                            {{ t('page.landing.loginButton') }}
-                        </NuxtLink>
-                    </div>
-                </Panel>
+                        <div class="centered marTop50">
+                            <NuxtLink to="/login" 
+                                class="
+                                    comp-button -bold -text-large 
+                                    theme-mainActionButton
+                                ">
+                                {{ t('page.landing.loginButton') }}
+                            </NuxtLink>
+                        </div>
+                    </Panel>
+                </LazyArchitectureAppStructureBoxesMainElement>
 
-                <Panel>
-                    <p class="underConstruction pad10 marTop20">
-                        {{ t('page.landing.patreonLink') }}
-                    </p>
+                <LazyArchitectureAppStructureBoxesMainElement>
+                    <Panel>
+                        <p class="underConstruction pad10 marTop20">
+                            {{ t('page.landing.patreonLink') }}
+                        </p>
 
-                    <div class="centered marTop20">
-                        <NuxtLink class="block comp-button theme-buttonText -hoverable patreonLink flex alignCenter justifyCenter pointer"
-                            to="https://www.patreon.com/Findstable" :external="true">
-                            <img class="logo h100" src="/patreon/PATREON_SYMBOL_1_BLACK_RGB.png" alt="">
-                            <img class="word h100" src="/patreon/PATREON_WORDMARK_1_BLACK_RGB.png" alt="">
-                        </NuxtLink>
-                    </div>
+                        <div class="centered marTop20">
+                            <NuxtLink class="block comp-button theme-buttonText -hoverable patreonLink flex alignCenter justifyCenter pointer"
+                                to="https://www.patreon.com/Findstable" :external="true">
+                                <img class="logo h100" src="/patreon/PATREON_SYMBOL_1_BLACK_RGB.png" alt="">
+                                <img class="word h100" src="/patreon/PATREON_WORDMARK_1_BLACK_RGB.png" alt="">
+                            </NuxtLink>
+                        </div>
 
-                    <div class="centered marTop20">
-                        <NuxtLink class="block comp-button theme-buttonText -hoverable patreonLink flex alignCenter justifyCenter pointer"
-                            to="https://discord.gg/cAQG4Xcg2r" :external="true">
-                            Serveur Discord
-                        </NuxtLink>
-                    </div>
-                </Panel>
+                        <div class="centered marTop20">
+                            <NuxtLink class="block comp-button theme-buttonText -hoverable patreonLink flex alignCenter justifyCenter pointer"
+                                to="https://discord.gg/cAQG4Xcg2r" :external="true">
+                                Serveur Discord
+                            </NuxtLink>
+                        </div>
+                    </Panel>
+                </LazyArchitectureAppStructureBoxesMainElement>
             </div>
         </div>
     </NuxtLayout>

@@ -1,6 +1,10 @@
 <script setup>
 const props = defineProps({
-    find: Object
+    find: Object,
+    showUser: {
+        type: Boolean,
+        default: false
+    }
 })
 const emit = defineEmits(['deleteFind'])
 
@@ -8,6 +12,9 @@ const me = useUserState()
 const activeImageIndex = ref(0)
 const showComments = ref(false)
 
+onMounted(() => {
+    console.log(props.find)
+})
 </script>
 
 <template>
@@ -20,13 +27,18 @@ const showComments = ref(false)
         "
     >
         <div 
+            v-if="showUser"
             class="
                 userBox
-                flex gap10 alignCenter justifyBetween
+                flex gap10 alignCenter
                 noEvents_kidsEvents
             "
         >
-            <NuxtLink :to="`/users/${find.owner.id}`"  class="flex gap10">
+            <NuxtLink 
+                :to="`/users/${find.owner.id}`"  
+                class="flex gap10"
+                
+            >
                 <img v-if="find.owner.avatar"
                     :src="`https://admin.findstable.net/assets/${find.owner.avatar}?key=avatar-tiny-jpg&v=${Date.now()}`"
                     alt="metalhunter avatar" 
@@ -48,6 +60,14 @@ const showComments = ref(false)
 
                 </div>
             </NuxtLink>
+        </div>
+
+        <div
+            class="flex justifyBetween"
+        >
+            <TH3>
+                {{ find.title }}
+            </TH3>
 
             <ContentFindsCardMiniToolBar
                 v-if="me.id === find.owner.id"
@@ -55,56 +75,52 @@ const showComments = ref(false)
             />
         </div>
 
-        <TH3>
-            {{ find.title }}
-        </TH3>
+        <div
+            v-if="find.image0 || find.image1 || find.description.length > 1"
+            class="imageBox"
+        >
+            <div 
+                v-if="find.image0"
+                class="frame"
+            >
+                <HtmlPictureMain
+                    :assetId="find.image0"
+                    :sources="[
+                        { presetKey: 'find-250-webp', mimeType: 'image/webp' }
+                    ]"
+                    fallbackUrl="/images/find-no-image.png"
+                />
+            </div>
 
-        <div class="imageBox">
-                <div class="frame">
-                    <HtmlPictureMain
-                        v-if="find.image0"
-                        :assetId="find.image0"
-                        :sources="[
-                            { presetKey: 'find-250-webp', mimeType: 'image/webp' }
-                        ]"
-                        fallbackUrl="/images/find-no-image.png"
-                        class="image"
-                    />
-                </div>
+            <div
+                v-if="find.image1"
+                class="frame"
+            >
+                <HtmlPictureMain
+                    :assetId="find.image1"
+                    :sources="[
+                        { presetKey: 'find-250-webp', mimeType: 'image/webp' }
+                    ]"
+                    fallbackUrl="/images/find-no-image.png"
+                />
+            </div>
 
-                <div class="frame">
-                    <HtmlPictureMain
-                        v-if="find.image1"
-                        :assetId="find.image1"
-                        :sources="[
-                            { presetKey: 'find-250-webp', mimeType: 'image/webp' }
-                        ]"
-                        fallbackUrl="/images/find-no-image.png"
-                        class="image"
-                    />
-                </div>
+            <!-- 
+                !!!!!!!!
+                    v-if="find.description.length > 1"
+                !!!!!!!!
 
-                <div class="frame">
-                    <p 
-                        class="frame description"
-                        v-if="find.description"
-                    >
-                        {{ find.description }}
-                    </p>
-                </div>
-
-                
-
-                <div 
-                    v-if="!find.image0 && !find.image1"
-                    class="imageFrame"
+                Empty description is equal to " ".  Se the dirty hack
+                in /components/pages/finds/new/form that keeps directus happy
+            -->
+            <div class="frame">
+                <p
+                    v-if="find.description.length > 1"
+                    class="frame description"
                 >
-                    <HtmlPictureMain
-                        
-                        :fallbackUrl="'/images/find-no-image.png'"
-                        class="image w100 objectFitCover full"
-                    />
-                </div>
+                    {{ find.description }}
+                </p>
+            </div>
         </div>
 
         <div class="infoBox flex justifyEvenly alignCenter gap10">
@@ -126,7 +142,6 @@ const showComments = ref(false)
             collection="Finds_comments"
             @closeComments="showComments = !showComments"
         />
-
     </article>
 </template>
 
@@ -142,7 +157,7 @@ const showComments = ref(false)
     flex: 1;
     border-radius: 5px;
     aspect-ratio: 1 / 1;
-    overflow: hidden; 
+    overflow: hidden;
 }
 .frame .description {
     padding: 8px;

@@ -41,7 +41,10 @@ onMounted( async () => {
 </script>
 
 <template>
-    <ContentFindsMain :finds="finds" class="r">
+    <ContentFindsMain 
+        :finds="finds" 
+        :communityContent="false"
+    >
         <template #albumSelector>
             <ContentFindsAlbumSelector :albums="albums" />
         </template>

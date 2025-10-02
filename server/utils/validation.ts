@@ -2,15 +2,16 @@ import {
     getMe,
     getUsersByQuery
  } from '@@/server/directus/users'
-import { ImageFormatPresetKey } from '#shared/types/files'
 
+import { appGet } from '@@/server/directus/request'
 
 export {
     itemCountIsValid,
     validateUser,
     validateUserEmail,
     tokensAreValid,
-    isValidImageType
+    isValidImageType,
+    getItemCount
 }
 interface MaxItemCount {
     [key : string ] : number
@@ -26,17 +27,35 @@ const maxItemCount : MaxItemCount = {
     "Hunt-reports": 5
 }
 
-function itemCountIsValid(p : { 
-    collection: string,
-    items_count?: number
-}) : boolean {
+async function getItemCount(p : {
+    userId: string
+    collection: string
+}) : Promise<number>{
 
-    if( typeof p.items_count !== 'number') {
-        console.log('items_count is not a number')
-        return true
-    }
+    const res = await appGet<[ { count : number } ]>({
+        endpoint: `/items/${p.collection}`,
+        query: {
+            filter: {
+                owner: {
+                    _eq: p.userId
+                }
+            },
+            aggregate: { 
+                count: '*' 
+            }
+        }
+    })
+    return res[0].count
+}
 
-    return p.items_count < maxItemCount[p.collection]
+async function itemCountIsValid(p : { 
+    collection: string
+    userId: string
+}) : Promise<boolean> {
+
+    const count = await getItemCount(p)
+
+    return count < maxItemCount[p.collection]
 }
   
 async function validateUser( p : {
@@ -124,14 +143,4 @@ function isValidImageType(mimeType?: string): boolean {
 
     const allowedTypes = ['image/webp']
     return allowedTypes.includes(mimeType)
-}
-
-function validateImage( p : {
-    preset : ImageFormatPresetKey,
-    image: File
-}) : boolean {
-
-    p.image.type === p.preset.mimeType
-
-    return true
 }

@@ -8,7 +8,7 @@ export default defineEventHandler(async (
 
     const refresh_token = getCookie(
         event, 
-        'directus_refresh_token'
+        'findstable_refresh_token'
     )
 
     if (!refresh_token) {
@@ -31,7 +31,7 @@ export default defineEventHandler(async (
 
     setCookie(
         event,
-        'directus_refresh_token',
+        'findstable_refresh_token',
         res.data.refresh_token,
         {
             httpOnly: true,

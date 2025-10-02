@@ -9,9 +9,9 @@ async function appGet<Expected>(p : {
     endpoint: string
     query?: any
 }) : Promise<Expected> {
-    console.log('appGet params', p)
+    // console.log('appGet params', `Bearer ${useRuntimeConfig().APP_ACCESS_TOKEN}`)
 
-    const res = await appFetch<Expected>({
+    var res = await appFetch<Expected>({
         endpoint: p.endpoint,
         method: 'GET',
         query: p.query
@@ -78,42 +78,12 @@ async function appFetch<Expected>(p : {
     query?: any
 }) : Promise<{data: Expected}> {
 
-    if(p.method === "GET") {
-        console.log(
-            "appFetch GET", 
-            `${useRuntimeConfig().DIRECTUS_URL}${p.endpoint}`,
-            {
-                method: p.method,
-                headers: {
-                    authoriezation: `Bearer ${useRuntimeConfig().APP_ACCESS_TOKEN}`
-                },
-                query: p.query,
-                body: p.body
-            }
-        )
-    }
-
-    if(p.method === "POST") {
-        console.log(
-            "appFetch POST", 
-            `${useRuntimeConfig().DIRECTUS_URL}${p.endpoint}`,
-            {
-                method: p.method,
-                headers: {
-                    authoriezation: `Bearer ${useRuntimeConfig().APP_ACCESS_TOKEN}`
-                },
-                query: p.query,
-                body: p.body
-            }
-        )
-    }
-
     var res = await $fetch<{data: Expected}>(
         `${useRuntimeConfig().DIRECTUS_URL}${p.endpoint}`,
         {
             method: p.method,
             headers: {
-                authoriezation: `Bearer ${useRuntimeConfig().APP_ACCESS_TOKEN}`
+                authorization: `Bearer ${useRuntimeConfig().APP_ACCESS_TOKEN}`
             },
             query: p.query,
             body: p.body

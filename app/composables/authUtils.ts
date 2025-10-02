@@ -82,7 +82,7 @@ async function accessTokenFromRefreshTokenCookie()
     const res = await auth.refreshTokens()
 
     if (!res.ok) {
-        await auth.destroyCookie('directus_refresh_token')
+        await auth.destroyCookie('findstable_refresh_token')
         await auth.destroyCookie('directus_session_token')
         await auth.destroyCookie('directus_session_token_prod')
     }

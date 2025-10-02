@@ -82,24 +82,28 @@ const typeSafeUserId = computed(() => {
 <template>
     <NuxtLayout name="private-route" v-if="user">
         <template #header>
-            <div class="flex gap10">
-                <ArchitectureFramesAvatar :fileId="user.avatar || null" />
-                <div>
-                    <TH1>
-                        {{ user.displayName }}
-                    </TH1>
+            <ArchitectureAppStructureBoxesMainElement>
+                <div class="flex gap10">
+                    <ArchitectureFramesAvatar :fileId="user.avatar || null" />
+                    <div>
+                        <TH1>
+                            {{ user.displayName }}
+                        </TH1>
 
-                    <p>
-                        {{ user.username }}
-                    </p>
+                        <p>
+                            {{ user.username }}
+                        </p>
+                    </div>
                 </div>
-            </div>
+            </ArchitectureAppStructureBoxesMainElement>
 
-            <ArchitecturePageTabsFTHAContent
-                :selectedTab="selectedTab"
-                @changeTab="changeTab"
-                class="marTop20"
-            />
+            <ArchitectureAppStructureBoxesMainElement>
+                <ArchitecturePageTabsFTHAContent
+                    :selectedTab="selectedTab"
+                    @changeTab="changeTab"
+                    class="marTop20"
+                />
+            </ArchitectureAppStructureBoxesMainElement>
         </template>
 
         <template #scrollMain>

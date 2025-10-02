@@ -38,7 +38,7 @@ function parseSourceUrl(source: Source) {
 
 <template>
     <picture
-        class="block full"
+        
     >
         <source 
             v-for="(source, index) in sources" 
@@ -50,7 +50,7 @@ function parseSourceUrl(source: Source) {
         <img
             :src="fallbackUrl"
             :alt="alt || 'Could not load image'"
-            class="bloc full"
+            class="block full"
         >
     </picture>
 </template>

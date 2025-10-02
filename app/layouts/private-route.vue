@@ -1,5 +1,5 @@
 <script setup>
-const appState = useAppState()
+
 </script>
 
 <template>
@@ -21,12 +21,9 @@ const appState = useAppState()
                         class="TopBar"
                     />
                 </ArchitectureAppStructureBoxesMainElement>
-
                     <slot name="tabs">
 
                     </slot>
-                
-
                 <ArchitectureFlexGrowVerticalScroll>
                     <ArchitectureAppStructureBoxesMainElement>
                         <TH1>

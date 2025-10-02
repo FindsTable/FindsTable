@@ -114,6 +114,7 @@ const targetSlotIndex = ref<number | null>(null)
 
 /** Receive raw files from the picker and process them */
 async function onFilesSelected(files: File[]) {
+    console.log('test')
     if (!files?.length || props.disabled || isProcessing.value) {
         return;
     }

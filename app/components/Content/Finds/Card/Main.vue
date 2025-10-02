@@ -8,6 +8,10 @@ const props = defineProps({
     format: {
         type: String,
         default: 'medium'
+    },
+    showUser: {
+        type: Boolean,
+        default: true
     }
 })
 const emit = defineEmits(['deleteFind'])
@@ -42,6 +46,7 @@ async function handleClick() {
             :find="find"
             :activeImageIndex="activeImageIndex"
             @deleteFind="emit('deleteFind', find.id)"
+            :showUser="showUser"
         />
 
         <!-- <ContentFindsCardMedium

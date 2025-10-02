@@ -62,8 +62,12 @@ async function saveNewFind() {
     
     // Add images if they exist, keeping the original indices
     // image0 and image1 will be undefined if no image at that index
-    fD.append('image0', findImages.value[0]?.file || undefined)
-    fD.append('image1', findImages.value[1]?.file || undefined)
+    if(findImages.value[0].file) {
+        fD.append('image0', findImages.value[0]?.file || undefined)
+    }
+    if(findImages.value[1].file) {
+        fD.append('image1', findImages.value[1]?.file || undefined)
+    }
     
     const res = await $fetch(
         '/api/content/finds/create',
@@ -75,7 +79,6 @@ async function saveNewFind() {
             body: fD
         }
     )
-    console.log(res)
 
     if(res.ok) {
         useToaster("show", {

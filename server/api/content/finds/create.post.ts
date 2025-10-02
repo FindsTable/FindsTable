@@ -20,7 +20,7 @@ event: H3Event
     const currentUser = await validateUser({
         bearerToken: bearerToken!,
         fields: [
-            'id', 'username', 'status', 'finds_count'
+            'id', 'username', 'status'
         ]
     })
     if( !currentUser || !currentUser.id ) {
@@ -40,12 +40,12 @@ event: H3Event
         }
     }
 
-    const countValid = itemCountIsValid({
-        items_count: currentUser.finds_count,
+    const countValid = await itemCountIsValid({
+        userId: userId,
         collection: 'Finds'
     })
 
-    if(countValid === false) {
+    if(!countValid) {
         return {
             ok: false,
             data: null,

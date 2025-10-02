@@ -87,7 +87,7 @@ export default defineEventHandler(async (
     
     setCookie(
         event,
-        'directus_refresh_token',
+        'findstable_refresh_token',
         res.data.refresh_token,
         {
             httpOnly: true,

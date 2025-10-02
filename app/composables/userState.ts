@@ -94,7 +94,7 @@ export function useClearUserState() {
     }
 
     // remove refresh token by setting the expiration date to the past
-    document.cookie = 'directus_refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    document.cookie = 'findstable_refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 }
 
 

@@ -1,6 +1,10 @@
 <script setup lang="ts">
 const props = defineProps<{
-    finds: Find[];
+    finds: Find[],
+    communityContent: {
+        type: boolean,
+        default: true
+    }
 }>();
 
 const emit = defineEmits(['getNextPage', 'refresh', 'findDeleted'])
@@ -48,6 +52,7 @@ async function deleteFind(findId : FindId) {
                 :find="find"
                 format="small"
                 @deleteFind="deleteFind"
+                :showUser="communityContent"
             />
         </ArchitectureAppStructureBoxesMainElement>
     </div>

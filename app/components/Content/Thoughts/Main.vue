@@ -1,6 +1,10 @@
 <script setup>
 const props = defineProps({
-    thoughts: Array
+    thoughts: Array,
+    showUser: {
+        type: Boolean,
+        default: true
+    }
 })
 const emit = defineEmits(['getNextPage', 'thoughtDeleted'])
 

@@ -3,7 +3,6 @@ import {
     ArchitectureAppBox as AppBox, 
     ArchitectureOverlayMain as Overlay } 
 from '#components';
-
 </script>
 
 <template>
