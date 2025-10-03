@@ -3,6 +3,7 @@
         class="
             mobileTopBar
             mobileWidthContainer
+            marTop10
         "
     >
         <ArchitectureToolBarsMainContentFlowMain

@@ -5,7 +5,7 @@
                 src="https://admin.findstable.net/assets/8c5f8dd7-70a7-4711-9dc8-dbe9c57cd2d8?key=badge-h150-q100-webp" alt=""
                 class="badge"
             >
-            <span class="tierName">
+            <span class="tierName typeface-fraunces">
                 Plus
             </span>
         </p>
@@ -16,7 +16,7 @@
                 class="badge"
             >
             
-            <span class="tierName">
+            <span class="tierName typeface-fraunces">
                 Pro
             </span>
         </p>
