@@ -59,4 +59,3 @@ export default defineAppConfig({
 })
 
 type ColorMode = string | undefined | null;
-

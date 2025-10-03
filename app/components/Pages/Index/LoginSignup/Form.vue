@@ -1,60 +1,42 @@
 <script setup>
 import { LazyPagesIndexLoginSignupInputField as Input } from '#components'
-import { validate } from '#shared/dataValidation/forms'
-const { t } = useI18n();
 
-const appState = useAppState()
-const $users = useNuxtApp().$users
+const {
+    usernameIsPending,
+    usernameIsUnique,
+    validateUsername
+} = usernameValidation()
+
+async function handleUsernameInput() {
+    await validateUsername(username.value)
+}
+const { t } = useI18n();
 
 const formType = ref('login')
 
-const invitationCode = ref('');
-const username = ref({
-    input: '',
-    isUnique: false,
-    processing: false,
-    prefix: '@',
-    prefixed: computed(() => {
-        return `${username.value.prefix}${username.value.input}`
-    }),
-    timeout: null,
-    checkIsUnique: async () => {
-        if (formType.value === 'login') return
-        clearTimeout(username.value.timeout)
-        username.value.timeout = setTimeout(async () => {
-            username.value.processing = true
-            const res = await $fetch(
-                '/api/auth/username-is-unique',    
-                {
-                    method: 'POST',
-                    body: {
-                        username: username.value.input
-                    }
-                }
-            )
-            username.value.isUnique = res.data
-            username.value.processing = false
-        }, 1000)
-    }
-})
+const invitationCode = ref('8227543f-907a-4aeb-a34c-c2103653f766');
+const username = ref('jfkjfkdjkfd')
 
-const email = ref('')
-const password = ref('')
-const passwordConfirmation = ref('')
-const passwordsAreIdentical = computed(() => {
-    return password.value === passwordConfirmation.value
-})
+const email = ref('ddsqd@dsqd.com')
+const password = ref('12345678')
+const passwordConfirmation = ref('12345678')
 
 const formIsValid = computed(() => {
-    // needs to be rewritten !!!
-    validate.passwordLength(password.value)
     if(formType.value === 'login') {
-        return validate.emailFormat(email.value) &&
-            password.value.length
-    } else if(formType.value === 'signup') {
-        return validate.emailFormat(email.value) &&
-            password.value.length &&
-            passwordsAreIdentical.value
+        return (
+            emailFormatIsValid(email.value) &&
+            passwordFormatIsValid(password.value)
+        )
+    }
+    if(formType.value === 'signup') {
+        return (
+            invitationCode.value &&
+            emailFormatIsValid(email.value) &&
+            passwordFormatIsValid(password.value) &&
+            areStrongEqual(password.value, passwordConfirmation.value) &&
+            username.value &&
+            usernameIsUnique.value
+        )
     }
 })
 const isPending = ref(false)
@@ -69,10 +51,20 @@ async function handleSubmit() {
 
 const submitMethods = {
     login: async () => {
-        console.log({
-                email: email.value,
-                password: password.value
+        try {
+            assertEmailFormat(email.value)
+            assertPasswordFormat(password.value)
+        } catch (err) {
+            if(err.message) console.error(err.message)
+            if(err.toasterPath) useToaster('show', {
+                id: 'loginError',
+                messagePath: err.toasterPath,
+                type: 'error',
+                autoClose: true,
+                position: 'bottom'
             })
+            return
+        }
         const loginSuccess = await useLoginFlow(
             'emailAndPassword',
             {
@@ -94,15 +86,17 @@ const submitMethods = {
     },
     signup:  async () => {
         try {
-            const res = await useHandleSignup({
+            assertEmailFormat(email.value)
+            assertPasswordFormat(password.value)
+            assertStrongEquality(password.value, passwordConfirmation.value)
+            await useHandleSignup({
                 invitationCode: invitationCode.value,
-                username: username.value.input, 
+                username: username.value,
                 email: email.value, 
                 password: password.value,
                 passwordConfirmation: passwordConfirmation.value
             })
 
-            console.log(res)
             navigateTo(`/redirection/new-account-created?email=${useAnonymizeEmail(email.value)}`)
         } catch(err) {
             useHandleError(err)
@@ -133,24 +127,24 @@ const submitMethods = {
         />
         <Input 
             v-if="formType === 'signup'"
-            @input="username.checkIsUnique"
-            @change="username.checkIsUnique"
+            @input="handleUsernameInput"
+            @change="handleUsernameInput"
             :id="useId()" 
             type="text" 
             name="username"
             placeholder_key="forms.userAccount.username.placeholder"
             label_key="forms.userAccount.username.label" 
-            v-model="username.input"
+            v-model="username"
         >
             <template #iconLeft>
                 <div class="flex gap5">
                     <PagesIndexLoginSignupUserNameIcons 
-                        :processing="username.processing"
-                        :isUnique="username.isUnique"
+                        :processing="usernameIsPending"
+                        :isUnique="usernameIsUnique"
                     />
 
                     <span>
-                        {{ username.prefix }}
+                        @
                     </span>
                 </div>
             </template>

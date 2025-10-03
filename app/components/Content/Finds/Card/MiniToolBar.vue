@@ -6,7 +6,7 @@ const emit = defineEmits(['deleteFind'])
 <template>
     <div class="toolBar flex justifyEnd noEvents_kidsEvents">
         <span 
-            @click.stop="emit('deleteFind')"
+            @click.stop.prevent="emit('deleteFind')"
             class="iconTouch"
         >
             <Icon class="icon" name="delete" size="24px" />

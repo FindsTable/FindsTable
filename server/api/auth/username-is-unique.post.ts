@@ -1,44 +1,33 @@
-import { readEvent } from '@@/server/apiUtils/readEvent'
-import { directusAPI } from '@@/server/directus/main'
-import { getUsersByQuery } from '@@/server/directus/users'
-import { onKeyDown } from '@vueuse/core'
-import { ApiResponse } from '#shared/types/apiResponse'
+import { appGet } from '~~/server/directus/request'
 
 export default defineEventHandler( async(
     event
-): Promise<ApiResponse<boolean>> => {
+): Promise<void> => {
 
-    const { body, error } = await readEvent(event, [ 'body'])
+    const body = await readBody(event)
 
-    if(error) return error
+    if(!body) throw newError({
+        code: 400,
+        message: 'Bad request',
+        reason: 'No body in request'
+    })
 
-    const res = await getUsersByQuery<{
-        id: string
-    }>({
-        auth: 'app',
+    const res = await appGet<[]>({
+        endpoint: '/users',
         query: {
             filter: {
                 username: {
-                    _eq: body.username
+                    _eq: `@${body.username}`
                 }
             },
             fields: 'id'
         }
     })
 
-    if(!res.ok || !res.data) {
-        return {
-            ok: false,
-            status: 400,
-            statusText: 'Unauthorized',
-            data: false
-        }
-    }
-
-    return {
-        ok: true,
-        status: 200,
-        statusText: 'OK',
-        data: !res.data.length
-    }
+    if(res.length) throw toasterError({
+        code: 403,
+        message: 'Unauthorized',
+        reason: 'Username is not unique',
+        toasterPath: 'error.username.notUnique'
+    })
 })

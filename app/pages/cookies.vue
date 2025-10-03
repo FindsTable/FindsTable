@@ -27,7 +27,9 @@ definePageMeta({
         </template>
 
         <template #scrollMain>
-            <PagesLegalCookies />
+            <ArchitectureAppStructureBoxesMainElement>
+                <PagesLegalCookies />
+            </ArchitectureAppStructureBoxesMainElement>
         </template>
     </NuxtLayout>
 

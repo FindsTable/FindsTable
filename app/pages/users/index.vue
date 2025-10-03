@@ -63,10 +63,12 @@ definePageMeta({
                 v-if="users" 
                 class="flex column gap10"
             >
-                <PagesUsersCard 
-                    v-for="user in users" :key="user.id" 
-                    :user="user"
-                />
+                <LazyArchitectureAppStructureBoxesMainElement>
+                    <PagesUsersCard 
+                        v-for="user in users" :key="user.id" 
+                        :user="user"
+                    />
+                </LazyArchitectureAppStructureBoxesMainElement>
             </div>
         </template>
     </NuxtLayout>

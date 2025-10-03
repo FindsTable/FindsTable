@@ -47,5 +47,11 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         i18n.global.locale.value = preferredLocaleCookie.value
     }
 
-  nuxtApp.vueApp.use(i18n);
+    nuxtApp.vueApp.use(i18n);
+
+    return {
+        provide: {
+            i18n: i18n
+        }
+    }
 });

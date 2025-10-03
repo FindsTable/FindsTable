@@ -1,4 +1,5 @@
 <script setup>
+const { t } = useI18n()
 const me = useUserState()
 
 const emit = defineEmits(['newThoughtPosted'])
@@ -15,28 +16,44 @@ const newThought = ref('')
 const isPending = ref()
 
 async function saveNewThought() {
-    console.log('saving ne thought')
 
     if(isPending.value === true) return
     isPending.value = true
 
-    const res = await $fetch(
-        '/api/content/thoughts/create',
-        {
-            method: 'POST',
-            headers: {
-                authorization: `Bearer ${me.value.accessToken.value}`
-            },
-            body: {
-                content: newThought.value
+    try {
+        const res = await $fetch(
+            '/api/content/thoughts/create',
+            {
+                method: 'POST',
+                headers: {
+                    authorization: `Bearer ${me.value.accessToken.value}`
+                },
+                body: {
+                    content: newThought.value
+                }
+                //query set by the backend
             }
-            //query set by the backend
-        }
-    )
+        )
+        console.log(res)
 
-    if(res?.ok && res?.data) {
-        newThought.value = ''
-        emit('newThoughtPosted', res.data)
+        // newThought.value = ''
+        // emit('newThoughtPosted', res.data)
+
+    } catch(err) {
+        if(err.data) {
+            console.error("data", err.data)
+            useToaster('show', {
+                id: crypto.randomUUID(),
+                message: t(`${err.data.toasterPath}`),
+                icon: 'error',
+                type: 'error',
+                autoClose: true,
+                position: 'bottom'
+            })
+        } 
+        if(err.reason) {
+            console.error("reason", err.reason)
+        }
     }
 
     isPending.value = false

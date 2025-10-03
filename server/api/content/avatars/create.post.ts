@@ -13,49 +13,20 @@ const allowedTypes = ['image/jpeg', 'image/png']
 export default defineEventHandler(async <ExpectedItemObject extends ItemObject>(
 event: H3Event
 ): Promise<ApiResponse<ExpectedItemObject | null>> => {
-    const { 
-        bearerToken, 
-        error: tokenError
-    } = await readEvent(event, ['bearerToken'])
 
-    if (tokenError) return tokenError
-
-    const currentUser = await validateUser({
-        bearerToken: bearerToken!,
-        fields: [
-            'id', 'avatars_count'
-        ]
+    const bearerToken = getHeader(event, 'authorization')
+    if(!bearerToken) throw newError({
+        code: 400,
+        message: 'Unauthorized',
+        reason: 'No bearer token'
     })
 
-    if( !currentUser || !currentUser.id ) {
-        return {
-            ok: false,
-            statusText: 'User is not logged in or dont esist'
-        }
-    }
+    const userId = await userIsValid(bearerToken)
 
-    const userId = currentUser.id
-
-    if (!userId || typeof userId !== 'string') {
-        return {
-            ok: false,
-            statusText: 'User is not logged in.',
-            data: null
-        }
-    }
-
-    const countValid = itemCountIsValid({
-        collection: 'Avatars',
-        items_count: currentUser.avatars_count
+    await itemCountIsValid({
+        collection: 'Hunt_reports',
+        userId: userId
     })
-
-    if (!countValid) {
-        return {
-            ok: false,
-            data: null,
-            statusText: 'You have reached the maximum numner of avatars !'
-        }
-    }
 
     const requestFormData = await readMultipartFormData(event)
     if (!requestFormData || requestFormData.length !== 1) {

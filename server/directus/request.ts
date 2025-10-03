@@ -71,26 +71,48 @@ async function appDelete(p : {
     })
 }
 
-async function appFetch<Expected>(p : {
-    endpoint: string,
-    method: "GET" | "POST" | "PATCH" | "DELETE",
-    body?: any,
-    query?: any
-}) : Promise<{data: Expected}> {
+async function appFetch<Expected>(p: {
+  endpoint: string,
+  method: "GET" | "POST" | "PATCH" | "DELETE",
+  body?: any,
+  query?: any
+  throw?: boolean
+}): Promise<{ data: Expected }> {
+  try {
+    const res = await $fetch<{ data: Expected }>(
+      `${useRuntimeConfig().DIRECTUS_URL}${p.endpoint}`,
+      {
+        method: p.method,
+        headers: {
+          authorization: `Bearer ${useRuntimeConfig().APP_ACCESS_TOKEN}`
+        },
+        query: p.query,
+        body: p.body
+      }
+    );
 
-    var res = await $fetch<{data: Expected}>(
-        `${useRuntimeConfig().DIRECTUS_URL}${p.endpoint}`,
-        {
-            method: p.method,
-            headers: {
-                authorization: `Bearer ${useRuntimeConfig().APP_ACCESS_TOKEN}`
-            },
-            query: p.query,
-            body: p.body
-        }
-    )
+    return res;
+  } catch (err: any) {
+    // Determine status code from Directus error response or fallback
+    const code = err.response?.status ?? err.statusCode ?? 500;
+    const message = err.response?.statusText ?? err.message ?? 'Unknown error';
 
-    return res
+    // Authorization errors
+    if (code === 401 || code === 403) {
+      throw newError({
+        code: 403,
+        message: 'Forbidden',
+        reason: 'User is not allowed to perform this action'
+      });
+    }
+
+    // Other errors
+    throw newError({
+      code,
+      message,
+      reason: 'Something went wrong while fetching data from Directus'
+    });
+  }
 }
 
 

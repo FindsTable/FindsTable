@@ -7,10 +7,9 @@ export {
 }
 
 function use$t(messagePath: string): string {
-    const { t } = useI18n()
+    const t = useNuxtApp().$i18n.global.t
     return t(messagePath) as string
 }
-
 
 type Locale = 'fr' | 'en';
 

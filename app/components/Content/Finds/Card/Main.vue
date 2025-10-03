@@ -18,46 +18,50 @@ const emit = defineEmits(['deleteFind'])
 
 const activeImageIndex = ref(0)
 
-async function handleClick() {
-    console.log(route.path)
-    const curentPath = route.path
-    // const itemViewer = {
-    //     item = props.find,
-
-    // }
-    // console.log(`${route.fullPath}&itemViewer=true`)
-    // await navigateTo(`${route.fullPath}&itemViewer=true`)
-
-    // console.log(route.fullPath)
-    // itemViewer.value.item = props.find
-    // itemViewer.value.collection = 'Finds'
-    // itemViewer.value.id = props.find.id
-    // itemViewer.value.visible = true
-}
 </script>
 
 <template>
-    <ArchitecturePanelMain
-         v-if="find" 
-         class="w100 container pointer"
+    <NuxtLink
+        v-if="find"
+        class="block allEvents"
+        :to="`/finds/${find.id}`"
     >
-        <ContentFindsCardLarge
-            @click="handleClick"
-            :find="find"
-            :activeImageIndex="activeImageIndex"
-            @deleteFind="emit('deleteFind', find.id)"
-            :showUser="showUser"
-        />
+        <ArchitecturePanelMain
+            v-if="find" 
+            class="w100 container pointer"
+        >
+            <div class="card large">
+                <ContentFindsCardLarge
+                    
+                    :find="find"
+                    :activeImageIndex="activeImageIndex"
+                    @deleteFind="emit('deleteFind', find.id)"
+                    :showUser="showUser"
+                />
+            </div>
 
-        <!-- <ContentFindsCardMedium
-            @click="handleClick"
-            :find="find"
-            :activeImageIndex="activeImageIndex"
-            @deleteFind="emit('deleteFind', find.id)"
-        /> -->
-    </ArchitecturePanelMain>
+            <div class="card medium">
+                <ContentFindsCardMedium
+                    @click="handleClick"
+                    :find="find"
+                    :activeImageIndex="activeImageIndex"
+                    @deleteFind="emit('deleteFind', find.id)"
+                />
+            </div>
+            
+        </ArchitecturePanelMain>
+    </NuxtLink>
 </template>
 
 <style scoped>
-
+@container (max-width: 500px) {
+    .large {
+        display: none;
+    }
+}
+@container (min-width: 500px) {
+    .medium {
+        display: none;
+    }
+}
 </style>

@@ -26,13 +26,11 @@ async function invitationCodeIsValid(code: string): Promise<void> {
     });
 
     if (!res.length) {
-        throw createError({
-            statusCode: 403,
-            statusMessage: "Unauthorized",
-            data: {
-                reason: "Invitation code is not valid",
-                toasterPath: "error.code.notValid"
-            }
+        throw toasterError({
+            code: 403,
+            message: "Unauthorized",
+            reason: "Invitation code is not valid",
+            toasterPath: "forms.userAccount.invitationCode.notValid"
         });
     }
 }

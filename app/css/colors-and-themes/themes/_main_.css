@@ -30,6 +30,9 @@ All themes
 .theme-textColor-main {
     color: var(--textColor-main);
 }
+.theme-textColor-soft {
+    color: var(--textColor-soft);
+}
 
 /* 
     TO OD: make sure this is not too precise

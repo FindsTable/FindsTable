@@ -38,6 +38,7 @@ export default {
         'delete': 'material-symbols:delete-outline-rounded',
         'device': 'material-symbols:devices-outline',
         'edit': 'material-symbols:edit',
+        'enveloppeChecked': 'material-symbols:mark-email-read-rounded',
         'email': 'material-symbols:alternate-email',
         'folderCheck': 'material-symbols:folder-check-outline-rounded',
         'error': 'bx:error-alt0',

@@ -84,7 +84,7 @@ function validateForm() {
         errorMessages.forEach(message => {
             useToaster('show', {
                 id: crypto.randomUUID(),
-                message,
+                message : '',
                 icon: 'error',
                 type: 'error',
                 autoClose: true,
@@ -159,8 +159,21 @@ async function saveNewReport() {
             autoClose: true,
             position: 'bottom'
         })
-    } catch(err) {
-        console.error('cant creat hunt report', err)
+    } catch(err : any) {
+        if(err.data) {
+            console.error("data", err.data)
+            useToaster('show', {
+                id: crypto.randomUUID(),
+                message: t(`${err.data.toasterPath}`),
+                icon: 'error',
+                type: 'error',
+                autoClose: true,
+                position: 'bottom'
+            })
+        } 
+        if(err.reason) {
+            console.error("reason", err.reason)
+        }
         useToaster('show', {
             id: crypto.randomUUID(),
             message: "Oops ! we could not save your hunt report...",

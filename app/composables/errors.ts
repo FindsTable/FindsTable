@@ -3,15 +3,39 @@ export {
 }
 
 function useHandleError(error : any) {
-    handleDebugErrorLogs(error)
+    if(!error) return
+    
     if(error.data?.data?.toasterPath) {
-        console.log("⚠️ TO DO : Show toaster fro error message")
+        const err = error.data.data;
+
+        if(err.toasterPath) {
+            useToaster('show', {
+                id: `${Math.random()}`,
+                message: use$t(err.toasterPath),
+                type: 'error',
+                autoClose: true,
+                position: 'bottom'
+            })
+        }
     }
+    
+    handleDebugErrorLogs(error)
 }
 
 function handleDebugErrorLogs(error : any) {
     if(!useAppConfig().showErrorLogs) return
 
-    console.error("Error message:", error.message);
-    console.error("Status code:", error.statusCode);
+    if(error.data?.data) {
+        const err = error.data.data;
+        console.error("Reason:", err.reason);
+        return
+    }
+    if(error.message) {
+        console.error("Message:", error.message);
+        return
+    }
+    if(error.statusMessage) {
+        console.error("StatusMessage:", error.statusMessage);
+        return
+    }  
 }

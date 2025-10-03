@@ -48,12 +48,15 @@ export default defineEventHandler( async (
         var body = {
             email, password, passwordConfirmation, code, username
         }
-        
-    } catch(err) {
-        throw new Error('/auth/signup => basic validation failed')
+
+    } catch(err : any) {
+        throw newError({
+            code: 400,
+            message: "Bad request",
+            reason: err.message
+        })
     }
     
-    // email and username should be unique in Directus, so no need to verify here
     await invitationCodeIsValid(body.code);
     passwordsIdentical(
         body.password, 

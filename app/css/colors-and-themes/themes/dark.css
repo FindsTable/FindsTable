@@ -10,6 +10,7 @@
 
     --textColor-main: var(--tone-zinc-10);
         --textColor-dimmed: var(--tone-zinc-40);
+        --textColor-soft: var(--tone-brown-90);
         --textColor-negative: var(--tone-zinc-90);
 
     /* 

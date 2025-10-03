@@ -35,6 +35,7 @@
 .alignBetween {align-items: space-between;}
 .alignAround {align-items: space-around;}
 
+.marginAuto { margin: auto};
 .marLeftAuto {margin-left: auto;}
 .marRightAuto {margin-right: auto;}
 
@@ -118,6 +119,7 @@
 .pad10 {padding: 10px;}
 .pad15 {padding: 15px;}
 .pad20 {padding: 20px;}
+.pad25 {padding: 25px;}
 
 
 

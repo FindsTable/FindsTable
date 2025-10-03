@@ -23,7 +23,7 @@ onMounted(() => {
         class="
             card 
             w100
-            flex column gap10 pointer justifyEnd
+            flex column gap10 justifyEnd
         "
     >
         <div 
@@ -35,9 +35,9 @@ onMounted(() => {
             "
         >
             <NuxtLink 
-                :to="`/users/${find.owner.id}`"  
+                :to="`/users/${find.owner.id}`"
+                @click.stop
                 class="flex gap10"
-                
             >
                 <img v-if="find.owner.avatar"
                     :src="`https://admin.findstable.net/assets/${find.owner.avatar}?key=avatar-tiny-jpg&v=${Date.now()}`"
@@ -80,10 +80,10 @@ onMounted(() => {
             class="imageBox"
         >
             <div 
-                v-if="find.image0"
                 class="frame"
             >
                 <HtmlPictureMain
+                    v-if="find.image0"
                     :assetId="find.image0"
                     :sources="[
                         { presetKey: 'find-250-webp', mimeType: 'image/webp' }
@@ -93,10 +93,10 @@ onMounted(() => {
             </div>
 
             <div
-                v-if="find.image1"
                 class="frame"
             >
                 <HtmlPictureMain
+                    v-if="find.image1"
                     :assetId="find.image1"
                     :sources="[
                         { presetKey: 'find-250-webp', mimeType: 'image/webp' }
@@ -151,7 +151,6 @@ onMounted(() => {
     display: flex;
     gap: 10px;
 }
-
 .frame {
     /* border: 1px solid red; */
     flex: 1;
@@ -166,6 +165,7 @@ onMounted(() => {
     overflow: auto;
     background-color: var(--layout-line-color);
     white-space: pre-wrap;
+    
 }
 .card {
     overflow: hidden;

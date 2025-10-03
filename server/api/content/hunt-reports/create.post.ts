@@ -14,52 +14,19 @@ export default defineEventHandler(async (
 event: H3Event
 ): Promise<ApiResponse<ReportId | null>> => {
 
-    const { bearerToken, error: tokenError } = await readEvent(event, ['bearerToken'])
-
-    if (tokenError) return tokenError
-
-/*
-/   Validation
-        -user
-        -number of hunt report
-*/
-    
-    const currentUser = await validateUser({
-        bearerToken: bearerToken,
-        fields: [
-            'id', 'huntReports_count', 'username', 'status', 'finds_count'
-        ]
-    })
-    
-    if( !currentUser || !currentUser.id ) {
-        return {
-            ok: false,
-            statusText: "User is not logged in or doesn't esist"
-        }
-    }
-
-    const userId = currentUser.id
-
-    if (!userId || typeof userId !== 'string') {
-        return {
-            ok: false,
-            statusText: 'User is not logged in.',
-            data: null
-        }
-    }
-
-    const countValid = itemCountIsValid({
-        items_count: currentUser.huntReports_count,
-        collection: 'Hunt-reports'
+    const bearerToken = getHeader(event, 'authorization')
+    if(!bearerToken) throw newError({
+        code: 400,
+        message: 'Unauthorized',
+        reason: 'No bearer token'
     })
 
-    if(countValid === false) {
-        return {
-            ok: false,
-            data: null,
-            statusText: 'You have reached the maximum numner of Hunt reports !'
-        }
-    }
+    const userId = await userIsValid(bearerToken)
+
+    await itemCountIsValid({
+        collection: 'Hunt_reports',
+        userId: userId
+    })
 
     const fd = await readMultipartFormData(event)
     if (!fd) {
@@ -77,6 +44,9 @@ event: H3Event
         };
     }
 
+    
+   
+
 /*
     Parse the form data and store in a cache object
 */
@@ -84,11 +54,6 @@ event: H3Event
     interface Cache {
         report?: huntReportFromRequest
         linkedFinds?: string[]
-        banner?: {
-            type: string | undefined
-            data: any
-            filename: string | undefined
-        }
         bootyPhoto?: {
             type: string | undefined
             data: any
@@ -100,6 +65,8 @@ event: H3Event
     }
 
     const cache: Cache = {}
+
+    
 
     /*
 *
@@ -133,7 +100,7 @@ event: H3Event
         if (name === 'report') {
             cache[name as 'report'] = JSON.parse(entry.data.toString('utf-8'))
         } else {
-            cache[name as 'banner' | 'bootyPhoto'] = {
+            cache[name as 'bootyPhoto'] = {
                 data: entry.data,
                 type: entry.type,
                 filename: entry.filename
@@ -141,6 +108,7 @@ event: H3Event
         }
     }
 
+    
     /*
 *
 *
@@ -161,11 +129,7 @@ event: H3Event
             data: undefined
         }
     } else {
-        const newHuntReportsCount = await updateItemsCountField({
-            bearerToken: bearerToken!,
-            field: 'huntReports_count',
-            newValue: currentUser.huntReports_count + 1
-        })
+
     }
 
     cache.reportId = reportId
@@ -184,10 +148,10 @@ event: H3Event
         if (!isValidImageType(cache.bootyPhoto.type)) {
             return {
                 ok: false,
-                statusText: 'Invalid booty image image type.'
+                statusText: 'Invalid banner image type. Only JPG and PNG are allowed.'
             }
         }
-
+    
         const fileFormData = new FormData()
         const blob = new Blob(
             [cache.bootyPhoto.data], 

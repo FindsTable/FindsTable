@@ -11,7 +11,9 @@ export {
     validateUserEmail,
     tokensAreValid,
     isValidImageType,
-    getItemCount
+    validateImageType,
+    getItemCount,
+    userIsValid
 }
 interface MaxItemCount {
     [key : string ] : number
@@ -19,7 +21,7 @@ interface MaxItemCount {
 
 const maxItemCount : MaxItemCount = {
     "Finds": 6,
-    "Thoughts": 10,
+    "Thoughts": 3,
     "Thoughts_comments": 100,
     "Finds_comments": 100,
     "Avatars": 25,
@@ -51,13 +53,57 @@ async function getItemCount(p : {
 async function itemCountIsValid(p : { 
     collection: string
     userId: string
-}) : Promise<boolean> {
+}) : Promise<void> {
 
     const count = await getItemCount(p)
-
-    return count < maxItemCount[p.collection]
+    
+    if(count > maxItemCount[p.collection]) {
+        throw toasterError({
+            code: 403,
+            message: "Unauthorized",
+            reason: `Too many items in ${p.collection} : ${count}`,
+            toasterPath: "error.tooManyItems"
+        });
+    }
 }
-  
+
+async function userIsValid(bearerToken : string) {
+    try {
+        const me = await getMe({
+            bearerToken: bearerToken,
+            query: {
+                fields: 'id'
+            }
+        })
+
+        if(!me.data?.id) {
+            throw newError({
+                code: 403,
+                reason: "User is not valid",
+                message: "Unauthorized",
+            })
+        }
+        return me.data.id
+    } catch(err : any) {
+        throw newError({
+            code: err.statusCode ?? 500,
+            message: err.message ?? "Unknown error",
+            reason: "Something went wrong while validating user",
+        });
+    }
+}
+
+function validateImageType(type : string) {
+    if(type !== 'image/jpg' && type !== 'image/png' && type !== 'image/webp') {
+        throw newError({
+            code: 400,
+            message: 'Bad request',
+            reason: 'Image type is not valid'
+        })
+    }
+}
+
+
 async function validateUser( p : {
     bearerToken: string,
     fields? : string[]

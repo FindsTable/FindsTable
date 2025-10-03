@@ -10,18 +10,64 @@ definePageMeta({
 
 <template>
     <NuxtLayout name="public-route">
-        <TH1>
-            {{ t('page.redirection.newAccountCreated.success') }}
-        </TH1>
+        <div 
+            class="grow flex alignCenter"
+        >
+            <ArchitecturePanelMain>
+                <ArchitectureAppStructureBoxesMainElement>
+                    <TH1 class="banner centered theme-textColor-soft">
+                        Finds Table
+                    </TH1>
+                </ArchitectureAppStructureBoxesMainElement>
 
-        <p>
-            {{ t('page.redirection.newAccountCreated.checkYourEmails') }}
-        </p>
+                <ArchitectureAppStructureBoxesMainElement>
+                    <TH1
+                        class=""
+                    >
+                        {{ t('page.redirection.newAccountCreated.success') }}
+                    </TH1>
+                </ArchitectureAppStructureBoxesMainElement>
 
-        <div class="centered">
-            <NuxtLink class="pointer comp-button -filled" to="/">
-                {{ t('page.redirection.newAccountCreated.toIndex') }}
-            </NuxtLink>
+                <ArchitectureAppStructureBoxesMainElement
+                    class="flex column alignCenter"
+                >
+                    <div
+                        class="h100 centered"
+                    >
+                        <Icon 
+                            name="enveloppeChecked"
+                            size="5vw"
+                        />
+                    </div>
+
+                    <p
+                        class="marTop20"
+                    >
+                        {{ t('page.redirection.newAccountCreated.checkYourEmails') }}
+                    </p>
+                </ArchitectureAppStructureBoxesMainElement>
+                
+                <ArchitectureAppStructureBoxesMainElement>
+                    <div class="centered marTop20">
+                        <NuxtLink class="pointer comp-button -filled" to="/">
+                            {{ t('page.redirection.newAccountCreated.toIndex') }}
+                        </NuxtLink>
+                    </div>
+                </ArchitectureAppStructureBoxesMainElement>
+            </ArchitecturePanelMain>
         </div>
     </NuxtLayout>
 </template>
+
+<style scoped>
+.banner {
+    font-family: var(--typeface-findsTable);
+    font-size: 3rem;
+    padding: 20px;
+    border-radius: 10px;
+    object-fit: cover;
+    background-image: url("/images/chemin-creux.jpg");
+    background-position: bottom;
+    background-blend-mode: multiply;
+}
+</style>

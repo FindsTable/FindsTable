@@ -22,14 +22,8 @@
             "invitationCode": {
                 "label": "Invitation code",
                 "placeholder": "your invitation code",
-                "messages": {
-                    "required": "An invitation code is required",
-                    "unavailable": "Invitation code is invalid"
-                },
-                "validation": {
-                    "required": "An invitation code is required",
-                    "unavailable": "Invitation code is invalid"
-                }
+                "notValid": "Invitation code is invalid",
+                "isRequired": "An invitation code is required"
             },
             "username": {
                 "label": "Username",

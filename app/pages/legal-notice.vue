@@ -26,10 +26,9 @@ definePageMeta({
         </template>
 
         <template #scrollMain>
-            <p v-if="collection">
-                {{ collection }} }}
-            </p>
-            <PagesLegalNotice />
+            <ArchitectureAppStructureBoxesMainElement>
+                <PagesLegalNotice />
+            </ArchitectureAppStructureBoxesMainElement>
         </template>
     </NuxtLayout>
 

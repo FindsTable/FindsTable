@@ -23,6 +23,7 @@ event: H3Event
             'id', 'username', 'status'
         ]
     })
+
     if( !currentUser || !currentUser.id ) {
         return {
             ok: false,
@@ -40,18 +41,10 @@ event: H3Event
         }
     }
 
-    const countValid = await itemCountIsValid({
-        userId: userId,
-        collection: 'Finds'
+    await itemCountIsValid({
+        collection: 'Finds',
+        userId: userId
     })
-
-    if(!countValid) {
-        return {
-            ok: false,
-            data: null,
-            statusText: 'You have reached the maximum number of finds!'
-        }
-    }
 
     const fd = await readMultipartFormData(event)
     if (!fd) {

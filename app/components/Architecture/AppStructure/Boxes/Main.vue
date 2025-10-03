@@ -7,6 +7,8 @@
     </main>
 </template>
 
-<style scoped>
-
+<style>
+#architecture-mainBox {
+    container-type: inline-size;
+}
 </style>

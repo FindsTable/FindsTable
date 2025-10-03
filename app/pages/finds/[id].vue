@@ -51,12 +51,14 @@ const {
 )
 
 onMounted(() => {
+    
     if(
         cache.value.navigation ||
         cache.value.navigation?.id === route.params.id
     ) {
         find.value = cache.value.navigation
     } else {
+        console.log('hello')
         differedFetch()
     }
 })
