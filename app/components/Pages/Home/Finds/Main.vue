@@ -1,5 +1,6 @@
 <script setup>
 import { ContentFindsCardLarge } from '#components';
+import { ContentFindsCardMedium } from '#components';
 
 const theFields = [
     '*',
@@ -21,10 +22,32 @@ const query = {
 </script>
 
 <template>
-    <ContentMediaFeedCollection
+    <!-- <ContentMediaFeedCollection
+        class="large"
         collection="Finds"
         :cardComponent="ContentFindsCardLarge"
         :query="query"
         :communityContent="true"
+    /> -->
+
+    <ContentMediaFeedCollection
+        class="medium"
+        collection="Finds"
+        :cardComponent="ContentFindsCardMedium"
+        :query="query"
+        :communityContent="true"
     />
 </template>
+
+<style scoped>
+/* @container (max-width: 550px) {
+  .large {
+    font-size: 2em;
+  }
+}
+@container (min-width: 551px) {
+  .medium {
+    font-size: 2em;
+  }
+} */
+</style>

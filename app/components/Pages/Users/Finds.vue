@@ -1,5 +1,6 @@
 <script setup>
 import { ContentFindsCardLarge } from '#components';
+import { ContentFindsCardMedium } from '#components';
 const props = defineProps({
     userId: String
 })
@@ -23,9 +24,16 @@ const query = {
 
 <template>
     <ContentMediaFeedCollection
+        class="medium"
+        collection="Finds"
+        :cardComponent="ContentFindsCardMedium"
+        :query="query"
+        :communityContent="true"
+    />
+    <!-- <ContentMediaFeedCollection
         collection="Finds"
         :cardComponent="ContentFindsCardLarge"
         :query="query"
         :communityContent="true"
-    />
+    /> -->
 </template>

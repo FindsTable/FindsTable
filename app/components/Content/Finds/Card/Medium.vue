@@ -1,8 +1,8 @@
 <script setup>
 const props = defineProps({
-    find: Object
+    item: Object
 })
-const emit = defineEmits(['deleteFind'])
+const emit = defineEmits(['delete'])
 
 const me = useUserState()
 const activeImageIndex = ref(0)
@@ -12,7 +12,7 @@ const showComments = ref(false)
 
 <template>
     <article 
-        v-if="find" 
+        v-if="item" 
         class="
             card 
             flex column gap10 pointer justifyEnd
@@ -25,37 +25,34 @@ const showComments = ref(false)
                 noEvents_kidsEvents
             "
         >
-            <NuxtLink :to="`/users/${find.owner.id}`"  class="flex gap10">
-                <img v-if="find.owner.avatar"
-                    :src="`https://admin.findstable.net/assets/${find.owner.avatar}?key=avatar-tiny-jpg&v=${Date.now()}`"
+            <NuxtLink :to="`/users/${item.owner.id}`"  class="flex gap10">
+                <img v-if="item.owner.avatar"
+                    :src="`https://admin.findstable.net/assets/${item.owner.avatar}?key=avatar-tiny-jpg&v=${Date.now()}`"
                     alt="metalhunter avatar" 
                     class="avatar" 
                 />
 
-                <div
-
-                >
+                <div>
                     <p
                         class="username"
                     >
-                        {{ find.owner.displayName }}
+                        {{ item.owner.displayName }}
                     </p>
 
                     <time class="date fS12 weight3" datetime="2025-03-26">
-                        {{ useParseDate(find.date_created) }}
+                        {{ useParseDate(item.date_created) }}
                     </time>
-
                 </div>
             </NuxtLink>
 
             <ContentFindsCardMiniToolBar
-                v-if="me.id === find.owner.id"
-                @deleteFind="emit('deleteFind')"
+                v-if="me.id === item.owner.id"
+                @delete="emit('delete')"
             />
         </div>
 
         <TH3>
-            {{ find.title }}
+            {{ item.title }}
         </TH3>
 
         <div class="imageBox w100 overflowHidden">
@@ -64,8 +61,8 @@ const showComments = ref(false)
                 :gap="10"
             >
                 <HtmlPictureMain
-                    v-if="find.image0"
-                    :assetId="find.image0"
+                    v-if="item.image0"
+                    :assetId="item.image0"
                     :sources="[
                         { presetKey: 'find-250-webp', mimeType: 'image/webp' }
                     ]"
@@ -74,8 +71,8 @@ const showComments = ref(false)
                 />
 
                 <HtmlPictureMain
-                    v-if="find.image1"
-                    :assetId="find.image1"
+                    v-if="item.image1"
+                    :assetId="item.image1"
                     :sources="[
                         { presetKey: 'find-250-webp', mimeType: 'image/webp' }
                     ]"
@@ -84,16 +81,16 @@ const showComments = ref(false)
                 />
 
                 <div 
-                    v-if="find.description"
+                    v-if="item.description"
                     class="descriptionSlide shrink0 full"
                 >
                     <Tp>
-                        {{ find.description }}
+                        {{ item.description }}
                     </Tp>
                 </div>
 
                 <HtmlPictureMain
-                    v-if="!find.image0 && !find.image1"
+                    v-if="!item.image0 && !item.image1"
                     :fallbackUrl="'/images/find-no-image.png'"
                     class="image w100 objectFitCover full"
                 />
@@ -106,7 +103,7 @@ const showComments = ref(false)
                 fonSize="16px"
                 iconSize="20px"
                 collection="Finds"
-                :item="find"
+                :item="item"
                 :likeClick="true"
                 :commentClick="true"
                 @commentClicked="showComments = !showComments"
@@ -117,7 +114,7 @@ const showComments = ref(false)
         <KeepAlive>
             <ContentCommentsMain
                 v-if="showComments"
-                :itemId="find.id"
+                :itemId="item.id"
                 collection="Finds_comments"
                 @closeComments="showComments = !showComments"
             />
