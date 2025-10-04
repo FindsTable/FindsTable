@@ -1,57 +1,26 @@
-<script setup lang="ts">
-
-type Fields = [
+<script setup>
+import { ContentThoughtsThought } from '#components';
+const theFields = [
     '*',
-    `${keyof Thought}.${keyof User}`,
-    `${keyof Thought}.${keyof User}`,
-    `${keyof Thought}.${keyof User}`,
-    `${keyof Thought}.${keyof User}`,
-    keyof Thought,
-    keyof Thought,
-    keyof Thought,
-    `${keyof Thought}.*`
+    'owner.avatar',
+    'owner.id' ,
+    'owner.displayName',
+    'owner.username',
+    'date_created',
+    'date_lastEvent',
+    'date_updated',
+    'likes.*'
 ]
-
-const {
-    feed,
-    getNextPage,
-    removeItem
-} = await useFeed<"Thoughts", Fields>(
-    'Thoughts',
-    [
-        '*',
-        'owner.avatar',
-        'owner.id' ,
-        'owner.displayName',
-        'owner.username',
-        'date_created',
-        'date_lastEvent',
-        'date_updated',
-        'likes.*'
-    ]
-)
-
-function removeThought(thoughtId : ThoughtId) {
-    removeItem(thoughtId)
+const query = {
+    fields: theFields
 }
-
-onMounted(async () => {
-    getNextPage()
-})
-
-definePageMeta({
-    title: 'The table',
-    description: 'Explore the finds made by the community.',
-    middleware: 'private-route'
-});
-
 </script>
 
 <template>
-    <ContentThoughtsMain
-        v-if="feed"
-        :thoughts="feed"
-        @getNextPage="getNextPage"
-        @thoughtDeleted="removeThought"
+    <ContentMediaFeedCollection
+        collection="Thoughts"
+        :query="query"
+        :cardComponent="ContentThoughtsThought"
+        :communityContent="true"
     />
 </template>

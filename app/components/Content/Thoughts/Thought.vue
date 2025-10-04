@@ -1,10 +1,11 @@
 <script setup>
 const me = useUserState()
 const props = defineProps({
-    thought: Object
+    item: Object,
+    showUser: Boolean
 })
 
-const emit = defineEmits(['deleteThought'])
+const emit = defineEmits(['delete'])
 
 const showComments = ref(false)
 
@@ -21,15 +22,15 @@ function emit_updateNewCommentsCount(increment) {
             <div class="thoughtPanel ">
                 <div class="flex justifyBetween">
                     <ContentUsersCardsMini
-                        :userId="thought.owner.id"
-                        :avatarId="thought.owner.avatar"
-                        :username="thought.owner.displayName || thought.owner.username"
-                        :date="useParseDate(thought.date_created)"
+                        :userId="item.owner.id"
+                        :avatarId="item.owner.avatar"
+                        :username="item.owner.displayName || item.owner.username"
+                        :date="useParseDate(item.date_created)"
                     />
 
                     <button 
-                        v-if="thought.owner.id === me.id"
-                        @click="emit('deleteThought', thought.id)"
+                        v-if="item.owner.id === me.id"
+                        @click="emit('delete', item.id)"
                         class="theme-textColor-main pointer"
                     >
                         <Icon name="delete" size="24px" />
@@ -37,14 +38,14 @@ function emit_updateNewCommentsCount(increment) {
                 </div>
 
                 <p class="content marTop20">
-                    {{  thought.content }}
+                    {{  item.content }}
                 </p>
 
                 <WidgetsLikesAndCommentsMain
                     fonSize="16px"
                     iconSize="20px"
                     collection="Thoughts"
-                    :item="thought"
+                    :item="item"
                     :likeClick="true"
                     :commentClick="true"
                     @commentClicked="showComments = !showComments"
@@ -52,7 +53,7 @@ function emit_updateNewCommentsCount(increment) {
 
                 <ContentCommentsMain
                     v-if="showComments"
-                    :itemId="thought.id"
+                    :itemId="item.id"
                     collection="Thoughts_comments"
                     @newCommentPosted="emit_updateNewCommentsCount"
                     @closeComments="showComments = false"

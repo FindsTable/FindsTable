@@ -1,52 +1,31 @@
 <script setup>
+import { ContentFindsCardLarge } from '#components';
 const props = defineProps({
     userId: String
 })
-const me = useUserState()
-const finds = ref(null)
-
-async function getFinds() {
-
-    const res = await $fetch(
-        'https://admin.findstable.net/items/Finds',
-        {
-            method: 'GET',
-            headers: {
-                authorization: `Bearer ${me.value.accessToken.value}`
-            },
-            query: {
-                fields: '*,images.*,owner.*,owner.avatars.*',
-                filter: {
-                    owner: {
-                        _eq: props.userId
-                    }
-                },
-                deep: {
-                    owner: {
-                        avatars: {
-                            _sort: "-currentAt",
-                            _limit: 1
-                        }
-                    }
-                }
+const query = {
+    fields: '*,images.*,owner.*,owner.avatars.*',
+    filter: {
+        owner: {
+            _eq: props.userId
+        }
+    },
+    deep: {
+        owner: {
+            avatars: {
+                _sort: "-currentAt",
+                _limit: 1
             }
         }
-    )
- 
-    return res.data
+    }
 }
-onMounted( async () => {
-    finds.value = await getFinds()
-})
 </script>
 
 <template>
-    <ContentFindsMain 
-        :finds="finds" 
-        :communityContent="false"
-    >
-        <template #albumSelector>
-            <ContentFindsAlbumSelector :albums="albums" />
-        </template>
-    </ContentFindsMain>
+    <ContentMediaFeedCollection
+        collection="Finds"
+        :cardComponent="ContentFindsCardLarge"
+        :query="query"
+        :communityContent="true"
+    />
 </template>

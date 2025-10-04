@@ -1,7 +1,7 @@
 <script setup>
 const me = useUserState();
 const props = defineProps({
-    huntReport: Object,
+    item: Object,
     showUser: {
         type: Boolean,
         default: false
@@ -12,7 +12,7 @@ const emit = defineEmits(['delete'])
 
 <template>
     <article 
-        v-if="huntReport" 
+        v-if="item" 
         class="
             card 
             w100
@@ -28,12 +28,12 @@ const emit = defineEmits(['delete'])
             "
         >
             <NuxtLink 
-                :to="`/users/${huntReport.owner.id}`"  
+                :to="`/users/${item.owner.id}`"  
                 class="flex gap10"
                 
             >
-                <img v-if="huntReport.owner.avatar"
-                    :src="`https://admin.findstable.net/assets/${huntReport.owner.avatar}?key=avatar-tiny-jpg&v=${Date.now()}`"
+                <img v-if="item.owner.avatar"
+                    :src="`https://admin.findstable.net/assets/${item.owner.avatar}?key=avatar-tiny-jpg&v=${Date.now()}`"
                     alt="metalhunter avatar" 
                     class="avatar" 
                 />
@@ -44,11 +44,11 @@ const emit = defineEmits(['delete'])
                     <p
                         class="username"
                     >
-                        {{ huntReport.owner.displayName }}
+                        {{ item.owner.displayName }}
                     </p>
 
                     <time class="date fS12 weight3" datetime="2025-03-26">
-                        {{ useParseDate(huntReport.date_created) }}
+                        {{ useParseDate(item.date_created) }}
                     </time>
                 </div>
             </NuxtLink>
@@ -61,17 +61,17 @@ const emit = defineEmits(['delete'])
                 class="flex justifyBetween"
             >
                 <TH3>
-                    {{ huntReport.title }}
+                    {{ item.title }}
                 </TH3>
 
                 <ContentHuntReportsCardsMenuButton
-                    v-if="me.id === huntReport.owner.id"
-                    @delete="emit('delete')"
+                    v-if="me.id === item.owner.id"
+                    @delete="emit('delete', item.id)"
                 />
             </div>
 
             <p class="description">
-                {{ huntReport.content }}
+                {{ item.content }}
             </p>
         </div>
     </article>

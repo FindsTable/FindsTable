@@ -1,5 +1,5 @@
 <script setup>
-import { ContentFindsCardLarge } from '#components';
+import { ContentHuntReportsCardsLarge } from '#components'
 
 const theFields = [
     '*',
@@ -9,9 +9,9 @@ const theFields = [
     'owner.username',
     'owner.avatar',
     'date_created',
-    'date_lastEvent',
     'date_updated',
-    'images.*',
+    'title',
+    'content',
     'likes.*',
     'comments.*'
 ]
@@ -22,8 +22,8 @@ const query = {
 
 <template>
     <ContentMediaFeedCollection
-        collection="Finds"
-        :cardComponent="ContentFindsCardLarge"
+        collection="Hunt_reports"
+        :cardComponent="ContentHuntReportsCardsLarge"
         :query="query"
         :communityContent="true"
     />

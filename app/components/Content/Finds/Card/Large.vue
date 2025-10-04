@@ -1,25 +1,26 @@
 <script setup>
 const props = defineProps({
-    find: Object,
+    item: Object,
     showUser: {
         type: Boolean,
         default: false
     }
 })
-const emit = defineEmits(['deleteFind'])
+
+const emit = defineEmits(['delete'])
 
 const me = useUserState()
 const activeImageIndex = ref(0)
 const showComments = ref(false)
 
 onMounted(() => {
-    console.log(props.find)
+    console.log(props.item)
 })
 </script>
 
 <template>
     <article 
-        v-if="find" 
+        v-if="item" 
         class="
             card 
             w100
@@ -35,12 +36,12 @@ onMounted(() => {
             "
         >
             <NuxtLink 
-                :to="`/users/${find.owner.id}`"
+                :to="`/users/${item.owner.id}`"
                 @click.stop
                 class="flex gap10"
             >
-                <img v-if="find.owner.avatar"
-                    :src="`https://admin.findstable.net/assets/${find.owner.avatar}?key=avatar-tiny-jpg&v=${Date.now()}`"
+                <img v-if="item.owner.avatar"
+                    :src="`https://admin.findstable.net/assets/${item.owner.avatar}?key=avatar-tiny-jpg&v=${Date.now()}`"
                     alt="metalhunter avatar" 
                     class="avatar" 
                 />
@@ -51,11 +52,11 @@ onMounted(() => {
                     <p
                         class="username"
                     >
-                        {{ find.owner.displayName }}
+                        {{ item.owner.displayName }}
                     </p>
 
                     <time class="date fS12 weight3" datetime="2025-03-26">
-                        {{ useParseDate(find.date_created) }}
+                        {{ useParseDate(item.date_created) }}
                     </time>
 
                 </div>
@@ -66,25 +67,25 @@ onMounted(() => {
             class="flex justifyBetween"
         >
             <TH3>
-                {{ find.title }}
+                {{ item.title }}
             </TH3>
 
             <ContentFindsCardMiniToolBar
-                v-if="me.id === find.owner.id"
-                @deleteFind="emit('deleteFind')"
+                v-if="me.id === item.owner.id"
+                @deleteFind="emit('delete', item.id)"
             />
         </div>
 
         <div
-            v-if="find.image0 || find.image1 || find.description.length > 1"
+            v-if="item.image0 || item.image1 || item.description.length > 1"
             class="imageBox"
         >
             <div 
                 class="frame"
             >
                 <HtmlPictureMain
-                    v-if="find.image0"
-                    :assetId="find.image0"
+                    v-if="item.image0"
+                    :assetId="item.image0"
                     :sources="[
                         { presetKey: 'find-250-webp', mimeType: 'image/webp' }
                     ]"
@@ -96,8 +97,8 @@ onMounted(() => {
                 class="frame"
             >
                 <HtmlPictureMain
-                    v-if="find.image1"
-                    :assetId="find.image1"
+                    v-if="item.image1"
+                    :assetId="item.image1"
                     :sources="[
                         { presetKey: 'find-250-webp', mimeType: 'image/webp' }
                     ]"
@@ -115,10 +116,10 @@ onMounted(() => {
             -->
             <div class="frame">
                 <p
-                    v-if="find.description.length > 1"
+                    v-if="item.description.length > 1"
                     class="frame description"
                 >
-                    {{ find.description }}
+                    {{ item.description }}
                 </p>
             </div>
         </div>
@@ -128,7 +129,7 @@ onMounted(() => {
                 fonSize="16px"
                 iconSize="20px"
                 collection="Finds"
-                :item="find"
+                :item="item"
                 :likeClick="true"
                 :commentClick="true"
                 @commentClicked="showComments = !showComments"
@@ -138,7 +139,7 @@ onMounted(() => {
 
         <ContentCommentsMain
             v-if="showComments"
-            :itemId="find.id"
+            :itemId="item.id"
             collection="Finds_comments"
             @closeComments="showComments = !showComments"
         />

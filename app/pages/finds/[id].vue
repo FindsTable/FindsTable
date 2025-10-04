@@ -90,10 +90,7 @@ definePageMeta({
         </template>
 
         <template #scrollMain>
-            <ContentFindsCardMain
-                :find="find"
-                format="medium"
-            />
+
         </template>
     </NuxtLayout>
 </template>

@@ -1,15 +1,31 @@
-<script setup lang="ts">
-const props = defineProps<{
-    finds: Find[],
+<script setup>
+
+const props = defineProps({
+    collection: String,
+    cardComponent: Object,
+    query: Object,
     communityContent: {
-        type: boolean,
+        type: Boolean,
         default: true
     }
-}>();
+})
 
-const emit = defineEmits(['getNextPage', 'refresh', 'findDeleted'])
+const {data : feed} = await $fetch(
+    `https://admin.findstable.net/items/${props.collection}`,
+    {
+        method: 'GET',
+        headers: {
+            authorization: `Bearer ${useUserState().value.accessToken.value}`
+        },
+        query: props.query
+    }
+)
 
-async function deleteFind(findId : FindId) {
+function removeDeletedHuntReport(id) {
+
+}
+
+async function deleteItem(id) {
     const { openModal } = useConfirmationModal()
 
     const confirmDelete = await openModal({
@@ -30,36 +46,30 @@ async function deleteFind(findId : FindId) {
                     authorization: `Bearer ${useUserState().value.accessToken.value}`
                 },
                 body: {
-                    collection: 'Finds',
-                    id: findId
+                    collection: props.collection,
+                    id: id
                 }
             }
         )
+        removeDeletedHuntReport(id)
     } catch(err) {
-        console.error(err)
+        useHandleError(err)
     }
 }
 </script>
 
 <template>
-    <div 
-        v-if="finds?.length"
+    <div
+        v-if="feed?.length"
     >
         <ArchitectureAppStructureBoxesMainElement
-            v-for="find in finds" :key="find.id"
+            v-for="item in feed" :key="item.id"
         >
-            <ContentFindsCardMain
-                :find="find"
-                format="small"
-                @deleteFind="deleteFind"
-                :showUser="communityContent"
+            <component :is="cardComponent"
+                :item="item"
+                :showUser="true"
+                @delete="deleteItem"
             />
         </ArchitectureAppStructureBoxesMainElement>
-    </div>
-
-    <div class="centered">
-        <button class="comp-button -filled marTop20 font-text -main" @click="emit('getNextPage')">
-            next page
-        </button>
     </div>
 </template>

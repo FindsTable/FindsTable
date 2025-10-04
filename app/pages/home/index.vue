@@ -52,6 +52,12 @@ onMounted(() => {
                         v-if="selectedTab === 'finds'"
                     />
                 </KeepAlive>
+
+                <KeepAlive>
+                    <PagesHomeHuntReportsMain 
+                        v-if="selectedTab === 'huntReports'"
+                    />
+                </KeepAlive>
             </div>
         </template>
     </NuxtLayout>
