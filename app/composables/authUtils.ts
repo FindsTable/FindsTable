@@ -1,5 +1,4 @@
 export {
-    useLoginFlow,
     useHandleSignup,
     useAnonymizeEmail,
     useLogin,
@@ -30,7 +29,7 @@ async function useRefresh() : Promise<void> {
 
         useUserState().value.isLoggedIn = true
 
-    useUserState().value.isLoggedIn = true
+        useUserState().value.isLoggedIn = true
     } catch(err) {
         useHandleError(err)
     }
@@ -45,7 +44,7 @@ async function useLogin(
         assertEmailFormat(email)
         assertPasswordFormat(password)
 
-        var token = await use$Fetch<ParsedAccessToken>(
+        var token = await $fetch<ParsedAccessToken>(
             '/api/auth/login',
             {
                 method: 'POST',
@@ -66,9 +65,16 @@ async function useLogin(
             accessToken: token
         })
 
+        useToaster('show', {
+            id: 'loggedIn',
+            messagePath: useWelcomeBackString() ,
+            type: 'success',
+            autoClose: true,
+            position: 'bottom'
+        })
         useUserState().value.isLoggedIn = true
+        navigateTo(useAppConfig().welcomeUrl)
 
-    useUserState().value.isLoggedIn = true
     } catch(err) {
         useHandleError(err)
     }
@@ -82,21 +88,29 @@ async function useHandleSignup(p: {
     passwordConfirmation: string
 }) {
 
-    const res = await $fetch(
-        '/api/auth/signup',
-        {
-            method: 'POST',
-            body: {
-                invitation_code: p.invitationCode,
-                username: p.username,
-                email :p.email,
-                password : p.password,
-                passwordConfirmation :p.passwordConfirmation
-            }
-        }
-    )
+    try {
+        assertEmailFormat(p.email)
+        assertPasswordFormat(p.password)
+        assertStrongEquality(p.password, p.passwordConfirmation)
 
-    return res
+        const res = await $fetch(
+            '/api/auth/signup',
+            {
+                method: 'POST',
+                body: {
+                    invitation_code: p.invitationCode,
+                    username: p.username,
+                    email :p.email,
+                    password : p.password,
+                    passwordConfirmation :p.passwordConfirmation
+                }
+            }
+        )
+
+        navigateTo(`/redirection/new-account-created?email=${useAnonymizeEmail(p.email)}`)
+    } catch(err) {
+        useHandleError(err)
+    }
 }
 
 function useAnonymizeEmail(email: string): string {
@@ -114,7 +128,7 @@ function useAnonymizeEmail(email: string): string {
 }
 
 async function useDestroyCookie(name: string) {
-    const res = await use$Fetch(
+    const res = await $fetch(
         '/api/auth/destroy-cookie',
         {
             method: 'POST',
@@ -133,17 +147,28 @@ async function useDestroyCookie(name: string) {
 }
 
 async function useLogout() {
-    const res = await use$Fetch(
-        '/api/auth/logout',
-        {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
+    console.log('logout')
+    try {
+        await $fetch(
+            '/api/auth/logout',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
             }
-        }
-    )
-    
-    if(res.ok) {
-        navigateTo('/')
+        )
+
+        useToaster('show', {
+            id: 'loggedOut',
+            message: 'bye bye !' ,
+            type: 'success',
+            autoClose: true,
+            position: 'bottom'
+        })
+
+        navigateTo('/');
+    } catch(err) {
+        useHandleError(err)
     }
 }

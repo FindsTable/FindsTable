@@ -10,10 +10,18 @@ export default defineEventHandler(async (
             event, 
             'findstable_refresh_token'
         )
-        if(!refresh_token) throw new Error
+        if(!refresh_token) throw newError({
+            code: 403,
+            message: 'Unauthorized',
+            reason: 'No refresh token for refresh'
+        })
 
         const res = await refreshTokens(refresh_token)
-        if(!res.data) throw new Error
+        if(!res.data) throw newError({
+            code: 403,
+            message: 'Unauthorized',
+            reason: 'Tried to refresh, but with no success'
+        })
 
         setCookie(
             event,

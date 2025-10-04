@@ -42,5 +42,6 @@ function newError(p: NewErrorData): Error & NewError {
     console.log('building tnewError')
     const err = new Error() as Error & NewError;
 
+    err.data = p;
     return err;
 }

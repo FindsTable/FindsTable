@@ -51,15 +51,15 @@ const useToaster = (action: 'show' | 'hide', toaster: ToasterData) => {
     }
 }
 
-function useWelcomeBackString(t: any) {
+function useWelcomeBackString() {
     const user = useUserState()
     const index = getRandomNumber(1, Object.keys(success.success.auth.welcomeBack).length)
 
     let helloUser = ''
-    let welcomeBack = t(`success.auth.welcomeBack.${index}`)
+    let welcomeBack = use$t(`success.auth.welcomeBack.${index}`)
 
     if(user.value.username) {
-        helloUser = `${t('success.auth.helloUser')}${user.value.username} `
+        helloUser = `${use$t('success.auth.helloUser')}${user.value.username} `
     }
 
     return helloUser + welcomeBack

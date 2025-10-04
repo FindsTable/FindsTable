@@ -3,78 +3,56 @@ import { newResponse, ApiResponse } from '#shared/types/apiResponse'
 export default defineEventHandler(async (
     event
 ): 
-    Promise<ApiResponse<undefined>> => 
+    Promise<void> => 
 {
     
     const refresh_token = getCookie(
         event, 'findstable_refresh_token'
     )
 
-    if (!refresh_token) {
-        return newResponse({
-            ok: false,
-            status: 401,
-            statusText: 'Unauthorized',
-            feedback: {
-                toaster: {
-                    messagePath: 'error.auth.logout.missingRefreshToken',
-                    type: 'success'
-                }
-            }
-        })
-    }
-    
-    try {
-        await $fetch(
-            'https://admin.findstable.net/auth/logout',
-            {
-                method: 'POST',
-                body: {
-                    refresh_token: refresh_token,
-                    mode: 'json'
-                }
-            }
-        )
+    if (!refresh_token) throw newError({
+        code: 400,
+        message: 'Bad request',
+        reason: 'No refresh token cookie'
+    })
 
-        setCookie(
-            event, 
-            'findstable_refresh_token', 
-            '', 
-            {
-                expires: new Date(0)
+    await $fetch(
+        'https://admin.findstable.net/auth/logout',
+        {
+            method: 'POST',
+            body: {
+                refresh_token: refresh_token,
+                mode: 'json'
             }
-        )
-        setCookie(
-            event, 
-            'directus_session_token', 
-            '', 
-            {
-                expires: new Date(0)
-            }
-        )
-        return newResponse({
-            ok: true,
-            status: 200,
-            statusText: 'ok',
-            feedback: {
-                toaster: {
-                    messagePath: 'success.auth.logout',
-                    type: 'error'
-                }
-            }
-        })
+        }
+    )
 
-    } catch (error) {
-        return newResponse({
-            ok: false,
-            status: 500,
-            statusText: 'Logout failled',
-            feedback: {
-                toaster: {
-                    message: 'Could not logout',
-                    type: 'error'
-                }
-            }
-        })
-    }
+    setCookie(
+        event,
+        'findstable_refresh_token',
+        '',
+        {
+
+            httpOnly: true,
+            path: '/',
+            maxAge: 0, // 7 days, this value is set in Directus config : REFRESH_TOKEN_TTL
+            sameSite: 'strict',
+            secure: true,
+            domain: '.findstable.net'
+        }
+    )
+
+    setCookie(
+        event, 
+        'directus_session_token', 
+        '', 
+        {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'lax',
+            path: '/',
+            maxAge: 0,
+            domain: '.findstable.net'
+        }
+    )
 })

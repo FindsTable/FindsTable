@@ -14,12 +14,12 @@ const { t } = useI18n();
 
 const formType = ref('login')
 
-const invitationCode = ref('8227543f-907a-4aeb-a34c-c2103653f766');
-const username = ref('jfkjfkdjkfd')
+const invitationCode = ref('');
+const username = ref('')
 
-const email = ref('ddsqd@dsqd.com')
-const password = ref('12345678')
-const passwordConfirmation = ref('12345678')
+const email = ref('')
+const password = ref('')
+const passwordConfirmation = ref('')
 
 const formIsValid = computed(() => {
     if(formType.value === 'login') {
@@ -46,57 +46,24 @@ async function handleSubmit() {
 
     isPending.value = true
     await submitMethods[formType.value]()
-    isPending.value = false
+    
 }
 
 const submitMethods = {
     login: async () => {
-        try {
-            assertEmailFormat(email.value)
-            assertPasswordFormat(password.value)
-        } catch (err) {
-            if(err.message) console.error(err.message)
-            if(err.toasterPath) useToaster('show', {
-                id: 'loginError',
-                messagePath: err.toasterPath,
-                type: 'error',
-                autoClose: true,
-                position: 'bottom'
-            })
-            return
-        }
-
-        try {
-            useLogin(email.value, password.value)
-            useToaster('show', {
-                id: 'loggedIn',
-                messagePath: useWelcomeBackString(t) ,
-                type: 'success',
-                autoClose: true,
-                position: 'bottom'
-            })
-            navigateTo(useAppConfig().welcomeUrl)
-        } catch(err) {
-            useHandleError(err)
-        }
+        await useLogin(email.value, password.value)
+        isPending.value = false
     },
     signup:  async () => {
-        try {
-            assertEmailFormat(email.value)
-            assertPasswordFormat(password.value)
-            assertStrongEquality(password.value, passwordConfirmation.value)
-            await useHandleSignup({
-                invitationCode: invitationCode.value,
-                username: username.value,
-                email: email.value, 
-                password: password.value,
-                passwordConfirmation: passwordConfirmation.value
-            })
+        await useHandleSignup({
+            invitationCode: invitationCode.value,
+            username: username.value,
+            email: email.value, 
+            password: password.value,
+            passwordConfirmation: passwordConfirmation.value
+        })
 
-            navigateTo(`/redirection/new-account-created?email=${useAnonymizeEmail(email.value)}`)
-        } catch(err) {
-            useHandleError(err)
-        }
+        isPending.value = false
     }
 }
 
@@ -182,7 +149,7 @@ const submitMethods = {
                 theme-mainActionButton
             "
             :class="[ isPending ?  'disabled' : '']"
-            :disabled="!formIsValid || isPending" 
+            :disabled="!formIsValid || isPending"
         >
             {{ t('forms.buttons.submit') }}
             

@@ -13,7 +13,7 @@ export default defineNuxtPlugin(() => {
 })
 
 async function getUserDataWithAccessToken(token: string)
-:Promise<ParsedApiResponse<ParsedAccessToken>> {
+:Promise<any> {
     const fields = [
         "id",
         "username",
@@ -28,11 +28,14 @@ async function getUserDataWithAccessToken(token: string)
         "personalDataRecord.country.*",
     ]
 
-    const res = await use$Fetch<{
-        id: string,
-        username: string,
-        email: string,
-        patreon_account?: DirectusPatreonAccountObject
+    const res = await $fetch<{
+        data: {
+            id: string;
+            username: string;
+            email: string;
+            personalDataRecord: any;
+            patreon_account?: DirectusPatreonAccountObject;
+        }
     }>(
         '/api/users/me',
         {
