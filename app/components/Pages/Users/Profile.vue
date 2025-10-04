@@ -146,11 +146,10 @@ function refresh() {
             Badges
         </template>
 
-        <template #content>
-            <p>
-                {{ user.badgeRecord[0].slot1.badge }}
-            </p>
-
-        </template>
+        <!-- <template #content v-if="user">
+            <ContentBadgesBadgeRecord 
+                :userId="user.id"
+            />
+        </template> -->
     </ArchitecturePanelH2Panel>
 </template>
