@@ -186,7 +186,6 @@ async function saveNewReport() {
 
     isPending.value = false
 }
-
 </script>
 
 <template>
@@ -233,7 +232,7 @@ async function saveNewReport() {
         <ArchitectureAppStructureBoxesMainElement>
             <ArchitecturePanelMain>
                 <TH2 class="sectionTitle">
-                    Empy your pouch !
+                    Empy your poutch !
                 </TH2>
 
                 <Tp>

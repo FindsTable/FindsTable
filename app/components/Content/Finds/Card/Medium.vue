@@ -1,6 +1,10 @@
 <script setup>
 const props = defineProps({
-    item: Object
+    item: Object,
+    singleFrame: {
+        type: Boolean,
+        default: false
+    }
 })
 const emit = defineEmits(['delete'])
 
