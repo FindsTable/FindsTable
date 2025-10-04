@@ -11,24 +11,20 @@ const localCharsRegEx = sharedAppConfig.dataValidation.email.regExps.localCharsR
 const domainCharsRegEx = sharedAppConfig.dataValidation.email.regExps.domainCharsRegEx;
 const domainLabelCharsRegEx = sharedAppConfig.dataValidation.email.regExps.domainLabelCharsRegEx;
 
-function assertEmailFormat(
+function emailFormatIsValid(
     email : string
-)  : void {
+)  : boolean {
     try {
         emailFormatIsValid(email)
-    } catch(err) {
-        throw toasterError({
-            code: 401,
-            message: "Bad request",
-            reason: sharedAppConfig.dataValidation.email.error.reason,
-            toasterPath: sharedAppConfig.dataValidation.email.error.toasterPath
-        });
+        return true
+    } catch {
+        return false
     }
 }
 
-function emailFormatIsValid (
+function assertEmailFormat (
     email: string
-) {
+) : void {
     try {
         assertLength(email, 5, 245);
         assertRegEx(email, emailCharsRegEx);
@@ -57,11 +53,13 @@ function emailFormatIsValid (
             assertLength(label, 1, 63);
             assertValidStartEnd(label, ['-']);
         }
-
-        return true
-
     } catch(err) {
-        return false
+        throw toasterError({
+            code: 401,
+            message: "Bad request",
+            reason: sharedAppConfig.dataValidation.email.error.reason,
+            toasterPath: sharedAppConfig.dataValidation.email.error.toasterPath
+        });
     }
 }
 

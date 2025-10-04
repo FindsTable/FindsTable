@@ -105,7 +105,6 @@ async function createPersonalDataRecord(
         }
     })
 
-    console.log(res)
     return res?.data ? res.data : undefined
 }
 

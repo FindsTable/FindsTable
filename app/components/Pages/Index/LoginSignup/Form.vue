@@ -65,16 +65,10 @@ const submitMethods = {
             })
             return
         }
-        const loginSuccess = await useLoginFlow(
-            'emailAndPassword',
-            {
-                email: email.value,
-                password: password.value
-            }
-        )
 
-        if(loginSuccess) {
-                useToaster('show', {
+        try {
+            useLogin(email.value, password.value)
+            useToaster('show', {
                 id: 'loggedIn',
                 messagePath: useWelcomeBackString(t) ,
                 type: 'success',
@@ -82,6 +76,8 @@ const submitMethods = {
                 position: 'bottom'
             })
             navigateTo(useAppConfig().welcomeUrl)
+        } catch(err) {
+            useHandleError(err)
         }
     },
     signup:  async () => {

@@ -37,18 +37,6 @@ export const useUserState = () => {
             }
         })
     );
-
-    // watch(
-    //     () => userState.value.accessToken?.value,
-    //     (newToken, oldToken) => {
-    //         console.log('Access token changed:');
-            
-    //         if (newToken && newToken !== oldToken) {
-    //             useNuxtApp().$auth.ativateAccessTokenAutoRefresh()
-    //             console.log('Refreshing token...');
-    //         }
-    //     }
-    // );
     return userState
 }
 

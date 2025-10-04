@@ -27,7 +27,8 @@ function useUpdateMe_user(
 
     return res
 }
-function useUpdateMe_recordValue(
+
+async function useUpdateMe_recordValue(
     options: {
         body: any
         query? : any,
@@ -37,7 +38,7 @@ function useUpdateMe_recordValue(
     }
 
 ) {
-    const res = $fetch(
+    const res = await $fetch(
         '/api/me/update/record-value',
         {
             method: 'PATCH',
@@ -47,7 +48,7 @@ function useUpdateMe_recordValue(
             ...options
         }
     )
-
+    console.log(res)
     return res
 }
 

@@ -4,83 +4,13 @@ export default defineNuxtPlugin(() => {
     return {
         provide: {
             auth: {
-                createNewUser,
-                loginWithEmailAndPassword,
                 getUserDataWithAccessToken,
                 refreshTokens,
-                ativateAccessTokenAutoRefresh,
-                logout,
-                destroyCookie
+                ativateAccessTokenAutoRefresh
             }
         },
     }
 })
-
-async function createNewUser(
-    invitationCode: string,
-    username: string,
-    email: string,
-    password: string,
-    passwordConfirmation: string,
-) {
-
-    if (import.meta.server) { return }
-
-    const res = await use$Fetch(
-        '/api/auth/signup',
-        {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: {
-                invitation_code: invitationCode,
-                username,
-                email,
-                password,
-                passwordConfirmation
-            }
-        }
-    )
-
-    return useParseApiResponse(res)
-}
-
-async function loginWithEmailAndPassword(
-    email: string,
-    password: string
-): Promise<ParsedApiResponse> {
-    console.log('in auth plugin:', email, password)
-    const res = await use$Fetch<ParsedAccessToken>(
-        '/api/auth/login', 
-        {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: {
-                email,
-                password
-        }
-    })
-
-    if (!res) {
-        return {
-            ok: false,
-            data: null,
-            toaster: {
-                id: Date.now().toString(),
-                messagePath: 'error.server.noResponse',
-                type: 'error',
-                autoClose: true,
-                position: 'bottom'
-            },
-            tips: null
-        }
-    }
-
-    return useParseApiResponse(res)
-}
 
 async function getUserDataWithAccessToken(token: string)
 :Promise<ParsedApiResponse<ParsedAccessToken>> {
@@ -123,6 +53,7 @@ async function getUserDataWithAccessToken(token: string)
             statusText: 'Server error'
         })
     }
+
     if(res.data.patreon_account) {
         res.data.patreon_account = res.data.patreon_account[0] //extract patreon account from array. O2M field
         res.data.personalDataRecord = res.data.personalDataRecord[0]
@@ -153,7 +84,6 @@ async function refreshTokens()
     return useParseApiResponse(res)
 }
 
-
 let timeout: ReturnType<typeof setTimeout> | null = null;
 
 function ativateAccessTokenAutoRefresh() {
@@ -173,56 +103,4 @@ function ativateAccessTokenAutoRefresh() {
             ativateAccessTokenAutoRefresh()
         }, 840000)
     }
-}
-
-
-async function logout() {
-    const res = await use$Fetch(
-        '/api/auth/logout',
-        {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        }
-    )
-    
-    if(res.ok) {
-        navigateTo('/')
-    }
-}
-
-async function destroyCookie(name: string) {
-    const res = await use$Fetch(
-        '/api/auth/destroy-cookie',
-        {
-            method: 'POST',
-            body: {
-                name: name
-            }
-        }
-    )
-    if (!res) {
-        return newResponse({
-            ok: false,
-            status: 500,
-            statusText: 'Server error'
-        })
-    }
-}
-
-const getUserDataFields = () => {
-
-    const fields = [
-        "id", 
-        "username", 
-        "displayName", 
-        "patreon_account", 
-        "patreon_account.*", 
-        "personalDataRecord.id", 
-        "personalDataRecord.email.*", 
-        "personalDataRecord.firstName.*", 
-        "personalDataRecord.lastName.*",
-        "personalDataRecord.country.*"
-    ]
 }

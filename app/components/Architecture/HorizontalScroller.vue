@@ -77,7 +77,7 @@ const goToSlide = (index: number) => {
         <button 
             v-if="showArrows && totalSlides > 1" 
             class="navButton prev pointer" 
-            @click.stop="goToSlide(currentIndex - 1)"
+            @click.stop.prevent="goToSlide(currentIndex - 1)"
             :disabled="currentIndex === 0"
             aria-label="Previous slide"
         >
@@ -90,7 +90,6 @@ const goToSlide = (index: number) => {
                 scrollerContainer 
                 full
                 flex
-
             "
             :style="{ gap: `${gap}px` }"
         >
@@ -101,7 +100,7 @@ const goToSlide = (index: number) => {
         <button 
             v-if="showArrows && totalSlides > 1" 
             class="navButton next pointer" 
-            @click.stop="goToSlide(currentIndex + 1)"
+            @click.stop.prevent="goToSlide(currentIndex + 1)"
             :disabled="currentIndex === totalSlides - 1"
             aria-label="Next slide"
         >
@@ -115,7 +114,7 @@ const goToSlide = (index: number) => {
                 :key="index"
                 class="dot"
                 :class="{ active: currentIndex === index - 1 }"
-                @click="goToSlide(index - 1)"
+                @click.stop.prevent="goToSlide(index - 1)"
                 :aria-label="`Go to slide ${index}`"
             />
         </div>

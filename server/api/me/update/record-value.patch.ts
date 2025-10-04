@@ -1,83 +1,40 @@
-import { updateMe, updateUserById } from '@@/server/directus/users'
-import { getItemById, updateItemById } from '@@/server/directus/items'
-import { readEvent } from '@@/server/apiUtils/readEvent'
-import { validateUser } from '@@/server/utils/validation'
+import { updateMe } from '@@/server/directus/users'
+import { userPatch } from '@@/server/directus/request'
 
 export default defineEventHandler( async <
     ExpectedUserObject extends UserObject
 > (
     event: H3Event
 )
-: Promise<
-    ApiResponse<ExpectedUserObject | null>
-> => {
+: Promise<any> => {
 
-    const {
+    const bearerToken = getHeader(event, 'authorization')
+    if(!bearerToken) throw newError({
+        code: 400,
+        message: "Bad request",
+        reason: 'Basic validation failed'
+    })
+
+    await userIsValid(bearerToken)
+
+    const body = await readBody(event)
+    const query = getQuery(event)
+
+    if(!body) throw newError({
+        code: 400,
+        message: "Bad request",
+        reason: 'Basic validation failed'
+    })
+
+    if(body.email) assertEmailFormat(body.email)
+
+    const res = await userPatch({
+        endpoint: '/users/me',
         bearerToken,
         body,
-        query,
-        error
-    } = await readEvent(event, [ 'bearerToken', 'body', 'query'])
-
-    if(error) return error
-
-    const user = await validateUser({
-        bearerToken: bearerToken!,
-        fields: [
-            'id'
-        ]
+        query
     })
 
-    if(!user || !user.id) {
-        return newResponse({
-            ok: false,
-            statusText: 'User unknown'
-        })
-    }
-
-    let userRes = undefined
-    let isEmail = false
-
-    if(body.key === 'email') {
-        isEmail = true
-        userRes = await updateMe({
-            bearerToken: bearerToken!,
-            body: {
-                email: body.value
-            },
-            query: query
-        })
-
-        if(!userRes) {
-            return {
-                ok: false,
-                statusText: 'We could not update your email address .'
-            }
-        }
-    }
-
-    const patchRes = await updateItemById({
-        id: body.id,
-        collection: 'PersonalData_values',
-        auth: bearerToken!,
-        body: {
-            value: body.value
-        },
-        query: query
-    })
-
-    if(patchRes?.data) {
-        return {
-            ok: true,
-            statusText: 'Value updated !',
-            data: patchRes.data
-        }
-    }
-    
+    if(!res) throw new Error()
+    return res
 })
-
-
-async function updateEmail(email : string ) {
-
-
-}

@@ -4,6 +4,7 @@ export {
 
 function useHandleError(error : any) {
     if(!error) return
+    console.log(error.data)
     
     if(error.data?.data?.toasterPath) {
         const err = error.data.data;

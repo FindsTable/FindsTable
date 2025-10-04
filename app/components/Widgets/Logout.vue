@@ -4,7 +4,7 @@ async function handleClick() {
 
     appState.pending = true
 
-    await useNuxtApp().$auth.logout()
+    await useLogout()
 
     appState.pending = false
 }

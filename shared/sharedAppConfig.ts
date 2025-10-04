@@ -11,7 +11,7 @@ const email : Email = {
     },
     error: {
         reason: "Email format is not valid",
-        toasterPath: 'errors.email.format'
+        toasterPath: 'forms.userAccount.email.validation.invalid'
     }
 }
 
@@ -105,15 +105,15 @@ type PasswordRule = {
 }
 type Email = {
     regExps: {
-        emailCharsRegEx: RegExp,
-        localCharsRegEx: RegExp,
-        domainCharsRegEx: RegExp,
-        domainLabelCharsRegEx: RegExp,
-    },
+        emailCharsRegEx: RegExp;
+        localCharsRegEx: RegExp;
+        domainCharsRegEx: RegExp;
+        domainLabelCharsRegEx: RegExp;
+    };
     error: {
-        reason: string,
-        toasterPath: string
-    }
+        reason: string;
+        toasterPath: string;
+    };
 }
 
 type SharedAppConfig = {

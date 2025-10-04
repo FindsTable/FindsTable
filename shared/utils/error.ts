@@ -5,14 +5,14 @@ export {
 
 export type {
     ToasterErrorData,
-    newErrorData
+    NewErrorData
 }
 
 type ToasterError = {
     data : ToasterErrorData
 }
 
-interface ToasterErrorData {
+type ToasterErrorData = {
     code: number;
     message: string;
     reason: string;
@@ -20,30 +20,27 @@ interface ToasterErrorData {
 }
 
 function toasterError(p: ToasterErrorData): Error & ToasterError {
+    console.log('building toasterError')
+    const err = new Error() as Error & ToasterError;
 
-    const err = new Error(p.message) as Error & ToasterError;
-
-    err.data = {
-        code: p.code,
-        message: p.message,
-        reason: p.reason,
-        toasterPath: p.toasterPath
-    }
+    err.data = p;
 
     return err;
 }
 
-interface newErrorData {
+type NewError = {
+    data: NewErrorData;
+}
+
+type NewErrorData = {
     code: number;
     message: string;
     reason: string;
 }
 
-function newError(p: newErrorData): Error & newErrorData {
-
-    const err = new Error(p.message) as Error & newErrorData;
-    err.code = p.code;
-    err.reason = p.reason;
+function newError(p: NewErrorData): Error & NewError {
+    console.log('building tnewError')
+    const err = new Error() as Error & NewError;
 
     return err;
 }

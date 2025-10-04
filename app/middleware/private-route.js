@@ -5,14 +5,10 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     if (user.value.isLoggedIn) {
         return
     }
-    const logingSuccess = await useLoginFlow('refreshTokenCookie')
 
-    if (logingSuccess) {
-        return
-    }
+    await useRefresh()
 
     if (user.value.isLoggedIn) {
-        
         return
     }
     return navigateTo('/')

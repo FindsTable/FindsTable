@@ -8,7 +8,6 @@ async function useGetItems(p : {
         [key : string] : any
     }
 }) {
-
     const res : DirectusRes = await $fetch(
         `${useAppConfig().directusUrl}/items/${p.collection}`,
         {
@@ -21,7 +20,6 @@ async function useGetItems(p : {
     )
 
     return res.data
-
 }
 
 interface DirectusRes {

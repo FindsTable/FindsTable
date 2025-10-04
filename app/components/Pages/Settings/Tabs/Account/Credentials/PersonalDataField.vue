@@ -10,14 +10,14 @@ const userState = useUserState()
 const props = defineProps({
     fieldData: {
         id: String,
-        public: Boolean,
+        isPublic: Boolean,
         value: String,
         key: String,
         user: String
     }
 })
 
-const fieldId = computed( () => {
+const inputId = computed( () => {
     return `credentials-${props.fieldData?.key}`
 })
 
@@ -29,38 +29,72 @@ const fieldType = computed(() => {
 })
 
 const fieldRef = useTemplateRef('field') // to toggle the editing state
-const isPublic = ref(props.fieldData?.public)
+const isPublic = ref(props.fieldData?.isPublic)
 
 watch(isPublic, async (newValue) => {
 
-    const res = await useNuxtApp().$items.update({
-        collection: 'Personal_data_values',
-        id: props.fieldData.id,
-        body: {
-            public: newValue
-        },
-        query: {
-            fields: 'id,value,key,public'
-        }
-    })
-    if(res?.ok) {
-        userState.value.personalDataRecord[props.fieldData.key].public = res.data.public
+    try {
+        const res = await $fetch(
+            '/api/me/update/record-value',
+            {
+                method: 'PATCH',
+                headers: {
+                    authorization: `Bearer ${useUserState().value.accessToken.value}`
+                },
+                body: {
+                    personalDataRecord: [
+                        {
+                            id: userState.value.id,
+                            [props.fieldData.key]: {
+                                id: props.fieldData.id,
+                                isPublic: newValue
+                            }
+                        }
+                    ]
+                },
+                query: {
+                    fields: `id,personaDataRecord.${props.fieldData.key}.*`
+                }
+            }
+        )  
+
+        userState.value.personalDataRecord[props.fieldData.key].isPublic = newValue
+    } catch(err) {
+        console.log('error', err.data)
+        // useHandleError(err)
     }
 } )
 
 async function saveChanges(newValue) {
-
-    const res = await useUpdateMe_recordValue({
-        body: {
-            id: props.fieldData.id,
-            key: props.fieldData.key,
-            value: newValue
-        }
-    })
-
-    if(res?.ok) {
+    try {
+        const res = await $fetch(
+            '/api/me/update/record-value',
+            {
+                method: 'PATCH',
+                headers: {
+                    authorization: `Bearer ${useUserState().value.accessToken.value}`
+                },
+                body: {
+                    email: props.fieldData.key === "email" ? newValue : undefined,
+                    personalDataRecord: [
+                        {
+                            id: userState.value.id,
+                            [props.fieldData.key]: {
+                                id: props.fieldData.id,
+                                value: newValue
+                            }
+                        }
+                    ]
+                },
+                query: {
+                    fields: `id,personaDataRecord.${props.fieldData.key}.*`
+                }
+            }
+        )
+        console.log(res)
         fieldRef.value.editing = false
-        useUserState().value.personalDataRecord[props.fieldData.key] = res.data
+    } catch(err) {
+        useHandleError(err)
     }
 }
 
@@ -69,11 +103,11 @@ async function saveChanges(newValue) {
 <template>
     <div class="flex column gap10" v-if="fieldData">
         <div class="flex justifyBetween">
-            <label :for="fieldId">
+            <label :for="inputId">
                 {{ t(`page.settings.tabs.account.sections.credentials.${fieldData.key}`) }} :
             </label>
 
-            <div class="switchBox flex alignCenter gap10 ">
+            <div class="switchBox flex alignCenter gap10">
                 <Icon class="visibilityIcon" :name="isPublic ? 'visible' : 'notVisible'" />
 
                 <Switch 
@@ -86,7 +120,7 @@ async function saveChanges(newValue) {
             ref="field"
             :type="fieldType"
             :originalValue="fieldData.value"
-            :id="fieldId"
+            :id="inputId"
             @saveNewFieldValue="saveChanges"
         />
     </div>

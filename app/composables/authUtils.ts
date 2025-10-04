@@ -1,93 +1,77 @@
-const userState = useUserState()
-
 export {
     useLoginFlow,
     useHandleSignup,
-    useAnonymizeEmail
+    useAnonymizeEmail,
+    useLogin,
+    useRefresh,
+    useLogout
 }
 
-const useGetAccessToken = {
-    withEmailAndPassword: accessTokenFromEmailAndPassword,
-    withRefreshTokenCookie: accessTokenFromRefreshTokenCookie
+type AccessToken = {
+    value: string,
+    expires_at: number
 }
 
-async function useLoginFlow(
-    flow: 'emailAndPassword' | 'refreshTokenCookie',
-    p: {
-        email: string
-        password: string
-    }
-): Promise<boolean> {
+async function useRefresh() : Promise<void> {
+    try {
+        const token = await $fetch<AccessToken>(
+            '/api/auth/refresh',
+            {
+                method: 'POST',
+            }
+        )
 
-    let res: ParsedApiResponse<ParsedAccessToken | null>
+        const userData = await useNuxtApp().$auth.getUserDataWithAccessToken(token.value)
+        
+        useLoadStateData('userState', {
+            ...userData.data,
+            accessToken: token
+        })
 
-    if(flow === 'emailAndPassword') {
-        if(!p.email || !p.password) return false
-        res = await useGetAccessToken.withEmailAndPassword(p.email, p.password)
-        console.log(res)
-    } else {
-        // refreshTokenCookie
-        res = await useGetAccessToken.withRefreshTokenCookie()
-    }
-    
-    if(!res.ok || !res.data) {
-        // to do: check response to intercept unverified email
-        if(res.toaster) {
-            useToaster('show', {
-                id: 'loggingIn',
-                messagePath: res.toaster.messagePath,
-                type: 'warning',
-                autoClose: true,
-                position: 'bottom'
-            })
-        }
-
-        return false
-    }
-
-    const userData = await useNuxtApp().$auth.getUserDataWithAccessToken(res.data.access_token.value)
-    
-    if(!userData.ok || !userData.data) {
-        return false
-    }
-
-    useLoadStateData('userState', {
-        ...userData.data,
-        accessToken: res.data.access_token
-    })
+        useUserState().value.isLoggedIn = true
 
     useUserState().value.isLoggedIn = true
-
-    return true
-}
-
-async function accessTokenFromEmailAndPassword(
-        email: string, 
-        password: string
-    ) :Promise<ParsedApiResponse<ParsedAccessToken | null>>
-{    
-    
-    const $auth = useNuxtApp().$auth
-    const res = await $auth.loginWithEmailAndPassword(email, password)
-    console.log(email, password)
-    console.log(res)
-    return res
-}
-
-async function accessTokenFromRefreshTokenCookie()
-    :Promise<ParsedApiResponse<ParsedAccessToken | null>>
-{
-
-    const auth = useNuxtApp().$auth
-    const res = await auth.refreshTokens()
-
-    if (!res.ok) {
-        await auth.destroyCookie('findstable_refresh_token')
-        await auth.destroyCookie('directus_session_token')
-        await auth.destroyCookie('directus_session_token_prod')
+    } catch(err) {
+        useHandleError(err)
     }
+}
 
-    return res
+async function useLogin(
+    email: string,
+    password: string
+) : Promise<void> {
+
+    try {
+        assertEmailFormat(email)
+        assertPasswordFormat(password)
+
+        var token = await use$Fetch<ParsedAccessToken>(
+            '/api/auth/login',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: {
+                    email,
+                    password
+                }
+            }
+        )
+
+        const userData = await useNuxtApp().$auth.getUserDataWithAccessToken(token.value)
+        
+        useLoadStateData('userState', {
+            ...userData.data,
+            accessToken: token
+        })
+
+        useUserState().value.isLoggedIn = true
+
+    useUserState().value.isLoggedIn = true
+    } catch(err) {
+        useHandleError(err)
+    }
 }
 
 async function useHandleSignup(p: {
@@ -129,16 +113,37 @@ function useAnonymizeEmail(email: string): string {
     return `${firstLetter}${hiddenPart}${lastLetter}@${domain}`;
 }
 
-async function getAndLoadPatreonUserData() {
-    if(userState.value?.patreon_account?.access_token) {
-
-        const res = await useNuxtApp().$patreon.getMe(userState.value.patreon_account.access_token)
-
-        useLoadStateData('userState', {
-            patreon_account: {
-                ...userState.value.patreon_account,
-                ...res
+async function useDestroyCookie(name: string) {
+    const res = await use$Fetch(
+        '/api/auth/destroy-cookie',
+        {
+            method: 'POST',
+            body: {
+                name: name
             }
+        }
+    )
+    if (!res) {
+        return newResponse({
+            ok: false,
+            status: 500,
+            statusText: 'Server error'
         })
+    }
+}
+
+async function useLogout() {
+    const res = await use$Fetch(
+        '/api/auth/logout',
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }
+    )
+    
+    if(res.ok) {
+        navigateTo('/')
     }
 }

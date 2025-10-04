@@ -19,12 +19,12 @@ interface ReqBody {
 type EndpointReturnData = {
     email: string, 
     id: string
-} | null
+}
 
 export default defineEventHandler( async (
     event: H3Event
 ): 
-    Promise<ApiResponse<EndpointReturnData>> =>
+    Promise<EndpointReturnData> =>
 {
 
     try {
@@ -58,7 +58,7 @@ export default defineEventHandler( async (
     }
     
     await invitationCodeIsValid(body.code);
-    passwordsIdentical(
+    assertStrongEquality(
         body.password, 
         body.passwordConfirmation
     )
@@ -77,22 +77,14 @@ export default defineEventHandler( async (
             fields: 'id,email'
         }
     })
+    
+    if(!newUser) {
+        throw newError({
+            code: 505,
+            message: "Request failed",
+            reason: "Could not create user"
+        })
+    }
 
     return newUser
 });
-
-function passwordsIdentical(
-    password: string, 
-    passwordConfirmation: string
-): void {
-    if(password !== passwordConfirmation) {
-        throw createError({
-            statusCode: 400,
-            statusMessage: "Bad request",
-            data: {
-                reason: "Passwords are not identical",
-                toasterPath: "error.auth.passwordsNotIdentical"
-            }
-        });
-    }
-};

@@ -20,5 +20,9 @@ function assertStrongEquality(
     one: any, 
     two: any
 ) {
-    if(one !== two) throw new Error(`Values are not strictly equal: ${one} !== ${two}`)
+    if(one !== two) throw newError({
+        code: 400,
+        message: 'Bad request',
+        reason: `Values are not strictly equal: ${one} !== ${two}`
+    })
 }
