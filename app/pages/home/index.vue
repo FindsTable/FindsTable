@@ -29,7 +29,9 @@ onMounted(() => {
 <template>
     <NuxtLayout name="private-route">
         <template #tabs>
-            <ArchitecturePageTabsFTHAContent  :selectedTab="selectedTab" @changeTab="changeTab" />
+            <ArchitectureAppStructureBoxesMainElement>
+                <ArchitecturePageTabsFTHAContent  :selectedTab="selectedTab" @changeTab="changeTab" />
+            </ArchitectureAppStructureBoxesMainElement>
         </template>
 
         <template #scrollMain>

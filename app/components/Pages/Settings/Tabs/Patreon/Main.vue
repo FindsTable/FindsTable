@@ -1,6 +1,6 @@
 <script setup>
 import {
-    ArchitecturePageSectionsH2Panel as H2Panel,
+    ArchitecturePanelH2Panel as H2Panel,
 } from '#components'
 const { t } = useI18n();
 

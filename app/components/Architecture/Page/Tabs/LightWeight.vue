@@ -35,21 +35,21 @@ function handleClick(tabValue) {
 </script>
 
 <template>
-    <div class="tabContainer gap20">
+    <div class="tabContainer gap20 w100">
         <button 
             v-for="tab in tabs" :key="tab.value"
             @click.prevent="handleClick(tab.value)"
-            class="comp-button -pageTab theme-buttonText -selectable"
+            class="tab theme-buttonText pointer"
             :class="{ 
                 'selected': selectedTab === tab.value
             }"
         >
             <span class="flex gap10 alignCenter">
-                <Icon 
+                <!-- <Icon 
                     v-if="tab.icon"
                     :name="tab.icon" size="1.5rem" 
                     class="icon"
-                />
+                /> -->
 
                 <span class="text">
                     {{ t(tab.textPath) }}
@@ -68,18 +68,18 @@ function handleClick(tabValue) {
 </template>
 
 <style scoped>
-/* .tabContainer {
+.tabContainer {
     border-bottom: 1px solid var(--layout-line-color);
-} */
-
-.comp-button.-pageTab {
-    font-size: clamp(0.8em, 1.5vw, 1.1em);
-    font-weight: 600;
-    padding: 0.5em 1em 0.4em 1em;
+}
+.tab {
+    padding: 5px 20px;
+}
+.tab.selected {
+    border-bottom: 4px solid var(--layout-line-color);
 }
 
 @media (max-width: 858px) {
-    .comp-button.-pageTab:has(.icon) span.text {
+    .tab:has(.icon) span.text {
         display: none;
     }
 }

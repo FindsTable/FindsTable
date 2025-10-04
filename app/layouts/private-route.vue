@@ -25,26 +25,16 @@
 
                     </slot>
                 <ArchitectureFlexGrowVerticalScroll>
-                    <ArchitectureAppStructureBoxesMainElement>
-                        <TH1>
-                            <slot name="title">
-
-                            </slot>
-                        </TH1>
-                    </ArchitectureAppStructureBoxesMainElement>
-                    
-                    <ArchitectureAppStructureBoxesMainElement
-                         class="marTop10"
-                    >
-                        <slot name="header" >
+                    <TH1>
+                        <slot name="title">
 
                         </slot>
-                    </ArchitectureAppStructureBoxesMainElement>
-                        
-    
-                    
+                    </TH1>
+                
+                    <slot name="header" >
+                    </slot>
+
                     <slot name="noScrollMain">
-                        
                     </slot>
 
                     <div class="scrollContentMinHeight">

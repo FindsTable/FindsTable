@@ -1,6 +1,6 @@
 <script setup>
 import { 
-    ArchitecturePageSectionsH2Panel as H2Panel,
+    ArchitecturePanelH2Panel as H2Panel,
     WidgetsDevToolsNoteToBetaUsers
 } from '#components';
 

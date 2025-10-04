@@ -51,7 +51,7 @@ definePageMeta({
     middleware: 'private-route',
 });
 
-const selectedTab = ref("finds")
+const selectedContentTab = ref("finds")
 
 // collection of full Badges items owned by the user. 
 // userContent.bades holds User_badges items
@@ -68,8 +68,8 @@ const ownedPublicBadges = computed(() => {
 })
 // *******
 
-function changeTab(newTab : string) {
-    selectedTab.value = newTab
+function changeContentTab(newTab : string) {
+    selectedContentTab.value = newTab
 }
 
 const typeSafeUserId = computed(() => {
@@ -77,12 +77,32 @@ const typeSafeUserId = computed(() => {
   return typeof id === 'string' ? id : ''
 })
 
+const selectedPageTab = ref('content')
+
+function changePageTab(tab : string) {
+
+    selectedPageTab.value = tab
+}
+const userTabs = [
+    {
+        value: 'content',
+        textPath: 'Content',
+        icon: 'content'
+    },
+    {
+        value: 'profile',
+        textPath: 'Profile',
+        icon: 'account'
+    }
+]
 </script>
 
 <template>
     <NuxtLayout name="private-route" v-if="user">
         <template #header>
-            <ArchitectureAppStructureBoxesMainElement>
+            <ArchitectureAppStructureBoxesMainElement
+                class="hiddenHeader"
+            >
                 <div class="flex gap10">
                     <ArchitectureFramesAvatar :fileId="user.avatar || null" />
                     <div>
@@ -97,45 +117,65 @@ const typeSafeUserId = computed(() => {
                 </div>
             </ArchitectureAppStructureBoxesMainElement>
 
-            <ArchitectureAppStructureBoxesMainElement>
+            <ArchitectureAppStructureBoxesMainElement
+                class="vidibleHeader"
+            >
+                <div class="tabBar flex gap10">
+                    <ArchitecturePageTabsLightWeight
+                        :tabs="userTabs"
+                        :selectedTab="selectedPageTab"
+                        @changeTab="changePageTab"
+                    />
+                </div>
+            </ArchitectureAppStructureBoxesMainElement>
+            
+            <ArchitectureAppStructureBoxesMainElement
+                v-if="selectedPageTab === 'content'"
+            >
                 <ArchitecturePageTabsFTHAContent
-                    :selectedTab="selectedTab"
-                    @changeTab="changeTab"
+                    :selectedTab="selectedContentTab"
+                    @changeTab="changeContentTab"
                     class="marTop20"
                 />
             </ArchitectureAppStructureBoxesMainElement>
         </template>
 
         <template #scrollMain>
-            <div class="flex column marTop50">
+            <div 
+                v-if="selectedPageTab === 'content'"
+                class="flex column marTop50"
+            >
                 <KeepAlive>
                     <PagesUsersFinds 
-                        v-if="selectedTab === 'finds'"
+                        v-if="selectedContentTab === 'finds'"
                         :userId="typeSafeUserId"
                     />
                 </KeepAlive>
 
                 <KeepAlive>
                     <PagesUsersThoughts 
-                        v-if="selectedTab === 'thoughts'"
+                        v-if="selectedContentTab === 'thoughts'"
                         :userId="typeSafeUserId"
                     />
                 </KeepAlive>
 
                 <KeepAlive>
                     <PagesUsersHuntReports 
-                        v-if="selectedTab === 'huntReports'"
+                        v-if="selectedContentTab === 'huntReports'"
                         :userId="typeSafeUserId"
                     />
                 </KeepAlive>
             </div>
+
+            <ArchitectureAppStructureBoxesMainElement>
+                <PagesUsersProfile
+                    v-if="selectedPageTab === 'profile'"
+                />
+            </ArchitectureAppStructureBoxesMainElement>
         </template>
     </NuxtLayout>
 </template>
 
 <style scoped>
-.r {
-    width: 150px;
-    height: 150px;
-}
+
 </style>

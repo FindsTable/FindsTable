@@ -65,7 +65,7 @@ async function openFindSelector() {
                     <button 
                         type="button"
                         class="comp-button -filled font-text-main"
-                        @click="openFindSelector"
+                        @click.stop.prevent="openFindSelector"
                     >
                         {{ t(`${buttonTextPath}`) }}
                     </button>
