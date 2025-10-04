@@ -11,7 +11,7 @@ const showComments = ref(false)
 </script>
 
 <template>
-    <article 
+    <ArchitecturePanelMain 
         v-if="item" 
         class="
             card 
@@ -120,7 +120,7 @@ const showComments = ref(false)
             />
         </KeepAlive>
 
-    </article>
+    </ArchitecturePanelMain>
 </template>
 
 <style scoped>
