@@ -1,4 +1,3 @@
-import { readEvent } from '@@/server/apiUtils/readEvent'
 import { createItem } from '@@/server/directus/items'
 import { ItemObject } from '#shared/types/dataObjects'
 import { H3Event } from 'h3'
@@ -29,10 +28,15 @@ event: H3Event
 
     const res = await createItem({
         collection: body.collection,
-        auth: 'app',
+        userId: body.userId
+    })
+
+    const res = await appPost({
+        endpoint: `/items/${body.collection}`,
         body: {
             ...body.item,
             owner: {
+                id: body.userId
                 id: body.userId
             }
         },

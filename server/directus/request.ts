@@ -134,6 +134,23 @@ async function userPatch<Expected>(p : {
 
     return res.data
 }
+async function userPost<Expected>(p : {
+    endpoint: string,
+    bearerToken: string,
+    body? : any,
+    query? : any
+}) : Promise<Expected> {
+
+    const res = await userFetch({
+        endpoint: p.endpoint,
+        method: 'POST',
+        bearerToken: p.bearerToken,
+        body: p.body,
+        query: p.query
+    })
+
+    return res.data
+}
 
 async function userPost<Expected>(p : {
     endpoint: string,

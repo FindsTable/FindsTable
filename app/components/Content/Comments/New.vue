@@ -10,6 +10,8 @@ const textContent = ref("")
 const isPending = ref(false)
 
 async function handleClick() {
+    console.log(props.collection, props.itemId, textContent.value)
+
     if(isPending.value) return
     isPending.value = true
 
@@ -42,6 +44,7 @@ async function handleClick() {
 
     isPending.value = false
 }
+
 const textareaId = useId()
 </script>
 

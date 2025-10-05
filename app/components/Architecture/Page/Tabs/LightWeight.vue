@@ -45,25 +45,11 @@ function handleClick(tabValue) {
             }"
         >
             <span class="flex gap10 alignCenter">
-                <!-- <Icon 
-                    v-if="tab.icon"
-                    :name="tab.icon" size="1.5rem" 
-                    class="icon"
-                /> -->
-
                 <span class="text">
                     {{ t(tab.textPath) }}
                 </span>
             </span>
-        </button>
-
-        <div
-            class="selectedTabOnSmallScreen"
-        >
-            <TH2>
-                {{ t(selectedTabForSmallScreen) }}
-            </TH2>
-        </div>        
+        </button>      
     </div>
 </template>
 
