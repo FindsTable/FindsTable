@@ -1,27 +1,36 @@
-import { readEvent } from '@@/server/apiUtils/readEvent'
+
 import { createItem } from '@@/server/directus/items'
 import { addFileToItem } from '@@/server/directus/files'
 import { getItemById } from '@@/server/directus/items'
-import { ItemObject } from '#shared/types/dataObjects'
 import { H3Event } from 'h3'
-import { itemCountIsValid, validateUser, isValidImageType } from '@@/server/utils/validation'
+import { assertItemCount } from '@@/server/utils/validation'
 import { updateItemsCountField as incrementFindsCount } from '@@/server/utils/apiContentUtils'
+import { userGet } from '@@/server/directus/request'
 
 const findsImagesFolderId = 'b95762e0-8e06-4c21-878c-7ad6213ef2cf'
 
-export default defineEventHandler(async <ExpectedItemObject extends ItemObject>(
+export default defineEventHandler(async <T>(
 event: H3Event
-): Promise<ApiResponse<ExpectedItemObject | null>> => {
+): Promise<any> => {
     // Read event and ensure token exists.
-    const { bearerToken, error: tokenError } = await readEvent(event, ['bearerToken'])
+    const body = await readBody(event)
+    const bearerToken = getHeader(event, 'authorization')
 
-    if (tokenError) return tokenError
+    if(!body || !bearerToken) throw newError({
+        code: 403,
+        message: "Bad request",
+        reason: "Missing body or bearerToken"
+    })
 
-    const currentUser = await validateUser({
-        bearerToken: bearerToken!,
-        fields: [
-            'id', 'username', 'status'
-        ]
+    const currentUser = await userGet<{
+        id: string,
+        username: string
+    }>({
+        endpoint: '/user/me',
+        bearerToken: bearerToken,
+        query: {
+            fields: 'id,username,status'
+        }
     })
 
     if( !currentUser || !currentUser.id ) {
@@ -41,7 +50,7 @@ event: H3Event
         }
     }
 
-    await itemCountIsValid({
+    await assertItemCount({
         collection: 'Finds',
         userId: userId
     })

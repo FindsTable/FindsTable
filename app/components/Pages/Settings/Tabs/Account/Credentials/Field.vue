@@ -10,7 +10,6 @@ const originalValue = computed(() => {
     if(props.dataValue) {
         return props.dataValue
     }
-    
 })
 </script>
 

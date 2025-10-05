@@ -1,18 +1,18 @@
-import { readEvent } from '@@/server/apiUtils/readEvent'
+
 import { createItem } from '@@/server/directus/items'
 import { 
     addFileToItem
  } from '@@/server/directus/files'
-import { HuntReportObject } from '#shared/types/dataObjects'
+
 import { H3Event } from 'h3'
-import { itemCountIsValid, validateUser, isValidImageType } from '@@/server/utils/validation'
-import { updateItemsCountField } from '@@/server/utils/apiContentUtils'
+import { assertItemCount, getUserId, isValidImageType } from '@@/server/utils/validation'
+
 
 const bootyPhotoFolderId = 'e6a6fb54-9c40-4b1d-ae78-c438dc39452b'
 
-export default defineEventHandler(async (
-event: H3Event
-): Promise<ApiResponse<ReportId | null>> => {
+export default defineEventHandler(
+    async (event: H3Event
+): Promise<any> => {
 
     const bearerToken = getHeader(event, 'authorization')
     if(!bearerToken) throw newError({
@@ -21,9 +21,9 @@ event: H3Event
         reason: 'No bearer token'
     })
 
-    const userId = await userIsValid(bearerToken)
+    const userId = await getUserId(bearerToken)
 
-    await itemCountIsValid({
+    await assertItemCount({
         collection: 'Hunt_reports',
         userId: userId
     })

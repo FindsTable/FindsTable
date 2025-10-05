@@ -10,8 +10,8 @@ const props = defineProps({
     }
 })
 
-const { data : feed } = useDirectGet(
-    props.collection,
+const { data : feed } = useDirectGetOnMounted(
+    `/items/${props.collection}`,
     props.query
 )
 
@@ -54,12 +54,15 @@ async function deleteItem(id) {
 </script>
 
 <template>
+    
     <div
         v-if="feed?.length"
     >
+        
         <ArchitectureAppStructureBoxesMainElement
             v-for="item in feed" :key="item.id"
         >
+            
             <component :is="cardComponent"
                 :item="item"
                 :showUser="true"

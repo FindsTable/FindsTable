@@ -9,5 +9,4 @@ export function useLoadStateData(
         ...targetStore.value,
         ...data
     }
-
 }

@@ -4,7 +4,7 @@ const { t } = useI18n()
 const route = useRoute()
 
 const emailState = ref('verifying')
-console.log('email verif page')
+
 async function verifyEmail() {
     const res = await $fetch(
         '/api/auth/verify-email',

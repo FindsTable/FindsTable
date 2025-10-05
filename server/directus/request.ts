@@ -4,7 +4,9 @@ export {
     appPatch,
     appDelete,
     userPatch,
-    userPost
+    userPost,
+    userGet,
+    userDelete
 }
 
 async function appGet<Expected>(p : {
@@ -117,6 +119,22 @@ async function appFetch<Expected>(p: {
     }
 }
 
+async function userGet<Expected>(p : {
+    endpoint: string,
+    bearerToken: string,
+    query? : any
+}) : Promise<Expected> {
+
+    const res = await userFetch({
+        endpoint: p.endpoint,
+        method: 'GET',
+        bearerToken: p.bearerToken,
+        query: p.query
+    })
+
+    return res.data
+}
+
 async function userPatch<Expected>(p : {
     endpoint: string,
     bearerToken: string,
@@ -134,6 +152,7 @@ async function userPatch<Expected>(p : {
 
     return res.data
 }
+
 async function userPost<Expected>(p : {
     endpoint: string,
     bearerToken: string,
@@ -152,22 +171,16 @@ async function userPost<Expected>(p : {
     return res.data
 }
 
-async function userPost<Expected>(p : {
+async function userDelete(p : {
     endpoint: string,
-    bearerToken: string,
-    body? : any,
-    query? : any
-}) : Promise<Expected> {
+    bearerToken: string
+}) : Promise<void> {
 
-    const res = await userFetch({
+    await userFetch<undefined>({
         endpoint: p.endpoint,
-        method: 'POST',
-        bearerToken: p.bearerToken,
-        body: p.body,
-        query: p.query
+        method: 'DELETE',
+        bearerToken: p.bearerToken
     })
-
-    return res.data
 }
 
 async function userFetch<Expected>(p : {

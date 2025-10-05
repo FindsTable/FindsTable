@@ -1,20 +1,21 @@
-import { getMe } from '@@/server/directus/users'
-import { readEvent } from '@@/server/apiUtils/readEvent'
+import { userGet } from '@@/server/directus/request'
 
-export default defineEventHandler( async <
-    ExpectedUserObject extends UserObject
-> (
+export default defineEventHandler( async <T> (
     event: H3Event
 )
-: Promise<
-    ApiResponse<ExpectedUserObject | null>
-> => {
+: Promise<T> => {
 
-    const { bearerToken, query, error } = await readEvent(event, ['bearerToken', 'query'])
+    const query = getQuery(event)
+    const bearerToken = getHeader(event, 'authorization')
 
-    if(error) return error
+    if(!query || !bearerToken) throw newError({
+        code: 400,
+        message: 'Bad request',
+        reason: 'No query in request'
+    })
     
-    const me = await getMe<ExpectedUserObject>({
+    const me = await userGet<any>({
+        endpoint: '/users/me',
         bearerToken,
         query: query!
     })
@@ -23,5 +24,6 @@ export default defineEventHandler( async <
     if(me.data?.patreon_account === undefined) {
         delete me.data?.patreon_account
     }
+
     return me
 })

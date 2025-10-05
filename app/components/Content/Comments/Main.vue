@@ -44,8 +44,9 @@ const {
 )
 
 async function deleteComment(id) {
+
     try {
-        await $fetch(
+        const res = await $fetch(
             '/api/content/deleteItem',
             {
                 method: 'DELETE',
@@ -62,7 +63,7 @@ async function deleteComment(id) {
         refresh()
         emit('updateCommentCount', -1)
     } catch(err) {
-        console.error(err)
+        useHandleError(err)
     }
 }
 

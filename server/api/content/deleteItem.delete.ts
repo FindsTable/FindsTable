@@ -1,11 +1,6 @@
-import { readEvent } from '@@/server/apiUtils/readEvent'
-import { deleteItemById } from '@@/server/directus/items'
-import { H3Event } from 'h3'
+import { userDelete } from '@@/server/directus/request'
 
-export default defineEventHandler(async ( event: H3Event ) => {
-    // Read event and ensure token exists.
-    
-
+export default defineEventHandler(async ( event ) => {
     try {
         const body = await readBody(event)
         const bearerToken = getHeader(event, 'authorization')
@@ -14,12 +9,10 @@ export default defineEventHandler(async ( event: H3Event ) => {
         if(!body.id) throw new Error('No id in body')
         if(!body.collection) throw new Error('No collection in body')
 
-        var v = {
-            collection: body.collection,
-            id: body.id,
-            bearerToken: bearerToken
-        }
-
+        await userDelete({
+            bearerToken: bearerToken,
+            endpoint: `/items/${body.collection}/${body.id}`
+        })
     } catch(err : any) {
         throw newError({
             code: 403,
@@ -27,10 +20,4 @@ export default defineEventHandler(async ( event: H3Event ) => {
             reason: err.message
         });
     }
-
-    await deleteItemById({
-        auth: v.bearerToken,
-        collection: v.collection,
-        id: v.id,
-    })
 })

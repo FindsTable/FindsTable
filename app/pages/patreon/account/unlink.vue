@@ -1,27 +1,32 @@
 <script setup>
+const me = useUserState()
 
-
-definePageMeta({
-    title: 'Unlink your patreon account',
-    description: 'Finds Table, a place to show your share of history.',
-    middleware: 'private-route',
-});
 </script>
 
 <template>
     <NuxtLayout name="private-route">
         <template #title>
-            Unlink your account
+            <ArchitectureAppStructureBoxesMainElement>
+                Unlink your account
+            </ArchitectureAppStructureBoxesMainElement>
+
+            
         </template>
 
         <template #noScrollMain> 
-            If you unlink your account, you will loose all benefits.
+            
         </template>
 
-        <template #scrollMain> 
-            <PatreonUnlinkAccountButton />
-        </template>
+        <template #scrollMain>
+            <ArchitectureAppStructureBoxesMainElement>
+                <ArchitecturePanelMain>
+                    If you unlink your account, you will loose all benefits.
 
-        
+                    <div class="centered">
+
+                    </div>
+                </ArchitecturePanelMain>
+            </ArchitectureAppStructureBoxesMainElement>
+        </template>
     </NuxtLayout>
 </template>

@@ -1,31 +1,36 @@
-import { readEvent } from '@@/server/apiUtils/readEvent'
 import { createItem, updateItemById } from '@@/server/directus/items'
 import { uploadFile } from '@@/server/directus/files'
-import { ItemObject } from '#shared/types/dataObjects'
 import { H3Event } from 'h3'
-import { itemCountIsValid, validateUser } from '@@/server/utils/validation'
-import { updateItemsCountField as incrementAvatarsCount } from '@@/server/utils/apiContentUtils'
+import { assertItemCount } from '@@/server/utils/validation'
 import { updateMe } from '@@/server/directus/users'
+import { userGet } from '@@/server/directus/request' 
 
 const avatarsFolderId = 'e82c8d84-9351-4e5b-a8bb-527757687066'
 const allowedTypes = ['image/jpeg', 'image/png']
 
 export default defineEventHandler(async <ExpectedItemObject extends ItemObject>(
 event: H3Event
-): Promise<ApiResponse<ExpectedItemObject | null>> => {
+): Promise<any> => {
 
     const bearerToken = getHeader(event, 'authorization')
+
     if(!bearerToken) throw newError({
         code: 400,
         message: 'Unauthorized',
         reason: 'No bearer token'
     })
 
-    const userId = await userIsValid(bearerToken)
+    const me = await userGet<{id: string}>({
+        endpoint: '/users/me',
+        bearerToken,
+        query: {
+            fields: "id"
+        }
+    })
 
-    await itemCountIsValid({
+    await assertItemCount({
         collection: 'Hunt_reports',
-        userId: userId
+        userId: me.id
     })
 
     const requestFormData = await readMultipartFormData(event)
@@ -49,7 +54,7 @@ event: H3Event
         auth: 'app',
         collection: 'Avatars',
         body: {
-            owner: userId,
+            owner: me.id,
             currentAt: Date.now()
         },
         query: {
@@ -104,20 +109,6 @@ event: H3Event
             avatar: fileId
         }
     })
-
-    if (updateRes.ok && updateRes.data) {
-        await incrementAvatarsCount({
-            bearerToken: bearerToken,
-            field: 'avatars_count',
-            newValue: currentUser.avatars_count + 1
-        })
-
-        return {
-            ok: true,
-            data: updateRes.data,
-            statusText: 'Success, here is you new avatar item'
-        }
-    }
 
     return {
         ok: false,

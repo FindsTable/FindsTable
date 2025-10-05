@@ -1,12 +1,8 @@
 <script setup>
 const { t } = useI18n()
 definePageMeta({
-    title: 'Success badges',
-    description: 'Earn badges by sharing finds.',
-    middleware: 'private-route',
+    middleware: 'private-route'
 });
-const appContent = useAppContent()
-
 </script>
 
 <template>
@@ -22,9 +18,7 @@ const appContent = useAppContent()
         </template>
 
         <template #scrollMain>
-            <ContentBadgesStore
-                :badges="appContent.badges"
-            />
+            <ContentBadgesStore />
         </template>
     </NuxtLayout>
 </template>

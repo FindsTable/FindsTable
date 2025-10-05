@@ -1,8 +1,7 @@
-import { createItem } from '@@/server/directus/items'
-import { ItemObject } from '#shared/types/dataObjects'
+
 import { H3Event } from 'h3'
 import { assertItemCount } from '@@/server/utils/validation'
-import { userPost } from '@@/server/directus/request'
+import { appPost } from '@@/server/directus/request'
 
 
 export default defineEventHandler(async <ExpectedItemObject extends ItemObject>(
@@ -26,17 +25,11 @@ event: H3Event
         collection: body.collection,
     })
 
-    const res = await createItem({
-        collection: body.collection,
-        userId: body.userId
-    })
-
-    const res = await appPost({
+    const res = await appPost<{data:any}>({
         endpoint: `/items/${body.collection}`,
         body: {
             ...body.item,
             owner: {
-                id: body.userId
                 id: body.userId
             }
         },
@@ -45,13 +38,13 @@ event: H3Event
         }
     })
 
-    if(!res?.data) {
+    if(!res) {
         throw newError({
             code: 500,
-            message: 'REquest failed',
+            message: 'Request failed',
             reason: "No data in response"
         })
     }
     
-    return res.data
+    return res
 })

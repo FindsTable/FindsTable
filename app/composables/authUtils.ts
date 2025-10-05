@@ -6,11 +6,6 @@ export {
     useLogout
 }
 
-type AccessToken = {
-    value: string,
-    expires_at: number
-}
-
 async function useRefresh() : Promise<void> {
     try {
         const token = await $fetch<AccessToken>(
@@ -20,12 +15,15 @@ async function useRefresh() : Promise<void> {
             }
         )
 
-        const userData = await useNuxtApp().$auth.getUserDataWithAccessToken(token.value)
         
+        const userData = await useNuxtApp().$auth.getUserDataWithAccessToken(token.value)
+        console.log(userData)
         useLoadStateData('userState', {
-            ...userData.data,
+            ...userData,
             accessToken: token
         })
+        console.log(useUserState().value)
+        console.log(userData)
 
         useUserState().value.isLoggedIn = true
 
@@ -44,7 +42,7 @@ async function useLogin(
         assertEmailFormat(email)
         assertPasswordFormat(password)
 
-        var token = await $fetch<ParsedAccessToken>(
+        var token = await $fetch<AccessToken>(
             '/api/auth/login',
             {
                 method: 'POST',
@@ -128,21 +126,18 @@ function useAnonymizeEmail(email: string): string {
 }
 
 async function useDestroyCookie(name: string) {
-    const res = await $fetch(
-        '/api/auth/destroy-cookie',
-        {
-            method: 'POST',
-            body: {
-                name: name
+    try {
+        await $fetch(
+            '/api/auth/destroy-cookie',
+            {
+                method: 'POST',
+                body: {
+                    name: name
+                }
             }
-        }
-    )
-    if (!res) {
-        return newResponse({
-            ok: false,
-            status: 500,
-            statusText: 'Server error'
-        })
+        )
+    } catch(err) {
+        useHandleError(err)
     }
 }
 

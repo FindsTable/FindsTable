@@ -60,6 +60,7 @@ onMounted(() => {
                     >
                         {{ item.owner.displayName }}
                     </p>
+                   
 
                     <time class="date fS12 weight3" datetime="2025-03-26">
                         {{ useParseDate(item.date_created) }}
@@ -75,6 +76,7 @@ onMounted(() => {
             <TH3>
                 {{ item.title }}
             </TH3>
+            {{ item.bookmarks }}
 
             <ContentFindsCardMiniToolBar
                 v-if="me.id === item.owner.id"

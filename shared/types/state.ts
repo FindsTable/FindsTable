@@ -9,26 +9,10 @@ type UserState = {
     id: string
     accessToken: {
         value: string
-        expires_at: number
+        expires: number
     }
-    patreon_account: UserState_Patreon,
+    patreon_account: FT_patreon_account | null,
     personalDataRecord: personalDataRecord
-}
-
-type UserState_Patreon = {
-    id?: string
-    email?: string
-    first_name?: string
-    full_name?: string
-    url?: string
-    thumb_url?: string
-    patron_status?: string
-    tier?: any
-    access_token?: string
-    expires_at?: number
-    token_type?: string
-    refresh_token?: string
-
 }
 
 type personalDataRecord = {

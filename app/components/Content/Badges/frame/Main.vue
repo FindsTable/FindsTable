@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 const props = defineProps<{
-  badge: Badge
+  badge: SuccessBadge
   selected: Boolean
 }>();
 
@@ -11,17 +11,10 @@ function handleClick() {
     emit('selectBadge', props.selected ? '' : props.badge.key)
 }
 
-const userVersion : ComputedRef<FileId | undefined> = computed<FileId | undefined>(() => {
-    const myBadge = findInLocalState<UserBadge>(
-        'userContent', 
-        'badges', 
-        (badge) => {
-            return badge.badge === props.badge.key
-        }
-    )
+const userOwned = [
+    'betaTester'
+]
 
-    if(myBadge) return myBadge.level.image
-})
 </script>
 
 <template>
@@ -30,7 +23,7 @@ const userVersion : ComputedRef<FileId | undefined> = computed<FileId | undefine
         class="frame pointer"
         :class="[ 
             selected ? 'selected' : '', 
-            userVersion ? 'owned' : 'notOwned'
+            userOwned.includes(badge.key) ? 'owned' : 'notOwned'
         ]"
         @click="handleClick"
     >
@@ -40,12 +33,12 @@ const userVersion : ComputedRef<FileId | undefined> = computed<FileId | undefine
                     <Icon name="info" size="20px"/>
                 </div>
 
-                <img 
+                <!-- <img 
                     :src="`https://admin.findstable.net/assets/${userVersion || badge.default.image}?key=badge-h150-q100-png`" alt=""
-                >
-                <p class="badgeName -bold marTop20 flex justifyCenter" v-if="badge.translations[0]">
+                > -->
+                <!-- <p class="badgeName -bold marTop20 flex justifyCenter" v-if="badge.translations[0]">
                     {{ badge.translations[0].name }}
-                </p>
+                </p> -->
             </div>
 
             <div class="descriptionBox flex column absolute full">
@@ -53,9 +46,9 @@ const userVersion : ComputedRef<FileId | undefined> = computed<FileId | undefine
                     <Icon name="back" size="20px" />
                 </div>
 
-                <p class="grow flex alignCenter" v-if="badge.translations[0]">
+                <!-- <p class="grow flex alignCenter" v-if="badge.translations[0]">
                     {{ badge.translations[0].description }}
-                </p>
+                </p> -->
             </div>
         </div>
     </div>

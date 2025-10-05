@@ -1,9 +1,8 @@
 import { updateMe } from '@@/server/directus/users'
 import { userPatch } from '@@/server/directus/request'
+import { assertUserIsValid } from '~~/server/utils/validation'
 
-export default defineEventHandler( async <
-    ExpectedUserObject extends UserObject
-> (
+export default defineEventHandler( async <T> (
     event: H3Event
 )
 : Promise<any> => {
@@ -15,7 +14,7 @@ export default defineEventHandler( async <
         reason: 'Basic validation failed'
     })
 
-    await userIsValid(bearerToken)
+    await assertUserIsValid(bearerToken)
 
     const body = await readBody(event)
     const query = getQuery(event)

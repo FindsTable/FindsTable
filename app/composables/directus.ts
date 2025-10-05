@@ -1,31 +1,26 @@
-import type {
-    Method
-} from '@@/types/directusData'
-
 export {
     useDirectAsyncFetch,
-    useDirectGet
+    useDirectGetOnMounted
 }
 
 export type {
     Options as DirectFetchOptions
 }
 
-function useDirectGet<T>(
-    collection: string,
+function useDirectGetOnMounted<T>(
+    endpoint: string,
     query?: any
 ): {
     data : Ref<T>,
     pending: Ref<boolean>,
     refresh: Function
 } {
-
     const data = ref<T | null>(null)
     const pending = ref<boolean>(true)
 
     async function directGet() {
-        const res = await $fetch<any>(
-            `https://admin.findstable.net/items/${collection}`,
+        const res = await $fetch<{data: T}>(
+            `https://admin.findstable.net${endpoint}`,
             {
                 method: 'GET',
                 headers: {
@@ -45,7 +40,7 @@ function useDirectGet<T>(
 
     onMounted(async() => {
         try {
-            directGet()
+            await directGet()
         } catch(err) {
             useHandleError(err)
             pending.value = false

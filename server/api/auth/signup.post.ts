@@ -24,7 +24,7 @@ type EndpointReturnData = {
 export default defineEventHandler( async (
     event: H3Event
 ): 
-    Promise<EndpointReturnData> =>
+    Promise<any> =>
 {
 
     try {

@@ -1,21 +1,20 @@
 import { 
-    getMe,
-    getUsersByQuery
+    getMe
  } from '@@/server/directus/users'
 
-import { appGet } from '@@/server/directus/request'
+import { appGet, userGet } from '@@/server/directus/request'
 
 export {
-    itemCountIsValid,
+    assertItemCount,
     validateUser,
-    validateUserEmail,
-    tokensAreValid,
+    assertTokensAreValid,
     isValidImageType,
     validateImageType,
     getItemCount,
-    userIsValid,
-    assertItemCount
+    assertUserIsValid,
+    getUserId
 }
+
 interface MaxItemCount {
     [key : string ] : number
 }
@@ -67,25 +66,20 @@ async function assertItemCount(p : {
         });
     }
 }
+async function assertUserIsValid(
+    bearerToken : string
+) : Promise<void>{
 
-async function itemCountIsValid(p : { 
-    collection: string
-    userId: string
-}) : Promise<void> {
-
-    const count = await getItemCount(p)
-    
-    if(count > maxItemCount[p.collection]) {
-        throw toasterError({
-            code: 403,
-            message: "Unauthorized",
-            reason: `Too many items in ${p.collection} : ${count}`,
-            toasterPath: "error.tooManyItems"
-        });
-    }
+    await userGet({
+        endpoint: '/users/me',
+        bearerToken,
+        query: {
+            fields: 'id'
+        }
+    })
 }
 
-async function userIsValid(bearerToken : string) {
+async function getUserId(bearerToken : string) {
     try {
         const me = await getMe({
             bearerToken: bearerToken,
@@ -143,63 +137,25 @@ interface UserFromEmail {
     email_verification_token: string
 }
 
-/*
-*    validateUserEmail()
-*
-*    Used to verify the email in the signup process.
-*    It returns a partial user object
-*
-*/
-async function validateUserEmail(
-    email: string
-): Promise<UserFromEmail | null> {
-
-    const user = await getUsersByQuery<UserFromEmail>({
-        auth: 'app',
-        query: {
-            filter: {
-                email: {
-                    _eq: email
-                }
-            },
-            fields: 'id,email,email_verification_token'
-        }
-    })
-
-    if(!user || !user.ok) {
-        console.error('Error fetching user:', user.statusText)
-        return null
-    }
-
-    if(!user.data?.length) {
-        console.error('No user found with this email:', user.statusText)
-        return null
-    }
-    return user.data[0]
-}
-
-function tokensAreValid(
-    tokenFromRoute: unknown,
-    tokenFromDirectus: unknown
-) : boolean {
+function assertTokensAreValid(
+    tokenFromRoute: string,
+    tokenFromDirectus: string
+) : void {
 
     if (
         typeof tokenFromRoute !== 'string' ||
-        typeof tokenFromDirectus !== 'string'
+        typeof tokenFromDirectus !== 'string' ||
+        !tokenFromRoute.trim() ||
+        !tokenFromDirectus.trim() ||
+        tokenFromRoute !== tokenFromDirectus
     ) {
         console.error('Invalid token: token must be a string.')
-        return false
+        throw newError({
+            code: 403,
+            message: "Unauthorized",
+            reason: "Tokens are weird, dude ..."
+        })
     }
-
-    if (
-        !tokenFromRoute.trim() ||
-        !tokenFromDirectus.trim()
-    ) {
-        console.error('Invalid token from route: token cannot be empty or whitespace-only.')
-        return false
-    }
-
-    return tokenFromRoute === tokenFromDirectus;
 }
 
 function isValidImageType(mimeType?: string): boolean {

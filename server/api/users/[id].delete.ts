@@ -2,9 +2,7 @@ import { readEvent } from '@@/server/apiUtils/readEvent'
 import { ApiResponse } from '#shared/types/apiResponse'
 import { directusAPI } from '@@/server/directus/main'
 
-export default defineEventHandler(async <
-    Data extends UserObject
->(
+export default defineEventHandler(async <T>(
     event: H3Event
 )
     : Promise<

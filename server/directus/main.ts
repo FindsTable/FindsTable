@@ -1,15 +1,3 @@
-import {
-    Method,
-    Headers,
-    ContentType,
-    BearerToken,
-    Query,
-    Body,
-    EndPoint
-} from './types/sdk/fetch'
-import {LoginBody } from '@@/server/directus/types/api/auth'
-import { newResponse, ApiResponse } from '#shared/types/apiResponse'
-
 export {
     directusAPI,
     DirectusAPIParams
@@ -23,7 +11,7 @@ async function directusAPI (
     params: DirectusAPIParams
 
 ):
-    Promise<ApiResponse<any>>
+    Promise<any>
 {  
     const options = parseOptions(params);
 
@@ -44,35 +32,35 @@ async function directusAPI (
 
         //delete returns res === undefined
         if(options.method === "DELETE") {
-            return newResponse({
+            return {
                 ok: true,
                 status: 200,
                 statusText: 'OK'
-            })
+            }
         }
 
         if(res.data) {
-            return newResponse({
+            return {
                 ok: true,
                 status: 200,
                 statusText: 'OK',
                 data: res.data
-            })
+            }
         }
 
-        return newResponse({
+        return {
             ok: true,
             status: 200,
             statusText: 'OK'
-        })
+        }
 
     } catch (error: any) {
         console.error('server/directus/main => ', error)
-        return newResponse({
+        return {
             ok: false,
             status: error.response?.status || 500,
             statusText: error.message || 'Internal Server Error'
-        })
+        }
     }
 }
 
@@ -89,7 +77,7 @@ function parseOptions(params: DirectusAPIParams ) {
     if(params.query) options.query = params.query
     if(params.body) options.body = params.body
     if(params.auth !== 'public') options.headers = {
-        'Authorization': setAuthorizationHeader(params.auth)
+        'uthorization': setAuthorizationHeader(params.auth)
     }
     return options
 }
@@ -103,19 +91,19 @@ function setAuthorizationHeader(auth: DirectusAPIParams['auth']): BearerToken | 
 }
 
 interface DirectusAPIParams {
-    endPoint: EndPoint,
-    method: Method,
+    endPoint: any,
+    method: any,
     auth: 'app' | BearerToken | 'public' | string,
-    contentType?: ContentType,
-    body?: Body | LoginBody,
-    query?: Query,
+    contentType?: any,
+    body?: Body | any,
+    query?: any,
     caller?: string  // !! I can't remeber what the idea was !!
 }
 
 interface $FetchOptions {
     throw: boolean
-    method: Method
+    method: any
     headers?: Headers
-    query?: Query
-    body?: Body | LoginBody
+    query?: any
+    body?: Body | any
 }

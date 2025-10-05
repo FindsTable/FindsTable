@@ -1,6 +1,6 @@
 import { updateUserById } from '@@/server/directus/users'
 import { createItem, updateItemById } from '@@/server/directus/items'
-
+import { appPost, appPatch } from '@@/server/directus/request'
 export {
     configureVerifiedAccount
 }
@@ -11,150 +11,120 @@ async function configureVerifiedAccount(
         email: string,
         email_verification_token: string
     }
-) : Promise<any> {
+) : Promise<void> {
 
-    const res: {
-        error: string,
-        dataRecord: any
-        dataValues: any
-        badgeRecord: any
-        updatedUser: any
-    } = {
-        error: '',
-        dataRecord: undefined,
-        dataValues: undefined,
-        badgeRecord: undefined,
-        updatedUser: undefined
-    }
+    await createPersonalDataRecord(user.id)
 
-    res.dataRecord = await createPersonalDataRecord(user.id)
-    if( !res.dataRecord ) {
-        res.error = 'Could not create personal data record'
-        return res
-    }
+    await createPersonalDataValues(user.id, user.email)
 
-    res.dataValues = await createPersonalDataValues(user.id, user.email)
-    if( !res.dataValues )  {
-        res.error = 'Could not create personal data values'
-        return res
-    }
+    await createBadgeRecord(user.id)
 
-    res.badgeRecord = await createBadgeRecord(user.id)
-    if( !res.dataValues )  {
-        res.error = 'Could not create personal data values'
-        return res
-    }
-
-    res.updatedUser = await updateUser(user)
-    if( !res.updatedUser )  {
-        res.error = 'Could not update user object'
-        return res
-    }
-
-    return res
+    await updateUser(user)
 }
 
 
 async function updateUser(
     user: any
-): Promise<any> {
+): Promise<void> {
 
-    const res = await updateUserById<any>({
-        id: user.id,
-        auth: 'app',
-        body: {
-            email_verified: true,
-            role: useRuntimeConfig().USER_ROLE_ID
-        },
-        query: {
-            fields: 'id,email,email_verified,role',
-        },
-    })
-
-    if (!res.ok || !res.data) {
-        console.error('Failed to update user:', res.statusText);
-        return undefined
+    try {
+        await appPatch({
+            endpointId: `/users/${user.id}`,
+            body: {
+                email_verified: true,
+                role: useRuntimeConfig().USER_ROLE_ID
+            },
+            query: {
+                fields: 'id,email,email_verified,role',
+            },
+        })
+    } catch(err) {
+        throw newError({
+            code: 400,
+            message: 'Bad request',
+            reason: 'Could not update user'
+        })
     }
-
-    if (
-        res.data.id &&
-        res.data.email_verified && 
-        res.data.role === useRuntimeConfig().USER_ROLE_ID
-    ) {
-        return res.data
-    }
-    console.error('Failed to update user in /auth/verify-email.post.ts', res);
-    return undefined
 }
-
-
 
 async function createPersonalDataRecord(
     userID : string
-) : Promise<any> {
+) : Promise<void> {
 
-    const res = await createItem<{id: string}>({
-        collection: 'PersonalData_record',
-        auth: 'app',
-        body: {
-            id: userID, // records and user share the same id
-            user: userID,
-        },
-        query: {
-            fields: 'id'
-        }
-    })
-
-    return res?.data ? res.data : undefined
+    try {
+        await appPost({
+            endpoint: '/items/PersonalData_record',
+            body: {
+                id: userID, // records and user share the same id
+                user: userID,
+            },
+            query: {
+                fields: 'id'
+            }
+        })
+    } catch(err) {
+        throw newError({
+            code: 400,
+            message: 'Bad request',
+            reason: 'Could not create personal data record'
+        })
+    }
 }
 
 async function createPersonalDataValues(
     userId : string, 
     userEmail : string
-)  : Promise<any> {
-    const res = await updateItemById({
-        id: userId,
-        collection: 'PersonalData_record',
-        auth: 'app',
-        body: {
-            email: {
-                id: `${userId}-email`,
-                key: "email",
-                value: userEmail,
-                record: userId,
-                isPublic: false
-            },
-            firstName: {
-                id: `${userId}-firstName`,
-                key: "firstName",
-                value: "",
-                record: userId,
-                isPublic: false
-            },
-            lastName: {
-                id: `${userId}-lastName`,
-                key: "lastName",
-                value: "",
-                record: userId,
-                isPublic: false
-            },
-            country: {
-                id: `${userId}-country`,
-                key: "country",
-                value: "",
-                record: userId,
-                isPublic: false
-            }
-        }
-    })
+)  : Promise<void> {
 
-    return res?.data ? res.data : undefined
+    try {
+       await appPatch({
+            endpointId: `/items/PersonalData_record/${userId}`,
+            body: {
+                email: {
+                    id: `${userId}-email`,
+                    key: "email",
+                    value: userEmail,
+                    record: userId,
+                    isPublic: false
+                },
+                firstName: {
+                    id: `${userId}-firstName`,
+                    key: "firstName",
+                    value: "",
+                    record: userId,
+                    isPublic: false
+                },
+                lastName: {
+                    id: `${userId}-lastName`,
+                    key: "lastName",
+                    value: "",
+                    record: userId,
+                    isPublic: false
+                },
+                country: {
+                    id: `${userId}-country`,
+                    key: "country",
+                    value: "",
+                    record: userId,
+                    isPublic: false
+                }
+            }
+        })
+    } catch(err) {
+        throw newError({
+            code: 400,
+            message: 'Bad request',
+            reason: 'Could not update personal data record'
+        })
+    }
 }
 
-async function createBadgeRecord(userId : string) {
-    const res = await createItem<{id: string}>({
-        collection: 'Badge_records',
-        auth: 'app',
+async function createBadgeRecord(
+    userId : string
+) : Promise<void> {
+    try {
+        await appPost({
+        endpoint: 'Badge_records',
         body: {
             id: userId, // records and users share the same id
             owner: userId,
@@ -163,8 +133,13 @@ async function createBadgeRecord(userId : string) {
             fields: 'id'
         }
     })
-
-    return res?.data ? res.data : undefined
+    } catch(err) {
+        throw newError({
+            code: 400,
+            message: 'Bad request',
+            reason: 'Could not create badge record'
+        })
+    }
 }
 
 function newBadges(userId : string) {

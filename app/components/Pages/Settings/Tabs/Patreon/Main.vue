@@ -3,9 +3,7 @@ import {
     ArchitecturePanelH2Panel as H2Panel,
 } from '#components'
 const { t } = useI18n();
-
-const userState = useUserState()
-
+const me = useUserState();
 </script>
 
 <template>
@@ -16,7 +14,7 @@ const userState = useUserState()
             </template>
 
             <template #content>
-                <PatreonMembershipCard  v-if="userState.patreon_account?.id"/>
+                <PatreonMembershipCard  v-if="me.patreon_account?.id"/>
 
                 <PatreonLinkAccountButton v-else />
             </template>

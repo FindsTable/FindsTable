@@ -1,6 +1,5 @@
-import { PatreonAuthorization } from '@@/server/types/patreon'
 import {isMember, isTier, PatreonTokens_Raw } from './types'
-import { PatreonUser } from '@@/server/types/patreon'
+
 
 export {
     patreon_getTokensWithCode,
@@ -15,7 +14,7 @@ async function patreon_getTokensWithCode(
     const runtimeConfig = useRuntimeConfig()
     
     try {
-        const tokens: PatreonAuthorization = await $fetch(
+        const tokens = await $fetch<any>(
             'https://www.patreon.com/api/oauth2/token', {
             method: 'POST',
             headers: {
@@ -33,19 +32,15 @@ async function patreon_getTokensWithCode(
         if (tokens.scope) {
             delete tokens.scope
         }
+
+        if(!tokens) throw new Error()
          
-        return newResponse({
-            ok: true,
-            status: 200,
-            statusText: 'OK',
-            data: tokens
-        })
+        return tokens
     } catch(error) {
-        return newResponse({
-            ok: false,
-            status: 401,
-            statusText: 'Unauthorized for some reason',
-            data: null
+        throw newError({
+            code: 400,
+            message: 'Bad request',
+            reason: 'Patreon did not provide tokens'
         })
     }
 }
@@ -53,7 +48,7 @@ async function patreon_getTokensWithCode(
 function setRedirectUrl(): string {
     let url = ''
     if (process.env.NODE_ENV === 'development') {
-        url = 'http://dev.findstable.net:3000/redirection/patreon/link-account'
+        url = 'https://dev.findstable.net:3000/redirection/patreon/link-account'
     }
     if (process.env.NODE_ENV === 'production') {
         url = 'https://findstable.net/redirection/patreon/link-account'
@@ -73,89 +68,55 @@ async function patreon_getMe(
                 headers: {
                     'Authorization': bearerToken
                 },
+                // params: {
+                //     'fields[user]': 'full_name,email,url,thumb_url',
+                //     'include': 'memberships,campaign,memberships.currently_entitled_tiers',
+                //     'fields[member]': 'patron_status,last_charge_status,last_charge_date,next_charge_date'
+                // }
                 params: {
                     'fields[user]': 'full_name,email,url,thumb_url',
-                    'include': 'memberships,campaign,memberships.currently_entitled_tiers',
-                    'fields[member]': 'full_name,patron_status,last_charge_status'
+                    'include': 'memberships,memberships.campaign,memberships.currently_entitled_tiers',
+                    'fields[member]': 'patron_status,last_charge_status,last_charge_date,next_charge_date',
+
                 }
             }
         )
 
-        return newResponse({
-            ok: true,
-            status: 200,
-            statusText: 'OK',
-            data: user
-        })
+        return user
     } catch(error: any) {
-        return newResponse({
-            ok: false,
-            status: 500,
-            statusText: 'Internal Patreon Server Error',
-            data: null
+        throw newError({
+            code: 400,
+            message: 'Bad request',
+            reason: 'Internal Patreon Server Error'
         })
     }
-}
-
-function getMemberTierId(patreonUser: any) {
-    if (!patreonUser?.included?.length) {
-        return undefined;
-    }
-
-    const tier = patreonUser.included.find((item: any) => item.type === "tier");
-
-    return tier ? tier.id : undefined;
 }
 
 function formatUserState_Patreon(
-    user: any, 
-    tokens: any = undefined
-): UserState_Patreon {
+    rawUser: any
+): any {
 
-    const tierId = getMemberTierId(user)
-    console.log('patreon tier id: ', tierId)
+    let user = rawUser.data
+    let member = rawUser.included.find((item: any) => item.relationships.campaign.data.id === "12159407");
 
-    let patreonUser = {
-        id: user.data.id,
-        email: user.data.attributes.email,
-        first_name: user.data.attributes.first_name || "",
-        full_name: user.data.attributes.full_name || "",
-        url: user.data.attributes.url,
-        thumb_url: user.data.attributes.thumb_url,
-        patron_status: '',
-        tier: tierId
+    let patreonAccount : FT_patreon_account = {
+        status: 'active',
+        id: user.id,
+        email: user.attributes.email,
+        url: user.attributes.url,
+        thumb_url: user.attributes.thumb_url,
+        member_id: member.id || '',
+        tierId: member.relationships.currently_entitled_tiers.data[0].id,
+        patron_status: member.attributes.patron_status || '',
+        last_charge_status: member.attributes.last_charge_status,
+        next_charge_date: member.attributes.next_charge_date || '',
     }
 
-    if(tokens) {
-        patreonUser = {
-            ...patreonUser,
-            ...tokens
-        }
-    }
-
-    /*
-    loop to check the nature of the included data.
-    Unsure about the consistency of the structure. 
-    Member, tier and campign might or might not be included
-    */
-
-    if (user.included.length) {
-        for (let i = 0; i < user.included.length; i++) {
-            const item = user.included[i];
-
-            if (isMember(item)) {
-                patreonUser.patron_status = item.attributes.patron_status || '';
-            } else if (isTier(item)) {
-                patreonUser.tier = item.id;
-            }
-        }
-    }
-
-    return patreonUser
+    return patreonAccount
 }
 
 function refactorTokens(
-    tokens: PatreonTokens_Raw
+    tokens: any
 ): PatreonAuthorization {
 
     /*

@@ -31,7 +31,6 @@ function commentClicked() {
                 :fontSize="fontSize"
                 :likeCollection="`${collection}_likes`"
                 :likes="item.likes"
-                :likes_count="item.likes_count"
                 :itemId="item.id"
                 :clickable="likeClick"
             />
@@ -54,7 +53,8 @@ function commentClicked() {
                 :fontSize="fontSize"
                 :item="{
                     id: item.id,
-                    collection: collection
+                    collection: collection,
+                    bookmarks: item.bookmarks
                 }"
             />
         </div>

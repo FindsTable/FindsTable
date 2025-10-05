@@ -1,18 +1,6 @@
 export type {
-    PatreonUser,
     PatreonAuthorization,
-    UserState_Patreon
-}
-
-interface PatreonUser {
-    id: string
-    email: string
-    first_name: string
-    full_name: string
-    url: string
-    thumb_url?: string
-    patron_status: string
-    tier: string
+    FT_patreon_account
 }
 
 interface PatreonAuthorization {
@@ -23,17 +11,15 @@ interface PatreonAuthorization {
     scope?: string //unused in the app
 }
 
-interface UserState_Patreon {
+interface FT_patreon_account {
+    status: 'active' | 'disabled'
     id: string
-    first_name: string
-    full_name: string
     email: string
     thumb_url: string
     url: string
-    tier: string
+    member_id: string
+    tierId: string
     patron_status: string
-    access_token?: string
-    expires_at?: 0,
-    token_type?: string
-    refresh_token?: string
+    last_charge_status: string
+    next_charge_date: string
 }

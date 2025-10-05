@@ -3,7 +3,7 @@ import { refreshTokens } from '@@/server/directus/auth'
 export default defineEventHandler(async (
     event
 ):
-    Promise<any> => 
+    Promise<AccessToken> => 
 {
     try {
         const refresh_token = getCookie(
@@ -16,17 +16,12 @@ export default defineEventHandler(async (
             reason: 'No refresh token for refresh'
         })
 
-        const res = await refreshTokens(refresh_token)
-        if(!res.data) throw newError({
-            code: 403,
-            message: 'Unauthorized',
-            reason: 'Tried to refresh, but with no success'
-        })
+        const tokens = await refreshTokens(refresh_token)
 
         setCookie(
             event,
             'findstable_refresh_token',
-            res.data.refresh_token,
+            tokens.refresh_token,
             {
                 httpOnly: true,
                 secure: true,
@@ -40,7 +35,7 @@ export default defineEventHandler(async (
         setCookie(
             event, 
             'directus_session_token', 
-            res.data.access_token, 
+            tokens.access_token, 
             {
                 httpOnly: true,
                 secure: true,
@@ -50,10 +45,9 @@ export default defineEventHandler(async (
                 domain: '.findstable.net'
             }
         )
-        // return an object to match the expected type of userState.accessToken
         return {
-            value: res.data.access_token,
-            expires_at: Date.now() + res.data.expires
+            value: tokens.access_token,
+            expires: Date.now() + tokens.expires
         }
     } catch(err) {
         throw err

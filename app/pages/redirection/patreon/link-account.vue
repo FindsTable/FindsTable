@@ -26,38 +26,31 @@ async function linkAccount() {
 
     return res
 }
-
+// 
 onMounted(async () => {
     useAppState().value.pending = true
-
-    const userState_patreon = await linkAccount()
-
-    if(!userState_patreon?.ok) {
-        console.log('There was a problem while linking your account')
-    } 
-
-    if(userState_patreon.ok) {
-        console.log('seems ok')
-        const userState_patreon = await useNuxtApp().$patreon.getPatreonAccountFromDirectus()
+    
+    try {
+        const patreon_account = await linkAccount()
+        console.log(patreon_account)
         
-        if(userState_patreon) {
-            console.log('patreon account:', userState_patreon)
-            useLoadStateData('userState', {
-                patreon: userState_patreon
-            })
-        }
+        user.value.patreon_account = patreon_account
+
+        console.log(user.value.patreon_account)
+
+        useToaster('show', {
+            id: 'accountLinked',
+            message: t('success.patreon.account.linked'),
+            type: 'success',
+            autoClose: true,
+            position: 'bottom'
+        })
+
+    } catch(err) {
+        useHandleError(err)
     }
     
     useAppState().value.pending = false
-
-    useToaster('show', {
-        id: 'accountLinked',
-        // messagePath: t(userState_patreon.feedback.message),
-        messagePath: '',
-        // type: userState_patreon.feedback.type,
-        autoClose: true,
-        position: 'bottom'
-    })
 
     navigateTo('/home')
 })

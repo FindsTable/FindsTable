@@ -1,11 +1,10 @@
-import { ItemObject } from '#shared/types/dataObjects'
 import { H3Event } from 'h3'
-import { itemCountIsValid, userIsValid } from '@@/server/utils/validation'
+import { assertItemCount, getUserId } from '@@/server/utils/validation'
 import { appPost } from '@@/server/directus/request'
 
 export default defineEventHandler(async <ExpectedItemObject>(
 event: H3Event
-): Promise<ApiResponse<ExpectedItemObject>> => {
+): Promise<any> => {
     // Read event and ensure token exists.
 
     const body = await readBody(event)
@@ -17,9 +16,9 @@ event: H3Event
         reason: "Missing body or bearerToken"
     })
 
-    const userId = await userIsValid(bearerToken)
+    const userId = await getUserId(bearerToken)
 
-    await itemCountIsValid({
+    await assertItemCount({
         collection: 'Thoughts',
         userId: userId
     })

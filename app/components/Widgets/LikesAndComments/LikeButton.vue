@@ -8,8 +8,7 @@ const props = defineProps({
     },
     likeCollection: String,
     itemId: String | Number,
-    likes: Array,
-    likes_count: Number
+    likes: Array
 })
 
 const localLikes = ref(props.likes)

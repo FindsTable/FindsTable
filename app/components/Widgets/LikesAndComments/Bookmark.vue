@@ -1,131 +1,63 @@
 <script setup>
-
+const me = useUserState()
 const props = defineProps({
     iconSize: String,
     fontSize: String,
     item: Object
 })
 
-const bookmarked = ref(false)
-const {
-    response : thisBookmark,
-    differedFetch,
-    directFetch,
-    isPending
-} = useDirectAsyncFetch(
-    'GET', '/items/Bookmarks',
-    {
-        singleItem: true,
-        query: {
-            filter: {
-                _and: [
-                    {
-                        user_created: {
-                            _eq: useUserState().value.id
-                        }
-                    },
-                    {
-                        [`${props.item.collection}_id`]: {
-                            _eq: props.item.id
-                        }
-                    }
-                ]
-            }
-        },
-        onResponse: (res) => {
-            if(res.value) {
-                bookmarked.value = true
-            }
-        }
-    }
-)
+const bookmarked = ref(!!(props.item.bookmarks && props.item.bookmarks.length))
 
 async function handleClick() {
 
-    if(isPending.value) return
-
-    if(thisBookmark.value?.id) {
-        await directFetch(
-            'DELETE', `/items/Bookmarks/${thisBookmark.value.id}`,
-            {
-                onRequest: () => {
-                    bookmarked.value = false
-                },
-                onResponse: async () => {
-                    thisBookmark.value = null
-                    useToaster(
-                        'show',
-                        {
-                            id: `bookmark-${props.item.id}-deleted-success`,
-                            message: "This bookmark was deleted ",
-                            type: 'success',
-                            autoClose: true,
-                            position: 'bottom'
-                        }
-                    )
-                },
-                onResponseError: () => {
-                    bookmarked.value = true
-                    useToaster(
-                        'show',
-                        {
-                            id: `bookmark-${props.item.id}-delete-error`,
-                            message: "Aye ! bookmark not deleted !",
-                            type: 'error',
-                            autoClose: true,
-                            position: 'bottom'
-                        }
-                    )
-                    getBookmark()
+    if(bookmarked.value && props.item.bookmarks[0]) {
+        bookmarked.value = false
+        try {
+            const res = await $fetch(
+                `https://admin.findstable.net/items/Bookmarks/${props.item.bookmarks[0]}`,
+                {
+                    method: 'DELETE',
+                    headers: {
+                        authorization: 'Bearer ' + me.value.accessToken.value
+                    }
                 }
-            }
-        )
+            )
 
-    } else {
-        await directFetch(
-            'POST', `/items/Bookmarks`,
+        } catch(err) {
+            bookmarked.value = true
+            useHandleError(err)
+        }
+        return
+    }
+    
+    bookmarked.value = true
+    try {
+        const res = await $fetch(
+            'https://admin.findstable.net/items/Bookmarks',
             {
+                method: 'POST',
+                headers: {
+                    authorization: 'Bearer ' + me.value.accessToken.value
+                },
                 body: {
-                    [`${props.item.collection}_id`]: props.item.id
+                    Finds_id: props.item.id
                 },
-                onRequest: () => {
-                    bookmarked.value = true
-                },
-                onResponse: (res) => {
-                    useToaster(
-                        'show',
-                        {
-                            id: `bookmark-${props.item.id}-success`,
-                            message: "This find was bookmarked !",
-                            type: 'success',
-                            autoClose: true,
-                            position: 'bottom'
-                        }
-                    )
-                },
-                onResponseError: (e) => {
-                    bookmarked.value = false
-                    useToaster(
-                        'show',
-                        {
-                            id: `bookmark-${props.item.id}-error`,
-                            message: "Aye ! bookmarking failed !",
-                            type: 'error',
-                            autoClose: true,
-                            position: 'bottom'
-                        }
-                    )
-                    getBookmark()
+                query: {
+                    fields: 'uniqueKey'
                 }
             }
         )
+
+    } catch(err) {
+        bookmarked.value = false
+        useHandleError(err)
     }
 }
-
 </script>
 
 <template>
     <button 
+        v-if="item"
         @click.stop.prevent="handleClick"
         class="touch pointer flex alignCenter justifyCenter pad5 pointer"
         :disabled="isPending"

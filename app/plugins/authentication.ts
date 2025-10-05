@@ -28,14 +28,12 @@ async function getUserDataWithAccessToken(token: string)
         "personalDataRecord.country.*",
     ]
 
-    const res = await $fetch<{
-        data: {
-            id: string;
-            username: string;
-            email: string;
-            personalDataRecord: any;
-            patreon_account?: DirectusPatreonAccountObject;
-        }
+    let res = await $fetch<{
+        id: string;
+        username: string;
+        email: string;
+        personalDataRecord: any[];
+        patreon_account?: any;
     }>(
         '/api/users/me',
         {
@@ -49,20 +47,11 @@ async function getUserDataWithAccessToken(token: string)
         }
     )
     
-    if(!res?.data) {
-        return useParseApiResponse({
-            ok: false,
-            status: 500,
-            statusText: 'Server error'
-        })
-    }
 
-    if(res.data.patreon_account) {
-        res.data.patreon_account = res.data.patreon_account[0] //extract patreon account from array. O2M field
-        res.data.personalDataRecord = res.data.personalDataRecord[0]
+    if(!res) {
+        throw new Error('Problemo')
     }
-
-    return useParseApiResponse(res)
+    return res
 }
 
 async function refreshTokens()
@@ -101,7 +90,7 @@ function ativateAccessTokenAutoRefresh() {
             if (res.ok && res.data) {
                 const newToken = res.data.access_token
                 useUserState().value.accessToken.value = newToken.value
-                useUserState().value.accessToken.expires_at = newToken.expires_at + 1
+                useUserState().value.accessToken.expires = newToken.expires + 1
             }
             ativateAccessTokenAutoRefresh()
         }, 840000)

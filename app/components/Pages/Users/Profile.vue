@@ -101,10 +101,6 @@ function refresh() {
                 username: {{ user.username }}
             </p>
 
-            <p v-if="user.personalDataRecord[0].email">
-                email : {{ user.personalDataRecord[0].email.value }}
-            </p>
-
             <p>
                 Following : {{ (user.Followings).length }}
             </p>

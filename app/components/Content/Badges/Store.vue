@@ -1,27 +1,17 @@
 <script setup lang="ts">
-
-const props = defineProps<{
-  badges: Badge[];
-}>();
-
 const selectedBadge = ref('')
 
 function handleEmit(badgeKey : string) {
     selectedBadge.value = badgeKey
 }
 
-onMounted(async () => {
-    setTimeout( async () => {
-        if(!useUserContent().value.badges.length) {
-            const {
-                refreshCollection
-            } = useHandleUserContent()
+const { data : badges } = useDirectGetOnMounted<SuccessBadge[]>(
+    '/items/Success_badges',
+    {
+        fields: '*'
+    }
+)
 
-            await refreshCollection('badges')
-
-        }
-    }, 1000)
-})
 </script>
 
 <template>
@@ -29,6 +19,7 @@ onMounted(async () => {
         v-if="badges"
         class="flex wrap justifyEvenly alignStretch gap30"
     >
+        {{ badges }}
         <ContentBadgesFrameMain 
             v-for="badge in badges" :key="badge.key"
             :badge="badge"

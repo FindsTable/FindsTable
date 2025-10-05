@@ -37,7 +37,6 @@ async function openFindSelector() {
                     'date_updated',
                     'images.*',
                     'likes.*',
-                    'likes_count',
                     'comments.*'
                 ],
                 limit: 100

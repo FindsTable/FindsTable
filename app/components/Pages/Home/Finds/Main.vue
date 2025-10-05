@@ -1,6 +1,5 @@
 <script setup>
 import { ContentFindsCardLarge } from '#components';
-import { ContentFindsCardMedium } from '#components';
 
 const theFields = [
     '*',
@@ -14,7 +13,8 @@ const theFields = [
     'date_updated',
     'images.*',
     'likes.*',
-    'comments.*'
+    'comments.*',
+    'bookmarks'
 ]
 const query = {
     fields: theFields

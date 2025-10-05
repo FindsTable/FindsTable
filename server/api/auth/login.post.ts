@@ -1,6 +1,3 @@
-import { readEvent } from '@@/server/apiUtils/readEvent'
-import { loginWithEmailAndPassword } from '@@/server/directus/auth'
-
 interface Body {
     email: string
     password: string
@@ -9,7 +6,7 @@ interface Body {
 export default defineEventHandler(async (
     event
 ): 
-    Promise<any> => 
+    Promise<AccessToken> => 
 {
     const body: Body = await readBody(event);
 
@@ -76,7 +73,7 @@ export default defineEventHandler(async (
         )
         return {
             value: res.data.access_token,
-            expires_at: Date.now() + res.data.expires
+            expires: Date.now() + res.data.expires
         }
     } catch(err) {
         throw err

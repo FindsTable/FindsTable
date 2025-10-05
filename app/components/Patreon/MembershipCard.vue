@@ -1,20 +1,61 @@
 <script setup>
-const user = useUserState()
+const me = useUserState()
 const { t } = useI18n()
+
+const { openModal } = useConfirmationModal()
+
+async function unlink() {
+
+    const confirmUnlink = await openModal({
+        title: "Unlink Patreon account ?",
+        message: "You will loose your benefits on Finds Table."
+    })
+
+    if(!confirmUnlink) return
+
+
+    try {
+        await $fetch(
+            '/api/content/deleteItem',
+            {
+                method: 'DELETE',
+                headers: {
+                    authorization: `Bearer ${me.value.accessToken.value}`
+                },
+                body: {
+                    collection: 'Patreon_accounts',
+                    id: me.value.patreon_account.id
+                }
+            }
+        )
+
+        me.value.patreon_account = null
+
+        useToaster('show', {
+            id: 'accountUnlinked',
+            message: t('success.patreon.account.unLinked'),
+            type: 'success',
+            autoClose: true,
+            position: 'bottom'
+        })
+    } catch(err) {
+        useHandleError(err)
+    }
+}
 </script>
 
 <template>
-    <section v-if="user?.patreon_account?.id">
+    <section v-if="me?.patreon_account?.id">
         <div class="idCard flex gap10">
-            <img class="h100" :src="user.patreon_account.thumb_url" alt="">
+            <img class="h100" :src="me.patreon_account.thumb_url" alt="">
 
             <div>
                 <p class="font-text-large">
-                    {{ user.patreon_account.full_name }}
+                    {{ me.patreon_account.full_name }}
                 </p>
 
                 <p class="font-text-large">
-                    email: {{ user.patreon_account.email }}
+                    email: {{ me.patreon_account.email }}
                 </p>
             </div>
         </div>
@@ -23,7 +64,7 @@ const { t } = useI18n()
             <li class="marTop20 flex">
                 <NuxtLink 
                     external="true" 
-                    :to="user.patreon_account.url"
+                    :to="me.patreon_account.url"
                     class="pointer flex alignCenter gap5 comp-button -outlined"
                 >
                     <!-- <Icon name="openInNew" size="1em"/>     -->
@@ -34,11 +75,12 @@ const { t } = useI18n()
             </li>
 
             <li class="flex marTop20">
-                <NuxtLink 
+                <button 
+                    @click.stop.prevent="unlink"
                     class="unlinkButton comp-button -outlined"
-                    to="/patreon/account/unlink">
+                >
                     {{ t('page.settings.tabs.patreon.sections.unlink.button') }}
-                </NuxtLink>
+                </button>
             </li>
         </ul>
     </section>

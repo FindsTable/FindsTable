@@ -1,32 +1,16 @@
 export default defineEventHandler(async (
     event
 ): 
-    Promise<ApiResponse<undefined>> => 
+    Promise<void> => 
 {
-
     const body = await readBody(event);
     const name = body.name
 
-    if(!name) {
-        return newResponse({
-            ok: false,
-            status: 400,
-            statusText: 'Bad request, name missing from body'
-        })
-    }
-
-    const cookie = getCookie(
-        event, 
-        `${name}`
-    )
-
-    if(!cookie) {
-        return newResponse({
-            ok: false,
-            status: 404,
-            statusText: 'No cookie found'
-        })
-    }
+    if(!name) throw newError({
+        code: 400,
+        message: 'Bad request',
+        reason: 'Missing name of cookie to be destroyed'
+    })
 
     setCookie(
         event,
@@ -40,10 +24,4 @@ export default defineEventHandler(async (
             secure: true
         }
     )
-
-    return newResponse({
-        ok: true,
-        status: 200,
-        statusText: 'Cookie destroyed'
-    })
 })

@@ -1,6 +1,3 @@
-import type { UserState } from '@@/server/types/state';
-
-
 export const useUserState = () => {
     const userState =  useState<UserState>(
         'userState',
@@ -13,7 +10,7 @@ export const useUserState = () => {
             id: '',
             accessToken: {
                 value: '',
-                expires_at: 0
+                expires: 0
             },
             personalDataRecord: {
                 email: null,
@@ -21,28 +18,11 @@ export const useUserState = () => {
                 lastName: null,
                 country: null
             },
-            patreon_account: {
-                id: '',
-                first_name: '',
-                full_name: '',
-                email: '',
-                thumb_url: '',
-                url: '',
-                tier: null,
-                patron_status: '',
-                access_token: '',
-                expires_at: 0,
-                token_type: '',
-                refresh_token: ''
-            }
+            patreon_account: null
         })
     );
     return userState
 }
-
-
-
-
 
 export function useClearUserState() {
 
@@ -57,7 +37,7 @@ export function useClearUserState() {
         id: '',
         accessToken: {
             value: '',
-            expires_at: 0
+            expires: 0
         },
         personalDataRecord: {
             email: null,
@@ -65,30 +45,9 @@ export function useClearUserState() {
             lastName: null,
             country: null
         },
-        patreon_account: {
-            id: '',
-            first_name: '',
-            full_name: '',
-            email: '',
-            thumb_url: '',
-            url: '',
-            tier: '',
-            patron_status: '',
-            access_token: '',
-            expires_at: 0,
-            token_type: '',
-            refresh_token: ''
-        }
+        patreon_account: null
     }
 
     // remove refresh token by setting the expiration date to the past
     document.cookie = 'findstable_refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-}
-
-
-const personalDataObject = {
-    value: "",
-    key: "",
-    user: "",
-    id: ""
 }
