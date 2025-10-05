@@ -21,7 +21,6 @@
 [33m0102a3d[m /api/content/deleteItems endpoint
 [33m712b9b0[m huge clean up, deleted plugins for getiing data, addes useDirectAsyncFetch
 [33ma8d51f1[m useDirectFetch
-[33m07d86c4[m directus new like and like deleted flows, likes_count field on finds
 [33mea0c3fb[m no title for finds, bookmarks
 [33m1d27050[m finds title and description repaired, hacky field validation
 [33m307bed4[m finds description, no title
