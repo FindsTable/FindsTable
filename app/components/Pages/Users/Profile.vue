@@ -146,10 +146,10 @@ function refresh() {
             Badges
         </template>
 
-        <!-- <template #content v-if="user">
+        <template #content v-if="user">
             <ContentBadgesBadgeRecord 
                 :userId="user.id"
             />
-        </template> -->
+        </template>
     </ArchitecturePanelH2Panel>
 </template>

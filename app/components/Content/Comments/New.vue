@@ -10,34 +10,39 @@ const textContent = ref("")
 const isPending = ref(false)
 
 async function handleClick() {
+    console.log(props.collection, props.itemId, textContent.value)
+
     if(isPending.value) return
     isPending.value = true
 
-    const res = await $fetch(
-        '/api/content/comments/create',
-        {
-            method: 'POST',
-            headers: {
-                authorization: `Bearer ${useUserState().value.accessToken.value}`
-            },
-            body: {
-                collection: props.collection,
-                item: {
-                    content: textContent.value,
-                    item: props.itemId
+    try {
+        const res = await $fetch(
+            '/api/content/comments/create',
+            {
+                method: 'POST',
+                headers: {
+                    authorization: `Bearer ${useUserState().value.accessToken.value}`
+                },
+                body: {
+                    userId: useUserState().value.id,
+                    collection: props.collection,
+                    item: {
+                        content: textContent.value,
+                        item: props.itemId
+                    }
                 }
             }
-        }
-    )
-    console.log(res)
+        )
+        console.log(res)
 
-    if (res?.ok) {
         emit('newCommentSaved', res)
-        textContent.value = ''
+    } catch (error) {
+        useHandleError(error)
     }
 
     isPending.value = false
 }
+
 const textareaId = useId()
 </script>
 

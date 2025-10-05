@@ -122,7 +122,6 @@
 .pad25 {padding: 25px;}
 
 
-
 /* text and fonts */
 
 .textAlignRight {text-align: right;}
@@ -202,3 +201,5 @@ label.hiddenInput input {
     opacity: 0;
     z-index: -1000;
 }
+
+.aspectRatio1by1 { aspect-ratio: 1 / 1;}

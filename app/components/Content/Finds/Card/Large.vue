@@ -19,7 +19,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <article 
+    <ArchitecturePanelMain 
         v-if="item" 
         class="
             card 
@@ -83,29 +83,28 @@ onMounted(() => {
             <div 
                 class="frame"
             >
-                <HtmlPictureMain
-                    v-if="item.image0"
-                    :assetId="item.image0"
-                    :sources="[
-                        { presetKey: 'find-250-webp', mimeType: 'image/webp' }
-                    ]"
-                    fallbackUrl="/images/find-no-image.png"
-                />
-            </div>
+                <ArchitectureHorizontalScroller>
+                    <HtmlPictureMain
+                        v-if="item.image0"
+                        :assetId="item.image0"
+                        :sources="[
+                            { presetKey: 'find-250-webp', mimeType: 'image/webp' }
+                        ]"
+                        fallbackUrl="/images/find-no-image.png"
+                        class="w100"
+                    />
 
-            <div
-                class="frame"
-            >
-                <HtmlPictureMain
-                    v-if="item.image1"
-                    :assetId="item.image1"
-                    :sources="[
-                        { presetKey: 'find-250-webp', mimeType: 'image/webp' }
-                    ]"
-                    fallbackUrl="/images/find-no-image.png"
-                />
+                    <HtmlPictureMain
+                        v-if="item.image1"
+                        :assetId="item.image1"
+                        :sources="[
+                            { presetKey: 'find-250-webp', mimeType: 'image/webp' }
+                        ]"
+                        fallbackUrl="/images/find-no-image.png"
+                        class="w100"
+                    />
+                </ArchitectureHorizontalScroller>
             </div>
-
             <!-- 
                 !!!!!
                     v-if="find.description.length > 1"
@@ -143,7 +142,7 @@ onMounted(() => {
             collection="Finds_comments"
             @closeComments="showComments = !showComments"
         />
-    </article>
+    </ArchitecturePanelMain>
 </template>
 
 <style scoped>
@@ -160,9 +159,10 @@ onMounted(() => {
     overflow: hidden;
 }
 .frame .description {
-    padding: 8px;
-    font-size: 12px;
+    padding: 10px;
+    font-size: 14px;
     font-weight: 500;
+    line-height: 1.4-em;
     overflow: auto;
     background-color: var(--layout-line-color);
     white-space: pre-wrap;

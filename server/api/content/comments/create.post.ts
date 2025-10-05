@@ -1,80 +1,49 @@
-import { readEvent } from '@@/server/apiUtils/readEvent'
 import { createItem } from '@@/server/directus/items'
 import { ItemObject } from '#shared/types/dataObjects'
 import { H3Event } from 'h3'
-import { itemCountIsValid, validateUser } from '@@/server/utils/validation'
+import { itemCountIsValid } from '@@/server/utils/validation'
+import { appPost } from '@@/server/directus/request'
 
 
 export default defineEventHandler(async <ExpectedItemObject extends ItemObject>(
 event: H3Event
-): Promise<ApiResponse<ExpectedItemObject | null>> => {
-    // Read event and ensure token exists.
-    const {
-        body,
-        query,
-        bearerToken,
-        error : tokenError
-    } = await readEvent(event, [
-        'body', 'query', 'bearerToken']
-    )
+): Promise<any> => {
 
-    if (tokenError) return tokenError
+    const body = await readBody(event)
+    const bearerToken = getHeader(event, 'authorization')
+    // return {
+    //     endpoint: `/items/${body.collection}`,
+    //     bearerToken: bearerToken,
+    //     body: {
+    //         ...body.item,
+    //         owner: {
+    //             id: body.userId
+    //         }
+    //     },
+    //     query: {
+    //         fields: '*,owner.avatar,owner.username'
+    //     }
+    // }
 
-    if (!body?.item) {
-        return {
-            ok: false,
-            statusText: 'No item object provided.',
-            data: null
-        }
-    }
-
-    const currentUser = await validateUser({
-        bearerToken: bearerToken!,
-        fields: [
-            'id', 'comments_count'
-        ]
+    if(!bearerToken || !body) throw newError({
+        code: 400,
+        message: 'Bad request',
+        reason: 'Missing body or access token from request.'
     })
 
-    if( !currentUser || !currentUser.id ) {
-        return {
-            ok: false,
-            statusText: 'User is not logged in or dont esist'
-        }
-    }
+    const userId = await userIsValid(bearerToken)
 
-    const userId = currentUser.id
-
-    if (!userId) {
-        return {
-            ok: false,
-            statusText: 'User is not logged in.',
-            data: null
-        }
-    }
-    
-    const countValid = itemCountIsValid({
-        collection: 'All_comments',
-        items_count: currentUser.comments_count || 0
-    })
-
-    if(!countValid) {
-        return {
-            ok: false,
-            data: null,
-            statusText: 'You have reached the maximum numner of comments !'
-        }
-    }
-
-    
-
-    const res = await createItem({
+    await itemCountIsValid({
         collection: body.collection,
-        auth: 'app',
+        userId: body.userId
+    })
+
+    const res = await appPost({
+        endpoint: `/items/${body.collection}`,
         body: {
             ...body.item,
             owner: {
-                id: userId,
-                comments_count: currentUser.comments_count + 1
+                id: body.userId
             }
         },
         query: {
@@ -82,19 +51,5 @@ event: H3Event
         }
     })
 
-    if(!res?.data) {
-        return {
-            ok: false,
-            data: null, 
-            statusText: 'An error occured in /content/comments/create'
-        }
-    }
-
-    return {
-        ok: true,
-        statusText: 'Your new thought has beed posted !',
-        data: {
-            ...res.data
-        }
-    }
+    return res
 })
