@@ -7,7 +7,6 @@ export default defineEventHandler(async ( event: H3Event ) => {
     
 
     try {
-
         const body = await readBody(event)
         const bearerToken = getHeader(event, 'authorization')
         if(!body) throw new Error('No body in request')
@@ -21,14 +20,11 @@ export default defineEventHandler(async ( event: H3Event ) => {
             bearerToken: bearerToken
         }
 
-    } catch(err) {
-        throw createError({
-            statusCode: 403,
-            statusMessage: "Unauthorized",
-            data: {
-                reason: "Delete item :  failed basic validation",
-                toasterPath: "error.unauthorized"
-            }
+    } catch(err : any) {
+        throw newError({
+            code: 403,
+            message: "Unauthorized",
+            reason: err.message
         });
     }
 

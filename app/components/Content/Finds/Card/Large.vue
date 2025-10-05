@@ -13,6 +13,12 @@ const me = useUserState()
 const activeImageIndex = ref(0)
 const showComments = ref(false)
 
+// To update the count localy
+const newCommentCount = ref(0)
+function updateCommentCount(increment) {
+    newCommentCount.value += increment
+}
+
 onMounted(() => {
     console.log(props.item)
 })
@@ -134,6 +140,7 @@ onMounted(() => {
                 :commentClick="true"
                 @commentClicked="showComments = !showComments"
                 :bookmark="true"
+                :commentCount="item.comments.length + newCommentCount"
             />
         </div>
 
@@ -142,6 +149,7 @@ onMounted(() => {
             :itemId="item.id"
             collection="Finds_comments"
             @closeComments="showComments = !showComments"
+            @updateCommentCount="updateCommentCount"
         />
     </article>
 </template>

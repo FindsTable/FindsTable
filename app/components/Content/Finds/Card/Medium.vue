@@ -12,6 +12,11 @@ const me = useUserState()
 const activeImageIndex = ref(0)
 const showComments = ref(false)
 
+// To update the count localy
+const newCommentCount = ref(0)
+function updateCommentCount(increment) {
+    newCommentCount.value += increment
+}
 </script>
 
 <template>
@@ -51,7 +56,7 @@ const showComments = ref(false)
 
             <ContentFindsCardMiniToolBar
                 v-if="me.id === item.owner.id"
-                @delete="emit('delete')"
+                @delete="emit('delete', item.id)"
             />
         </div>
 
@@ -112,6 +117,7 @@ const showComments = ref(false)
                 :commentClick="true"
                 @commentClicked="showComments = !showComments"
                 :bookmark="true"
+                :commentCount="item.comments.length + newCommentCount"
             />
         </div>
 
@@ -121,6 +127,7 @@ const showComments = ref(false)
                 :itemId="item.id"
                 collection="Finds_comments"
                 @closeComments="showComments = !showComments"
+                @updateCommentCount="updateCommentCount"
             />
         </KeepAlive>
 

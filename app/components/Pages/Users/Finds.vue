@@ -23,17 +23,17 @@ const query = {
 </script>
 
 <template>
-    <ContentMediaFeedCollection
+    <!-- <ContentMediaFeedCollection
         class="medium"
         collection="Finds"
         :cardComponent="ContentFindsCardMedium"
         :query="query"
         :communityContent="true"
-    />
-    <!-- <ContentMediaFeedCollection
+    /> -->
+    <ContentMediaFeedCollection
         collection="Finds"
         :cardComponent="ContentFindsCardLarge"
         :query="query"
         :communityContent="true"
-    /> -->
+    />
 </template>

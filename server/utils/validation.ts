@@ -13,7 +13,8 @@ export {
     isValidImageType,
     validateImageType,
     getItemCount,
-    userIsValid
+    userIsValid,
+    assertItemCount
 }
 interface MaxItemCount {
     [key : string ] : number
@@ -48,6 +49,23 @@ async function getItemCount(p : {
         }
     })
     return res[0].count
+}
+
+async function assertItemCount(p : { 
+    collection: string
+    userId: string
+}) : Promise<void> {
+
+    const count = await getItemCount(p)
+
+    if(count > maxItemCount[p.collection]) {
+        throw toasterError({
+            code: 403,
+            message: "Unauthorized",
+            reason: `Too many items in ${p.collection} : ${count}`,
+            toasterPath: "error.tooManyItems"
+        });
+    }
 }
 
 async function itemCountIsValid(p : { 

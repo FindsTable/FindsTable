@@ -6,11 +6,8 @@ export {
 type UserContent = {
     avatars: Avatar[]
     finds: Find[]
-    badges: UserBadge<{
-                badge: BadgeKey
-                level: BadgeVariation
-            }>[]
-    badgeRecord: BadgeRecord | null
+    badges: any[]
+    badgeRecord: any
     bookmarks: Bookmark[]
     fetched: {
         avatars: boolean

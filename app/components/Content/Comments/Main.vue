@@ -4,7 +4,7 @@ const props = defineProps({
     itemId: String,
     collection: String
 })
-const emit = defineEmits(['closeComments', 'updateNewCommentsCount'])
+const emit = defineEmits(['closeComments', 'updateCommentCount'])
 
 const fields = [
     'id',
@@ -60,7 +60,7 @@ async function deleteComment(id) {
         )
 
         refresh()
-        emit('updateNewCommentsCount', -1)
+        emit('updateCommentCount', -1)
     } catch(err) {
         console.error(err)
     }
@@ -68,7 +68,7 @@ async function deleteComment(id) {
 
 function newCommentSaved(newComment) {
     refresh()
-    emit('updateNewCommentsCount', 1)
+    emit('updateCommentCount', 1)
 }
 
 </script>
@@ -135,7 +135,6 @@ function newCommentSaved(newComment) {
             <ContentCommentsNew
                 :itemId="itemId"
                 :collection="collection"
-                
                 @newCommentSaved="newCommentSaved"
             />
 

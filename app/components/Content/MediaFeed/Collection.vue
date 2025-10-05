@@ -10,19 +10,14 @@ const props = defineProps({
     }
 })
 
-const {data : feed} = await $fetch(
-    `https://admin.findstable.net/items/${props.collection}`,
-    {
-        method: 'GET',
-        headers: {
-            authorization: `Bearer ${useUserState().value.accessToken.value}`
-        },
-        query: props.query
-    }
+const { data : feed } = useDirectGet(
+    props.collection,
+    props.query
 )
 
-function removeDeletedHuntReport(id) {
-
+function removeItemFromFeed(id) {
+    console.log(feed.value)
+    feed.value = feed.value.filter(item => item.id !== id)
 }
 
 async function deleteItem(id) {
@@ -51,7 +46,7 @@ async function deleteItem(id) {
                 }
             }
         )
-        removeDeletedHuntReport(id)
+        removeItemFromFeed(id)
     } catch(err) {
         useHandleError(err)
     }

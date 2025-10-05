@@ -4,11 +4,59 @@ import type {
 
 export {
     useDirectAsyncFetch,
-    useDirectFetch
+    useDirectGet
 }
 
 export type {
     Options as DirectFetchOptions
+}
+
+function useDirectGet<T>(
+    collection: string,
+    query?: any
+): {
+    data : Ref<T>,
+    pending: Ref<boolean>,
+    refresh: Function
+} {
+
+    const data = ref<T | null>(null)
+    const pending = ref<boolean>(true)
+
+    async function directGet() {
+        const res = await $fetch<any>(
+            `https://admin.findstable.net/items/${collection}`,
+            {
+                method: 'GET',
+                headers: {
+                    authorization: `Bearer ${useUserState().value.accessToken.value}`
+                },
+                query: query
+            }
+        )
+
+        data.value = res.data
+        pending.value = false
+    }
+
+    function refresh() {
+        directGet()
+    }
+
+    onMounted(async() => {
+        try {
+            directGet()
+        } catch(err) {
+            useHandleError(err)
+            pending.value = false
+        }
+    })
+
+    return {
+        data: data as Ref<T>,
+        pending,
+        refresh
+    }
 }
 
 function useDirectAsyncFetch<T = any>(
@@ -99,6 +147,7 @@ function useDirectAsyncFetch<T = any>(
     }
 
     if (!options?.differed && method && path) {
+        console.log('fetching', method, path)
         runDirectFetch()
     }
   

@@ -3,7 +3,8 @@ export {
     appPost,
     appPatch,
     appDelete,
-    userPatch
+    userPatch,
+    userPost
 }
 
 async function appGet<Expected>(p : {
@@ -126,6 +127,24 @@ async function userPatch<Expected>(p : {
     const res = await userFetch({
         endpoint: p.endpoint,
         method: 'PATCH',
+        bearerToken: p.bearerToken,
+        body: p.body,
+        query: p.query
+    })
+
+    return res.data
+}
+
+async function userPost<Expected>(p : {
+    endpoint: string,
+    bearerToken: string,
+    body? : any,
+    query? : any
+}) : Promise<Expected> {
+
+    const res = await userFetch({
+        endpoint: p.endpoint,
+        method: 'POST',
         bearerToken: p.bearerToken,
         body: p.body,
         query: p.query

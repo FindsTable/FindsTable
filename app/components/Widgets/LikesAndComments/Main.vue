@@ -7,7 +7,8 @@ const props = defineProps({
     likeClick: Boolean,
     commentClick: Boolean,
     bookmark: Boolean,
-    commentsCount: Number
+    commentsCount: Number,
+    commentCount: Number
 })
 const emit = defineEmits(['likeClick', 'commentClicked'])
 
@@ -24,7 +25,7 @@ function commentClicked() {
         @click.stop
         class="box flex justifyEvenly w100"
     >
-        <div class="centered grow">
+        <div class="centered grow ">
             <WidgetsLikesAndCommentsLikeButton
                 :iconSize="iconSize" 
                 :fontSize="fontSize"
@@ -39,7 +40,7 @@ function commentClicked() {
         <div class="centered grow">
             <WidgetsLikesAndCommentsCommentCount
                 @click.stop.prevent="emit('commentClicked')"
-                :count="item.comments?.length || 0"
+                :count="commentCount"
                 :iconSize="iconSize"
                 :fontSize="fontSize"
                 :clickable="commentClick"

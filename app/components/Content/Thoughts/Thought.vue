@@ -9,9 +9,9 @@ const emit = defineEmits(['delete'])
 
 const showComments = ref(false)
 
+// To update the count localy
 const newCommentsCount = ref(0)
-
-function emit_updateNewCommentsCount(increment) {
+function updateCommentCount(increment) {
     newCommentsCount.value += increment
 }
 </script>
@@ -55,7 +55,7 @@ function emit_updateNewCommentsCount(increment) {
                     v-if="showComments"
                     :itemId="item.id"
                     collection="Thoughts_comments"
-                    @newCommentPosted="emit_updateNewCommentsCount"
+                    @newCommentPosted="updateCommentCount"
                     @closeComments="showComments = false"
                 />
             </div>
