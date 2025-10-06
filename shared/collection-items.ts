@@ -321,14 +321,6 @@ type Badge = {
     default: BadgeVariation;
 };
 
-type SuccessBadge = {
-    status: "active" | "notActive" | "archived";
-    key: BadgeKey;
-    type: "static" | "statComputed" | "itemLinked";
-    image: "string";
-};
-
-
 type DefaultUserBadge = {
     badge: BadgeKey;
     level: BadgeVariation;

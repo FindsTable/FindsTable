@@ -8,15 +8,20 @@ definePageMeta({
 <template>
     <NuxtLayout name="private-route">
         <template #title>
-            {{ t('page.badges.title') }}
+            <ArchitectureAppStructureBoxesMainElement>
+                {{ t('page.badges.title') }}
+            </ArchitectureAppStructureBoxesMainElement>
+            
         </template>
         
         <template #header>
-            <TH2 class="marTop20">
-                {{ t('page.badges.pageLead') }}
-            </TH2>
+            <ArchitectureAppStructureBoxesMainElement>
+                <TH2 class="marTop20">
+                    {{ t('page.badges.pageLead') }}
+                </TH2>
+            </ArchitectureAppStructureBoxesMainElement>
         </template>
-
+        
         <template #scrollMain>
             <ContentBadgesStore />
         </template>

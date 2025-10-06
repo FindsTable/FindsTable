@@ -1,6 +1,8 @@
 <script setup lang="ts">
 const selectedBadge = ref('')
 
+const myBadgeRecord = useMyBadgeRecord()
+
 function handleEmit(badgeKey : string) {
     selectedBadge.value = badgeKey
 }
@@ -8,7 +10,7 @@ function handleEmit(badgeKey : string) {
 const { data : badges } = useDirectGetOnMounted<SuccessBadge[]>(
     '/items/Success_badges',
     {
-        fields: '*'
+        fields: '*,Badge_records',
     }
 )
 
@@ -19,7 +21,6 @@ const { data : badges } = useDirectGetOnMounted<SuccessBadge[]>(
         v-if="badges"
         class="flex wrap justifyEvenly alignStretch gap30"
     >
-        {{ badges }}
         <ContentBadgesFrameMain 
             v-for="badge in badges" :key="badge.key"
             :badge="badge"

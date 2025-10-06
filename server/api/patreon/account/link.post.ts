@@ -4,7 +4,7 @@ import {
     formatUserState_Patreon,
     refactorTokens
 } from '@@/server/patreon/account'
-import { userGet, appPost } from '@@/server/directus/request'
+import { userGet, appPost, appPatch } from '@@/server/directus/request'
 
 
 export default defineEventHandler(async (event) => {
@@ -33,27 +33,38 @@ export default defineEventHandler(async (event) => {
     })
 
     assertStrongEquality(bodyUserId, user.id)
-
     assertStrongEquality(stateToken, user.patreon_stateToken)
     
     const tokens = await patreon_getTokensWithCode(patreonCode)
-
+    
     const refactoredTokens = refactorTokens(tokens)
 
     const patreonMe = await patreon_getMe(`Bearer ${refactoredTokens.access_token}`)
+    
+    const formatedPatreonAccount = formatUserState_Patreon(patreonMe)
 
-    const patreonAccount = formatUserState_Patreon(patreonMe)
-
-    const res = await appPost({
+    const newPatreonAccount = await appPost({
         endpoint: '/items/Patreon_accounts',
         body: {
             user: bodyUserId, 
-            ...patreonAccount
+            ...formatedPatreonAccount
         },
         query: {
             fields: '*'
         }
     })
 
-    return res
+    try {
+        appPost({
+            endpoint: `/items/Badge_records_Success_badges`,
+            body: {
+                Badge_records_id: bodyUserId,
+                Success_badges_key: 'patreonLinked'
+            }
+        })
+    } catch(err) {
+        console.log('TO DO : log the error to repair it !')
+    }
+
+    return newPatreonAccount
 });

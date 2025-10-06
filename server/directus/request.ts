@@ -46,12 +46,6 @@ async function appPatch<Expected>(p : {
     body?: any
     query?: any
 }) : Promise<Expected> {
-    console.log('appFetch', {
-        endpoint: p.endpointId,
-        method: 'PATCH',
-        body: p.body,
-        query: p.query
-    })
 
     const res = await appFetch<Expected>({
         endpoint: p.endpointId,

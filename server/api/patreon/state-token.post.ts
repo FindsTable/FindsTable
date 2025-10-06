@@ -1,98 +1,51 @@
 import crypto from 'crypto';
+import { userGet, appPatch, appGet } from '@@/server/directus/request'
 
 export default defineEventHandler(async (event) => {
 
-    const runtimeConfig = useRuntimeConfig();
-    const appAccessToken = runtimeConfig.APP_ACCESS_TOKEN
+    const bearerToken = getHeader(event, 'authorization')
 
-    const headers = getRequestHeaders(event);
-    const userAccesstoken = headers['authorization']?.split('Bearer ')[1];
+    if(!bearerToken) throw newError({
+        code: 400,
+        message: 'Bad request',
+        reason: 'No token in request'
+    })
 
-    const { data: user } = await $fetch(
-        `${runtimeConfig.DIRECTUS_URL}/users/me?fields=id`,
-        {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${userAccesstoken}`
-            }
+    const user = await userGet<{id: string}>({
+        endpoint: '/users/me',
+        bearerToken: bearerToken,
+        query: {
+            fields: 'id'
         }
-    )
+    })
 
-    if (!user) {
-        console.log('user not found when generating state token')
-        return {
-            ok: false,
-            status: 401,
-            statusText: 'Unauthorized'
-        }
-    }
 
     const body = await readBody(event);
 
     //compare userId from request to userId from directus
-    if (user.id !== body.userId) {
-        console.log('user mismatch when generating state token')
-        return {
-            ok: false,
-            status: 401,
-            statusText: 'Unauthorized'
-        }
-    }
+    assertStrongEquality(user.id, body.userId)
 
-    if (body.newStateToken) {
+    try {
         const stateToken = crypto.randomBytes(16).toString('hex')
 
         //store token in user's profile in DIrectus
-        const { data: res } = await $fetch(
-            `${runtimeConfig.DIRECTUS_URL}/users/${body.userId}`,
-            {
-                method: 'PATCH',
-                headers: {
-                    'Authorization': `Bearer ${appAccessToken}`
-                },
-                body: {
-                    patreon_stateToken: stateToken
-                }
+        const res = await appPatch<{patreon_stateToken: string}>({
+            endpointId: `/users/${body.userId}`,
+            body: {
+                patreon_stateToken: stateToken
+            },
+            query: {
+                fields: 'patreon_stateToken'
             }
-        )
+        })
 
-        return {
-            ok: true,
-            status: 200,
-            statusText: 'OK',
-            token: res.patreon_stateToken
-        }
+        return res.patreon_stateToken
+    } catch(err) {
+        throw newError({
+            code: 500,
+            message: 'Request failed',
+            reason: 'Could not set state token in user account/'
+        })
     }
 
-    if (body.validateStateToken) {
-
-        const stateTokenPatreon = body.patreonStateToken
-
-        const { data } = await $fetch(
-            `${runtimeConfig.DIRECTUS_URL}/users/${body.userId}?fields=patreon_stateToken`,
-            {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${appAccessToken}`
-                }
-            }
-        )
-
-        if (stateTokenPatreon === data.patreon_stateToken) {
-            return {
-                ok: true,
-                status: 200,
-                statusText: 'Token is valid',
-                tokenIsValid: true
-            }
-        } else {
-            console.log("token NOT identical")
-            return {
-                ok: false,
-                status: 400,
-                statusText: 'Token invalid',
-                tokenIsValid: false
-            }
-        }
-    }
 })

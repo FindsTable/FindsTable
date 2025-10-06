@@ -97,19 +97,32 @@ function formatUserState_Patreon(
 ): any {
 
     let user = rawUser.data
-    let member = rawUser.included.find((item: any) => item.relationships.campaign.data.id === "12159407");
-
+    
     let patreonAccount : FT_patreon_account = {
         status: 'active',
         id: user.id,
         email: user.attributes.email,
         url: user.attributes.url,
         thumb_url: user.attributes.thumb_url,
-        member_id: member.id || '',
-        tierId: member.relationships.currently_entitled_tiers.data[0].id,
-        patron_status: member.attributes.patron_status || '',
-        last_charge_status: member.attributes.last_charge_status,
-        next_charge_date: member.attributes.next_charge_date || '',
+        member_id: '',
+        tierId: '',
+        patron_status: '',
+        last_charge_status: '',
+        next_charge_date: '',
+    }
+
+    if(rawUser.included) {
+        //  Users that haven't subscribed to the campaign might not have a .included
+        let member = rawUser.included.find((item: any) => item.relationships.campaign.data.id === "12159407");
+
+        if(member) {
+            // If they have a membership to Findstable
+            patreonAccount.member_id = member.id,
+            patreonAccount.tierId = member.relationships.currently_entitled_tiers.data[0].id,
+            patreonAccount.patron_status = member.attributes.patron_status,
+            patreonAccount.last_charge_status = member.attributes.last_charge_status,
+            patreonAccount.next_charge_date = member.attributes.next_charge_date
+        }
     }
 
     return patreonAccount

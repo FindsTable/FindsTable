@@ -4,25 +4,24 @@ const user = useUserState().value
 const linkUrl = "https://www.patreon.com/oauth2/authorize"
 
 async function newStateToken() {
-    const { data : res } = await useFetch(
-        '/api/patreon/state-token',
-        {
-            method: 'POST',
-            headers: {
-                'authorization': 'Bearer ' + user.accessToken.value,
-            },
-            body: {
-                newStateToken: true,
-                userId: user.id
-            },
-            server: false
-        }
-    )
+    try {
+        const newStateToken = await $fetch(
+            '/api/patreon/state-token',
+            {
+                method: 'POST',
+                headers: {
+                    'authorization': `Bearer ${user.accessToken.value}`,
+                },
+                body: {
+                    userId: user.id
+                }
+            }
+        )
 
-    if(!res.value.ok) {
-        return undefined
+        return newStateToken
+    } catch(err) {
+        useHandleError(err)
     }
-    return res.value.token
 }
 
 function setRedirectionUrl() {
@@ -33,9 +32,6 @@ function setRedirectionUrl() {
 
 async function handleClick() {
     const stateToken = await newStateToken()
-    if(!stateToken) {
-        return
-    }
 
     const params = [
         "?response_type=code",
@@ -45,7 +41,6 @@ async function handleClick() {
         '&scope=identity identity%5Bemail%5D identity.memberships'
     ]
 
-    console.log(params.join(''))
     navigateTo(`${linkUrl}${params.join('')}`, { external: true })
 }
 

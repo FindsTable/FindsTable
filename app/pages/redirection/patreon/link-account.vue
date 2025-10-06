@@ -23,20 +23,18 @@ async function linkAccount() {
             server: false
         }
     )
+    console.log(res)
 
     return res
 }
-// 
+
 onMounted(async () => {
     useAppState().value.pending = true
     
     try {
         const patreon_account = await linkAccount()
-        console.log(patreon_account)
         
         user.value.patreon_account = patreon_account
-
-        console.log(user.value.patreon_account)
 
         useToaster('show', {
             id: 'accountLinked',

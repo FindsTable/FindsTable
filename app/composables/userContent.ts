@@ -1,12 +1,14 @@
 export {
     useUserContent,
-    useHandleUserContent
+    useHandleUserContent,
+    useMyBadgeRecord
 }
 
 type UserContent = {
     avatars: Avatar[]
     finds: Find[]
     badges: any[]
+    successBadges: any[]
     badgeRecord: any
     bookmarks: Bookmark[]
     fetched: {
@@ -18,6 +20,13 @@ type UserContent = {
     }
 }
 
+const useMyBadgeRecord = () => {
+    return useState<BadgeRecord | null>(
+        'userContent',
+        () => (null)
+    );
+}
+
 const useUserContent = () => {
     return useState<UserContent>(
         'userContent',
@@ -25,6 +34,7 @@ const useUserContent = () => {
             avatars: [],
             finds: [],
             badges: [],
+            successBadges: [],
             badgeRecord: null,
             bookmarks: [],
             fetched: {

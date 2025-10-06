@@ -14,7 +14,6 @@ function handleClick() {
 const userOwned = [
     'betaTester'
 ]
-
 </script>
 
 <template>
@@ -23,7 +22,7 @@ const userOwned = [
         class="frame pointer"
         :class="[ 
             selected ? 'selected' : '', 
-            userOwned.includes(badge.key) ? 'owned' : 'notOwned'
+            badge.Badge_records.length ? 'owned' : 'notOwned'
         ]"
         @click="handleClick"
     >
@@ -33,12 +32,9 @@ const userOwned = [
                     <Icon name="info" size="20px"/>
                 </div>
 
-                <!-- <img 
-                    :src="`https://admin.findstable.net/assets/${userVersion || badge.default.image}?key=badge-h150-q100-png`" alt=""
-                > -->
-                <!-- <p class="badgeName -bold marTop20 flex justifyCenter" v-if="badge.translations[0]">
-                    {{ badge.translations[0].name }}
-                </p> -->
+                <img 
+                    :src="`https://admin.findstable.net/assets/${badge.image}`" alt=""
+                >
             </div>
 
             <div class="descriptionBox flex column absolute full">
