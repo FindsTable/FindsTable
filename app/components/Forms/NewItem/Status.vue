@@ -41,16 +41,6 @@ async function toggleStatus() {
     }
 
     switchState.value = !switchState.value
-
-    useToaster('show', {
-        id: crypto.randomUUID(),
-        message: switchState.value
-            ? 'Your hunt report is now published!'
-            : 'Your hunt report is now a draft.',
-        type: 'success',
-        autoClose: true,
-        position: 'bottom'
-    })
 }
 
 </script>

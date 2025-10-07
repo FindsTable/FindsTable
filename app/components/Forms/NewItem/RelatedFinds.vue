@@ -11,7 +11,6 @@ const emit = defineEmits(['forgetFind'])
 
 function forgetFind(findId: string) {
     model.value = model.value?.find((f: any )=> f.id !== findId)
-
 }
 
 const { t } = useI18n()
@@ -28,9 +27,18 @@ async function openFindSelector() {
         data: {
             query: {
                 filter: {
-                    owner: {
-                        _eq: useUserState().value.id
-                    }
+                    _and: [
+                        {
+                            owner: {
+                                _eq: useUserState().value.id
+                            }
+                        },
+                        {
+                            hunt_report: {
+                                _eq: null
+                            }
+                        }
+                    ]
                 },
                 sort: '-date_created',
                 fields: [

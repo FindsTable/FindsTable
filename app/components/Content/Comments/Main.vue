@@ -75,8 +75,9 @@ function newCommentSaved(newComment) {
 </script>
 
 <template>  
-    <div @click.stop>
+    <div>
         <ArchitecturePanelMain 
+            @click.stop.prevent
             v-if="comments"
             class="commentsBox overflowScroll -scrollY"
             themeSurface2
