@@ -3,6 +3,8 @@ import type {
     ImageSelectorComponent
 } from '@@/app/components/Forms/NewItem/ImageSelector.vue'
 
+const me = useUserState()
+
 const { t } = useI18n()
 const bootyPhotoSelector = ref<ImageSelectorComponent | null>(null)
 
@@ -29,7 +31,7 @@ const weatherTags = ref<string[]>([])
 // Access exposed data from FormsNewItemImageSelector
 const bootyPhoto = computed(() => bootyPhotoSelector.value?.images?.[0] || null)
 
-const finds = ref<FindId[]>([])
+const finds = ref<any[]>([])
 
 // Validation errors
 const errors = ref<Record<string, string>>({
@@ -101,19 +103,19 @@ const formIsValid = computed(() => {
 })
 
 async function saveNewReport() {
-    if (
-        isPending.value ||
-        bootyPhotoIsProcessing.value
-    ) return
+    // if (
+    //     isPending.value ||
+    //     bootyPhotoIsProcessing.value
+    // ) return
 
-    isPending.value = true
+    // isPending.value = true
     
-    validateForm()
+    // validateForm()
 
-    if (!formIsValid.value) {
-        isPending.value = false
-        return
-    }
+    // if (!formIsValid.value) {
+    //     isPending.value = false
+    //     return
+    // }
 
     const formData = new FormData()
     
@@ -137,7 +139,7 @@ async function saveNewReport() {
 
     try {
         // Send POST request
-        const res = await $fetch(
+        const reportId = await $fetch(
             '/api/content/hunt-reports/create',
             {
                 method: 'POST',
@@ -148,9 +150,6 @@ async function saveNewReport() {
             }
         )
 
-        const reportId = res.data
-        navigateTo(`/hunt-reports/${reportId}`)
-
         useToaster('show', {
             id: crypto.randomUUID(),
             message: "Hunt report created succesfully !",
@@ -159,29 +158,11 @@ async function saveNewReport() {
             autoClose: true,
             position: 'bottom'
         })
-    } catch(err : any) {
-        if(err.data) {
-            console.error("data", err.data)
-            useToaster('show', {
-                id: crypto.randomUUID(),
-                message: t(`${err.data.toasterPath}`),
-                icon: 'error',
-                type: 'error',
-                autoClose: true,
-                position: 'bottom'
-            })
-        } 
-        if(err.reason) {
-            console.error("reason", err.reason)
-        }
-        useToaster('show', {
-            id: crypto.randomUUID(),
-            message: "Oops ! we could not save your hunt report...",
-            icon: 'error',
-            type: 'error',
-            autoClose: true,
-            position: 'bottom'
-        })
+
+        navigateTo(`/users/${me.value.id}/Hunt_reports/${reportId}`)
+
+    } catch(err) {
+        useHandleError(err)
     }
 
     isPending.value = false
@@ -255,16 +236,22 @@ async function saveNewReport() {
         </ArchitectureAppStructureBoxesMainElement>
     
         <ArchitectureAppStructureBoxesMainElement>
-            <ArchitecturePanelMain>
-                <div class="section">
-                    <FormsNewItemRelatedFinds
-                        labelPath="page.huntReports.newReport.fields.relatedFinds.label"
-                        leadPath="page.huntReports.newReport.fields.relatedFinds.lead"
-                        buttonTextPath="page.huntReports.newReport.fields.relatedFinds.button"
-                        v-model="finds"
-                    />
-                </div>
-            </ArchitecturePanelMain>
+            <ArchitecturePanelH2Panel>
+                <template #H2>
+                    {{ t('page.huntReports.newReport.fields.relatedFinds.label') }}
+                </template>
+                
+                <template #content>
+                    {{ t('page.huntReports.newReport.fields.relatedFinds.lead') }}
+                    <div class="section">
+                        <FormsNewItemRelatedFinds
+                            buttonTextPath="page.huntReports.newReport.fields.relatedFinds.button"
+                            v-model="finds"
+                            :addedFinds="finds"
+                        />
+                    </div>
+                </template>
+            </ArchitecturePanelH2Panel>
         </ArchitectureAppStructureBoxesMainElement>
   
         <template class="centered">
@@ -281,4 +268,9 @@ async function saveNewReport() {
             </button>
         </template>
     </form>
-  </template>
+</template>
+
+<style scoped>
+
+
+</style>

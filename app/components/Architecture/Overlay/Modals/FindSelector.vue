@@ -3,7 +3,7 @@ import { ContentFindsCardSmall } from '#components'
 
 const { confirm, cancel } = useModal()
 
-const model = defineModel<string[]>()
+const model = defineModel<any[]>()
 
 const props = defineProps({
     maxSelect: {
@@ -11,8 +11,6 @@ const props = defineProps({
         default: 10
     }
 })
-
-const me = useUserState()
 
 const domInfoMessage = ref('')
 
@@ -30,21 +28,27 @@ const {
         }
     }
 )
-function toggleFind(findId: string) {
+
+function toggleFind(find: any) {
     if (!Array.isArray(model.value)) {
         model.value = []
     }
 
-    if (model.value.includes(findId)) {
-        model.value = model.value.filter(id => id !== findId) // remove
-    } else {
-        if (model.value.length >= props.maxSelect) return
-        model.value = [...model.value, findId] // add
-    }
+    if (model.value.some( (f) => f.id === find.id)) {
+        
+        // remove find when already selected
+        model.value = model.value.filter((f) => f.id !== find.id)
+        console.log(model.value)
+        return
+    } 
+    
+    // add find to selected array
+    model.value = [...model.value, find]
+    console.log(model.value)
 }
 
-function isSelected(findId: string) {
-    return model.value?.includes(findId)
+function isSelected(findId: any) {
+    return model.value?.some( (f) => f.id === findId)
 }
 
 function clearSelection() {
@@ -114,10 +118,11 @@ function handleCancel() {
                     <div 
                         class="findBox pointer r w100 r"
                         :class="{ selected: isSelected(find.id) }"
-                        @click="toggleFind(find.id)"
+                        @click="toggleFind(find)"
                     >
                         <ContentFindsCardSmall
                             :find="find"
+                            class="pointer"
                         /> 
                     </div> 
                 </div>

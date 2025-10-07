@@ -10,7 +10,7 @@ const editingField = ref('')
 </script>
 
 <template>
-    <Panel class="panel ">
+    <Panel class="panel">
         <TH2>
             <slot name="H2">
 
@@ -26,6 +26,5 @@ const editingField = ref('')
 <style scoped>
 .mainBox {
     padding-top: 10px;
-    padding-left: 10px;
 }
 </style>

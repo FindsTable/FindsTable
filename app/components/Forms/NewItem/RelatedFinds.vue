@@ -1,11 +1,18 @@
 <script setup lang="ts">
-const model = defineModel<FindId[]>()
+const model = defineModel<any[]>()
 
-const props = defineProps({
-  labelPath: String,
-  leadPath: String,
-  buttonTextPath: String
-})
+interface Props {
+  buttonTextPath: String;
+  addedFinds: Find[]
+}
+
+const props = defineProps<Props>()
+const emit = defineEmits(['forgetFind'])
+
+function forgetFind(findId: string) {
+    model.value = model.value?.find((f: any )=> f.id !== findId)
+
+}
 
 const { t } = useI18n()
 
@@ -28,16 +35,10 @@ async function openFindSelector() {
                 sort: '-date_created',
                 fields: [
                     '*',
-                    'owner',
                     'owner.id',
-                    'owner.displayName',
-                    'owner.username',
                     'date_created',
-                    'date_lastEvent',
                     'date_updated',
-                    'images.*',
-                    'likes.*',
-                    'comments.*'
+                    'image0, image1'
                 ],
                 limit: 100
             }
@@ -49,21 +50,37 @@ async function openFindSelector() {
 </script>
 
 <template>
-    <FormsLabel>
-        <template #label>
-            {{ t(`${labelPath}`) }}
-        </template>
-            
-        <template #input>
-            <div class="flex column gap10 allEvents">
-                <p class="sectionLead">
-                    {{ t(`${leadPath}`) }}
-                </p>
+        <div>
+            <div class="flex column gap10">
+                <div
+                    v-if="addedFinds?.length"
+                    class="flex justifyCenter"
+                >
+                    <div
+                        class="find relative"
+                        v-for="find in addedFinds" :key="find.id"
+                    >
+                        <ContentFindsCardSmall
+                            :find="find"
+                        />
+
+                        <div
+                            class="absolute top0 right0 pointer pad5"
+                        >
+                            <Icon 
+                                class=""
+                                @click.stop.prevent="forgetFind(find.id)"
+                                name="close" size="20px" 
+                                
+                            />
+                        </div>
+                    </div>
+                </div>
 
                 <div class="flex justifyCenter marTop10">
                     <button 
                         type="button"
-                        class="comp-button -filled font-text-main"
+                        class="comp-button -filled"
                         @click.stop.prevent="openFindSelector"
                     >
                         {{ t(`${buttonTextPath}`) }}
@@ -72,8 +89,7 @@ async function openFindSelector() {
 
                 <!-- Here you will later render the selected finds -->
             </div>
-        </template>
-    </FormsLabel>
+        </div>
 </template>
 
 <style scoped>
@@ -81,5 +97,11 @@ async function openFindSelector() {
   font-size: 14px;
   color: var(--textColor-dimmed);
   margin-bottom: 10px;
+}
+
+
+
+.find {
+    width: 30%;
 }
 </style>

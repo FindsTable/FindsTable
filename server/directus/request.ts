@@ -58,14 +58,12 @@ async function appPatch<Expected>(p : {
 }
 
 async function appDelete(p : {
-    endpoint: string
-    body?: any
+    endpointId: string
 }) {
 
     await appFetch({
-        endpoint: p.endpoint,
-        method: 'POST',
-        body: p.body
+        endpoint: p.endpointId,
+        method: 'DELETE'
     })
 }
 
@@ -106,9 +104,9 @@ async function appFetch<Expected>(p: {
 
         // Other errors
         throw newError({
-        code,
-        message,
-        reason: 'Something went wrong while fetching data from Directus'
+            code,
+            message,
+            reason: 'Something went wrong while fetching data from Directus'
         });
     }
 }
@@ -166,12 +164,12 @@ async function userPost<Expected>(p : {
 }
 
 async function userDelete(p : {
-    endpoint: string,
+    endpointId: string,
     bearerToken: string
 }) : Promise<void> {
 
     await userFetch<undefined>({
-        endpoint: p.endpoint,
+        endpoint: p.endpointId,
         method: 'DELETE',
         bearerToken: p.bearerToken
     })
@@ -199,7 +197,7 @@ async function userFetch<Expected>(p : {
 
         return res;
     } catch (err: any) {
-        throw err
+ 
         // Determine status code from Directus error response or fallback
         const code = err.response?.status ?? err.statusCode ?? 500;
         const message = err.response?.statusText ?? err.message ?? 'Unknown error';

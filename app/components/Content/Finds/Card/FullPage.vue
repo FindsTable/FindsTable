@@ -9,20 +9,28 @@ const props = defineProps({
 
 const me = useUserState()
 
-const showComments = ref(false)
-
-// To update the count localy
-const newCommentCount = ref(0)
-function updateCommentCount(increment) {
-    newCommentCount.value += increment
-}
-
-
 </script>
 
 <template v-if="itel">
     <ArchitectureAppStructureBoxesMainElement>
+        <div
+            class="topBoxContainer"
+        >
+            <ArchitecturePanelMain class="pageIconBox theme-surface ">
+                <Icon name="content" class="40px" />
+            </ArchitecturePanelMain>
+
+            <ArchitecturePanelMain 
+                v-if="showUser"
+                class="
+                    itemTypeTitle flex alignCenter grow
+                "
+            >
+                Find
+            </ArchitecturePanelMain>
+        </div>
     </ArchitectureAppStructureBoxesMainElement>
+
     <ArchitectureAppStructureBoxesMainElement>
         <ArchitecturePanelMain>
             <div 
@@ -138,9 +146,6 @@ function updateCommentCount(increment) {
                 class="w100"
             />
 
-
-
-
             <div class="infoBox flex justifyEvenly alignCenter gap10">
                 <WidgetsLikesAndCommentsMain
                     fonSize="16px"
@@ -162,14 +167,27 @@ function updateCommentCount(increment) {
             v-if="item"
             :itemId="item.id"
             collection="Finds_comments"
-            @closeComments="showComments = !showComments"
-            @updateCommentCount="updateCommentCount"
         />
     </ArchitectureAppStructureBoxesMainElement>
 
 </template>
 
 <style scoped>
+.topBoxContainer {
+    height: 4rem;
+    display: flex;
+    gap: 10px;
+    align-items: stretch;
+
+}
+.pageIconBox {
+    height: 100%;
+    aspect-ratio: 1;
+}
+.itemTypeTitle {
+    font-size: 2rem;
+    font-family: var(--typeface-findsTable); 
+}
 .avatar {
     height: 100%;
     aspect-ratio: 1;
@@ -180,9 +198,5 @@ function updateCommentCount(increment) {
 .username {
     font-size: 13px;
     font-weight: 600;
-}
-
-.likes {
-    flex-shrink: 0;
 }
 </style>

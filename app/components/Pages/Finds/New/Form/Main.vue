@@ -5,6 +5,7 @@ const description = ref('')
 const selectedMetals = ref([])
 const selectedPeriod = ref()
 const selectedType = ref()
+const me = useUserState()
 
 const findImageSelectorComponent = ref(null)
 
@@ -68,19 +69,19 @@ async function saveNewFind() {
     if(findImages.value[1].file) {
         fD.append('image1', findImages.value[1]?.file || undefined)
     }
-    
-    const res = await $fetch(
-        '/api/content/finds/create',
-        {
-            method: 'POST',
-            headers: {
-                authorization: `Bearer ${useUserState().value.accessToken.value}`
-            },
-            body: fD
-        }
-    )
 
-    if(res.ok) {
+    try {
+        const newFindId = await $fetch(
+            '/api/content/finds/create',
+            {
+                method: 'POST',
+                headers: {
+                    authorization: `Bearer ${me.value.accessToken.value}`
+                },
+                body: fD
+            }
+        )
+
         useToaster("show", {
             id: "newFind",
             type: "success",
@@ -90,21 +91,18 @@ async function saveNewFind() {
         })
 
         isPending.value = false
-        navigateTo(`/finds/${res.data.id}`)
-        navigateTo(`/home?content=finds`)
-    } else {
-        console.error('Error saving new find:', res);
-        useToaster("show", {
-            id: "newFind",
-            type: "error",
-            autoClose: true,
-            message: res.statusText ?? 'An error has occured',
-            position: "bottom"
-        })
+
+        navigateTo(`/users/${me.id}/Finds/${newFindId}`)
+
+    } catch(err) {
+        useHandleError(err)
         isPending.value = false
     }
+
     isPending.value = false
+
 }
+
 const formRef = ref()
 
 </script>

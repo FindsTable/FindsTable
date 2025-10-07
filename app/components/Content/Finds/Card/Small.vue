@@ -14,7 +14,7 @@ const props = defineProps({
         class="
             card
             w100 
-            flex column gap10 pointer justifyEnd
+            flex column gap10 justifyEnd
             theme-surface2
         "
     >

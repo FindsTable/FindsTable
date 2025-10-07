@@ -1,18 +1,14 @@
-
-import { createItem } from '@@/server/directus/items'
-import { 
-    addFileToItem
- } from '@@/server/directus/files'
-
+import { userGet, appPost, appPatch, userDelete } from '@@/server/directus/request'
 import { H3Event } from 'h3'
-import { assertItemCount, getUserId, isValidImageType } from '@@/server/utils/validation'
+import { assertItemCount, isValidImageType } from '@@/server/utils/validation'
 
 
 const bootyPhotoFolderId = 'e6a6fb54-9c40-4b1d-ae78-c438dc39452b'
 
+type NewReportId = string
 export default defineEventHandler(
     async (event: H3Event
-): Promise<any> => {
+): Promise<NewReportId | void> => {
 
     const bearerToken = getHeader(event, 'authorization')
     if(!bearerToken) throw newError({
@@ -21,7 +17,24 @@ export default defineEventHandler(
         reason: 'No bearer token'
     })
 
-    const userId = await getUserId(bearerToken)
+    const { id : userId} = await userGet<{
+        id: string
+    }>({
+        endpoint: '/users/me',
+        bearerToken: bearerToken,
+        query: {
+            fields: 'id'
+        }
+    })
+
+    if( !userId ) {
+        throw newError({
+            code: 403,
+            message: "Unauthorized",
+            reason: "User not logged in"
+        })
+    }
+
 
     await assertItemCount({
         collection: 'Hunt_reports',
@@ -29,208 +42,129 @@ export default defineEventHandler(
     })
 
     const fd = await readMultipartFormData(event)
-    if (!fd) {
-        return {
-            ok: false,
-            data: null,
-            statusText: 'No formdata'
+
+    if (!fd || fd.length > 2) {
+        throw newError({
+            code: 400,
+            message: "Bad request",
+            reason: !fd ? "No formData found in request" : `formData has more than 2 entries`
+        })
+    }
+
+    const cache : Cache = {
+        body: {
+            report: undefined,
+            bootyPhoto: {
+                type: undefined,
+                data: undefined,
+                filename: undefined
+            }
+        },
+        newReportId: undefined,
+        newFiles: {
+            bootyPhotoId: undefined
         }
     }
 
-    if (fd.length > 5) {
-        return {
-            ok: false,
-            statusText: `Too many form entries in the formData.`
-        };
-    }
+     for (const entry of fd) {
+        if (entry.name === 'report') {
+            cache.body.report = JSON.parse(entry.data.toString('utf-8'))
+        } else if (entry.name === 'bootyPhoto') {
 
-    
-   
+            if (!isValidImageType(entry.type)) {
+                
+                throw newError({
+                    code: 400,
+                    message: "Bad request",
+                    reason: 'Invalid image type. Only webp is allowed.'
+                })
+            }
 
-/*
-    Parse the form data and store in a cache object
-*/
-
-    interface Cache {
-        report?: huntReportFromRequest
-        linkedFinds?: string[]
-        bootyPhoto?: {
-            type: string | undefined
-            data: any
-            filename: string | undefined
-        }
-        // id's from directus
-        reportId?: ReportId 
-        bootyPhotoId?: string
-    }
-
-    const cache: Cache = {}
-
-    
-
-    /*
-*
-*
-*   Allowed entry names for the formData from the request
-* 
-* 
-    */
-    const nameOfFormDataEntries = [
-        'report',
-        'banner',
-        'bootyPhoto',
-        'photos'
-    ]
-
-    // Populate cache: if text, convert Buffer->string->JSON if possible; if file, store the entry.
-    for (const entry of fd) {
-        
-        const name = entry.name
-
-        if(
-            typeof name !== 'string' ||
-            !nameOfFormDataEntries.includes(name)
-        ) {
-            return {
-                ok: false,
-                statusText: `Unexpected form entry: ${name}.`
-            };
-        }
-
-        if (name === 'report') {
-            cache[name as 'report'] = JSON.parse(entry.data.toString('utf-8'))
-        } else {
-            cache[name as 'bootyPhoto'] = {
+            cache.body[entry.name] = {
                 data: entry.data,
                 type: entry.type,
                 filename: entry.filename
             }
+            
         }
     }
 
-    
-    /*
-*
-*
-*   Create the hunt report object and get the id
-*  
-* 
-    */
-
-    const reportId = await createItemGetId('Hunt_reports', {
-        ...cache.report,
-        owner: userId
-    } )
-
-    if (!reportId) {
-        return {
-            ok: false,
-            statusText: `Failed to create main item`,
-            data: undefined
-        }
-    } else {
-
-    }
-
-    cache.reportId = reportId
-    
-
-    /*
-*
-*
-*   Handle banner from the request
-* 
-* 
-    */
-
-    if (cache.bootyPhoto) {
-        // Validate MIME type
-        if (!isValidImageType(cache.bootyPhoto.type)) {
-            return {
-                ok: false,
-                statusText: 'Invalid banner image type. Only JPG and PNG are allowed.'
-            }
-        }
-    
-        const fileFormData = new FormData()
-        const blob = new Blob(
-            [cache.bootyPhoto.data], 
-            { 
-                type: cache.bootyPhoto.type || 'application/octet-stream' 
-            }
-        )
-    
-        fileFormData.append('folder', bootyPhotoFolderId)
-        fileFormData.append('Hunt_report_id', cache.reportId)
-        fileFormData.append('file', blob, cache.bootyPhoto.filename || 'bootyOfFinds.jpg')
-    
-        const bootyPhotoRes = await addFileToItem({
-            file: fileFormData,
-            item: {
-                id: reportId,
-                collection: 'Hunt_reports',
-                field: {
-                    name: 'bootyPhoto'
-                }
+    try {
+        const { id : newReportId } = await appPost<{id: string}>({
+            endpoint: '/items/Hunt_reports',
+            body: {
+                ...cache.body.report,
+                owner: userId
+            },
+            query: {
+                fields: '*'
             }
         })
 
-        const newFile = bootyPhotoRes.file
+        if (cache.body.bootyPhoto.data) {
+            const fileFormData = new FormData()
+            const blob = new Blob(
+                [cache.body.bootyPhoto.data],
+                { type: cache.body.bootyPhoto.type || 'application/octet-stream' }
+            )
 
-        if(!newFile.uploaded) {
-            return {
-                ok: false,
-                statusText: "Booty photo could not be uploaded"
-            }
-        }
-        if(!newFile.linked) {
-            return {
-                ok: false,
-                statusText: "Booty photo  could not be linked to item"
-            }
+            fileFormData.append('folder', bootyPhotoFolderId)
+            fileFormData.append('file', blob, cache.body.bootyPhoto.filename || 'image0.webp')
+
+            const { id: bootyPhotoId } = await appPost<{id: string}>({
+                endpoint: '/files',
+                body: fileFormData,
+                query: {
+                    fields: 'id'
+                }
+            })
+
+            cache.newFiles.bootyPhotoId = bootyPhotoId
         }
 
-        if(newFile.id) {
-            cache.bootyPhotoId = newFile.id
-        }
+        cache.newReportId = newReportId
+
+        const { id: updatedReportId } = await appPatch<{id: NewReportId}>({
+            endpointId: `/items/Hunt_reports/${cache.newReportId}`,
+            body: {
+                bootyPhoto: {
+                    id: cache.newFiles.bootyPhotoId,
+                    Hunt_report_id: cache.newReportId
+                }
+            },
+            query: {
+                fields: 'id'
+            }
+        })
+
+        return updatedReportId
+
+    } catch(err) {
+        cancelTransaction(cache)
     }
 
-    return {
-        ok: true,
-        statusText: 'Success',
-        data: cache.reportId
-    }
 })
 
-// Helper to create an item and return its ID.
-
-async function createItemGetId(
-    collection: string, 
-    item: any
-): Promise<string | undefined> {
-    const res = await createItem<any>({
-        auth: "app",
-        collection: collection,
-        body: item,
-        query: {
-            fields: 'id'
-        }
+async function cancelTransaction(cache: Cache) {
+    throw toasterError({
+        code: 400,
+        message: "Bad request",
+        toasterPath: "form.find.creationFailed",
+        reason: 'The transaction failed'
     })
-
-    if (!res.ok || !res.data) {
-        return undefined
-    }
-
-    return res.data.id
 }
 
-type ReportId = string
-type findId = string
-
-type huntReportFromRequest = {
-    title: string
-    content: string
-    date: string
-    biome: string
-    finds: findId[]
+interface Cache {
+    body: {
+        report?: any;
+        bootyPhoto: {
+            type?: string;
+            data?: any;
+            filename?: string;
+        }
+    };
+    newReportId?: string;
+    newFiles: {
+        bootyPhotoId?: string
+    }
 }

@@ -1,84 +1,84 @@
-
-import { createItem } from '@@/server/directus/items'
-import { addFileToItem } from '@@/server/directus/files'
-import { getItemById } from '@@/server/directus/items'
 import { H3Event } from 'h3'
 import { assertItemCount } from '@@/server/utils/validation'
-import { updateItemsCountField as incrementFindsCount } from '@@/server/utils/apiContentUtils'
-import { userGet } from '@@/server/directus/request'
+import { userGet, appPost, appPatch } from '@@/server/directus/request'
 
-const findsImagesFolderId = 'b95762e0-8e06-4c21-878c-7ad6213ef2cf'
+const findsImagesFolderId = '19ec239d-432b-44c7-911d-46cf61743931'
 
 export default defineEventHandler(async <T>(
 event: H3Event
 ): Promise<any> => {
     // Read event and ensure token exists.
-    const body = await readBody(event)
     const bearerToken = getHeader(event, 'authorization')
 
-    if(!body || !bearerToken) throw newError({
+    if(!bearerToken) throw newError({
         code: 403,
         message: "Bad request",
         reason: "Missing body or bearerToken"
     })
 
-    const currentUser = await userGet<{
-        id: string,
-        username: string
+    
+    const { id : userId} = await userGet<{
+        id: string
     }>({
-        endpoint: '/user/me',
+        endpoint: '/users/me',
         bearerToken: bearerToken,
         query: {
-            fields: 'id,username,status'
+            fields: 'id'
         }
     })
 
-    if( !currentUser || !currentUser.id ) {
-        return {
-            ok: false,
-            statusText: 'User is not logged in or does not exist'
-        }
+    if( !userId ) {
+        throw newError({
+            code: 403,
+            message: "Unauthorized",
+            reason: "User not logged in"
+        })
     }
-
-    const userId = currentUser.id
-
-    if (!userId || typeof userId !== 'string') {
-        return {
-            ok: false,
-            statusText: 'User is not logged in.',
-            data: null
-        }
-    }
-
+    
     await assertItemCount({
         collection: 'Finds',
         userId: userId
     })
+    
 
     const fd = await readMultipartFormData(event)
-    if (!fd) {
-        return {
-            ok: false,
-            data: null,
-            statusText: 'No formdata'
+
+    if (!fd || fd.length > 3) {
+        throw newError({
+            code: 400,
+            message: "Bad request",
+            reason: !fd ? "No formData found in request" : 'Too many entries in formData'
+        })
+    }
+    
+    const cache: Cache = {
+        body: {
+            find: undefined,
+            image0: undefined,
+            image1: undefined
+        },
+        newFindId: undefined,
+        newFiles: {
+            image0Id: undefined,
+            image1Id: undefined
         }
     }
 
-    const cache: Cache = {}
-
-    // Process form data
     for (const entry of fd) {
         if (entry.name === 'item') {
-            cache.item = JSON.parse(entry.data.toString('utf-8'))
+            cache.body.find = JSON.parse(entry.data.toString('utf-8'))
         } else if (entry.name === 'image0' || entry.name === 'image1') {
+
             if (!isValidImageType(entry.type)) {
-                return {
-                    ok: false,
-                    data: null,
-                    statusText: 'Invalid image type. Only webp is allowed.'
-                }
+                
+                throw newError({
+                    code: 400,
+                    message: "Bad request",
+                    reason: 'Invalid image type. Only webp is allowed.'
+                })
             }
-            cache[entry.name] = {
+            
+            cache.body[entry.name] = {
                 data: entry.data,
                 type: entry.type,
                 filename: entry.filename
@@ -86,168 +86,117 @@ event: H3Event
         }
     }
 
-    if (!cache.item) {
-        return {
-            ok: false,
-            statusText: 'Item data missing',
-            data: null
-        }
-    }
 
-    // Create the Finds item
-    const createItemRes = await createItemGetId('Finds', {
-        ...cache.item,
-        owner: userId
-    })
-
-    if (!createItemRes) {
-        return {
-            ok: false,
-            statusText: 'Failed to create find item',
-            data: null
-        }
-    }
-
-    cache.itemId = createItemRes
-
-    // Handle image0
-    if (cache.image0) {
+    if (cache.body.image0) {
         const fileFormData = new FormData()
         const blob = new Blob(
-            [cache.image0.data],
-            { type: cache.image0.type || 'application/octet-stream' }
+            [cache.body.image0.data],
+            { type: cache.body.image0.type || 'application/octet-stream' }
         )
 
         fileFormData.append('folder', findsImagesFolderId)
-        fileFormData.append('Finds_id', cache.itemId)
-        fileFormData.append('file', blob, cache.image0.filename || 'image0.webp')
+        fileFormData.append('file', blob, cache.body.image0.filename || 'image0.webp')
 
-        const image0Res = await addFileToItem({
-            file: fileFormData,
-            item: {
-                id: cache.itemId,
-                collection: 'Finds',
-                field: {
-                    name: 'image0'
-                }
+        const { id: image0Id } = await appPost<{id: string}>({
+            endpoint: '/files',
+            body: fileFormData,
+            query: {
+                fields: 'id'
             }
         })
 
-        if (!image0Res.file.uploaded || !image0Res.file.linked) {
-            return {
-                ok: false,
-                statusText: 'Failed to upload and link image0',
-                data: null
-            }
-        }
+        cache.newFiles.image0Id = image0Id
     }
 
-    // Handle image1
-    if (cache.image1) {
-        const fileFormData = new FormData()
-        const blob = new Blob(
-            [cache.image1.data],
-            { type: cache.image1.type || 'application/octet-stream' }
-        )
-
-        fileFormData.append('folder', findsImagesFolderId)
-        fileFormData.append('Finds_id', cache.itemId)
-        fileFormData.append('file', blob, cache.image1.filename || 'image1.webp')
-
-        const image1Res = await addFileToItem({
-            file: fileFormData,
-            item: {
-                id: cache.itemId,
-                collection: 'Finds',
-                field: {
-                    name: 'image1'
-                }
+    try {
+        const { id : newFindId } = await appPost<{id: string}>({
+            endpoint: '/items/Finds',
+            body: {
+                ...cache.body.find,
+                owner: userId
+            },
+            query: {
+                fields: '*'
             }
         })
 
-        if (!image1Res.file.uploaded || !image1Res.file.linked) {
-            return {
-                ok: false,
-                statusText: 'Failed to upload and link image1',
-                data: null
+        cache.newFindId = newFindId
+
+        if (cache.body.image1) {
+            const fileFormData = new FormData()
+            const blob = new Blob(
+                [cache.body.image1.data],
+                { type: cache.body.image1.type || 'application/octet-stream' }
+            )
+
+            fileFormData.append('folder', findsImagesFolderId)
+            fileFormData.append('file', blob, cache.body.image1.filename || 'image1.webp')
+
+            const { id : image1Id } = await appPost<{id: string}>({
+                endpoint: '/files',
+                body: fileFormData,
+                query: {
+                    fields: 'id'
+                }
+            })
+
+            cache.newFiles.image1Id = image1Id
+
+        }
+        const updateImage0 = {
+            id: cache.newFiles.image0Id,
+            Finds_id: cache.newFindId
+        }
+
+        const updateImage1 = {
+            id: cache.newFiles.image1Id,
+            Finds_id: cache.newFindId
+        }
+
+        const { id: updatedFindId } = await appPatch<{id: string}>({
+            endpointId: `/items/Finds/${cache.newFindId}`,
+            body: {
+                image0: cache.body.image0 ? updateImage0 : undefined,
+                image1: cache.body.image1 ? updateImage1 : undefined
+            },
+            query: {
+                fields: 'id'
             }
-        }
-    }
+        })
 
-    // Increment the user's find count
-    const newFindsCount = await incrementFindsCount({
-        bearerToken: bearerToken!,
-        field: 'finds_count',
-        newValue: currentUser.finds_count + 1
-    })
+        return updatedFindId
 
-    // Return the created item with updated find count
-    const itemRes = await getItemById({
-        collection: 'Finds',
-        auth: 'app',
-        id: cache.itemId
-    })
-
-    if (itemRes.ok && itemRes.data) {
-        return {
-            ok: true,
-            data: itemRes,
-            statusText: 'Success'
-        }
-    }
-
-    return {
-        ok: false,
-        statusText: 'Failed to retrieve item after creation',
-        data: null
+    } catch(err) {
+        cancelTransaction(cache)
     }
 })
 
-// Helper to create an item and return its ID
-async function createItemGetId(collection: string, item: any): Promise<string | undefined> {
-    const res = await createItem<any>({
-        auth: "app",
-        collection: collection,
-        body: item,
-        query: {
-            fields: 'id'
-        }
+async function cancelTransaction(cache: Cache) {
+    throw toasterError({
+        code: 400,
+        message: "Bad request",
+        toasterPath: "form.find.creationFailed",
+        reason: 'The transaction failed'
     })
-
-    if (!res.ok || !res.data) {
-        return undefined
-    }
-    return res.data.id
-}
-
-interface MetaImage {
-    key: string;
-    collection: string;
-    role?: string;
-}
-
-interface MetaData {
-    collection: string;
-    images?: MetaImage[];
 }
 
 interface Cache {
-    item?: any;
-    itemId?: string;
-    image0?: {
-        type: string | undefined;
-        data: any;
-        filename: string | undefined;
+    body: {
+        find?: any;
+        image0: undefined | {
+            type?: string;
+            data?: any;
+            filename?: string;
+        };
+        image1: undefined |{
+            type?: string;
+            data?: any;
+            filename?: string;
+        };
     };
-    image1?: {
-        type: string | undefined;
-        data: any;
-        filename: string | undefined;
-    };
-}
-
-interface SimpleResponse {
-    ok: boolean;
-    statusText: string;
-    data?: any;
+    newFindId?: string;
+    newFiles: {
+        image0Id?: string,
+        image1Id?: string
+    }
 }

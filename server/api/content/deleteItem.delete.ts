@@ -11,7 +11,7 @@ export default defineEventHandler(async ( event ) => {
 
         await userDelete({
             bearerToken: bearerToken,
-            endpoint: `/items/${body.collection}/${body.id}`
+            endpointId: `/items/${body.collection}/${body.id}`
         })
     } catch(err : any) {
         throw newError({
