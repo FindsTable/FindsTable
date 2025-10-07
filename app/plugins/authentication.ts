@@ -46,7 +46,8 @@ async function getUserDataWithAccessToken(token: string)
             }
         }
     )
-    
+
+    res.patreon_account = res.patreon_account[0]
 
     if(!res) {
         throw new Error('Problemo')

@@ -5,7 +5,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="frame aspectRatio1by1">
+    <div class="frame full">
         <HtmlPictureMain
             v-if="props.assetId"
             :assetId="props.assetId"
@@ -25,7 +25,6 @@ const props = defineProps({
 
 <style scoped>
 .frame {
-    flex: 1 1 0;
     background-color: rgba(0, 0, 0, 0.096);
     padding: 10px;
     border: 1px solid var(--layout-line-color);

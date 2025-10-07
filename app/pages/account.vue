@@ -5,8 +5,6 @@ const { t } = useI18n();
 
 
 definePageMeta({
-    title: 'Account',
-    description: 'Finds Table, a place to show your share of history.',
     middleware: 'private-route',
 });
 

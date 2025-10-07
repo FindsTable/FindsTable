@@ -16,7 +16,8 @@ export const useAppState = () => {
         },
         layoutState: {
             mainContentFlow: 'community' | 'user'
-        }
+        },
+        logs: []
         
     }>(
         'appState',
@@ -37,7 +38,8 @@ export const useAppState = () => {
             },
             layoutState: {
                 mainContentFlow: 'community'
-            }
+            },
+            logs: []
         })
     );
 }

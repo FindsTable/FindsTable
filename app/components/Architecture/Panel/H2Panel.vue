@@ -24,9 +24,6 @@ const editingField = ref('')
 </template>
 
 <style scoped>
-.panel {
-    margin-top: 23px;
-}
 .mainBox {
     padding-top: 10px;
     padding-left: 10px;

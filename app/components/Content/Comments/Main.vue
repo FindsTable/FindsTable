@@ -75,7 +75,7 @@ function newCommentSaved(newComment) {
 </script>
 
 <template>  
-    <div class="marTop20" @click.stop>
+    <div @click.stop>
         <ArchitecturePanelMain 
             v-if="comments"
             class="commentsBox overflowScroll -scrollY"

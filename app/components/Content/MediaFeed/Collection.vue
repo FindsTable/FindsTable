@@ -59,15 +59,20 @@ async function deleteItem(id) {
         v-if="feed?.length"
     >
         
-        <ArchitectureAppStructureBoxesMainElement
+        <NuxtLink
             v-for="item in feed" :key="item.id"
+            :to="`/users/${item.owner.id}/${props.collection}/${item.id}`"
+            class="pointer"
         >
-            
-            <component :is="cardComponent"
-                :item="item"
-                :showUser="true"
-                @delete="deleteItem"
-            />
-        </ArchitectureAppStructureBoxesMainElement>
+            <ArchitectureAppStructureBoxesMainElement
+                
+            >
+                <component :is="cardComponent"
+                    :item="item"
+                    :showUser="true"
+                    @delete="deleteItem"
+                />
+            </ArchitectureAppStructureBoxesMainElement>
+        </NuxtLink>
     </div>
 </template>

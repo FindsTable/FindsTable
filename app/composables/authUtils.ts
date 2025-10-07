@@ -17,13 +17,11 @@ async function useRefresh() : Promise<void> {
 
         
         const userData = await useNuxtApp().$auth.getUserDataWithAccessToken(token.value)
-        console.log(userData)
+
         useLoadStateData('userState', {
             ...userData,
             accessToken: token
         })
-        console.log(useUserState().value)
-        console.log(userData)
 
         useUserState().value.isLoggedIn = true
 
