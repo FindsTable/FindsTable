@@ -4,7 +4,6 @@ const app = useAppConfig()
 onMounted(() => {
     console.log("setting up theme on appBox")
     if(!useAppConfig().colorMode.active) {
-        console.log('fallback color mode setiing')
         useAppConfig().colorMode.setting = 'dark'
         useAppConfig().colorMode.active = 'dark'
     }
@@ -14,7 +13,7 @@ onMounted(() => {
 <template>
     <div 
         id="viewportContainer"
-        class="theme-backdropColor"
+        class="theme-backdropColor r"
         :class="[
             app.colorMode.active,
             'theme-textColor-main', 

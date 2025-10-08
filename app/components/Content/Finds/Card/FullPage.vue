@@ -12,24 +12,10 @@ const me = useUserState()
 </script>
 
 <template v-if="itel">
-    <ArchitectureAppStructureBoxesMainElement>
-        <div
-            class="topBoxContainer"
-        >
-            <ArchitecturePanelMain class="pageIconBox theme-surface ">
-                <Icon name="content" class="40px" />
-            </ArchitecturePanelMain>
-
-            <ArchitecturePanelMain 
-                v-if="showUser"
-                class="
-                    itemTypeTitle flex alignCenter grow
-                "
-            >
-                Find
-            </ArchitecturePanelMain>
-        </div>
-    </ArchitectureAppStructureBoxesMainElement>
+    <ArchitecturePageHeaderIconAndTitle
+        iconName="content"
+        title="Find"
+    />
 
     <ArchitectureAppStructureBoxesMainElement>
         <ArchitecturePanelMain>
@@ -173,21 +159,7 @@ const me = useUserState()
 </template>
 
 <style scoped>
-.topBoxContainer {
-    height: 4rem;
-    display: flex;
-    gap: 10px;
-    align-items: stretch;
 
-}
-.pageIconBox {
-    height: 100%;
-    aspect-ratio: 1;
-}
-.itemTypeTitle {
-    font-size: 2rem;
-    font-family: var(--typeface-findsTable); 
-}
 .avatar {
     height: 100%;
     aspect-ratio: 1;

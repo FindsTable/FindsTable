@@ -74,7 +74,7 @@ ________________________________________________________________________________
 
 #viewportContainer{
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
 }
 
 #architecture-appBox {

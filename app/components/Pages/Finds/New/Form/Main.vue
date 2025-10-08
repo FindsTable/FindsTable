@@ -108,7 +108,7 @@ const formRef = ref()
 </script>
 
 <template>
-    <form class="flex column marTop20" ref="formRef">
+    <form class="flex column" ref="formRef">
         <ArchitectureAppStructureBoxesMainElement>
             <ArchitecturePanelMain> 
                 <TH2 class="sectionTitle">

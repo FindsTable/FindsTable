@@ -170,7 +170,7 @@ async function saveNewReport() {
 </script>
 
 <template>
-    <form class="flex column marTop20" ref="formRef">
+    <form class="flex column" ref="formRef">
         <ArchitectureAppStructureBoxesMainElement>
             <ArchitecturePanelMain>
                 <div class="section flex column gap20">

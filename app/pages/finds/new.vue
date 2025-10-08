@@ -11,11 +11,18 @@ definePageMeta({
 <template>
     <NuxtLayout name="private-route">
         <template #title>
-            {{ t('page.finds.newFind.title') }}
+            <ArchitecturePageHeaderIconAndTitle
+                iconName="content"
+                title="New find"
+            />
         </template>
 
         <template #header>
-            {{ t('page.finds.newFind.pageLead') }}
+            <ArchitectureAppStructureBoxesMainElement>
+                <ArchitecturePanelMain>
+                    {{ t('page.finds.newFind.pageLead') }}
+                </ArchitecturePanelMain>
+            </ArchitectureAppStructureBoxesMainElement>
         </template>
 
         <template #noScrollMain>

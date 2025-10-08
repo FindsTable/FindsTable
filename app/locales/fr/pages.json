@@ -213,7 +213,7 @@
         },
         "huntReports": {
             "newReport": {
-                "title": "New Hunt Report",
+                "title": "Nouvelle entrée",
                 "pageLead": "Build your own collection of adventures. Each Hunt Report lets you document your outings, conditions, and finds. Over time, you’ll create a personal archive of all your exploration journeys.",
                 "fields": {
                     "title": {

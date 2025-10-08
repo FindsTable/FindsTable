@@ -12,11 +12,18 @@ definePageMeta({
   <NuxtLayout name="private-route">
 
     <template #title>
-      {{t('page.huntReports.newReport.title')}}
+        <ArchitecturePageHeaderIconAndTitle
+            iconName="book"
+            :title="t('page.huntReports.newReport.title')"
+        />
     </template>
 
     <template #header>
-        {{t('page.huntReports.newReport.pageLead')}}
+        <ArchitectureAppStructureBoxesMainElement>
+            <ArchitecturePanelMain>
+                {{t('page.huntReports.newReport.pageLead')}}
+            </ArchitecturePanelMain>
+        </ArchitectureAppStructureBoxesMainElement>
     </template>
 
     <template #scrollMain>
