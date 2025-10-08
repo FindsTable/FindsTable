@@ -13,7 +13,7 @@ onMounted(() => {
 <template>
     <div 
         id="viewportContainer"
-        class="theme-backdropColor r"
+        class="theme-backdropColor"
         :class="[
             app.colorMode.active,
             'theme-textColor-main', 
