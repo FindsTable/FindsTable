@@ -5,14 +5,14 @@ const query = {
     Finds: {
         fields: [
             '*',
-            'owner.username,owner.displayName,owner.avatar',
+            'owner.id,owner.username,owner.displayName,owner.avatar',
             'metals.*.*'
         ]
     },
     Hunt_reports: {
         fields: [
             '*',
-            'owner.username,owner.displayName,owner.avatar',
+            'owner.id,owner.username,owner.displayName,owner.avatar',
             'finds.id,finds.image0,finds.image1',
             'finds.owner.id,finds.owner.avatar',
             'finds.title,finds.description',

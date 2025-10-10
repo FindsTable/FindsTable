@@ -30,7 +30,10 @@ onMounted(() => {
     <NuxtLayout name="private-route">
         <template #tabs>
             <ArchitectureAppStructureBoxesMainElement>
-                <ArchitecturePageTabsFTHAContent  :selectedTab="selectedTab" @changeTab="changeTab" />
+                <ArchitecturePageTabsFTHAContent  
+                    :selectedTab="selectedTab" 
+                    @changeTab="changeTab"
+                />
             </ArchitectureAppStructureBoxesMainElement>
         </template>
 

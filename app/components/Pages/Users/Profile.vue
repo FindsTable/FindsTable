@@ -2,48 +2,11 @@
 const route = useRoute()
 const userId = route.params.userId
 
-const { data: user, refresh: refreshUser } = await useAsyncData(
-    `user-${userId}`,
-    async () => {
-        const res = await $fetch(
-            `https://admin.findstable.net/users/${userId}`,
-            {
-                method: 'GET',
-                headers: {
-                    authorization: `Bearer ${useUserState().value.accessToken.value}`
-                },
-                query: {
-                    fields: '*,personalDataRecord.*.*,badgeRecord.*.*'
-                }
-            }
-        )
-
-        return res.data
-    }
-)
-
-const { data: badges, refresh: refreshBadges } = await useAsyncData(
-    `badges-${userId}`,
-    async () => {
-        const res = await $fetch(
-            `https://admin.findstable.net/items/User_badges`,
-            {
-                method: 'GET',
-                headers: {
-                    authorization: `Bearer ${useUserState().value.accessToken.value}`
-                },
-                query: {
-                    fields: '*',
-                    filter: {
-                        owner: {
-                            _eq: userId
-                        }
-                    }
-                }
-            }
-        )
-
-        return res.data
+const { data: user } = cacheDbGet(
+    `user:${userId}`,
+    `/users/${userId}`,
+    {
+        fields: '*,personalDataRecord.*.*,badgeRecord.*.*'
     }
 )
 
@@ -113,12 +76,10 @@ const { data: badges, refresh: refreshBadges } = await useAsyncData(
             </template>
 
             <template #content v-if="user">
-                <ContentBadgesBadgeRecord 
+                <ContentBadgesBadgeRecordPublic
                     :userId="user.id"
                 />
             </template>
         </ArchitecturePanelH2Panel>
     </ArchitectureAppStructureBoxesMainElement>
-
-    
 </template>

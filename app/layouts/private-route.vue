@@ -21,9 +21,9 @@
                         class="TopBar"
                     />
                 </ArchitectureAppStructureBoxesMainElement>
-                    <!-- <slot name="tabs">
+                    <slot name="tabs">
 
-                    </slot> -->
+                    </slot>
                 <ArchitectureFlexGrowVerticalScroll>
                     <TH1>
                         <slot name="title">

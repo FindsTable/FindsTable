@@ -1,21 +1,30 @@
 <script setup lang="ts">
-const { t, locale } = useI18n()
+
 const props = defineProps<{
-  badge: any
+  badge: SuccessBadge
   selected: Boolean
-  owned: any
 }>();
 
+const emit = defineEmits(['selectBadge'])
+
+function handleClick() {
+    emit('selectBadge', props.selected ? '' : props.badge.key)
+}
+
+const userOwned = [
+    'betaTester'
+]
 </script>
 
 <template>
-    <div 
+    <!-- <div 
         v-if="badge"
         class="frame pointer"
         :class="[ 
             selected ? 'selected' : '', 
-            owned ? 'owned' : 'notOwned'
+            badge.Badge_records.length ? 'owned' : 'notOwned'
         ]"
+        @click="handleClick"
     >
         <div class="drawer relative h100">
             <div class="flex column alignCenter">
@@ -24,7 +33,7 @@ const props = defineProps<{
                 </div>
 
                 <img 
-                    :src="`https://admin.findstable.net/assets/${badge.defaultTier.image}`" alt=""
+                    :src="`https://admin.findstable.net/assets/${badge.image}`" alt=""
                 >
             </div>
 
@@ -32,13 +41,9 @@ const props = defineProps<{
                 <div class="flex justifyStart">
                     <Icon name="back" size="20px" />
                 </div>
-
-                <p class="grow flex alignCenter" v-if="badge.description">
-                    {{ badge.description[locale] }}
-                </p>
             </div>
         </div>
-    </div>
+    </div> -->
 </template>
 
 <style scoped>

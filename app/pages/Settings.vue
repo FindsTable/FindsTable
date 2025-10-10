@@ -44,12 +44,21 @@ definePageMeta({
 
 <template>
     <NuxtLayout name="private-route">
-        <template #title>
-            {{ t('page.settings.title') }}
+        <template #header>
+            <ArchitecturePageHeaderIconAndTitle
+                iconName="cog"
+                :title="t('page.settings.title')"
+            />
         </template>
 
         <template #noScrollMain>
-            <Tabs :tabs="pageTabs" :selectedTab="selectedTab" @changeTab="changeTab" />
+            <ArchitectureAppStructureBoxesMainElement>
+                <Tabs 
+                    :tabs="pageTabs"
+                    :selectedTab="selectedTab"
+                    @changeTab="changeTab"
+                />
+            </ArchitectureAppStructureBoxesMainElement>
         </template>
         
         <template #scrollMain>

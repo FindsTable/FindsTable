@@ -51,7 +51,10 @@ definePageMeta({
 <template>
     <NuxtLayout name="private-route">
         <template #title>
-            Users
+            <ArchitecturePageHeaderIconAndTitle
+                iconName="users"
+                title="Users"
+            />
         </template>
         
         <template #header>

@@ -46,4 +46,10 @@
         background-color: var(--color-ft);
     }
 
+/*  Disabled */
 
+.theme-buttonText:disabled {
+    color: var(--textButton-textColor);
+    background-color: var(--textButton-bgColor);
+    opacity: 0.5;
+}

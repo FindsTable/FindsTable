@@ -2,11 +2,15 @@
 const props = defineProps({
     iconName: {
         type: String,
-        required: true
+        required: false
     },
     title: {
         type: String,
         required: true
+    },
+    avatarId: {
+        type: String,
+        required: false
     }
 })
 </script>
@@ -17,7 +21,17 @@ const props = defineProps({
             class="topBoxContainer"
         >
             <ArchitecturePanelMain class="pageIconBox theme-surface ">
-                <Icon :name="iconName" size="33px" />
+                <Icon 
+                    v-if="iconName"
+                    :name="iconName" size="33px"
+                />
+
+                <div
+                    v-else
+                    class="full"
+                >
+                    <slot name="icon" />
+                </div>
             </ArchitecturePanelMain>
 
             <ArchitecturePanelMain 
@@ -25,7 +39,13 @@ const props = defineProps({
                     itemTypeTitle flex alignCenter grow
                 "
             >
-                {{ title }}
+                <p
+                    class="
+                    title
+                "
+                >
+                    {{ title }}
+                </p>
             </ArchitecturePanelMain>
         </div>
     </ArchitectureAppStructureBoxesMainElement>
@@ -45,6 +65,13 @@ const props = defineProps({
 }
 .itemTypeTitle {
     font-size: 2rem;
-    font-family: var(--typeface-findsTable); 
+    font-family: var(--typeface-findsTable);
+    overflow: hidden;
+}
+.title {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 </style>

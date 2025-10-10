@@ -19,9 +19,6 @@ function updateCommentCount(increment) {
     newCommentCount.value += increment
 }
 
-onMounted(() => {
-    console.log(props.item)
-})
 </script>
 
 <template>
@@ -37,7 +34,7 @@ onMounted(() => {
             v-if="showUser"
             class="
                 userBox
-                flex gap10 alignCenter
+                flex gap10 alignCenter justifyBetween
                 noEvents_kidsEvents
             "
         >
@@ -68,6 +65,11 @@ onMounted(() => {
 
                 </div>
             </NuxtLink>
+
+            <!-- <ContentBadgesBadgeRecordPublic
+                v-if="item?.owner?.id"
+                :userId="item.owner.id"
+            /> -->
         </div>
 
         <div
@@ -76,7 +78,6 @@ onMounted(() => {
             <TH3>
                 {{ item.title }}
             </TH3>
-            {{ item.bookmarks }}
 
             <ContentFindsCardMiniToolBar
                 v-if="me.id === item.owner.id"

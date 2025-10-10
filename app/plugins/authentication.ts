@@ -5,7 +5,6 @@ export default defineNuxtPlugin(() => {
         provide: {
             auth: {
                 getUserDataWithAccessToken,
-                refreshTokens,
                 ativateAccessTokenAutoRefresh
             }
         },
@@ -52,47 +51,22 @@ async function getUserDataWithAccessToken(token: string)
     if(!res) {
         throw new Error('Problemo')
     }
-    return res
-}
 
-async function refreshTokens()
-: Promise <ParsedApiResponse<ParsedAccessToken | null>> {
-    const res: any = await use$Fetch<ParsedAccessToken>(
-        '/api/auth/refresh', 
-        {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
-    );
-    if (!res) {
-        return useParseApiResponse({
-            ok: false,
-            status: 500,
-            statusText: 'Server error'
-        })
-    }
-    
-    return useParseApiResponse(res)
+    return res
 }
 
 let timeout: ReturnType<typeof setTimeout> | null = null;
 
 function ativateAccessTokenAutoRefresh() {
-    console.log('refreshing token')
+
     if (timeout !== null) {
         clearTimeout(timeout)
     }
+
     if (useUserState().value.accessToken?.value) {
         timeout = setTimeout(async () => {
-            const res = await refreshTokens()
-            
-            if (res.ok && res.data) {
-                const newToken = res.data.access_token
-                useUserState().value.accessToken.value = newToken.value
-                useUserState().value.accessToken.expires = newToken.expires + 1
-            }
+            await useRefresh()
+
             ativateAccessTokenAutoRefresh()
         }, 840000)
     }

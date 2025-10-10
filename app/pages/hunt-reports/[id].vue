@@ -15,7 +15,6 @@ type huntReport = {
 }
 
 const route = useRoute()
-// const cache = useCache()
 
 const fields = [
     '*',

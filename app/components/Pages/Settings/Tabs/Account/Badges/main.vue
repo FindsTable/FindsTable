@@ -2,6 +2,7 @@
 import {
     ArchitecturePanelH2Panel as H2Panel
 } from '#components'
+
 const me = useUserState()
 
 const { t } = useI18n()

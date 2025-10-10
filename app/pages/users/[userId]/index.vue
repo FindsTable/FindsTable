@@ -100,22 +100,16 @@ const userTabs = [
 <template>
     <NuxtLayout name="private-route" v-if="user">
         <template #header>
-            <ArchitectureAppStructureBoxesMainElement
-                class="hiddenHeader"
+            <ArchitecturePageHeaderIconAndTitle
+                :title="user.displayName"
             >
-                <div class="flex gap10">
-                    <ArchitectureFramesAvatar :fileId="user.avatar || null" />
-                    <div>
-                        <TH1>
-                            {{ user.displayName }}
-                        </TH1>
-
-                        <p>
-                            {{ user.username }}
-                        </p>
-                    </div>
-                </div>
-            </ArchitectureAppStructureBoxesMainElement>
+                <template #icon>
+                    <ContentAvatarsMain
+                        :assetId="user.avatar"
+                        round
+                    />
+                </template>
+            </ArchitecturePageHeaderIconAndTitle>
 
             <ArchitectureAppStructureBoxesMainElement
                 class="vidibleHeader"
@@ -141,37 +135,39 @@ const userTabs = [
         </template>
 
         <template #scrollMain>
-            <div 
-                v-if="selectedPageTab === 'content'"
-                class="flex column marTop50"
-            >
-                <KeepAlive>
-                    <PagesUsersFinds 
-                        v-if="selectedContentTab === 'finds'"
-                        :userId="typeSafeUserId"
-                    />
-                </KeepAlive>
+            <KeepAlive>
+                <div 
+                    v-if="selectedPageTab === 'content'"
+                    class="flex column marTop50"
+                >
+                    <KeepAlive>
+                        <PagesUsersFinds 
+                            v-if="selectedContentTab === 'finds'"
+                            :userId="typeSafeUserId"
+                        />
+                    </KeepAlive>
 
-                <KeepAlive>
-                    <PagesUsersThoughts 
-                        v-if="selectedContentTab === 'thoughts'"
-                        :userId="typeSafeUserId"
-                    />
-                </KeepAlive>
+                    <KeepAlive>
+                        <PagesUsersThoughts 
+                            v-if="selectedContentTab === 'thoughts'"
+                            :userId="typeSafeUserId"
+                        />
+                    </KeepAlive>
 
-                <KeepAlive>
-                    <PagesUsersHuntReports 
-                        v-if="selectedContentTab === 'huntReports'"
-                        :userId="typeSafeUserId"
-                    />
-                </KeepAlive>
-            </div>
-
-            <ArchitectureAppStructureBoxesMainElement>
+                    <KeepAlive>
+                        <PagesUsersHuntReports 
+                            v-if="selectedContentTab === 'huntReports'"
+                            :userId="typeSafeUserId"
+                        />
+                    </KeepAlive>
+                </div>
+            </KeepAlive>
+            
+            <KeepAlive>
                 <PagesUsersProfile
                     v-if="selectedPageTab === 'profile'"
                 />
-            </ArchitectureAppStructureBoxesMainElement>
+            </KeepAlive>
         </template>
     </NuxtLayout>
 </template>

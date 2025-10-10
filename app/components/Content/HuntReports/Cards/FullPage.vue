@@ -58,9 +58,9 @@ const emit = defineEmits(['delete'])
                     </div>
                 </NuxtLink>
 
-                <ContentBadgesBadgeRecord
+                <!-- <ContentBadgesBadgeRecordPublic
                     :userId="item.owner.id"
-                />
+                /> -->
             </div>
 
         </ArchitecturePanelMain>

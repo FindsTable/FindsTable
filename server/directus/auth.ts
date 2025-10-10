@@ -1,5 +1,3 @@
-import { directusAPI } from "./main"
-import { ApiResponse } from '#shared/types/apiResponse'
 
 export {
     refreshTokens
@@ -8,18 +6,6 @@ export {
 async function refreshTokens(
     refreshToken: string
 ): Promise<DirectusTokens> {
-
-    // const res: ApiResponse<any> = await directusAPI({  //should replace the "any" type
-    //     endPoint: '/auth/refresh',
-    //     method: 'POST',
-    //     auth: 'public',
-    //     body: {
-    //         refresh_token: refreshToken,
-    //         mode: 'json'
-    //     }
-    // })
-
-    // return res.data
 
     try {
         const { data : res } = await $fetch<{

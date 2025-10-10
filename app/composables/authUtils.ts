@@ -15,7 +15,6 @@ async function useRefresh() : Promise<void> {
             }
         )
 
-        
         const userData = await useNuxtApp().$auth.getUserDataWithAccessToken(token.value)
 
         useLoadStateData('userState', {

@@ -30,10 +30,6 @@
 - `useAwait(promise: Promise<any>): { data: Ref<any>, error: Ref<any>, pending: Ref<boolean> }`
   - Utility for handling async operations with reactive states
 
-## cache.ts
-- `useCache(): State`
-  - Manages navigation cache state
-
 ## confirmationModal.ts
 - `useConfirmationModalState(): State`
   - State management for confirmation modals

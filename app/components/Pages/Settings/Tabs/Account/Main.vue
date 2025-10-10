@@ -14,7 +14,7 @@ import {
     </ArchitectureAppStructureBoxesMainElement>
 
     <ArchitectureAppStructureBoxesMainElement>
-        <Badges />
+        <!-- <Badges /> -->
     </ArchitectureAppStructureBoxesMainElement>
 
     <ArchitectureAppStructureBoxesMainElement>

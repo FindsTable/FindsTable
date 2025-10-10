@@ -57,11 +57,11 @@ async function refreshAvatarCollection() {
         </template>
 
         <template #content>
-            <div class="flex gap10">
+            <div class="flex gap20">
                 <button 
                     v-if="avatars?.length"
                     @click.prevent="selectedButton = 'collection'"
-                    class="comp-button -text"
+                    class="theme-buttonText pointer"
                     :class="[ selectedButton === 'collection' ? 'selected' : '' ]"  
                 >
                     {{ t('page.settings.tabs.account.sections.avatar.sections.myAvatars.button') }}
@@ -69,23 +69,36 @@ async function refreshAvatarCollection() {
 
                 <button 
                     @click.prevent="selectedButton = 'uploadNew'"
-                    class="comp-button -text"
+                    class="theme-buttonText pointer"
                     :class="[ selectedButton === 'uploadNew' ? 'selected' : '' ]"  
                 >
                     {{ t('page.settings.tabs.account.sections.avatar.sections.uploadNew.button') }}
                 </button>
             </div>
 
-            <Collection 
-                v-if="selectedButton === 'collection'"
-                :avatars="avatars"
-                @refreshAvatarCollection="refreshAvatarCollection"
-            />
+            <div>
+                <Collection 
+                    v-if="selectedButton === 'collection'"
+                    :avatars="avatars"
+                    @refreshAvatarCollection="refreshAvatarCollection"
+                />
 
-            <SelectNewAvatar 
-                v-if="selectedButton === 'uploadNew'"
-                @refreshAvatarCollection="refreshAvatarCollection"
-            />
+                <SelectNewAvatar 
+                    v-if="selectedButton === 'uploadNew'"
+                    @refreshAvatarCollection="refreshAvatarCollection"
+                />
+            </div>
         </template>
     </H2Panel>
 </template>
+
+<style scoped>
+button {
+    opacity: 0.5;
+}
+
+.selected {
+    opacity: 1;
+    border-bottom: 1px solid white;
+}
+</style>

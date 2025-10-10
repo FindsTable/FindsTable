@@ -117,7 +117,7 @@ function handleSelectAvatar(av: { id: string; image: string }) {
 </script>
 
 <template>
-  <div class="flex gap20 marTop20">
+  <div class="flex gap20">
     <div v-if="avatars?.length" class="flex gap20">
       <Frame 
         pointer
@@ -131,12 +131,12 @@ function handleSelectAvatar(av: { id: string; image: string }) {
     </div>
   </div>
 
-  <div class="flex marTop20">
+  <div class="flex marTop20 gap20">
     <button 
         v-if="avatars"
         @click="setAsCurrentAvatar"
         :disabled="!selectedAvatar || selectedAvatar.id === me.avatar"
-        class="comp-button -text font-text-main"
+        class="theme-buttonText"
     >
       select
     </button>
@@ -144,7 +144,7 @@ function handleSelectAvatar(av: { id: string; image: string }) {
     <button 
         @click="deleteSelectedAvatar" 
         :disabled="!selectedAvatar"
-        class="comp-button -text font-text-main"
+        class="theme-buttonText"
     >
       delete
     </button>
@@ -161,7 +161,15 @@ function handleSelectAvatar(av: { id: string; image: string }) {
 }
 
 .avatarFrame:first-child.selected,
+
 .selected {
   outline: 2px solid var(--tone-mango-50);
+}
+
+button {
+    cursor: pointer;
+}
+button:disabled {
+    cursor: auto;
 }
 </style>

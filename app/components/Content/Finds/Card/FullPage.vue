@@ -11,7 +11,7 @@ const me = useUserState()
 
 </script>
 
-<template v-if="itel">
+<template v-if="item">
     <ArchitecturePageHeaderIconAndTitle
         iconName="content"
         title="Find"
@@ -54,9 +54,10 @@ const me = useUserState()
                     </div>
                 </NuxtLink>
 
-                <ContentBadgesBadgeRecord
+                <!-- <ContentBadgesBadgeRecordPublic
+                    v-if="item?.owner?.id"
                     :userId="item.owner.id"
-                />
+                /> -->
             </div>
 
         </ArchitecturePanelMain>

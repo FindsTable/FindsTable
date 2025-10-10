@@ -4,7 +4,7 @@ const props = defineProps({
     tabs: {
         type: [{
                 value: String,
-                displayText: {
+                text: {
                     type: String,
                     required: false
                 },
@@ -24,7 +24,7 @@ const emit = defineEmits(['changeTab'])
 
 const selectedTabForSmallScreen = computed(() => {
   const tab = props.tabs.find(tab => tab.value === props.selectedTab)
-  return tab?.textPath
+  return tab?.textPath ? tab.textPath : tab.text
 })
 
 function handleClick(tabValue) {
@@ -51,8 +51,18 @@ function handleClick(tabValue) {
                     class="icon"
                 />
 
-                <span class="text">
+                <span
+                    v-if="tab.textPath"
+                    class="text"
+                >
                     {{ t(tab.textPath) }}
+                </span>
+
+                <span 
+                    v-if="text"
+                    class="text"
+                >
+                    {{ t(tab.text) }}
                 </span>
             </span>
         </button>
