@@ -16,32 +16,27 @@ export default defineEventHandler(async (
         reason: 'No body in request'
     })
 
-    const user = await appGet<{
+    const users = await appGet<{
         id: string,
         email: string,
         email_verification_token: string
-    }>({
-        endpoint: `users/`,
+    }[]>({
+        endpoint: `/users/`,
         query: {
             filter: {
-                email: {
-                    _eq: body.email
+                email_verification_token: {
+                    _eq: body.token
                 }
             },
             fields: 'id,email,email_verification_token'
         }
     })
 
-    assertTokensAreValid(
-        body.token,
-        user.email_verification_token
-    )
-
     /*
     *  Create dataRecord, dataValues, badgeRecord, update userObject
     */
-    await configureVerifiedAccount(user)
 
+    await configureVerifiedAccount(users[0])
 })
 
 

@@ -5,12 +5,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <div
-        class="frame full"
-        :class="{
-            empty: !assetId
-        }"
-    >
+    <div class="frame">
         <picture
             v-if="assetId"
         >
@@ -21,7 +16,7 @@ const props = defineProps({
 
             <img
                 :src="`https://admin.findstable.net/assets/${assetId}?key=badge-350-png`"
-                class="block full"
+                class="block full objectFitContain"
             >
         </picture>
     </div>
@@ -29,12 +24,10 @@ const props = defineProps({
 
 <style scoped>
 .frame {
-    background-color: rgba(0, 0, 0, 0.096);
+    height: 100%;
+    aspect-ratio: 1;
     border-radius: 5px;
-    box-shadow: inset 0 0 25px rgba(201, 211, 143, 0.112);
-}
-.frame.empty {
-    background-color: rgba(0, 0, 0, 0.096);
+    background-color: rgba(0, 0, 0, 0.116);
 }
 </style>
 

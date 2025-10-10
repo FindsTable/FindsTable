@@ -6,6 +6,14 @@ const props = defineProps<{
   owned: any
 }>();
 
+
+// {{ badges[0].tiers[0].badgeValues[0].tier.image }}
+
+const imageId = computed(() => {
+    const ownedImage = props.badge?.tiers?.[0]?.badgeValues?.[0]?.tier?.image
+    return ownedImage || props.badge?.defaultTier?.image
+})
+
 </script>
 
 <template>
@@ -24,7 +32,7 @@ const props = defineProps<{
                 </div>
 
                 <img 
-                    :src="`https://admin.findstable.net/assets/${badge.defaultTier.image}`" alt=""
+                    :src="`https://admin.findstable.net/assets/${imageId}`" alt=""
                 >
             </div>
 
@@ -45,7 +53,7 @@ const props = defineProps<{
 .frame {
     border-radius: 10px;
     overflow: hidden;
-    /* background-color: var(--tone-grayscale-30); */
+    background-color: rgba(0, 0, 0, 0.16);
 }
 .frame.selected .drawer{
     transform: translateX(-100%);
@@ -71,7 +79,7 @@ img {
 }
 .frame{
     border: 1px solid rgb(62, 110, 71);
-    box-shadow: inset 0px 0px 10px rgba(62, 110, 71, 0.542);
+    box-shadow: inset 0px 0px 10px rgba(85, 143, 95, 0.542);
     transition: 300ms ease;
 }
 .frame:hover {
@@ -80,6 +88,7 @@ img {
 }
 
 .notOwned{
+    box-shadow: inset 0px 0px 10px rgba(85, 143, 95, 0.235);
     filter: saturate(0);
     /* border: 1px solid rgb(116, 116, 116);
     box-shadow: inset 0px 0px 10px rgba(107, 107, 107, 0.542); */

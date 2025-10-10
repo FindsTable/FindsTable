@@ -56,7 +56,7 @@ export default defineEventHandler( async (
             reason: err.message
         })
     }
-    
+
     await invitationCodeIsValid(body.code);
     assertStrongEquality(
         body.password, 
@@ -77,14 +77,6 @@ export default defineEventHandler( async (
             fields: 'id,email'
         }
     })
-    
-    if(!newUser) {
-        throw newError({
-            code: 505,
-            message: "Request failed",
-            reason: "Could not create user"
-        })
-    }
 
     return newUser
 });

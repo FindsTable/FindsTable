@@ -51,27 +51,28 @@ definePageMeta({
 <template>
     <NuxtLayout name="private-route">
         <template #title>
+            
+        </template>
+        
+        <template #header>
             <ArchitecturePageHeaderIconAndTitle
                 iconName="users"
                 title="Users"
             />
         </template>
-        
-        <template #header>
-            Check the detectorists
-        </template>
 
         <template #scrollMain>
             <div 
                 v-if="users" 
-                class="flex column gap10"
+                class="flex column"
             >
-                <LazyArchitectureAppStructureBoxesMainElement>
+                <ArchitectureAppStructureBoxesMainElement
+                    v-for="user in users" :key="user.id" 
+                >
                     <PagesUsersCard 
-                        v-for="user in users" :key="user.id" 
                         :user="user"
                     />
-                </LazyArchitectureAppStructureBoxesMainElement>
+                </ArchitectureAppStructureBoxesMainElement>
             </div>
         </template>
     </NuxtLayout>

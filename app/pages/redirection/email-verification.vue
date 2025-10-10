@@ -6,30 +6,37 @@ const route = useRoute()
 const emailState = ref('verifying')
 
 async function verifyEmail() {
-    const res = await $fetch(
-        '/api/auth/verify-email',
-        {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: {
-                email: route.query.email,
-                token: route.query.token
-            }
-        }
-    )
-    console.log('verifying email:', res)
+    console.log('eric')
 
-    if(res.ok) {
-        emailState.value = 'verified'
-    } else {
-        'notVerified'
+    try {
+        const res = await $fetch(
+            '/api/auth/verify-email',
+            {
+                method: 'POST',
+                body: {
+                    email: route.query.email,
+                    token: route.query.token
+                }
+            }
+        )
+        console.log('verifying email:', res)
+
+        useToaster('show', {
+            id: 'newUser',
+            type: 'success',
+            autoClose: true,
+            message: "Welcome to the Finds Table !",
+            position: 'bottom'
+        })
+
+        navigateTo("/login")
+    } catch(err) {
+        useHandleError(err)
     }
-    
 }
 
 onMounted(() => {
+    console.log('errrjrke')
     verifyEmail()
 })
 

@@ -1,7 +1,5 @@
 <script setup>
-import { ArchitectureFramesPatreonAvatar as PatreonFrame } from '#components'
 import { ArchitectureFramesAvatar as AvFrame } from '#components'
-import { PagesUsersBadges } from '#components'
 
 const props = defineProps({
     user: {
@@ -14,7 +12,7 @@ const props = defineProps({
 
 <template>
     <div class="container flex" v-if="user">
-        <NuxtLink :to="`/users/${user.id}`" class="card  theme-surface1 -hoverable flex column alignStart gap20 pointer">
+        <NuxtLink :to="`/users/${user.id}`" class="card theme-surface1 -hoverable flex column alignStart gap20 pointer">
             <div class="flex gap20">
                 <div class="">
                     <AvFrame :fileId="user.avatar" />
@@ -40,8 +38,10 @@ const props = defineProps({
                 </div>
             </div>
 
-            <div class="badges cutoutContainer" v-if="user.badgeRecord">
-                <PagesUsersBadges :badgeRecord="user.badgeRecord" />
+            <div class="badges">
+                <ContentBadgesBadgeRecordPublic
+                    :userId="user.id"
+                />
             </div>
 
             <div class="">
@@ -52,9 +52,6 @@ const props = defineProps({
 </template>
 
 <style scoped>
-.box {
-    padding: 5px;
-}
 .container {
     border-radius: 6px;
     overflow: hidden;
@@ -64,5 +61,8 @@ const props = defineProps({
     flex-grow: 1;
     padding: 15px;
     user-select: none;
+}
+.badges {
+    height: 100px;
 }
 </style>

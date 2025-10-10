@@ -25,23 +25,17 @@ setTimeout(() => {
     <div
         class="box flex gap5"
     >
-        <div class="frame">
-            <ContentBadgesBadgeRecordSlot
-                :assetId="badgeRecord?.slot1?.tier?.image"
-            />
-        </div>
+        <ContentBadgesBadgeRecordSlot
+            :assetId="badgeRecord?.slot1?.tier?.image"
+        />
 
-        <div class="frame">
-            <ContentBadgesBadgeRecordSlot
-                :assetId="badgeRecord?.slot2?.tier?.image"
-            />
-        </div>
+        <ContentBadgesBadgeRecordSlot
+            :assetId="badgeRecord?.slot2?.tier?.image"
+        />
 
-        <div class="frame">
-            <ContentBadgesBadgeRecordSlot
-                :assetId="badgeRecord?.slot3?.tier?.image"
-            />
-        </div>
+        <ContentBadgesBadgeRecordSlot
+            :assetId="badgeRecord?.slot3?.tier?.image"
+        />
     </div>
 </template>
 
@@ -49,8 +43,5 @@ setTimeout(() => {
 .box {
     height: 100%;
 }
-.frame {
-    flex: 1 1 0;
-    aspect-ratio: 1;
-}
+
 </style>

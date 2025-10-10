@@ -102,12 +102,7 @@ async function appFetch<Expected>(p: {
         });
         }
 
-        // Other errors
-        throw newError({
-            code,
-            message,
-            reason: 'Something went wrong while fetching data from Directus'
-        });
+        throw err
     }
 }
 

@@ -14,25 +14,24 @@ const { t } = useI18n();
 
 const formType = ref('login')
 
-const invitationCode = ref('');
-const username = ref('')
+const invitationCode = ref('394cadcb-a9ff-47e9-a7fb-07303432fd72');
+const username = ref('Posoroko')
 
-const email = ref('')
-const password = ref('')
-const passwordConfirmation = ref('')
+const email = ref('posoroko@gmail.com')
+const password = ref('1234')
+const passwordConfirmation = ref('1234')
 
 const formIsValid = computed(() => {
     if(formType.value === 'login') {
         return (
-            emailFormatIsValid(email.value) &&
-            passwordFormatIsValid(password.value)
+            emailFormatIsValid(email.value) 
+
         )
     }
     if(formType.value === 'signup') {
         return (
             invitationCode.value &&
             emailFormatIsValid(email.value) &&
-            passwordFormatIsValid(password.value) &&
             areStrongEqual(password.value, passwordConfirmation.value) &&
             username.value &&
             usernameIsUnique.value

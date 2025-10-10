@@ -13,13 +13,15 @@ const { data : badges } = cacheDbGet<SuccessBadge[]>(
         fields: [
             'key',
             'defaultTier.image',
+            'tiers.key',
             'tiers.badgeValues.badgeRecord',
+            'tiers.badgeValues.tier.image',
             'description.*'
         ],
         deep: {
             tiers: {
-                badgeValues: {
-                    _filter: {
+                _filter: {
+                    badgeValues: {
                         badgeRecord: {
                             _eq: me.value.id
                         }

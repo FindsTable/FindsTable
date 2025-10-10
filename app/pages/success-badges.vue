@@ -7,23 +7,27 @@ definePageMeta({
 
 <template>
     <NuxtLayout name="private-route">
-        <template #title>
-            <ArchitectureAppStructureBoxesMainElement>
-                {{ t('page.badges.title') }}
-            </ArchitectureAppStructureBoxesMainElement>
-            
-        </template>
-        
         <template #header>
+            <LazyArchitecturePageHeaderIconAndTitle
+                iconName="badges"
+                :title="t('page.badges.title')"
+            />
+
             <ArchitectureAppStructureBoxesMainElement>
-                <TH2 class="marTop20">
-                    {{ t('page.badges.pageLead') }}
-                </TH2>
+                <ArchitecturePanelMain>
+                    <TH2>
+                        {{ t('page.badges.pageLead') }}
+                    </TH2>
+                </ArchitecturePanelMain>
             </ArchitectureAppStructureBoxesMainElement>
         </template>
         
         <template #scrollMain>
-            <ContentBadgesStore />
+            <ArchitectureAppStructureBoxesMainElement>
+                <ArchitecturePanelMain>
+                    <ContentBadgesStore />
+                </ArchitecturePanelMain>
+            </ArchitectureAppStructureBoxesMainElement>
         </template>
     </NuxtLayout>
 </template>

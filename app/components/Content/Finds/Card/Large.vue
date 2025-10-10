@@ -66,10 +66,12 @@ function updateCommentCount(increment) {
                 </div>
             </NuxtLink>
 
-            <!-- <ContentBadgesBadgeRecordPublic
-                v-if="item?.owner?.id"
-                :userId="item.owner.id"
-            /> -->
+            <div class="badgeRecordBox">
+                <ContentBadgesBadgeRecordPublic
+                    v-if="item?.owner?.id"
+                    :userId="item.owner.id"
+                />
+            </div>
         </div>
 
         <div
@@ -157,6 +159,9 @@ function updateCommentCount(increment) {
 </template>
 
 <style scoped>
+.badgeRecordBox {
+    height: 40px;
+}
 .imageBox {
     width: 100%;
     display: flex;

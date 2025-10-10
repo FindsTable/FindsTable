@@ -83,11 +83,12 @@ async function useHandleSignup(p: {
     passwordConfirmation: string
 }) {
 
+
     try {
         assertEmailFormat(p.email)
         assertPasswordFormat(p.password)
         assertStrongEquality(p.password, p.passwordConfirmation)
-
+        
         const res = await $fetch(
             '/api/auth/signup',
             {
@@ -101,6 +102,7 @@ async function useHandleSignup(p: {
                 }
             }
         )
+        console.log('eric', res) 
 
         navigateTo(`/redirection/new-account-created?email=${useAnonymizeEmail(p.email)}`)
     } catch(err) {

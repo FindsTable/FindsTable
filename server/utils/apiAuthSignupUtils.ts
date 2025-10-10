@@ -5,15 +5,16 @@ export {
     configureVerifiedAccount
 }
 
+type PartialUser = {
+    id: string,
+    email: string,
+    email_verification_token: string
+}
 async function configureVerifiedAccount(
-    user : {
-        id: string,
-        email: string,
-        email_verification_token: string
-    }
+    user : PartialUser
 ) : Promise<void> {
 
-    await createPersonalDataRecord(user.id)
+    await createPersonalDataRecord(user)
 
     await createPersonalDataValues(user.id, user.email)
 
@@ -32,11 +33,9 @@ async function updateUser(
             endpointId: `/users/${user.id}`,
             body: {
                 email_verified: true,
-                role: useRuntimeConfig().USER_ROLE_ID
-            },
-            query: {
-                fields: 'id,email,email_verified,role',
-            },
+                role: useRuntimeConfig().USER_ROLE_ID,
+                status: 'active'
+            }
         })
     } catch(err) {
         throw newError({
@@ -48,15 +47,15 @@ async function updateUser(
 }
 
 async function createPersonalDataRecord(
-    userID : string
+    user : PartialUser
 ) : Promise<void> {
 
     try {
         await appPost({
-            endpoint: '/items/PersonalData_record',
+            endpoint: '/items/PersonalData_record', // No "S" !!!  
             body: {
-                id: userID, // records and user share the same id
-                user: userID,
+                id: user.id, // records and user share the same id
+                user: user.id
             },
             query: {
                 fields: 'id'
@@ -124,21 +123,14 @@ async function createBadgeRecord(
 ) : Promise<void> {
     try {
         await appPost({
-        endpoint: 'Badge_records',
-        body: {
-            id: userId, // records and users share the same id
-            owner: userId,
-        },
-        query: {
-            fields: 'id'
-        }
-    })
-    } catch(err) {
-        throw newError({
-            code: 400,
-            message: 'Bad request',
-            reason: 'Could not create badge record'
+            endpoint: '/items/Badge_records',
+            body: {
+                id: userId, // records and users share the same id
+                owner: userId
+            }
         })
+    } catch(err) {
+        throw err
     }
 }
 

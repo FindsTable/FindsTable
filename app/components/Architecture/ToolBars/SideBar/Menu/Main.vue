@@ -11,7 +11,7 @@ function handleClick() {
 const links = [
     { textPath: 'sideBarLinks.users', to: '/users', icon: 'users' },
     { textPath: 'sideBarLinks.badges', to: '/success-badges', icon: 'badges' },
-    { textPath: 'sideBarLinks.notifications', to: '/notifications', icon: 'notifications' }
+    // { textPath: 'sideBarLinks.notifications', to: '/notifications', icon: 'notifications' }
 ]
 </script>
 
