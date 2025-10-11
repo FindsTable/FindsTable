@@ -17,6 +17,7 @@ const newCommentCount = ref(0)
 function updateCommentCount(increment) {
     newCommentCount.value += increment
 }
+
 </script>
 
 <template>
@@ -27,38 +28,11 @@ function updateCommentCount(increment) {
             flex column gap10 pointer justifyEnd
         "
     >
-        <div 
-            class="
-                userBox
-                flex gap10 alignCenter justifyBetween
-                noEvents_kidsEvents
-            "
-        >
-            <NuxtLink :to="`/users/${item.owner.id}`"  class="flex gap10">
-                <img v-if="item.owner.avatar"
-                    :src="`https://admin.findstable.net/assets/${item.owner.avatar}?key=avatar-tiny-jpg&v=${Date.now()}`"
-                    alt="metalhunter avatar" 
-                    class="avatar" 
-                />
-
-                <div>
-                    <p
-                        class="username"
-                    >
-                        {{ item.owner.displayName }}
-                    </p>
-
-                    <time class="date fS12 weight3" datetime="2025-03-26">
-                        {{ useParseDate(item.date_created) }}
-                    </time>
-                </div>
-            </NuxtLink>
-
-            <ContentFindsCardMiniToolBar
-                v-if="me.id === item.owner.id"
-                @delete="emit('delete', item.id)"
-            />
-        </div>
+        <ContentItemsTopBarUser
+            v-if="item?.owner?.id"
+            :userId="item.owner.id"
+            :date="useParseDate(item.date_created)"
+        />
 
         <TH3>
             {{ item.title }}
@@ -108,16 +82,10 @@ function updateCommentCount(increment) {
         </div>
 
         <div class="infoBox flex justifyEvenly alignCenter gap10">
-            <WidgetsLikesAndCommentsMain
-                fonSize="16px"
-                iconSize="20px"
+            <ContentItemsSocialToolBarMain
+                :itemId="item.id"
                 collection="Finds"
-                :item="item"
-                :likeClick="true"
-                :commentClick="true"
-                @commentClicked="showComments = !showComments"
-                :bookmark="true"
-                :commentCount="item.comments.length + newCommentCount"
+                @commentClick="showComments = !showComments"
             />
         </div>
 
@@ -125,7 +93,7 @@ function updateCommentCount(increment) {
             <ContentCommentsMain
                 v-if="showComments"
                 :itemId="item.id"
-                collection="Finds_comments"
+                collection="Finds"
                 @closeComments="showComments = !showComments"
                 @updateCommentCount="updateCommentCount"
             />
@@ -140,10 +108,7 @@ function updateCommentCount(increment) {
     overflow: hidden;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
-.userBox {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.29);
-    padding-bottom: 8px;
-}
+
 .avatar {
     height: 100%;
     aspect-ratio: 1;

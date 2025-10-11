@@ -23,45 +23,22 @@ async function useLike(p: UseLikeParams): Promise<UseLikeResult> {
                 },
             });
 
-            if (res?.data) {
-            return {
-                ok: true,
-                status: 'liked',
-                data: res.data,
-            };
-            } else {
-            return {
-                ok: false,
-                status: 'like_failed',
-            };
-            }
+            console.log(res.data)
+            return res.data
         }
 
         if (p.action === 'unlike') {
-        if (!p.likeId) throw new Error('Missing likeId for unlike action');
+            if (!p.likeId) throw new Error('Missing likeId for unlike action');
 
-        const res = await $fetch(`https://admin.findstable.net/items/${p.collection}/${p.likeId}`, {
-            method: 'DELETE',
-            headers: {
-                authorization: `Bearer ${token}`,
-            },
-        });
-
-        return {
-            ok: true,
-            status: 'unliked',
-        };
-    }
-
-        throw new Error('Unknown action');
-    } catch (error) {
-        console.error('useLike error:', error);
-
-        return {
-            ok: false,
-            status: p.action === 'like' ? 'like_failed' : 'unlike_failed',
-            error,
-        };
+            await $fetch(`https://admin.findstable.net/items/${p.collection}/${p.likeId}`, {
+                method: 'DELETE',
+                headers: {
+                    authorization: `Bearer ${token}`,
+                },
+            });
+        }
+    } catch (err) {
+        useHandleError(err)
     }
 }
 

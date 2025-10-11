@@ -15,62 +15,19 @@ const fields = [
     'owner.displayName',
     'owner.avatar'
 ]
-const {
-    response : comments,
-    error,
-    isPending,
-    refresh
-} = useDirectAsyncFetch(
-    'GET', `/items/${props.collection}`,
+
+const { data: comments, refresh, pending } = cacheDbGet(
+    `comments:${props.collection}:${props.itemId}`,
+    `/items/${props.collection}_comments`,
     {
-        query: {
-            filter: {
-                item: {
-                    _eq: props.itemId
-                }
-            },
-            fields: fields.join(','),
-            deep: {
-                owner: {
-                    avatars: {
-                        _sort: "-currentAt",
-                        _limit: 1
-                    }
-                }
-            },
-            sort: 'date_created'
-        }
+        filter: {
+            item: {
+                _eq: props.itemId
+            }
+        },
+        sort: 'date_created'
     }
 )
-
-async function deleteComment(id) {
-
-    try {
-        const res = await $fetch(
-            '/api/content/deleteItem',
-            {
-                method: 'DELETE',
-                headers: {
-                    authorization: `Bearer ${me.value.accessToken.value}`
-                },
-                body: {
-                    collection: props.collection,
-                    id: id
-                }
-            }
-        )
-
-        refresh()
-        emit('updateCommentCount', -1)
-    } catch(err) {
-        useHandleError(err)
-    }
-}
-
-function newCommentSaved(newComment) {
-    refresh()
-    emit('updateCommentCount', 1)
-}
 
 </script>
 
@@ -93,45 +50,28 @@ function newCommentSaved(newComment) {
 
             <div 
                 v-for="comment in comments" :key="comment.id"
-                class="commentBox flex alignStart marTop20"    
+                class="commentBox marTop20"    
             >
-                <div class="avatarBg">
-                    <NuxtLink 
-                        :to="`/users/${comment.owner.id}`"
-                        class="pointer"    
+                <div class="flex justifyBetween">
+                    <ContentItemsTopBarUser
+                        :userId="comment.owner"
+                        :date="useParseDate(comment.date_created)"
+                        hideBorderBottom
+                        hideBadgeRecord
+                    />
+
+                    <button 
+                        v-if="comment.owner === me.id"
+                        @click="deleteComment(comment.id)"
+                        class="theme-textColor-main pointer"
                     >
-                        <KeepAlive>
-                            <ArchitectureFramesAvatar 
-                                :fileId="comment.owner.avatar"
-                                width="40px"
-                                round
-                            />
-                        </KeepAlive>
-                    </NuxtLink>
+                        <Icon name="delete" size="24px" />
+                    </button>
                 </div>
 
-                <div class="content grow">
-                    <div class="flex justifyBetween">
-                        <NuxtLink 
-                            :to="`/users/${comment.owner.id}`"
-                            class="pointer font-text -small -bold"
-                        >
-                            {{ comment.owner.displayName || comment.owner.username }}
-                        </NuxtLink>
-
-                        <button 
-                            v-if="comment.owner.id === me.id"
-                            @click="deleteComment(comment.id)"
-                            class="theme-textColor-main pointer"
-                        >
-                            <Icon name="delete" size="24px" />
-                        </button>
-                    </div>
-                    
-                    <p class="font-text marTop5">
-                        {{ comment.content }}
-                    </p>
-                </div>
+                <p class="content font-text marTop5">
+                    {{ comment.content }}
+                </p>
             </div>
 
             <ContentCommentsNew
@@ -148,11 +88,6 @@ function newCommentSaved(newComment) {
 .commentBox {
     border-bottom: 1px solid var(--surface2-borderColor);
 }
-.avatarBg {
-    border-radius: 10px 0 0 10px;
-    translate: 5px 5px;
-}
-
 .commentsBox {
     max-height: 550px;
     overflow: scroll;

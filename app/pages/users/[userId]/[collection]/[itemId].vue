@@ -18,6 +18,12 @@ const query = {
             'finds.title,finds.description',
             'bootyPhoto'
         ]
+    },
+    Thoughts: {
+        fields: [
+            '*',
+            'owner.id,owner.username,owner.displayName,owner.avatar'
+        ]
     }
 }
 
@@ -42,6 +48,12 @@ definePageMeta({
 
             <ContentHuntReportsCardsFullPage
                 v-if="route.params.collection === 'Hunt_reports' && item"
+                :item="item"
+                showUser
+            />
+
+            <ContentThoughtsCardsFullPage
+                v-if="route.params.collection === 'Thoughts' && item"
                 :item="item"
                 showUser
             />

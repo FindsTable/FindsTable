@@ -27,7 +27,7 @@ const { data: finds } = cacheDbGet(
 
 </script>
 
-<template v-if="feed?.length">
+<template v-if="finds?.length">
     <NuxtLink
         v-for="item in finds" :key="item.id"
         :to="`/users/${userId}/Finds/${item.id}`"

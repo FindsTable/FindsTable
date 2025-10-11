@@ -16,14 +16,11 @@ const { data: badgeRecord } = cacheDbGet(
     }
 )
 
-setTimeout(() => {
-    console.log(badgeRecord.value)
-}, 5000)
 </script>
 
 <template v-if="badgeRecord">
     <div
-        class="box flex gap5"
+        class=" box flex gap5"
     >
         <ContentBadgesBadgeRecordSlot
             :assetId="badgeRecord?.slot1?.tier?.image"
@@ -38,10 +35,3 @@ setTimeout(() => {
         />
     </div>
 </template>
-
-<style scoped>
-.box {
-    height: 100%;
-}
-
-</style>

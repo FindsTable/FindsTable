@@ -1,53 +1,64 @@
 <script setup>
-import { ContentFindsCardLarge } from '#components';
 
-const theFields = [
-    '*',
-    'owner',
-    'owner.id',
-    'owner.displayName',
-    'owner.username',
-    'owner.avatar',
-    'date_created',
-    'date_lastEvent',
-    'date_updated',
-    'images.*',
-    'likes.*',
-    'comments.*',
-    'bookmarks'
-]
-const query = {
-    fields: theFields
-}
+const { data: finds } = cacheDbGet(
+    `finds:community`,
+    `/items/Finds`,
+    {
+        fields: [
+            '*',
+            'owner',
+            'owner.id',
+            'owner.displayName',
+            'owner.username',
+            'owner.avatar',
+            'date_created',
+            'date_lastEvent',
+            'date_updated',
+            'images.*',
+            'likes.*',
+            'comments.*',
+            'bookmarks'
+        ]
+    }
+)
 </script>
 
-<template>
-    <ContentMediaFeedCollection
-        class="large"
-        collection="Finds"
-        :cardComponent="ContentFindsCardLarge"
-        :query="query"
-        :communityContent="true"
-    />
+<template v-if="finds?.length">
+    <NuxtLink
+        v-for="item in finds" :key="item.id"
+        :to="`/users/${item.owner.id}/Finds/${item.id}`"
+        class="pointer"
+    >
+        <ArchitectureAppStructureBoxesMainElement>
+            <ContentFindsCardMedium
+                :item="item"
+                :showUser="true"
+                @delete="deleteItem"
+                class="medium"
+            />
 
-    <!-- <ContentMediaFeedCollection
-        class="medium"
-        collection="Finds"
-        :cardComponent="ContentFindsCardMedium"
-        :query="query"
-        :communityContent="true"
-    /> -->
+            <ContentFindsCardLarge
+                :item="item"
+                :showUser="true"
+                @delete="deleteItem"
+                class="large"
+            />
+        </ArchitectureAppStructureBoxesMainElement>
+    </NuxtLink>
 </template>
 
 <style scoped>
-/* @container (max-width: 550px) {
+@container (min-width: 550px) {
+    .medium {
+        font-size: 2em;
+        display: none;
+    }
+  
+}
+@container (max-width: 551px) {
   .large {
     font-size: 2em;
+    display: none;
   }
 }
-@container (min-width: 551px) {
-  .medium {
-    font-size: 2em;
-  }
-} */
 </style>

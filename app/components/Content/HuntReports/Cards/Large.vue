@@ -11,7 +11,7 @@ const emit = defineEmits(['delete'])
 </script>
 
 <template>
-    <article 
+    <ArchitecturePanelMain 
         v-if="item" 
         class="
             card 
@@ -19,40 +19,11 @@ const emit = defineEmits(['delete'])
             flex column gap10 justifyEnd
         "
     >
-        <div 
-            v-if="showUser"
-            class="
-                userBox
-                flex gap10 alignCenter
-                noEvents_kidsEvents
-            "
-        >
-            <NuxtLink 
-                :to="`/users/${item.owner.id}`"  
-                class="flex gap10"
-                
-            >
-                <img v-if="item.owner.avatar"
-                    :src="`https://admin.findstable.net/assets/${item.owner.avatar}?key=avatar-tiny-jpg&v=${Date.now()}`"
-                    alt="metalhunter avatar" 
-                    class="avatar" 
-                />
-
-                <div
-
-                >
-                    <p
-                        class="username"
-                    >
-                        {{ item.owner.displayName }}
-                    </p>
-
-                    <time class="date fS12 weight3" datetime="2025-03-26">
-                        {{ useParseDate(item.date_created) }}
-                    </time>
-                </div>
-            </NuxtLink>
-        </div>
+        <ContentItemsTopBarUser
+            v-if="item?.owner?.id"
+            :userId="item.owner.id"
+            :date="useParseDate(item.date_created)"
+        />
 
         <div
             class=""
@@ -74,7 +45,7 @@ const emit = defineEmits(['delete'])
                 {{ item.content }}
             </p>
         </div>
-    </article>
+    </ArchitecturePanelMain>
 </template>
 
 <style scoped>

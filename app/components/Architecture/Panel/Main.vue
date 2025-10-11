@@ -22,7 +22,7 @@ const props = defineProps({
 <style scoped>
 .panel {
     border-radius: 5px;
-    padding: 16px;
+    padding: clamp(8px, 2vw, 16px);
     border-width: 1px;
     border-style: solid;
 }

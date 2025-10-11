@@ -19,47 +19,12 @@ const me = useUserState()
 
     <ArchitectureAppStructureBoxesMainElement>
         <ArchitecturePanelMain>
-            <div 
-                v-if="showUser"
-                class="
-                    userBox
-                    flex gap10 alignCenter justifyBetween
-                    noEvents_kidsEvents
-                "
-            >
-                <NuxtLink 
-                    :to="`/users/${item.owner.id}`"
-                    @click.stop
-                    class="flex gap10"
-                >
-                    <img v-if="item.owner.avatar"
-                        :src="`https://admin.findstable.net/assets/${item.owner.avatar}?key=avatar-tiny-jpg&v=${Date.now()}`"
-                        alt="metalhunter avatar" 
-                        class="avatar" 
-                    />
-
-                    <div
-
-                    >
-                        <p
-                            class="username"
-                        >
-                            {{ item.owner.displayName }}
-                        </p>
-
-                        <time class="date fS12 weight3" datetime="2025-03-26">
-                            {{ useParseDate(item.date_created) }}
-                        </time>
-
-                    </div>
-                </NuxtLink>
-
-                <!-- <ContentBadgesBadgeRecordPublic
-                    v-if="item?.owner?.id"
-                    :userId="item.owner.id"
-                /> -->
-            </div>
-
+            <ContentItemsTopBarUser
+                v-if="item?.owner?.id && showUser"
+                :userId="item.owner.id"
+                :date="useParseDate(item.date_created)"
+                hideBorderBottom
+            />
         </ArchitecturePanelMain>
     </ArchitectureAppStructureBoxesMainElement>
 

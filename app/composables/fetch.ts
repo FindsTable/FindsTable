@@ -1,6 +1,9 @@
 export {
     dbGet,
-    cacheDbGet
+    cacheDbGet,
+    dbPost,
+    dbDelete,
+    apiPost
 }
 
 const cache = useNewCache(
@@ -140,4 +143,86 @@ function cacheDbGet<T>(
     cache.set(key, result);
 
     return result;
+}
+
+async function dbPost(p: {
+    endpoint: string,
+    body: any,
+    query?: any
+}) {
+    const res = await dbFetch<T>({
+        method: 'POST',
+        endpoint: p.endpoint,
+        body: p.body,
+        query: p.query
+    })
+
+    return res.data
+}
+async function dbDelete<T>(endpointId: string) {
+
+    await dbFetch<T>({
+        method: 'DELETE',
+        endpoint: endpointId,
+    })
+
+}
+
+async function dbFetch<T>(p: {
+    method: 'GET' | 'POST' | 'DELETE'
+    endpoint: string,
+    body?: any,
+    query?: any
+}) {
+    const res = await $fetch<{data: T}>(
+        `https://admin.findstable.net${p.endpoint}`,
+        {
+            method: p.method,
+            headers: {
+                authorization: `Bearer ${useUserState().value.accessToken.value}`
+            },
+            body: p.body,
+            query: p.query
+        }
+    )
+
+    return res
+}
+
+async function apiPost<T>(p: {
+    endpoint: string,
+    body: any,
+    query?: any
+}) {
+    const res = await apiFetch({
+        endpoint: p.endpoint,
+        method: 'POST',
+        body: p.body,
+        query: p.query
+    })
+
+    if(res?.data) {
+        return res.data //Still not sure of the return value of the api endpoints
+    }
+
+    return res
+}
+
+async function apiFetch<T>(p: {
+    endpoint: string,
+    method: 'POST' | 'PATCH',
+    body?: any,
+    query?: any
+}) {
+
+    const res = await $fetch<{data: T}>(
+        `/api/${p.endpoint}`,
+        {
+            method: p.method,
+            body: p.body,
+            query: p.query
+        }
+    )
+
+    return res
 }

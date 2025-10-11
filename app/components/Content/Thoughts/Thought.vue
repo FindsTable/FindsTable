@@ -17,57 +17,45 @@ function updateCommentCount(increment) {
 </script>
 
 <template>
-    <ArchitectureAppStructureBoxesMainElement>
-        <ArchitecturePanelMain>
-            <div class="thoughtPanel ">
-                <div class="flex justifyBetween">
-                    <ContentUsersCardsMini
-                        :userId="item.owner.id"
-                        :avatarId="item.owner.avatar"
-                        :username="item.owner.displayName || item.owner.username"
-                        :date="useParseDate(item.date_created)"
-                    />
+    <ArchitecturePanelMain>
+        <div>
+            <ContentItemsTopBarUser
+                v-if="item?.owner?.id"
+                :userId="item.owner.id"
+                :date="useParseDate(item.date_created)"
+                @delete="emit('delete',item.id)"
+            />
 
-                    <button 
-                        v-if="item.owner.id === me.id"
-                        @click="emit('delete', item.id)"
-                        class="theme-textColor-main pointer"
-                    >
-                        <Icon name="delete" size="24px" />
-                    </button>
-                </div>
+            <p class="content">
+                {{  item.content }}
+            </p>
 
-                <p class="content marTop20">
-                    {{  item.content }}
-                </p>
+            <WidgetsLikesAndCommentsMain
+                fonSize="16px"
+                iconSize="20px"
+                collection="Thoughts"
+                :item="item"
+                :likeClick="true"
+                :commentClick="true"
+                @commentClicked="showComments = !showComments"
+            />
 
-                <WidgetsLikesAndCommentsMain
-                    fonSize="16px"
-                    iconSize="20px"
-                    collection="Thoughts"
-                    :item="item"
-                    :likeClick="true"
-                    :commentClick="true"
-                    @commentClicked="showComments = !showComments"
-                />
-
-                <ContentCommentsMain
-                    v-if="showComments"
-                    :itemId="item.id"
-                    collection="Thoughts_comments"
-                    @newCommentPosted="updateCommentCount"
-                    @closeComments="showComments = false"
-                />
-            </div>
-        </ArchitecturePanelMain>
-    </ArchitectureAppStructureBoxesMainElement>
-    
+            <ContentCommentsMain
+                v-if="showComments"
+                :itemId="item.id"
+                collection="Thoughts_comments"
+                @newCommentPosted="updateCommentCount"
+                @closeComments="showComments = false"
+            />
+        </div>
+    </ArchitecturePanelMain>
 </template>
 
 <style>
 
 .content {
   white-space: pre-wrap;
+  padding: 20px 0;
 }
 
 </style>

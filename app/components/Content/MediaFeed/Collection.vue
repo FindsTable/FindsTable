@@ -64,9 +64,7 @@ async function deleteItem(id) {
             :to="`/users/${item.owner.id}/${props.collection}/${item.id}`"
             class="pointer"
         >
-            <ArchitectureAppStructureBoxesMainElement
-                
-            >
+            <ArchitectureAppStructureBoxesMainElement>
                 <component :is="cardComponent"
                     :item="item"
                     :showUser="true"

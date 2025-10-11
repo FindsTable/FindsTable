@@ -38,13 +38,5 @@ event: H3Event
         }
     })
 
-    if(!res) {
-        throw newError({
-            code: 500,
-            message: 'Request failed',
-            reason: "No data in response"
-        })
-    }
-    
     return res
 })

@@ -1,6 +1,10 @@
 <script setup>
-import { ContentThoughtsThought } from '#components';
-const theFields = [
+
+const { data: thoughts } = cacheDbGet(
+    `key:community:thoughts`,
+    `/items/Thoughts`,
+    {
+        fields: [
     '*',
     'owner.avatar',
     'owner.id' ,
@@ -11,16 +15,23 @@ const theFields = [
     'date_updated',
     'likes.*'
 ]
-const query = {
-    fields: theFields
-}
+    }
+)
+
 </script>
 
-<template>
-    <ContentMediaFeedCollection
-        collection="Thoughts"
-        :query="query"
-        :cardComponent="ContentThoughtsThought"
-        :communityContent="true"
-    />
+<template v-if="thoughts?.length">
+    <NuxtLink
+        v-for="item in thoughts" :key="item.id"
+        :to="`/users/${item.owner.id}/Thoughts/${item.id}`"
+        class="pointer"
+    >
+        <ArchitectureAppStructureBoxesMainElement>
+            <ContentThoughtsThought
+                :item="item"
+                :showUser="true"
+                @delete="deleteItem"
+            />
+        </ArchitectureAppStructureBoxesMainElement>
+    </NuxtLink>
 </template>
